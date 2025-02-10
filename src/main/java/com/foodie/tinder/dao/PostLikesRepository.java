@@ -1,13 +1,10 @@
 package com.foodie.tinder.dao;
 
 
-import com.foodie.tinder.entity.Likes;
+import com.foodie.tinder.entity.PostLikes;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface LikesRepository  extends JpaRepository<Likes, Integer> {
+public interface PostLikesRepository extends JpaRepository<PostLikes, Integer> {
 
 //    List<Likes> findByPostid(int postid);
 

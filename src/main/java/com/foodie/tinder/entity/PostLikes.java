@@ -5,11 +5,11 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Likes {
+public class PostLikes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "likes_id")
-    private int likesId;
+    private int postLikesId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id")

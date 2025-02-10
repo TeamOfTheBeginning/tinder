@@ -48,7 +48,7 @@ const Post = (props) => {
 
             axios.get(`/api/post/getImages/${props.post.postId}` )
             .then((result)=>{ 
-                console.log("result.data.imgList"+JSON.stringify(result.data.imgList))
+                // console.log("result.data.imgList"+JSON.stringify(result.data.imgList))
                 setImgList( result.data.imgList );
             }).catch((err)=>{console.error(err)})
 

@@ -11,12 +11,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Follow {
+public class MemberLikes {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "follow_id")
-	private Integer followId;
+	@Column(name = "member_likes_id")
+	private Integer memberLikesId;
 
-	private int follower;
-	private int followed;
+	private int liker;
+	private int liked;
 }
