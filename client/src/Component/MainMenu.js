@@ -20,28 +20,28 @@ const MainMenu=( props ) => {
     const [searchTag, setSearchTag] = useState('')
     const dispatch = useDispatch();
     
-    useEffect(
-        ()=>{
-            console.log('loginUser', loginUser)
-            if( !loginUser || !loginUser.email ){
-                alert('로그인이 필요한 서비스 입니다');
-                navigate('/')
-            }else{
-                //console.log('loginUser : ', loginUser)
-                if( loginUser.profileimg ){
-                    setImgSrc(`http://localhost:8070/userimg/${loginUser.profileimg}`);
-                }
-            }
-        },[]
-    )
+    // useEffect(
+    //     ()=>{
+    //         console.log('loginUser', loginUser)
+    //         if( !loginUser || !loginUser.email ){
+    //             alert('로그인이 필요한 서비스 입니다');
+    //             navigate('/')
+    //         }else{
+    //             //console.log('loginUser : ', loginUser)
+    //             if( loginUser.profileimg ){
+    //                 setImgSrc(`http://localhost:8070/userimg/${loginUser.profileimg}`);
+    //             }
+    //         }
+    //     },[]
+    // )
 
     function onLogout(){
-        axios.get('/api/member/logout')
-        .then((result)=>{
-            dispatch( logoutAction() );
-            cookies.remove('user', {path:'/',} )
-            navigate('/')
-        }).catch((err)=>{console.error(err)})
+        // axios.get('/api/member/logout')
+        // .then((result)=>{
+        //     dispatch( logoutAction() );
+        //     cookies.remove('user', {path:'/',} )
+        //     navigate('/')
+        // }).catch((err)=>{console.error(err)})
     }
 
     useEffect(
