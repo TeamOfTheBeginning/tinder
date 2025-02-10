@@ -1,15 +1,42 @@
 .topmenu{
-    width:600px;
-    border:3px solid silver;
-    border-radius: 15px;
+    height: 100px;
     display: flex;
+}
+
+.profile{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.profile span{
+    width:90px;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.menu{
+    width:220px;
+    display:flex;
+    flex-direction: row;
+    align-items:center;
     justify-content: space-around;
-    padding:10px 0;
-    margin-bottom:10px;
+}
+
+/* 원형 버튼 */
+#btn{
+    display: flex;
+    justify-content: center;    align-items: center;
+    width:40px;    height:40px;
+    background-color: #ed6ea0;
+    border-radius: 50%;
     box-sizing:border-box;
 }
-.topmenu img{
-    width:40px;
-    height:40px;
-    border-radius: 50%;
+
+/* 아이콘 */
+.topmenu .menu #btn svg {
+    width: 30px;    height: 30px;
+    color: #fff;
 }

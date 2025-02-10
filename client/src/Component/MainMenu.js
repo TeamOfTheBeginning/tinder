@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loginAction, logoutAction, setFollowers, setFollowings } from '../store/userSlice';
 import {Cookies} from 'react-cookie'
 
+import { CgHome, CgLogIn, CgLogOut, CgProfile, CgSearch, CgAddR } from "react-icons/cg";
 import '../style/MainMenu.css'
 
 const MainMenu=( props ) => {
@@ -68,27 +69,31 @@ const MainMenu=( props ) => {
     }
 
     return (
-        <div>
-            <div className='topmenu'>
-                <img src='http://localhost:8070/img/home.png' onClick={
+        <div className='topmenu'>
+            <div className='profile'>
+                <div id='btn'></div><span>&nbsp;사용자 이름이 들어감</span>
+            </div>
+            <div className='menu'>
+                <div id='btn' onClick={
                     ()=>{navigate('/main')}
-                }/>
-                <img src='http://localhost:8070/img/write.png' onClick={
+                }><CgHome /></div>
+                <div id='btn' onClick={
                     ()=>{navigate('/writePost')}
-                }/>
-                <img src='http://localhost:8070/img/search.png' onClick={()=>{viewOrNot()}}/>
-                <img src={imgSrc} onClick={()=>{ navigate('/myPage') }}/>
-                <img src="http://localhost:8070/img/logout.png" onClick={
-                    ()=>{ onLogout(); }
-                }/>
+                }><CgAddR /></div>
+                <div id='btn' onClick={
+                    ()=>{navigate('/#')}
+                }><CgSearch /></div>
+                <div id='btn' onClick={
+                    ()=>{navigate('/myPage')}
+                }><CgProfile /></div>
+                <div id='btn' onClick={
+                    ()=>{ 
+                        // onLogout(); 
+                        navigate('/#')
+                    }
+                }><CgLogOut  /></div>
             </div>
-            <div className='search' style={inputStyle}>
-                {/* 화면에 없다가 검색버튼을 누르면 나타나는 검색어 입력창 */}
-                <input type="text" style={{flex:'5'}} value={searchTag} onChange={
-                    (e)=>{ setSearchTag( e.currentTarget.value) } 
-                }/>
-                <button style={{flex:'1'}} onClick={()=>{ onSearch() }}>해시테그 검색</button>
-            </div>
+
         </div>
     )
 }
