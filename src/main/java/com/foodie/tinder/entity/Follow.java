@@ -17,6 +17,6 @@ public class Follow {
 	@Column(name = "follow_id")
 	private Integer followId;
 
-	private String follower;
-	private String followed;
+	private int follower;
+	private int followed;
 }
