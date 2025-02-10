@@ -48,6 +48,7 @@
     margin-top: 10px;
     display: flex;
     box-sizing: border-box;
+    align-items: center;
 }
 
 .loginform .btns #btn, 
@@ -61,11 +62,6 @@
     font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.4s ease-in-out;
-}
-
-.loginform .btns button:last-child, 
-.loginform .snslogin button:last-child {
-    margin-right: 0;
 }
 
 /* 로그인, 회원가입 버튼 */
@@ -111,6 +107,8 @@
     width: 30px;
     height: 30px;
 }
+
+
 
 /* 반응형 스타일 */
 @media (max-width: 600px) {

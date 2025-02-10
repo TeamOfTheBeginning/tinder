@@ -1,15 +1,26 @@
+.Container{
+    display: flex;
+    font-family: 'Gowun Dodum', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.left{
+    flex:2;
+    border-right: 1px solid #f7186a;
+}
+
+.MainMenu{
+    background-image: linear-gradient(to top, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+}
 .Posts{
-    width:55%;
-    border:1px solid blue;
+    height: 800px;
     padding:5px;
-    margin:5px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-sizing: border-box;
 }
 .post{
-    width:50%;
-    border:1px solid magenta;
+    width:55%;
     display: flex;
     flex-direction: column;
     margin-bottom: 30px;;
@@ -53,4 +64,16 @@
 
 img{
     vertical-align: middle;
+}
+
+.right{
+    width:650px;
+    background-color: #ed6ea0;
+    opacity: 15%;
+}
+
+
+/* 반응형 스타일 */
+@media (max-width: 600px) {
+
 }

@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-import MainMenu from './MainMenu'
+import MainMenu from './MainMenu';
 import Post from './post/Post';
+import '../style/mystargram.css';
 import '../style/Posts.css';
 
 const Main = () => {
@@ -28,18 +29,26 @@ const Main = () => {
     //     }, [word]
     // )
     return (
-        <div style={{display:"flex", flexDirection:"column", alignItems:"center"}} >
-            <MainMenu setWord={setWord} />
-            <div className='Posts'>
-                {
-                    (postList)?(
-                        postList.map((post, idx)=>{
-                            return (
-                                <Post key={idx} post={post}  followings={followings}  setFollowings={setFollowings} />
-                            )
-                        })
-                    ):(null)
-                }
+        <div className='Container'>
+
+            <div className='left'>
+                <div className='MainMenu'><MainMenu setWord={setWord} /></div>
+                <div className='Posts'>
+                    {
+                        (postList)?(
+                            postList.map((post, idx)=>{
+                                return (
+                                    <Post key={idx} post={post}  followings={followings}  setFollowings={setFollowings} />
+                                )
+                            })
+                        ):(null)
+                    }
+                </div>
+            </div>
+
+            {/* 멤버추천 */}
+            <div className='right'>
+
             </div>
         </div>
     )
