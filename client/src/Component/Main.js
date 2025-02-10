@@ -23,7 +23,7 @@ const Main = () => {
 
             axios.get(`/api/post/getPostList`, {params:{word,page:1}})
             .then((result)=>{
-                console.log("result"+JSON.stringify(result));
+                // console.log("result"+JSON.stringify(result));
                 setPostList( result.data.postList2 );
             }).catch((err)=>{console.error(err)})
 
@@ -35,6 +35,12 @@ const Main = () => {
             <div className='left'>
                 <div className='MainMenu'><MainMenu setWord={setWord} /></div>
                 <div className='Posts'>
+                    
+                </div>
+            </div>
+
+            {/* 멤버추천 */}
+            <div className='right'>
                     {
                         (postList)?(
                             postList.map((post, idx)=>{
@@ -44,11 +50,6 @@ const Main = () => {
                             })
                         ):(null)
                     }
-                </div>
-            </div>
-
-            {/* 멤버추천 */}
-            <div className='right'>
 
             </div>
         </div>

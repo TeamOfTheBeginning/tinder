@@ -27,6 +27,9 @@ public class Member {
     private String email;
     private String pwd;
     private String phone;
+    @Column(columnDefinition = "TINYINT")
+    private int gender;
+    private int age;
     private String profileImg;
     private String profileMsg;
     private String snsId;

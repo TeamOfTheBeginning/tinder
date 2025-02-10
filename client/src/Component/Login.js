@@ -22,8 +22,8 @@ const Login = () => {
         if( !pwd ){ return alert('비밀번호를 입력하세요')}
         try{
             const result = await axios.post('/api/member/loginlocal', null ,{ params:{email, pwd} })
-            console.log("1")
-            console.log(result)
+            // console.log("1")
+            // console.log(result)
             
             if( result.data.msg == 'ok'){
 
