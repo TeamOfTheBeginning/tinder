@@ -24,14 +24,20 @@ public class MemberService2 {
 
 
     public Member getOppsiteGender(int gender) {
-        List<Member> members = mr.findByGender(gender);
+//        List<Member> members = mr.findByGender(gender);
 
-        if (members.isEmpty()) {
+        int myAge = 30;
+        int ageRange = 2;
+
+        List<Member> filteredMembers = mr.findByGenderAndAgeRange(gender, myAge - ageRange, myAge + ageRange);
+
+
+        if (filteredMembers.isEmpty()) {
             return null;
         }
 
         Random random = new Random();
-        return members.get(random.nextInt(members.size()));
+        return filteredMembers.get(random.nextInt(filteredMembers.size()));
 
     }
 
