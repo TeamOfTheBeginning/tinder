@@ -17,17 +17,18 @@ const Main = () => {
     const [word, setWord] = useState('n')
     const loginUser = useSelector(state=>state.user);
 
-    // useEffect(
-    //     ()=>{
-    //         setFollowings( [...loginUser.followings] )
+    useEffect(
+        ()=>{
+            // setFollowings( [...loginUser.followings] )
 
-    //         axios.get(`/api/post/getPostList`, {params:{word}})
-    //         .then((result)=>{
-    //             setPostList( result.data.postList );
-    //         }).catch((err)=>{console.error(err)})
+            axios.get(`/api/post/getPostList`, {params:{word,page:1}})
+            .then((result)=>{
+                console.log("result"+JSON.stringify(result));
+                setPostList( result.data.postList2 );
+            }).catch((err)=>{console.error(err)})
 
-    //     }, [word]
-    // )
+        }, [word]
+    )
     return (
         <div className='Container'>
 
