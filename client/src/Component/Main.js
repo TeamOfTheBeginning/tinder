@@ -16,17 +16,17 @@ const Main = () => {
     const [word, setWord] = useState('n')
     const loginUser = useSelector(state=>state.user);
 
-    useEffect(
-        ()=>{
-            setFollowings( [...loginUser.followings] )
+    // useEffect(
+    //     ()=>{
+    //         setFollowings( [...loginUser.followings] )
 
-            axios.get(`/api/post/getPostList`, {params:{word}})
-            .then((result)=>{
-                setPostList( result.data.postList );
-            }).catch((err)=>{console.error(err)})
+    //         axios.get(`/api/post/getPostList`, {params:{word}})
+    //         .then((result)=>{
+    //             setPostList( result.data.postList );
+    //         }).catch((err)=>{console.error(err)})
 
-        }, [word]
-    )
+    //     }, [word]
+    // )
     return (
         <div style={{display:"flex", flexDirection:"column", alignItems:"center"}} >
             <MainMenu setWord={setWord} />
