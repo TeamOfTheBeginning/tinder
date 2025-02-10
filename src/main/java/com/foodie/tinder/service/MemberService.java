@@ -26,4 +26,16 @@ public class MemberService {
         }
 
     }
+
+    public Member getMemberByNickname(String nickname) {
+
+        Optional<Member> member = mr.findByNickname( nickname );
+        if(member.isPresent()) return member.get();
+        else  return null;
+
+    }
+
+    public void insertMember(Member member) {
+        mr.save(member);
+    }
 }

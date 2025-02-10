@@ -2,6 +2,7 @@ import {  Routes, Route } from "react-router-dom";
 import Login from './Component/Login';
 import Main from './Component/Main';
 import './App.css';
+import JoinForm from "./Component/member/JoinForm";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/main" element={<Main />} />
+        <Route path="/joinForm" element={<JoinForm />} />
       </Routes>
     </div>
   );

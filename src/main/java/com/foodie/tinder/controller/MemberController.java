@@ -2,14 +2,16 @@ package com.foodie.tinder.controller;
 
 import com.foodie.tinder.entity.Member;
 import com.foodie.tinder.service.MemberService;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 
 @RestController
@@ -25,7 +27,6 @@ public class MemberController {
             @RequestParam("email") String email,
             @RequestParam("pwd") String pwd,
             HttpSession session) {
-        System.out.println("loginlocal");
         HashMap<String, Object> result = new HashMap<>();
         Member member = ms.getMember(email);
         System.out.println(member);
@@ -35,12 +36,80 @@ public class MemberController {
             result.put("msg", "패스워드를 확인하세요");
         }else {
             result.put("msg", "ok");
-            System.out.println("ok");
 //            session.setAttribute("loginUser", member.getId() );
-        }   System.out.println(result);
+        }
         return result;
 
     }
+
+    @PostMapping("/emailcheck")
+    public HashMap<String, Object> emailcheck( @RequestParam("email") String email ) {
+        HashMap<String, Object> result = new HashMap<>();
+        Member member = ms.getMember(email);
+        if( member != null )
+            result.put("msg", "no");
+        else
+            result.put("msg", "ok");
+        return result;
+    }
+
+    @PostMapping("/nicknamecheck")
+    public HashMap<String, Object> nicknamecheck( @RequestParam("nickname") String nickname ) {
+        System.out.println("nicknamecheck");
+        HashMap<String, Object> result = new HashMap<>();
+        Member member = ms.getMemberByNickname(nickname);
+        if( member != null )
+            result.put("msg", "no");
+        else
+            result.put("msg", "ok");
+        return result;
+    }
+
+    @Autowired
+    ServletContext context;
+
+    @PostMapping("/fileupload")
+    public HashMap<String, Object> fileupload( @RequestParam("image") MultipartFile file ) {
+        HashMap<String, Object> result = new HashMap<>();
+        String path = context.getRealPath("/userimg");
+        Calendar today = Calendar.getInstance();
+        long dt = today.getTimeInMillis();
+        String filename = file.getOriginalFilename();
+        String fn1 = filename.substring(0, filename.indexOf(".") );
+        String fn2 = filename.substring(filename.indexOf(".") );
+        String uploadPath = path + "/" + fn1 + dt + fn2;
+        try {
+            file.transferTo( new File(uploadPath) );
+            result.put("filename", fn1 + dt + fn2);
+        } catch (IllegalStateException | IOException e) {
+            e.printStackTrace();
+        }
+        System.out.print(result);
+        return result;
+    }
+
+
+    @PostMapping("/join")
+    public HashMap<String, Object> join(@RequestBody Member member) {
+        System.out.println("join0!!");
+        HashMap<String, Object> result = new HashMap<>();
+        ms.insertMember(member);
+        result.put("msg", "ok");
+        return result;
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
