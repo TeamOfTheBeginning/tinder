@@ -14,12 +14,10 @@ public class Member {
     private String email;
     private String pwd;
     private String phone;
-    private boolean gender;
     private String profileImg;
     private String profileMsg;
     private String snsId;
     private String provider;
     private String zipnum;
     private String address;
-    private int account;
 }
