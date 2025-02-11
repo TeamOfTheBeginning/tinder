@@ -86,8 +86,8 @@ const JoinForm = () => {
             </div>
 
             <div className='btns'>
-                <div id='btn' onClick={ ()=>{   onSubmit()    }  }>JOIN</div>
-                <div id='btn' onClick={ ()=>{ navigate('/')   }  }>BACK</div>
+                <button onClick={ ()=>{   onSubmit()    }  }>JOIN</button>
+                <button onClick={ ()=>{ navigate('/')   }  }>BACK</button>
             </div>
         </div>
     )

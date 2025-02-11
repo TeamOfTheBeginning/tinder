@@ -4,30 +4,42 @@ import {Cookies} from 'react-cookie'
 const cookies = new Cookies()
 
 const initialState={
-    id:'',
+    memberid:'',
     nickname:'',
+    age:'',
     email:'',
-    provider:'',
-    profileimg:'',
-    profilemsg:'',
     phone:'',
+    gender:'',
+    address:'',
+    provider:'',
+    profileImg:'',
+    profileMsg:'',
     snsid:'',
-    followers:[],
-    followings:[], 
+    zipnum:'',
+    // followers:[],
+    // followings:[], 
 }
 
 
 const getLoginUser=()=>{
+    console.log('getLoginUser')
+    console.log(cookies.get('user'))
     const memberinfo = cookies.get('user')
+    
     if( memberinfo && memberinfo.email ){
-        memberinfo.id = decodeURIComponent( memberinfo.id )
-        memberinfo.email = decodeURIComponent( memberinfo.email )
+        console.log('if 문 : getLoginUser2')
+        memberinfo.memberid = decodeURIComponent( memberinfo.memberid )
         memberinfo.nickname = decodeURIComponent( memberinfo.nickname )
-        memberinfo.provider = decodeURIComponent( memberinfo.provider )
-        memberinfo.profileimg = decodeURIComponent( memberinfo.profileimg )
-        memberinfo.profilemsg = decodeURIComponent( memberinfo.profilemsg )
+        memberinfo.age = decodeURIComponent( memberinfo.age )
+        memberinfo.email = decodeURIComponent( memberinfo.email )
         memberinfo.phone = decodeURIComponent( memberinfo.phone )
+        memberinfo.gender = decodeURIComponent( memberinfo.gender )
+        memberinfo.address = decodeURIComponent( memberinfo.address )
+        memberinfo.provider = decodeURIComponent( memberinfo.provider )
+        memberinfo.profileImg = decodeURIComponent( memberinfo.profileImg )
+        memberinfo.profileMsg = decodeURIComponent( memberinfo.profileMsg )        
         memberinfo.snsid = decodeURIComponent( memberinfo.snsid )
+        memberinfo.zipnum = decodeURIComponent( memberinfo.zipnum )
     }
     return memberinfo
 }
@@ -38,33 +50,41 @@ export const userSlice=createSlice(
         initialState : getLoginUser()  || initialState,
         reducers:{
             loginAction:(state, action)=>{
-                state.id = action.payload.id;
-                state.email = action.payload.email;
+                state.memberid = action.payload.memberid;
                 state.nickname = action.payload.nickname;
+                state.age = action.payload.age;
+                state.email = action.payload.email;
                 state.phone = action.payload.phone;
-                state.profilemsg = action.payload.profilemsg;
-                state.profileimg = action.payload.profileimg;
+                state.gender = action.payload.gender;
+                state.address = action.payload.address;
                 state.provider = action.payload.provider;
+                state.profileImg = action.payload.profileImg;
+                state.profileMsg = action.payload.profileMsg;             
                 state.snsid = action.payload.snsid;
+                state.zipnum = action.payload.zipnum;
             },
             logoutAction:(state)=>{
-                state.id = '';
-                state.email = '';
+                state.memberid = '';
                 state.nickname = '';
+                state.age = '';
+                state.email = '';                
                 state.phone = '';
-                state.profilemsg = '';
-                state.profileimg = '';
+                state.gender = '';
+                state.address = '';
                 state.provider = '';
+                state.profileImg = '';
+                state.profileMsg = '';           
                 state.snsid = '';
-                state.followers = [];
-                state.followings = [];
+                state.zipnum = '';
+                // state.followers = [];
+                // state.followings = [];
             },
-            setFollowings : (state, action)=>{
-                state.followings = action.payload;
-            },
-            setFollowers : (state, action)=>{
-                state.followers = action.payload;
-            },
+            // setFollowings : (state, action)=>{
+            //     state.followings = action.payload;
+            // },
+            // setFollowers : (state, action)=>{
+            //     state.followers = action.payload;
+            // },
         }
     }
 )

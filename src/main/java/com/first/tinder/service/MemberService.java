@@ -38,4 +38,15 @@ public class MemberService {
     public void insertMember(Member member) {
         mr.save(member);
     }
+
+    public Member getMemberById(int id) {
+
+        Optional<Member> member = mr.findById(id);
+
+        if(member.isPresent()) {
+            return member.get();
+        }else{
+            return null;
+        }
+    }
 }
