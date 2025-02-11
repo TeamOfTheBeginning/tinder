@@ -10,8 +10,9 @@ const Match = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let gender = 1;
-    axios.get(`/api/member2/getOppositeGender`, { params: { gender } })
+    let gender = 0;
+    let age = 21;
+    axios.get(`/api/member2/getOppositeGender`, { params: { gender, age } })
         .then((result) => {
             console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
             setOppositeGender(result.data.oppositeGender);
@@ -22,9 +23,10 @@ const Match = () => {
 
   async function rematch(){
 
-    let gender = 1;
+    let gender = 0;
+    let age = 21;
 
-    await axios.get(`/api/member2/getOppositeGender`,{params:{gender}})
+    await axios.get(`/api/member2/getOppositeGender`,{params:{gender,age}})
     .then((result)=>{
         console.log("result.data.oppositeGender"+JSON.stringify(result.data.oppositeGender))
         setOppositeGender(result.data.oppositeGender)
