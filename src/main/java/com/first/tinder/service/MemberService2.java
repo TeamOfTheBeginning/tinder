@@ -86,10 +86,10 @@ public class MemberService2 {
             notification.setMessage(likerMember.getNickname() + "님이 회원님에게 라이크를 보냈습니다.");
             notification.setReadOnNot(0);
 
-            nr.save(notification); // 저장
+            Notification afternotification =  nr.save(notification); // 저장
 
             // ✅ SSE 알림 전송
-            ses.sendNotification(liked, notification.getMessage());
+            ses.sendNotification(liked, notification.getMessage(), afternotification);
 
         }
         return msg;

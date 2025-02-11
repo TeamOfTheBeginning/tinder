@@ -27,6 +27,10 @@ public class PostService {
     PosthashRepository phr;
     @Autowired
     MemberRepository mr;
+    @Autowired
+    NotificationRepository nr;
+    @Autowired
+    SseEmitterService ses;
 
 //    public Post insertPost(Post post) {
 //        // 포스트 추가
@@ -143,6 +147,25 @@ public class PostService {
             plr.save( addlikes );
             System.out.println("addlikes : " + addlikes);
             System.out.println("좋아요가 추가되었습니다.");
+
+            int liked = post.getMember().getMemberId();
+
+            // ✅ Notification 생성 & 저장
+            Member likedMember = mr.findById(liked).orElseThrow();
+            Member likerMember = mr.findById(memberId).orElseThrow();
+
+            Notification notification = new Notification();
+            notification.setMember(likedMember); // 알림을 받을 사용자
+            notification.setMessagefrom(likerMember.getNickname()); // 좋아요 누른 사용자 이름
+            notification.setMessage(likerMember.getNickname() + "님이 회원님의 "+ postId + "번 포스트를 좋아합니다.");
+            notification.setReadOnNot(0);
+
+            Notification afternotification = nr.save(notification); // 저장
+
+            // ✅ SSE 알림 전송
+            ses.sendNotification(liked, notification.getMessage(),afternotification);
+
+
         }
     }
 
@@ -168,6 +191,24 @@ public class PostService {
         reply.setContent( content );
 
         rr.save(reply);
+
+        int liked = post.getMember().getMemberId();
+
+        // ✅ Notification 생성 & 저장
+        Member likedMember = mr.findById(liked).orElseThrow();
+        Member likerMember = mr.findById(memberId).orElseThrow();
+
+        Notification notification = new Notification();
+        notification.setMember(likedMember); // 알림을 받을 사용자
+        notification.setMessagefrom(likerMember.getNickname()); // 좋아요 누른 사용자 이름
+        notification.setMessage(likerMember.getNickname() + "님이 회원님의 "+ postId + "번 포스트에 댓글을 작성했습니다.");
+        notification.setReadOnNot(0);
+
+        Notification afternotification = nr.save(notification); // 저장
+        System.out.println("afternotification"+afternotification);
+
+        // ✅ SSE 알림 전송
+        ses.sendNotification(liked, notification.getMessage(), afternotification);
     }
 
     public void deleteReply(int replyId) {
@@ -176,18 +217,6 @@ public class PostService {
             rr.delete( rep.get() );
         }
     }
-
-//    @Autowired
-//    PostWithNickRepository pwnr;
-
-//    public List<Replywithnick> getReplyList(int postid) {
-//        //return rr.findByPostidOrderByIdDesc(postid);
-//        // return rr.getReplyList( postid );
-//        return rwnr.findByPostidOrderByIdDesc( postid );
-//    }
-//    public Object getPostListWithNick() {
-//        return pwnr.findAll();
-//    }
 
     @Autowired
     PostDao pdao;
@@ -222,45 +251,6 @@ public class PostService {
 
 
 }
-
-
-// Distincgt : findDistinctByName("scott");  -  이름이  scott 인 레코드를 검색하되 동일인은 하나만 결과로 얻습니다
-// And : findByNameAndGender("scott", "F") -  이름이  scott 이면서  성별이 F인 레코드 검색 - 동시 만족
-// Or : findByNameOrGender("scott", "F") - 이름이  scott 이거나  성별이 F인 레코드 검색 - 둘중 하나이상 만족
-//  findByName("scott") - 이름이  scott 인 레코드 검색
-//  findByNameIs("scott"), findByNameEquals("scott")  -  findByName("scott")와  같은 표션
-
-// LessThan : findByAgeLessThan(10)   age가 10보다 작은(<)
-// LessThanEqual : findByAgeLessThanEqual(10)   age가 10보다 작거나 같은 (<=)
-// GreaterThan  : findByAgeGreaterThan(10)   나이가 10보다 큰(>)
-// GreaterThanEqual : findByAgeGreaterThanEqual(10)  나이가 10보다 크거나 같은(>=)
-
-// Between	: findByStartDateBetween( 1, 10)  StartDate가  1과 10의 사이 값들 검색
-// 같은 표현 : findByStartDateLessThanEqualAndGreaterThanEqual(1,10)
-
-// After : findByStartDateAfter(날짜)    날짜 이후
-// Before : findByStartDateBefore(날짜)   날짜 이전
-
-// Like : findByNameLike("scott")  이름에 "scott:을 포함하는
-// StartingWith	: findByNameStartingWith("scott")    이름이 "scott"으로 시작하는
-// StartingWith	: findByNameEndingWith("scott")    이름이 "scott"으로 끝나는
-// Containing : findByNameContaining("scott")  이름에 "scott"을 포함하는 (Like 와 유사)
-// 평소에 사용하던  where name like '%철수%' 는 Containing 을 사용합니다
-// Like 를 사용하면   where name like '철수' 와 같이 동작하므로 결과가 없을수도 잇습니다
-
-
-// OrderBy : findByAgeOrderByIdDesc()  -  id 필드기준으로 내림차순 정렬
-// In :	findByAgeIn(Collection<Age> ages)  - In함수 사용 age 필드가  Collection<Age> ages 안에 포함된 값대상으로 검색
-// true : findByActiveTrue()    active 필드값이  true
-// False : findByActiveFalse()    active 필드값이  false
-// IgnoreCase	findByNameIgnoreCase("scott")  이름에서 "scott'을 검색하되 대소문자 구분하지 않음
-
-
-
-
-
-
-
 
 
 
