@@ -78,9 +78,9 @@ const MainMenu=( props ) => {
                 <div id='btn' onClick={
                     ()=>{navigate('/main')}
                 }><CgHome /></div>
-                <div id='btn' onClick={
+                {/* <div id='btn' onClick={
                     ()=>{navigate('/writePost')}
-                }><CgAddR /></div>
+                }><CgAddR /></div> */}
                 <div id='btn' onClick={
                     ()=>{navigate('/match')}
                 }><CgHeart /></div>

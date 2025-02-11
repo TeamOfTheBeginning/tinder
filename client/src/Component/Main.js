@@ -31,16 +31,11 @@ const Main = () => {
     )
     return (
         <div className='Container'>
-
             <div className='left'>
-                <div className='MainMenu'><MainMenu setWord={setWord} /></div>
-                <div className='Posts'>
-                    
-                </div>
+                <MainMenu />
             </div>
-
-            {/* 멤버추천 */}
-            <div className='right'>
+            {/* post */}
+            <div className='PostList'>
                     {
                         (postList)?(
                             postList.map((post, idx)=>{
@@ -50,8 +45,8 @@ const Main = () => {
                             })
                         ):(null)
                     }
-
             </div>
+
         </div>
     )
 }
