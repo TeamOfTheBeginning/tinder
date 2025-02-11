@@ -127,6 +127,52 @@ public class MemberController {
 
 
 
+    @PostMapping("/emailcheckUpdate")
+    public HashMap<String, Object> emailcheckUpdate( @RequestParam("email") String email, HttpSession session ) {
+        HashMap<String, Object> result = new HashMap<>();
+        int loginUserUserid = (Integer)session.getAttribute("loginUser");
+        Member member = ms.getMemberById(loginUserUserid);
+        String loginUserEmail = member.getEmail();
+        Member updateMember = ms.getMember(email);
+        if( loginUserEmail.equals(email) || updateMember == null ) {
+            result.put("msg", "ok");
+        }else{
+            result.put("msg", "no");
+        }
+        return result;
+    }
+
+
+    @PostMapping("/nicknamecheckUpdate")
+    public HashMap<String, Object> nicknamecheckUpdate(
+            @RequestParam("nickname") String nickname,
+            HttpSession session ) {
+        HashMap<String, Object> result = new HashMap<>();
+        int loginUserUserid = (Integer)session.getAttribute("loginUser");  // 로그인 유저의  id 추출
+        Member member = ms.getMemberById(loginUserUserid);  // id로 멤버정보 조회
+        String loginUserNickname = member.getNickname();  // 조회된 정보에서 닉네임 추출
+        Member updateMember = ms.getMemberByNickname(nickname);   // 수정하려면 닉네임으로 멤버조회
+        // 로그인유저의 닉네임과 수정하려는 닉네임 같거나
+        // 다르다면 수정하려는 닉엠이 사용중이 아닐때  ok
+        if( loginUserNickname.equals(nickname) || updateMember == null ) {
+            result.put("msg", "ok");
+        }else{
+            result.put("msg", "no");
+        }
+        return result;
+    }
+
+    @PostMapping("/update")
+    public HashMap<String, Object> update( @RequestBody Member member) {
+        HashMap<String, Object> result = new HashMap<>();
+        ms.updateMember( member );
+        System.out.println("업데이트1 완료");
+        result.put("msg", "ok");
+        return result;
+    }
+
+
+
 
 
 

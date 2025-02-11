@@ -49,4 +49,24 @@ public class MemberService {
             return null;
         }
     }
+
+    public void updateMember(Member member) {
+
+        Optional<Member> memberOptional = mr.findById(member.getMemberId());
+        if(memberOptional.isPresent()) {
+            Member updateMember = memberOptional.get();
+            updateMember.setEmail(member.getEmail());
+            updateMember.setNickname(member.getNickname());
+            updateMember.setPwd(member.getPwd());
+            updateMember.setPhone(member.getPhone());
+            updateMember.setAddress(member.getAddress());
+            updateMember.setProfileImg(member.getProfileImg());
+            updateMember.setProfileMsg(member.getProfileMsg());
+            updateMember.setAge(member.getAge());
+            updateMember.setGender(member.getGender());
+            updateMember.setZipnum(member.getZipnum());
+
+        }
+
+    }
 }
