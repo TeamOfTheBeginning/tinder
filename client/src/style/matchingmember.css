@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+
+
+.matchContainer{
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border: 1px solid black;
+
+    
+
+}
+
+.matchingMemberContainer{
+    width: 30vw;
+    
+    
+    border: 1px solid black;
+    
+}
+
+.matchingMemberTitle{
+    border: 1px solid black;
+
+    font-family: "Gowun Dodum", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 150%;
+}
+
+.matchingMemberImg{
+    border: 1px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    
+}
+
+.matchingMemberImgImg{
+    width: 400px;
+    height: 500px;
+
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+}
+
+.matchingMemberImg img{
+    width: 100%;
+    height: auto;
+}
+
+.matchingMemberMsg{
+    border: 1px solid black;
+
+    font-family: "Gowun Dodum", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 150%;
+}
