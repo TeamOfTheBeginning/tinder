@@ -88,7 +88,7 @@ const MainMenu=( props ) => {
                     ()=>{navigate('/')}
                 }><CgSearch /></div>
                 <div id='btn' onClick={
-                    ()=>{navigate('/myPage')}
+                    ()=>{navigate('/mypage')}
                 }><CgProfile /></div>
                 <div id='btn' onClick={
                     ()=>{ 

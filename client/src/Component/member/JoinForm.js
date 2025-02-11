@@ -2,14 +2,19 @@ import React, {useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import '../../style/login.css';
+
 const JoinForm = () => {
 
     const [email, setEmail] = useState('')
     const [pwd, setPwd] = useState('')
     const [pwdChk, setPwdChk ] = useState('')
     const [nickname, setNickname] = useState('')
+    const [gender, setGender] = useState('')
+    const [age, setAge] = useState('')
     const [phone, setPhone] = useState('')
     const [intro, setIntro] = useState('')
+    const [zipnum, setZipnum] = useState('')
     const [profileimg, setProfileimg] = useState('')
     const [imgSrc, setImgSrc] = useState('')
     const [imgStyle, setImgStyle] = useState({display:"none"});
@@ -69,7 +74,17 @@ const JoinForm = () => {
                 <input type="text"  value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
             </div>
             <div className='field'>
+                <label style={{flex:2}}>GENDER</label>
+                <input style={{flex:3}} type="select-box"  value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}/>
+                <label style={{flex:2}}>AGE</label>
+                <input style={{flex:3}} type="text"  value={age} onChange={(e)=>{setAge(e.currentTarget.value)}}/>
+            </div>
+            <div className='field'>
                 <label>PHONE</label>
+                <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}}/>
+            </div>
+            <div className='field'>
+                <label>ADDRESS</label>
                 <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}}/>
             </div>
             <div className='field'>
@@ -86,8 +101,8 @@ const JoinForm = () => {
             </div>
 
             <div className='btns'>
-                <div id='btn' onClick={ ()=>{   onSubmit()    }  }>JOIN</div>
-                <div id='btn' onClick={ ()=>{ navigate('/')   }  }>BACK</div>
+                <div id="btn" onClick={ ()=>{   onSubmit()    }  }>JOIN</div>
+                <div id="btn" onClick={ ()=>{ navigate('/')   }  }>BACK</div>
             </div>
         </div>
     )

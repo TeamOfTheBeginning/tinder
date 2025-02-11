@@ -15,14 +15,9 @@ const MyPage = () => {
     
     useEffect(
         ()=>{
-            if( loginUser.profileimg ){
-                console.log(loginUser.profileimg);
-                setImgSrc(`http://localhost:8070/userimg/${loginUser.profileimg}`);
+            if( loginUser.profileImg ){
+                setImgSrc(`http://localhost:8070/userimg/${loginUser.profileImg}`);
             }
-            axios.get('/api/member/getMyPost')
-            .then((result)=>{
-                setImgList( [...result.data.imgList] );
-            }).catch((err)=>{console.error(err)})
 
         },[]
     )
@@ -61,7 +56,7 @@ const MyPage = () => {
                     </div> */}
                     <div className='field'>
                         <label>intro</label>
-                        <div>{loginUser.profilemsg}</div>
+                        <div>{loginUser.profileMsg}</div>
                     </div>
                 </div>
             </div>
@@ -71,7 +66,7 @@ const MyPage = () => {
                 <div id ="btn">Post Write</div>
             </div>
 
-            <div className='userpost' >
+            {/* <div className='userpost' >
                 {
                     (imgList)?(
                         imgList.map((imgs, idx)=>{
@@ -83,7 +78,7 @@ const MyPage = () => {
                         })
                     ):(<div>Loading...</div>)
                 }
-            </div>
+            </div> */}
         </div>
     )
 }

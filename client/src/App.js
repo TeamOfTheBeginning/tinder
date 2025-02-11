@@ -5,6 +5,7 @@ import './App.css';
 import JoinForm from "./Component/member/JoinForm";
 import MyPage from "./Component/member/MyPage";
 import Match from "./Component/match/Match";
+import EditProfile from "./Component/member/EditProfile";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/joinForm" element={<JoinForm />} />
         <Route path="/mypage" element={<MyPage/>} />
         <Route path="/match" element={<Match />} />
+        <Route path="/editProfile" element={<EditProfile/>}/>
       </Routes>
     </div>
   );
