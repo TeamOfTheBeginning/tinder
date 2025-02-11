@@ -3,6 +3,9 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 
 import '../../style/Posts.css';
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { BiSolidMessageSquareDetail, BiSolidMessageSquareDots } from "react-icons/bi";
+
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -166,9 +169,9 @@ const Post = (props) => {
                 }
                 
             </div>
-            <div>
+            <div id='imgbox'>
             { 
-                <Slider {...settings}>
+                <Slider {...settings} id='thumnail'>
                     {
                         (imgList)?(
                             imgList.map((img, idx)=>{
@@ -184,30 +187,30 @@ const Post = (props) => {
             <div className='content' style={{fontWeight:"bold"}}><pre>{props.post.content}</pre></div>
 
             <div className='like'>
-                {/* {
+                {
                     (likeList)?(
                         ( likeList.some( (like)=>( loginUser.id == like.likeid ) ) )?(
-                            <img src={`http://localhost:8070/img/delike.png`}  onClick={ ()=>{ onLike() } } />
+                            <AiFillHeart id='icons' onClick={ ()=>{ onLike() } } />
                         ):(
-                            <img src={`http://localhost:8070/img/like.png`} onClick={ ()=>{ onLike() } } />
+                            <AiOutlineHeart id='icons' onClick={ ()=>{ onLike() } } />
                         )
                     ):(
                         <span>Loading....</span>
                     )
-                } */}
+                }
                 &nbsp;&nbsp;
-                <img src={`http://localhost:8070/img/reply.png`} onClick={()=>{ ViewOrNot() }} /> 
+                <BiSolidMessageSquareDetail id='icons' onClick={()=>{ ViewOrNot() }} /> 
                 &nbsp;&nbsp;
                 {
-                    // (likeList)?(
-                    //     (likeList.length>=1)?(
-                    //         <span>{likeList.length}명이 좋아합니다</span>
-                    //     ):(
-                    //         <span>아직 좋아요가 없어요</span>
-                    //     )
-                    // ):(
-                    //     <span>Loading....</span>
-                    // )
+                    (likeList)?(
+                        (likeList.length>=1)?(
+                            <span>{likeList.length}명이 좋아합니다</span>
+                        ):(
+                            <span>아직 좋아요가 없어요</span>
+                        )
+                    ):(
+                        <span>Loading....</span>
+                    )
                 }
             </div>
 

@@ -1,16 +1,9 @@
 .Container{
     display: flex;
+    width:99vw;
     font-family: 'Gowun Dodum', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.left{
-    flex:2;
-    border-right: 1px solid #f7186a;
-}
-
-.MainMenu{
-    background-image: linear-gradient(to top, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
-}
 .Posts{
     height: 800px;
     padding:5px;
@@ -24,16 +17,20 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 30px;;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 .writer{
-    margin:5px;
-    border:1px solid black;
+    margin:10px;
+    border-bottom: 1px solid #ed6ea0;
     font-weight: bold;
+    color:#f7186a;
     padding:3px;
 }
 .imgs{
-    margin:5px;
-    border:1px solid black;
+    margin:8px;
+    border:1px solid #ed6ea0;
     padding:3px;
     width:95%;
     height:600px;
@@ -48,12 +45,16 @@
 
 .like{
     margin:5px;
-    border:1px solid black;
     padding:3px;
 }
+
+.like #icons {
+    width:25px; height:25px; color:#ed6ea0;
+}
+
 .content{
     margin:5px;
-    border:1px solid black;
+    border:1px dotted #ed6ea0;
     padding:3px;
 }
 .reply{
@@ -66,14 +67,36 @@ img{
     vertical-align: middle;
 }
 
-.right{
-    width:650px;
-    background-color: #ed6ea0;
-    opacity: 15%;
+.PostList{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:100%;
+    opacity: 100%;
+}
+
+/* post 이미지 크롭 */
+
+#imgbox {
+    width:100%;
+    height:350px;
+    overflow:hidden;
+    margin:0 auto;
+}
+
+#imgbox img {
+    width:100%;
+    height:350px;
+    object-fit:cover;
 }
 
 
 /* 반응형 스타일 */
 @media (max-width: 600px) {
-
+    .Posts{
+        min-width:320px;
+    }
+    .Posts .post{
+        width:350px;
+    }
 }
