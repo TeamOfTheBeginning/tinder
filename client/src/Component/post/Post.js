@@ -57,12 +57,13 @@ const Post = (props) => {
 
             axios.get(`/api/post/getLikeList/${props.post.postId}`)
             .then((result)=>{
+                // console.log("result.data.likeList"+JSON.stringify(result.data.likeList))
                  setLikeList( [...result.data.likeList ] );
             }).catch((err)=>{console.error(err)})
 
             axios.get(`/api/post/getReplyList/${props.post.postId}`)
             .then((result)=>{
-                console.log(result.data.replyList2)
+                // console.log(result.data.replyList2)
                 let temp = [...result.data.replyList2];
                 for(let i=0; i<temp.length; i++){
                     temp[i].nickname = getNickname( temp[i].writer );
@@ -121,7 +122,7 @@ const Post = (props) => {
 
             axios.get(`/api/post/getReplyList/${props.post.postId}`)
             .then((result)=>{
-                console.log(result.data.replyList2)
+                // console.log(result.data.replyList2)
                 let temp = [...result.data.replyList2];
                 for(let i=0; i<temp.length; i++){
                     temp[i].nickname = getNickname( temp[i].writer );
@@ -138,7 +139,7 @@ const Post = (props) => {
 
             axios.get(`/api/post/getReplyList/${props.post.postId}`)
             .then((result)=>{
-                console.log(result.data.replyList2)
+                // console.log(result.data.replyList2)
                 let temp = [...result.data.replyList2];
                 for(let i=0; i<temp.length; i++){
                     temp[i].nickname = getNickname( temp[i].writer );
@@ -197,7 +198,7 @@ const Post = (props) => {
             <div className='like'>
                 {
                     (likeList)?(
-                        ( likeList.some( (like)=>( loginUser.id == like.likeid ) ) )?(
+                        ( likeList.some( (like)=>( loginUser.memberId == like.member.memberId ) ) )?(
                             <AiFillHeart id='icons' onClick={ ()=>{ onLike() } } />
                         ):(
                             <AiOutlineHeart id='icons' onClick={ ()=>{ onLike() } } />
@@ -232,7 +233,7 @@ const Post = (props) => {
                                         <div style={{flex:"1", fontWeight:"bold"}}>{ reply.member.nickname}&nbsp;</div>
                                         <div style={{flex:"5"}}>{reply.content}</div>
                                         {
-                                            (reply.writer===loginUser.id)?(
+                                            (reply.member.memberId===loginUser.memberId)?(
                                                 <button style={{flex:"1"}} onClick={
                                                     ()=>{ deleteReply(reply.replyId) }
                                                 }>삭제</button>

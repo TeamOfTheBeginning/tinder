@@ -1,33 +1,124 @@
 import React, {useState, useEffect} from 'react'
 import { IoIosNotifications } from "react-icons/io";
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 import '../../style/notification.css';
 
 const Notification = () => {
 
   const loginUser = useSelector(state=>state.user);
+  const [isOpen, setIsOpen] = useState(false);
+
   const memberId = loginUser.memberId;
   console.log("memberId"+memberId);
 
-  const eventSource = new EventSource(`/api/sse/subscribe/${memberId}`);
-  console.log("구독완료!")
+  const [notificationList,setNotificationList] = useState(); 
 
-  eventSource.addEventListener("notification", function (event) {
-      // console.log("📢 새로운 알림:", event.data);
-      alert("📢 새로운 알림:", event.data);
-  });
+  // const eventSource = new EventSource(`/api/sse/subscribe/${memberId}`);
+  // console.log("구독완료!")
+
+  // eventSource.addEventListener("notification", function (event) {
+  //   const data = JSON.parse(event.data); // 문자열을 JSON 객체로 변환
+  //   console.log("📢 새로운 알림:", data.notification.message); // message만 출력
+  //   alert(data.notification.message);
+
+  // });
   
-  eventSource.onerror = function () {
-      console.log("SSE 연결 종료됨");
-  };
+  // eventSource.onerror = function () {
+  //     console.log("SSE 연결 종료됨");
+  // };
+
+  useEffect(() => {
+    // EventSource 연결 및 재연결 처리
+    let eventSource;
+
+    const createEventSource = () => {
+      eventSource = new EventSource(`/api/sse/subscribe/${memberId}`);
+
+      eventSource.onopen = () => {
+        console.log("SSE 연결됨");
+      };
+
+      eventSource.addEventListener("notification", (event) => {
+        const data = JSON.parse(event.data);
+        console.log("📢 새로운 알림:", data.notification.message);
+        alert(data.notification.message);
+      });
+
+      eventSource.onerror = () => {
+        console.log("SSE 연결 종료됨, 5초 후 재연결 시도");
+        eventSource.close();  // 연결 종료
+        setTimeout(createEventSource, 5000);  // 5초 후 재연결 시도
+      };
+    };
+
+    // 최초 연결
+    createEventSource();
+
+    // 컴포넌트 언마운트 시 연결 종료
+    return () => {
+      if (eventSource) {
+        eventSource.close();
+        console.log("SSE 연결 종료됨 (언마운트)");
+      }
+    };
+  }, [memberId]); 
+
+
+
+  async function getNotification(){
+    
+
+    console.log("getNotification")
+
+    axios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
+    .then((result)=>{
+      console.log("getNotificationTop4"+result.data.notificationList)
+      setNotificationList(result.data.notificationList)
+    }
+    ).catch((err)=>{console.error(err)}) 
+
+    setIsOpen(!isOpen);
+
+  }
+
+  async function updateNotificationRead(notificationId){
+    console.log("updateNotificationRead")
+    axios.post(`/api/notification/updateNotificationRead`, null ,{ params: { notificationId , memberId:loginUser.memberId } })
+    .then((result)=>{
+      console.log("updateNotificationRead"+result.data.notificationList)
+      setNotificationList(result.data.notificationList)
+    }
+    ).catch((err)=>{console.error(err)}) 
+
+  }
   
 
 
 
   return (
     <div className='notificationContainer'>
-      <IoIosNotifications id='IoIosNotifications' />
+      <IoIosNotifications id='IoIosNotifications' 
+      onClick={()=>getNotification()}/>
+
+      {isOpen && ( // isOpen이 true일 때만 렌더링
+        <div className="notificationList">
+          
+          {notificationList ? (
+            notificationList.map((notification, idx) => (
+              <div key={idx}>
+                {notification.notificationId} - {notification.message}
+                <button onClick={() => updateNotificationRead(notification.notificationId)}>
+                {notification.notificationId}읽음
+                </button>
+              </div>
+            ))
+          ) : (
+            <p>알림이 없습니다.</p>
+          )}
+        </div>
+      )}
     </div>
   )
 }

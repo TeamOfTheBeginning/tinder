@@ -22,12 +22,12 @@ const initialState={
 
 
 const getLoginUser=()=>{
-    console.log('getLoginUser')
-    console.log(cookies.get('user'))
+    // console.log('getLoginUser')
+    // console.log(cookies.get('user'))
     const memberinfo = cookies.get('user')
     
     if( memberinfo && memberinfo.email ){
-        console.log('if 문 : getLoginUser2')
+        // console.log('if 문 : getLoginUser2')
         memberinfo.memberId = decodeURIComponent( memberinfo.memberId )
         memberinfo.nickname = decodeURIComponent( memberinfo.nickname )
         memberinfo.age = decodeURIComponent( memberinfo.age )

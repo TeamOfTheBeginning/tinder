@@ -13,3 +13,12 @@
 #IoIosNotifications:hover {
     transform: scale(0.9);
 }
+
+.notificationList{
+    position: fixed;
+    top: 10%;
+    right: 2%;
+    width: 200px;
+    height: 100px;
+
+}
