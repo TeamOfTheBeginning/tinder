@@ -6,7 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loginAction, logoutAction, setFollowers, setFollowings } from '../store/userSlice';
 import {Cookies} from 'react-cookie'
 
-import { CgHome, CgHeart, CgLogIn, CgLogOut, CgProfile, CgSearch, CgAddR } from "react-icons/cg";
+import { CgProfile } from "react-icons/cg";
+import { IoHomeSharp, IoSparkles, IoSearch, IoLogOut } from "react-icons/io5";
 import '../style/MainMenu.css'
 
 const MainMenu=( props ) => {
@@ -77,16 +78,16 @@ const MainMenu=( props ) => {
             <div className='menu'>
                 <div id='btn' onClick={
                     ()=>{navigate('/main')}
-                }><CgHome /></div>
+                }><IoHomeSharp /></div>
                 {/* <div id='btn' onClick={
                     ()=>{navigate('/writePost')}
                 }><CgAddR /></div> */}
                 <div id='btn' onClick={
                     ()=>{navigate('/match')}
-                }><CgHeart /></div>
+                }><IoSparkles /></div>
                 <div id='btn' onClick={
                     ()=>{navigate('/')}
-                }><CgSearch /></div>
+                }><IoSearch /></div>
                 <div id='btn' onClick={
                     ()=>{navigate('/mypage')}
                 }><CgProfile /></div>
@@ -95,7 +96,7 @@ const MainMenu=( props ) => {
                         onLogout(); 
                         // navigate('/#')
                     }
-                }><CgLogOut  /></div>
+                }><IoLogOut /></div>
             </div>
 
         </div>

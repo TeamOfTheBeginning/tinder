@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 import MainMenu from './MainMenu';
+import SideBar from './SideBar';
 import Post from './post/Post';
 import Notification from './notification/Notification'
 
@@ -38,6 +39,7 @@ const Main = () => {
 
             <div className='left'>
                 <MainMenu />
+                {/* <SideBar /> */}
             </div>
             {/* post */}
             <div className='PostList'>
