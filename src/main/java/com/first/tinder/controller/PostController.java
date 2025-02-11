@@ -3,6 +3,7 @@ package com.first.tinder.controller;
 import com.first.tinder.dto.Paging;
 
 import com.first.tinder.entity.Post;
+import com.first.tinder.entity.PostLikes;
 import com.first.tinder.service.PostService;
 import jakarta.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,11 +78,11 @@ public class PostController {
         return result;
     }
 
-    @GetMapping("/getImages/{postid}")
-    public HashMap<String,Object> getImages(@PathVariable("postid") int postid) {
+    @GetMapping("/getImages/{postId}")
+    public HashMap<String,Object> getImages(@PathVariable("postId") int postId) {
         HashMap<String,Object> result = new HashMap<>();
 
-        Post post = ps.getPostByPostId(postid);
+        Post post = ps.getPostByPostId(postId);
 
         result.put("imgList", ps.getImagesList( post ) );
         System.out.println("ps.getImagesList( post )"+ps.getImagesList( post ));
@@ -89,46 +90,57 @@ public class PostController {
     }
 
 
-//    @GetMapping("/getLikeList/{postid}")
-//    public HashMap<String,Object> getLikeList(@PathVariable("postid") int postid) {
-//        HashMap<String,Object> result = new HashMap<>();
-//        result.put("likeList", ps.getLikeList( postid ) );
-//        return result;
-//    }
+    @GetMapping("/getLikeList/{postId}")
+    public HashMap<String,Object> getLikeList(@PathVariable("postId") int postId) {
+        HashMap<String,Object> result = new HashMap<>();
+        result.put("likeList", ps.getLikeList( postId ) );
+        return result;
+    }
 
 
-//    @PostMapping("/addlike")
-//    public HashMap<String,Object> addLike(@RequestBody Likes likes) {
-//        HashMap<String,Object> result = new HashMap<>();
-//        ps.insertLikes(likes);
-//        result.put("msg", "ok");
-//        return result;
-//    }
+    @PostMapping("/addLike")
+    public HashMap<String,Object> addLike(
+            @RequestParam("postId") int postId,
+            @RequestParam("memberId") int memberId
+    ) {
+
+        System.out.println("addLike postId : "+postId+" addLike memberId: "+memberId);
+        HashMap<String,Object> result = new HashMap<>();
+        ps.insertLikes(postId,memberId);
+        result.put("msg", "ok");
+        return result;
+    }
 
 
-//    @PostMapping("/addReply")
-//    public HashMap<String,Object> addReply(@RequestBody Reply reply) {
-//        HashMap<String,Object> result = new HashMap<>();
-//        ps.addReply(reply);
-//        result.put("msg", "ok");
-//        return result;
-//    }
+
+    @GetMapping("/getReplyList/{postId}")
+    public HashMap<String,Object> getReplyList(@PathVariable("postId") int postId) {
+        HashMap<String,Object> result = new HashMap<>();
+        result.put("replyList2", ps.getReplyList2( postId ) );
+//        result.put("replyList", ps.getReplyList( postId ) );
+        return result;
+    }
 
 
-//    @GetMapping("/getReplyList/{postid}")
-//    public HashMap<String,Object> getReplyList(@PathVariable("postid") int postid) {
-//        HashMap<String,Object> result = new HashMap<>();
-//        result.put("replyList2", ps.getReplyList2( postid ) );
-//        result.put("replyList", ps.getReplyList( postid ) );
-//        return result;
-//    }
+    @PostMapping("/addReply")
+    public HashMap<String,Object> addReply
+            (
+                    @RequestParam("postId") int  postId,
+                    @RequestParam("memberId") int  memberId,
+                    @RequestParam("content") String  content
+            ) {
+        HashMap<String,Object> result = new HashMap<>();
+        ps.addReply(postId,memberId,content);
+        result.put("msg", "ok");
+        return result;
+    }
 
-//    @DeleteMapping("/deleteReply/{replyid}")
-//    public HashMap<String,Object> deleteReply(@PathVariable("replyid") int replyid) {
-//        HashMap<String,Object> result = new HashMap<>();
-//        ps.deleteReply( replyid );
-//        result.put("msg", "ok");
-//        return result;
-//
-//    }
+    @DeleteMapping("/deleteReply/{replyId}")
+    public HashMap<String,Object> deleteReply(@PathVariable("replyId") int replyId) {
+        HashMap<String,Object> result = new HashMap<>();
+        ps.deleteReply( replyId );
+        result.put("msg", "ok");
+        return result;
+
+    }
 }

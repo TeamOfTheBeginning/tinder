@@ -21,8 +21,8 @@ public class Notification {
     private String messagefrom;
     private String message;
 
-    @Column(name = "read_on_not")
-    private boolean readOnNot;
+    @Column(columnDefinition = "TINYINT")
+    private int readOnNot;
 
     @CreationTimestamp
     private Timestamp indate;

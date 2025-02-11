@@ -4,7 +4,7 @@ import {Cookies} from 'react-cookie'
 const cookies = new Cookies()
 
 const initialState={
-    memberid:'',
+    memberId:'',
     nickname:'',
     age:'',
     email:'',
@@ -28,7 +28,7 @@ const getLoginUser=()=>{
     
     if( memberinfo && memberinfo.email ){
         console.log('if 문 : getLoginUser2')
-        memberinfo.memberid = decodeURIComponent( memberinfo.memberid )
+        memberinfo.memberId = decodeURIComponent( memberinfo.memberId )
         memberinfo.nickname = decodeURIComponent( memberinfo.nickname )
         memberinfo.age = decodeURIComponent( memberinfo.age )
         memberinfo.email = decodeURIComponent( memberinfo.email )
@@ -50,7 +50,7 @@ export const userSlice=createSlice(
         initialState : getLoginUser()  || initialState,
         reducers:{
             loginAction:(state, action)=>{
-                state.memberid = action.payload.memberid;
+                state.memberId = action.payload.memberId;
                 state.nickname = action.payload.nickname;
                 state.age = action.payload.age;
                 state.email = action.payload.email;
@@ -64,7 +64,7 @@ export const userSlice=createSlice(
                 state.zipnum = action.payload.zipnum;
             },
             logoutAction:(state)=>{
-                state.memberid = '';
+                state.memberId = '';
                 state.nickname = '';
                 state.age = '';
                 state.email = '';                

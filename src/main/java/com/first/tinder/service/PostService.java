@@ -25,8 +25,8 @@ public class PostService {
     HashtagRepository hr;
     @Autowired
     PosthashRepository phr;
-//    @Autowired
-//    MemberRepository mr;
+    @Autowired
+    MemberRepository mr;
 
 //    public Post insertPost(Post post) {
 //        // 포스트 추가
@@ -116,48 +116,66 @@ public class PostService {
         return list;
     }
 
-//    @Autowired
-//    LikesRepository lr;
-//
-//    public List<Likes> getLikeList(int postid) {
-//        List<Likes> list = lr.findByPostid( postid );
-//        // [ { id:1, postid:3, likeid:5} , {  id:2, postid:4, likeid:6} , {} ... ]  좋아요 테이블의 레코드 객체 리스트
-//        // [ 5, 4 , 6, ...]  멤버의 아이디들 리스트
-//        return list;
-//    }
-//
-//    public void insertLikes(Likes likes) {
-//        Optional<Likes> recored = lr.findByPostidAndLikeid( likes.getPostid(), likes.getLikeid());
-//        if( recored.isPresent() ) {
-//            lr.delete( recored.get() );
-//        }else{
-//            Likes addlikes = new Likes();
-//            addlikes.setPostid( likes.getPostid());
-//            addlikes.setLikeid( likes.getLikeid() );
-//            lr.save( addlikes );
-//        }
-//    }
-//
-//    @Autowired
-//    ReplyRepository rr;
+    @Autowired
+    PostLikesRepository plr;
 
-//    public void addReply(Reply reply) {
-//        Optional<Member> member = mr.findById( reply.getWriter() );
-//        if( member.isPresent() ) reply.setMember( member.get() );
-//        rr.save(reply);
-//    }
+    public List<PostLikes> getLikeList(int postId) {
 
-//    @Autowired
-//    ReplyWithNickRepository rwnr;
+        Post post = pr.findById(postId).get();
+
+        List<PostLikes> list = plr.findByPost( post );
+        return list;
+    }
+
+    public void insertLikes(int postId, int memberId) {
+        Post post = pr.findById(postId).get();
+        Member member = mr.findById(memberId).get();
+
+        Optional<PostLikes> recored = plr.findByPostAndMember(post, member);
+        if( recored.isPresent() ) {
+            System.out.println("deletelikes : "+recored);
+            plr.delete( recored.get() );
+            System.out.println("좋아요가 삭제되었습니다.");
+        }else{
+            PostLikes addlikes = new PostLikes();
+            addlikes.setPost( post );
+            addlikes.setMember( member );
+            plr.save( addlikes );
+            System.out.println("addlikes : " + addlikes);
+            System.out.println("좋아요가 추가되었습니다.");
+        }
+    }
 
 
+    @Autowired
+    ReplyRepository rr;
 
-//    public void deleteReply(int replyid) {
-//        Optional<Reply> rep = rr.findById(replyid);
-//        if( rep.isPresent() ) {
-//            rr.delete( rep.get() );
-//        }
-//    }
+    public List<Reply> getReplyList2(int postId) {
+
+        Post post = pr.findById(postId).get();
+
+        return rr.findByPostOrderByReplyIdDesc( post );
+    }
+
+    public void addReply(int postId, int memberId, String content) {
+
+        Post post = pr.findById(postId).get();
+        Member member = mr.findById(memberId).get();
+
+        Reply reply = new Reply();
+        reply.setPost( post );
+        reply.setMember( member );
+        reply.setContent( content );
+
+        rr.save(reply);
+    }
+
+    public void deleteReply(int replyId) {
+        Optional<Reply> rep = rr.findByReplyId(replyId);
+        if( rep.isPresent() ) {
+            rr.delete( rep.get() );
+        }
+    }
 
 //    @Autowired
 //    PostWithNickRepository pwnr;
@@ -199,9 +217,9 @@ public class PostService {
         return pr.findByPostId(postid);
     }
 
-//    public List<Reply> getReplyList2(int postid) {
-//        return rr.findByPostidOrderByIdDesc( postid );
-//    }
+
+
+
 
 }
 

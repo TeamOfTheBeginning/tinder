@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useSelector , useMemo, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
+import { useSelector } from 'react-redux';
 import MatchingMember from './MatchingMember'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -9,10 +10,12 @@ const Match = () => {
   const [oppositeGender, setOppositeGender] = useState();
   const navigate = useNavigate();
 
+  const loginUser = useSelector(state=>state.user);
+  console.log(loginUser)
+
   useEffect(() => {
-    let gender = 0;
-    let age = 21;
-    axios.get(`/api/member2/getOppositeGender`, { params: { gender, age } })
+    console.log(loginUser)
+    axios.get(`/api/member2/getOppositeGender`, { params: { gender:loginUser.gender, age:loginUser.age } })
         .then((result) => {
             console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
             setOppositeGender(result.data.oppositeGender);
@@ -23,10 +26,7 @@ const Match = () => {
 
   async function rematch(){
 
-    let gender = 0;
-    let age = 21;
-
-    await axios.get(`/api/member2/getOppositeGender`,{params:{gender,age}})
+    axios.get(`/api/member2/getOppositeGender`, { params: { gender:loginUser.gender, age:loginUser.age } })
     .then((result)=>{
         console.log("result.data.oppositeGender"+JSON.stringify(result.data.oppositeGender))
         setOppositeGender(result.data.oppositeGender)
@@ -36,9 +36,7 @@ const Match = () => {
   
   async function like(){
 
-    let memberId = 1;
-
-    await axios.post(`/api/member2/insertLike`,{liker:memberId , liked:oppositeGender.memberId })
+    await axios.post(`/api/member2/insertLike`,{liker:loginUser.memberId , liked:oppositeGender.memberId })
     .then((result)=>{
         console.log("result.data.msg"+result.data.msg)
 
@@ -48,22 +46,14 @@ const Match = () => {
     }
     ).catch((err)=>{console.error(err)})
 
-    // let gender = 1;
 
-    // await axios.get(`/api/member2/getOppositeGender`,{params:{gender}})
+    // axios.get(`/api/member2/getOppositeGender`, { params: { gender:loginUser.gender, age:loginUser.age } })
     // .then((result)=>{
     //     console.log("result.data.oppositeGender"+JSON.stringify(result.data.oppositeGender))
     //     setOppositeGender(result.data.oppositeGender)
     // }
-    // ).catch((err)=>{console.error(err)})
+    // ).catch((err)=>{console.error(err)}) 
   }
-  
-
-/*
-
-{"oppositeGender":{"memberId":9,"nickname":"윈윈","email":"winwin@nct.com","pwd":"a","phone":"010-8888-8888","gender":0,"age":26,"profileImg":"윈윈.jpg","profileMsg":"WayV","snsId":null,"provider":null,"zipnum":"89012","address":"Wenzhou","memberRoleList":[]}}
-
-*/
 
   return (
     <div className='matchContainer'>
