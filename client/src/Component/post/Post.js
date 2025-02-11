@@ -166,20 +166,20 @@ const Post = (props) => {
             <div className='writer' style={{display:"flex"}}>
                 <div>{props.post.postId}&nbsp;&nbsp;</div>
                 <div>{props.post.member.nickname}&nbsp;&nbsp;</div>
-                <div>{formatDate(props.post.writedate)}</div>
+                <div style={{marginRight:10}}>{formatDate(props.post.writedate)}</div>
                 {
                     ( 
                         ( props.post.member.memberId != loginUser.memberId) &&
                         ( !props.followings.some( (following)=>(props.post.writer==following.fto)) )
                     )?
-                    (<button onClick={()=>{ onFollow(props.post.member.memberId) }} >FOLLOW</button>):
+                    (<button id='blueBtn' onClick={()=>{ onFollow(props.post.member.memberId) }} >FOLLOW</button>):
                     (null)
                 }
                 
             </div>
             <div id='imgbox'>
             { 
-                <Slider {...settings} id='thumnail'>
+                <Slider {...settings}>
                     {
                         (imgList)?(
                             imgList.map((img, idx)=>{
@@ -246,11 +246,11 @@ const Post = (props) => {
                     }
                     
                 </div>
-                <div  style={{ display:'flex' }} >
-                    <input type="text"  style={{flex:"5"}} value={replyContent} onChange={
+                <div style={{ display:'flex' }} >
+                    <input type="text" style={{flex:"5"}} value={replyContent} onChange={
                         (e)=>{setReplyContent(e.currentTarget.value)}
                     }/>
-                    <button  style={{flex:"1"}} onClick={
+                    <button id='pinkBtn' style={{flex:"1"}} onClick={
                         ()=>{ addReply() }
                     }>댓글입력</button>
                 </div>

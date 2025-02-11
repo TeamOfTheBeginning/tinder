@@ -7,7 +7,7 @@ import {Cookies} from 'react-cookie'
 
 import '../style/mystargram.css'
 import '../style/login.css'
-import { IoIosLogIn } from "react-icons/io";
+import { IoLogIn, IoCreateOutline } from "react-icons/io5";
 
 
 const Login = () => {
@@ -61,8 +61,8 @@ const Login = () => {
                 <input type="password" value={pwd} onChange={(e)=>{ setPwd(e.currentTarget.value)}} />
             </div>        
             <div className='btns'>
-                <div id="btn" onClick={()=>{onLoginLocal()}}><IoIosLogIn />LOGIN</div>
-                <div id="btn" onClick={()=>{navigate('/joinForm')}}>JOIN</div>
+                <div id="btn" onClick={()=>{onLoginLocal()}}><IoLogIn />&nbsp;LOGIN</div>
+                <div id="btn" onClick={()=>{navigate('/joinForm')}}><IoCreateOutline />&nbsp;JOIN</div>
             </div>
             <div className='snslogin'>
                 <button id="kakao" onClick={
