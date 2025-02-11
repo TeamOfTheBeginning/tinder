@@ -2,6 +2,8 @@ import React, {useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import '../../style/login.css';
+
 const JoinForm = () => {
 
     const [email, setEmail] = useState('')
@@ -86,8 +88,8 @@ const JoinForm = () => {
             </div>
 
             <div className='btns'>
-                <button onClick={ ()=>{   onSubmit()    }  }>JOIN</button>
-                <button onClick={ ()=>{ navigate('/')   }  }>BACK</button>
+                <div id="btn" onClick={ ()=>{   onSubmit()    }  }>JOIN</div>
+                <div id="btn" onClick={ ()=>{ navigate('/')   }  }>BACK</div>
             </div>
         </div>
     )

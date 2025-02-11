@@ -20,6 +20,7 @@ const MainMenu=( props ) => {
     const [viewVal, setViewVal] = useState(false)
     const [searchTag, setSearchTag] = useState('')
     const dispatch = useDispatch();
+
     
     // useEffect(
     //     ()=>{
@@ -37,12 +38,12 @@ const MainMenu=( props ) => {
     // )
 
     function onLogout(){
-        // axios.get('/api/member/logout')
-        // .then((result)=>{
-        //     dispatch( logoutAction() );
-        //     cookies.remove('user', {path:'/',} )
-        //     navigate('/')
-        // }).catch((err)=>{console.error(err)})
+        axios.get('/api/member/logout')
+        .then((result)=>{
+            dispatch( logoutAction() );
+            cookies.remove('user', {path:'/',} )
+            navigate('/')
+        }).catch((err)=>{console.error(err)})
     }
 
     useEffect(
@@ -91,8 +92,8 @@ const MainMenu=( props ) => {
                 }><CgProfile /></div>
                 <div id='btn' onClick={
                     ()=>{ 
-                        // onLogout(); 
-                        navigate('/#')
+                        onLogout(); 
+                        // navigate('/#')
                     }
                 }><CgLogOut  /></div>
             </div>

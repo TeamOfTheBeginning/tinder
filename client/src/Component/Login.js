@@ -27,19 +27,17 @@ const Login = () => {
             
             if( result.data.msg == 'ok'){
 
-                console.log('login success');
-
-                // const res = await axios.get('/api/member/getLoginUser');
-                // const lUser = res.data.loginUser;
+                const res = await axios.get('/api/member/getLoginUser');
+                const lUser = res.data.loginUser;
                 
                 // lUser['followings'] = res.data.followings;
                 // lUser['followers'] = res.data.followers;
-                // cookies.set('user', JSON.stringify( lUser ) , {path:'/', })
+                cookies.set('user', JSON.stringify( lUser ) , {path:'/', })
                 
                 // cookies.set('followers', JSON.stringify( res.data.followers ) , {path:'/', })
                 // cookies.set('followings', JSON.stringify( res.data.followings ) , {path:'/', })
                 
-                // dispatch( loginAction( res.data.loginUser ) )
+                dispatch( loginAction( res.data.loginUser ) )
                 // dispatch( setFollowers( res.data.followers ) )
                 // dispatch( setFollowings( res.data.followings ) )
 

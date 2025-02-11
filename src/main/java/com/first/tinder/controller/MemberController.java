@@ -36,10 +36,27 @@ public class MemberController {
             result.put("msg", "패스워드를 확인하세요");
         }else {
             result.put("msg", "ok");
-//            session.setAttribute("loginUser", member.getId() );
+            System.out.println("member id test :" + member.getMemberId());
+            session.setAttribute("loginUser", member.getMemberId() );
         }
         return result;
 
+    }
+
+    @GetMapping("/getLoginUser")
+    public HashMap<String , Object> getLoginUser(HttpSession session) {
+        HashMap<String, Object> result = new HashMap<>();
+        int id = (Integer) session.getAttribute("loginUser");
+
+        Member member = ms.getMemberById(id);
+//        List<Follow> followers = ms.getFollowers(id);
+//        List<Follow> followings = ms.getFollowings(id);
+
+        result.put("loginUser", member);
+//        result.put("followers", followers);
+//        result.put("followings", followings);
+
+        return result;
     }
 
     @PostMapping("/emailcheck")
@@ -62,6 +79,14 @@ public class MemberController {
             result.put("msg", "no");
         else
             result.put("msg", "ok");
+        return result;
+    }
+
+    @GetMapping("/logout")
+    public HashMap<String, Object> logout(HttpSession session) {
+        HashMap<String, Object> result = new HashMap<>();
+        session.removeAttribute("loginUser");
+        result.put("msg", "ok");
         return result;
     }
 
