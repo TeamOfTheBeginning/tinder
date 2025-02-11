@@ -1,0 +1,26 @@
+.MenuBar{
+    width:55px;     height:93vh;
+    display: flex;  justify-content: center;
+    background-color: #ed6ea0;
+    border-radius: 0 50px 50px 0;
+    padding-top: 45px;
+    position: fixed;
+}
+
+/* 버튼 */
+#btn{
+    width:45px;    height:45px;
+    background-color: #ed6ea0;
+    margin: 15px;
+}
+
+/* 아이콘 */
+#btn svg {
+    width: 30px;    height: 30px;
+    color: #fff;
+}
+
+/* .SidebarContent{
+    width: 500px; height: 100%;
+    color: #fff;
+} */
