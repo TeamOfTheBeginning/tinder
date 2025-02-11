@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-import MainMenu from './MainMenu';
 import SideBar from './SideBar';
 import Post from './post/Post';
 import Notification from './notification/Notification'
@@ -38,9 +37,9 @@ const Main = () => {
             <Notification />
 
             <div className='left'>
-                <MainMenu />
-                {/* <SideBar /> */}
+                <SideBar />
             </div>
+            
             {/* post */}
             <div className='PostList'>
                     {
