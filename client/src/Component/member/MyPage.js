@@ -16,7 +16,7 @@ const MyPage = () => {
     useEffect(
         ()=>{
             if( loginUser.profileImg ){
-                setImgSrc(`http://localhost:8070/userimg/${loginUser.profileImg}`);
+                setImgSrc(`http://localhost:8070/userImg/${loginUser.profileImg}`);
             }
 
         },[]

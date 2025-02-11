@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -29,7 +30,6 @@ public class MemberService2 {
 
     @Autowired
     SseEmitterService ses;
-
 
     public Member getOppsiteGender(int gender, int age) {
 //        List<Member> members = mr.findByGender(gender);
@@ -93,5 +93,23 @@ public class MemberService2 {
 
         }
         return msg;
+    }
+
+    public List<Member> findLiker(int memberId) {
+        // liked가 memberId인 MemberLikes 데이터를 모두 조회
+        List<MemberLikes> likerList = mlr.findByLiked(memberId);
+        System.out.println("likerList"+likerList);
+
+        // MemberLikes에서 liker 정보를 기반으로 Member 객체를 가져오기
+        List<Member> members = new ArrayList<>();
+        for (MemberLikes like : likerList) {
+
+            // 각 liker ID를 기반으로 Member 조회
+            Optional<Member> memberOpt = mr.findByMemberId(like.getLiker());
+            memberOpt.ifPresent(members::add);
+//            memberOpt.ifPresent(members::add); // Member가 존재하면 리스트에 추가
+        }
+        System.out.println("members"+members);
+        return members;
     }
 }

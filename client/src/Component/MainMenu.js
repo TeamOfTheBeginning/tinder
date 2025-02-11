@@ -32,7 +32,7 @@ const MainMenu=( props ) => {
     //         }else{
     //             //console.log('loginUser : ', loginUser)
     //             if( loginUser.profileimg ){
-    //                 setImgSrc(`http://localhost:8070/userimg/${loginUser.profileimg}`);
+    //                 setImgSrc(`http://localhost:8070/userImg/${loginUser.profileimg}`);
     //             }
     //         }
     //     },[]

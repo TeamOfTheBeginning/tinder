@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 const Match = () => {
 
-  // const lUser = useSelector( state=>state.user );
   const [oppositeGender, setOppositeGender] = useState();
   const navigate = useNavigate();
 
@@ -36,7 +35,7 @@ const Match = () => {
   
   async function like(){
 
-    await axios.post(`/api/member2/insertLike`,{liker:loginUser.memberId , liked:oppositeGender.memberId })
+    await axios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:oppositeGender.memberId })
     .then((result)=>{
         console.log("result.data.msg"+result.data.msg)
 
@@ -61,6 +60,8 @@ const Match = () => {
       <div className='matchContainerBtns'>
       <button onClick={()=>rematch()}>재매칭</button>
       <button onClick={()=>like()}>좋아요</button>
+      <button onClick={()=>navigate('/findLiker')}>Liker조회</button>
+      <button onClick={()=>navigate('/matched')}>매칭조회</button>
       <button onClick={()=>navigate('/main')}>돌아가기</button>
       </div>
     </div>
