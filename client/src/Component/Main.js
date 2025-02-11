@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 
 import MainMenu from './MainMenu';
 import Post from './post/Post';
+import Notification from './notification/Notification'
+
 import '../style/mystargram.css';
 import '../style/Posts.css';
 
@@ -31,6 +33,9 @@ const Main = () => {
     )
     return (
         <div className='Container'>
+
+            <Notification />
+
             <div className='left'>
                 <MainMenu />
             </div>

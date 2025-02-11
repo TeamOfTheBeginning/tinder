@@ -2,8 +2,10 @@ package com.first.tinder.service;
 
 import com.first.tinder.dao.MemberLikseRepository;
 import com.first.tinder.dao.MemberRepository;
+import com.first.tinder.dao.NotificationRepository;
 import com.first.tinder.entity.Member;
 import com.first.tinder.entity.MemberLikes;
+import com.first.tinder.entity.Notification;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,12 @@ public class MemberService2 {
 
     @Autowired
     MemberLikseRepository mlr;
+
+    @Autowired
+    NotificationRepository nr;
+
+    @Autowired
+    SseEmitterService ses;
 
 
     public Member getOppsiteGender(int gender, int age) {
@@ -45,6 +53,9 @@ public class MemberService2 {
         mlr.save(memberLikes);
     }
 
+
+
+
     public String checkLikes(MemberLikes memberLikes) {
         String msg ;
         int liked = memberLikes.getLiked();
@@ -64,6 +75,22 @@ public class MemberService2 {
             mlr.save(memberLikes);
             System.out.println("입력이 완료되었습니다.");
             msg="yes";
+
+            // ✅ Notification 생성 & 저장
+            Member likedMember = mr.findById(liked).orElseThrow();
+            Member likerMember = mr.findById(liker).orElseThrow();
+
+            Notification notification = new Notification();
+            notification.setMember(likedMember); // 알림을 받을 사용자
+            notification.setMessagefrom(likerMember.getNickname()); // 좋아요 누른 사용자 이름
+            notification.setMessage(likerMember.getNickname() + "님이 회원님에게 라이크를 보냈습니다.");
+            notification.setReadOnNot(0);
+
+            nr.save(notification); // 저장
+
+            // ✅ SSE 알림 전송
+            ses.sendNotification(liked, notification.getMessage());
+
         }
         return msg;
     }

@@ -22,19 +22,19 @@ public class MemberController2 {
          @RequestParam("age") int age
                                                      ) {
         HashMap<String, Object> result = new HashMap<>();
-        System.out.println("gender1"+gender);
-        System.out.println("age1"+age);
+        System.out.println("gender1 : "+gender);
+        System.out.println("age1 : "+age);
         Member oppositeGender;
 
         if (gender==0) {
-            System.out.println("gender2"+gender);
+            System.out.println("gender2 : "+gender);
             gender=1;
-            System.out.println("gender3"+gender);
+            System.out.println("gender3 : "+gender);
             oppositeGender = ms2.getOppsiteGender(gender,age);
         }else {
-            System.out.println("gender22:"+gender);
+            System.out.println("gender22 : "+gender);
             gender=0;
-            System.out.println("gender33:"+gender);
+            System.out.println("gender33 : "+gender);
             oppositeGender = ms2.getOppsiteGender(gender,age);
         }
 

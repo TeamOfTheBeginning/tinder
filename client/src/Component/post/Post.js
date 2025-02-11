@@ -55,24 +55,25 @@ const Post = (props) => {
                 setImgList( result.data.imgList );
             }).catch((err)=>{console.error(err)})
 
-            // axios.get(`/api/post/getLikeList/${props.post.id}`)
-            // .then((result)=>{
-            //      setLikeList( [...result.data.likeList ] );
-            // }).catch((err)=>{console.error(err)})
+            axios.get(`/api/post/getLikeList/${props.post.postId}`)
+            .then((result)=>{
+                 setLikeList( [...result.data.likeList ] );
+            }).catch((err)=>{console.error(err)})
 
-            // axios.get(`/api/post/getReplyList/${props.post.id}`)
-            // .then((result)=>{
-            //     let temp = [...result.data.replyList];
-            //     for(let i=0; i<temp.length; i++){
-            //         temp[i].nickname = getNickname( temp[i].writer );
-            //     }                    
-            //     setReplyList([...temp]);
-            // }).catch((err)=>{console.error(err)})
+            axios.get(`/api/post/getReplyList/${props.post.postId}`)
+            .then((result)=>{
+                console.log(result.data.replyList2)
+                let temp = [...result.data.replyList2];
+                for(let i=0; i<temp.length; i++){
+                    temp[i].nickname = getNickname( temp[i].writer );
+                }                    
+                setReplyList([...temp]);
+            }).catch((err)=>{console.error(err)})
 
         },[]
     )
 
-    async function onFollow(writer){
+    async function onFollow(memberId){
         // const writerNick = await getNickname(writer)
         // if( window.confirm(`${writerNick} 님을 팔로우 하시겠습니까?`) ){
         //     let result = await axios.post('/api/member/follow', { ffrom:loginUser.id,  fto:writer });
@@ -91,10 +92,10 @@ const Post = (props) => {
         // 현재 로그인 유저의 닉네임과 현재 포스트의 id 로  like 작업
         // 현재 로그인 유저의 닉네임과 현재 포스트의 id 를 서버에 보내서 내역이 있으면 삭제 , 없으면 추가
         // likeList 재조회 & 갱신
-        // let result = await axios.post('/api/post/addlike', { postid:props.post.id,  likeid:loginUser.id })
+        let result = await axios.post('/api/post/addLike',null ,{params:{ postId:props.post.postId,  memberId:loginUser.memberId }})
 
-        // result = await axios.get(`/api/post/getLikeList/${props.post.id}` )
-        // setLikeList( [...result.data.likeList] );
+        result = await axios.get(`/api/post/getLikeList/${props.post.postId}` )
+        setLikeList( [...result.data.likeList] );
     }
 
     useEffect(
@@ -112,32 +113,39 @@ const Post = (props) => {
     }
 
     async function addReply(){
-        // try{
+        try{
             // 현재포스트의 아이디와 로그인유저의 닉네임과 replyContent 변수값으로 reply 테이블에 레코드를 추가합니다
-            // let result = await axios.post('/api/post/addReply', {postid:props.post.id, writer:loginUser.id , content:replyContent})
-            // setReplyContent('') // 댓글 추가후 댓글 입력란을 비웁니다
+            let result = await axios.post('/api/post/addReply', null ,{params :{postId:props.post.postId, memberId:loginUser.memberId , content:replyContent}})
+            setReplyContent('')
+            // 댓글 추가후 댓글 입력란을 비웁니다
 
-            // result = await axios.get(`/api/post/getReplyList/${props.post.id}`)
-            // let temp = [...result.data.replyList];
-            // for(let i=0; i<temp.length; i++){
-            //     temp[i].nickname = getNickname( temp[i].writer );
-            // }                    
-            // setReplyList([...temp]);
-        // }catch(err){ console.error(err) }
+            axios.get(`/api/post/getReplyList/${props.post.postId}`)
+            .then((result)=>{
+                console.log(result.data.replyList2)
+                let temp = [...result.data.replyList2];
+                for(let i=0; i<temp.length; i++){
+                    temp[i].nickname = getNickname( temp[i].writer );
+                }                    
+                setReplyList([...temp]);
+            }).catch((err)=>{console.error(err)})
+        }catch(err){ console.error(err) }
     }
 
 
-    async function deleteReply(replyid){
-        // if( window.confirm('해당 댓글을 삭제하시겠습니까?') ){
-        //     let result = await axios.delete(`/api/post/deleteReply/${replyid}`)
-        //     result = await axios.get(`/api/post/getReplyList/${props.post.id}`)
+    async function deleteReply(replyId){
+        if( window.confirm('해당 댓글을 삭제하시겠습니까?') ){
+            let result = await axios.delete(`/api/post/deleteReply/${replyId}`)
 
-        //     let temp = [...result.data.replyList];
-        //     for(let i=0; i<temp.length; i++){
-        //         temp[i].nickname = getNickname( temp[i].writer );
-        //     }                    
-        //     setReplyList([...temp]);
-        // }
+            axios.get(`/api/post/getReplyList/${props.post.postId}`)
+            .then((result)=>{
+                console.log(result.data.replyList2)
+                let temp = [...result.data.replyList2];
+                for(let i=0; i<temp.length; i++){
+                    temp[i].nickname = getNickname( temp[i].writer );
+                }                    
+                setReplyList([...temp]);
+            }).catch((err)=>{console.error(err)})
+        }
     }
 
     const formatDate = (dateString) => {
@@ -160,12 +168,12 @@ const Post = (props) => {
                 <div>{props.post.member.nickname}&nbsp;&nbsp;</div>
                 <div>{formatDate(props.post.writedate)}</div>
                 {
-                    // ( 
-                    //     ( props.post.member.memberId != loginUser.id) &&
-                    //     ( !props.followings.some( (following)=>(props.post.writer==following.fto)) )
-                    // )?
-                    // (<button onClick={()=>{ onFollow(props.post.writer) }} >FOLLOW</button>):
-                    // (null)
+                    ( 
+                        ( props.post.member.memberId != loginUser.memberId) &&
+                        ( !props.followings.some( (following)=>(props.post.writer==following.fto)) )
+                    )?
+                    (<button onClick={()=>{ onFollow(props.post.member.memberId) }} >FOLLOW</button>):
+                    (null)
                 }
                 
             </div>
@@ -199,7 +207,7 @@ const Post = (props) => {
                     )
                 }
                 &nbsp;&nbsp;
-                <BiSolidMessageSquareDetail id='icons' onClick={()=>{ ViewOrNot() }} /> 
+                <BiSolidMessageSquareDetail id='icons' onClick={()=>{ ViewOrNot() }} />
                 &nbsp;&nbsp;
                 {
                     (likeList)?(
@@ -216,17 +224,17 @@ const Post = (props) => {
 
             <div className='reply'  style={replyView}>
                 <div style={{ display:'flex', flexDirection:'column' }} >
-                    {/* {
+                    {
                         (replyList)?(
                             replyList.map((reply, idx)=>{
                                 return (
                                     <div key={idx} style={{display:'flex', margin:'5px 3px'}}>
-                                        <div style={{flex:"1", fontWeight:"bold"}}>{ reply.nickname}&nbsp;</div>
+                                        <div style={{flex:"1", fontWeight:"bold"}}>{ reply.member.nickname}&nbsp;</div>
                                         <div style={{flex:"5"}}>{reply.content}</div>
                                         {
                                             (reply.writer===loginUser.id)?(
                                                 <button style={{flex:"1"}} onClick={
-                                                    ()=>{ deleteReply(reply.id) }
+                                                    ()=>{ deleteReply(reply.replyId) }
                                                 }>삭제</button>
                                             ):(<div style={{flex:"1"}}></div>)
                                         }
@@ -235,17 +243,17 @@ const Post = (props) => {
                                 )
                             })
                         ):(<div>Loading...</div>)
-                    } */}
+                    }
                     
                 </div>
-                {/* <div  style={{ display:'flex' }} >
+                <div  style={{ display:'flex' }} >
                     <input type="text"  style={{flex:"5"}} value={replyContent} onChange={
                         (e)=>{setReplyContent(e.currentTarget.value)}
                     }/>
                     <button  style={{flex:"1"}} onClick={
                         ()=>{ addReply() }
                     }>댓글입력</button>
-                </div> */}
+                </div>
             </div>
         </div>
     )
