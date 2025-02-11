@@ -23,13 +23,13 @@ public class MemberService2 {
     MemberLikseRepository mlr;
 
 
-    public Member getOppsiteGender(int gender) {
+    public Member getOppsiteGender(int gender, int age) {
 //        List<Member> members = mr.findByGender(gender);
 
-        int myAge = 30;
+
         int ageRange = 2;
 
-        List<Member> filteredMembers = mr.findByGenderAndAgeRange(gender, myAge - ageRange, myAge + ageRange);
+        List<Member> filteredMembers = mr.findByGenderAndAgeRange(gender, age - ageRange, age + ageRange);
 
 
         if (filteredMembers.isEmpty()) {
