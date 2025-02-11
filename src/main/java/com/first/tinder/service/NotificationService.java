@@ -23,14 +23,16 @@ public class NotificationService {
 
 
     public List<Notification> getNotifications(int memberId) {
-        List<Notification> notifications = List.of();
+        List<Notification> notifications ;
         Optional<Member> member  = mr.findById(memberId);
         if (member.isPresent()) {
 
             notifications = nr.findTop4ByMemberAndReadOnNotFalseOrderByNotificationIdDesc(member);
+            System.out.println("notifications"+notifications);
+            System.out.println("맴버가 있습니다.");
         }else{
-            System.out.println("읽을 알림이 없습니다.");
-            return null;
+            System.out.println("맴버가 없습니다.");
+            notifications = null;
         }
 
         return notifications;

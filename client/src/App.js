@@ -6,6 +6,8 @@ import JoinForm from "./Component/member/JoinForm";
 import MyPage from "./Component/member/MyPage";
 import Match from "./Component/match/Match";
 import EditProfile from "./Component/member/EditProfile";
+import FindLiker from "./Component/match/FindLiker"
+import Matched from "./Component/match/Matched"
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/mypage" element={<MyPage/>} />
         <Route path="/match" element={<Match />} />
         <Route path="/editProfile" element={<EditProfile/>}/>
+        <Route path="/findLiker" element={<FindLiker/>}/>
+        <Route path="/matched" element={<Matched/>}/>
       </Routes>
     </div>
   );

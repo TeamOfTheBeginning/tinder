@@ -49,7 +49,7 @@ const JoinForm = () => {
         formData.append('image',  e.target.files[0]);
         const result = await axios.post('/api/member/fileupload', formData);
         console.log(result);
-        setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
+        setImgSrc(`http://localhost:8070/userImg/${result.data.filename}`);
         setImgStyle({display:"block", width:"200px"});
         setProfileimg(result.data.filename)
     }

@@ -45,14 +45,24 @@ public class MemberController2 {
     }
 
 
-    @PostMapping("/insertLike")
-    public HashMap<String, Object> insertLike(@RequestBody MemberLikes memberLikes) {
+    @PostMapping("/insertMemberLike")
+    public HashMap<String, Object> insertMemberLike(@RequestBody MemberLikes memberLikes) {
         HashMap<String, Object> result = new HashMap<>();
         System.out.println("memberLikes"+memberLikes);
 
         result.put("msg", ms2.checkLikes(memberLikes));
         return result;
-
     }
+
+    @GetMapping("/findLiker")
+    public HashMap<String, Object> findLiker(@RequestParam("memberId") int memberId) {
+        HashMap<String, Object> result = new HashMap<>();
+        System.out.println("findLiker memberId : "+memberId);
+
+        List<Member> likerList = ms2.findLiker(memberId);
+        result.put("likerList", likerList);
+        return result;
+    }
+
 
 }

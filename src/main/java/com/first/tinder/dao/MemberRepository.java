@@ -21,4 +21,5 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     @Query("SELECT m FROM Member m WHERE m.gender = :gender AND m.age BETWEEN :minAge AND :maxAge")
     List<Member> findByGenderAndAgeRange(@Param("gender") int gender, @Param("minAge") int minAge, @Param("maxAge") int maxAge);
 
+    Optional<Member> findByMemberId(int liker);
 }

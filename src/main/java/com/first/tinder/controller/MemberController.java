@@ -96,7 +96,7 @@ public class MemberController {
     @PostMapping("/fileupload")
     public HashMap<String, Object> fileupload( @RequestParam("image") MultipartFile file ) {
         HashMap<String, Object> result = new HashMap<>();
-        String path = context.getRealPath("/userimg");
+        String path = context.getRealPath("/userImg");
         Calendar today = Calendar.getInstance();
         long dt = today.getTimeInMillis();
         String filename = file.getOriginalFilename();

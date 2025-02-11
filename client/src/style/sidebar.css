@@ -7,6 +7,11 @@
     position: fixed;
 }
 
+/* 프로필 이미지 */
+.MenubarBtns #btn img{
+    width: 100%;
+}
+
 /* 버튼 */
 #btn{
     width:45px;    height:45px;

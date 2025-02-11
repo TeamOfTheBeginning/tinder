@@ -18,7 +18,7 @@ const MatchingMember = (props) => {
       
       <div className='matchingMemberImg'>
         <div className='matchingMemberImgImg'>
-          <img src={`${process.env.REACT_APP_ADDRESS2}/uploads/${props.oppositeGender.profileImg}`} />
+          <img src={`${process.env.REACT_APP_ADDRESS2}/userImg/${props.oppositeGender.profileImg}`} />
         </div>
       </div>
 

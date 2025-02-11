@@ -18,6 +18,7 @@ const Main = () => {
     const [paging, setPaging] = useState({})
     const [word, setWord] = useState('n')
     const loginUser = useSelector(state=>state.user);
+    const [notificationList,setNotificationList] = useState();
 
     useEffect(
         ()=>{
@@ -29,12 +30,30 @@ const Main = () => {
                 setPostList( result.data.postList2 );
             }).catch((err)=>{console.error(err)})
 
+            axios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
+            .then((result)=>{
+            console.log("getNotificationTop4"+result.data.notificationList)
+            setNotificationList(result.data.notificationList)
+            }
+            ).catch((err)=>{console.error(err)}) 
+
+
+
         }, [word]
     )
+
+
+
+
+
+
+
+
+
     return (
         <div className='Container'>
 
-            <Notification />
+            <Notification setNotificationList={setNotificationList} notificationList={notificationList}/>
 
             <div className='left'>
                 <SideBar />

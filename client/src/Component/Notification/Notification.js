@@ -5,15 +5,15 @@ import axios from 'axios';
 
 import '../../style/notification.css';
 
-const Notification = () => {
+const Notification = (props) => {
 
   const loginUser = useSelector(state=>state.user);
   const [isOpen, setIsOpen] = useState(false);
 
   const memberId = loginUser.memberId;
-  console.log("memberId"+memberId);
+  // console.log("memberId"+memberId);
 
-  const [notificationList,setNotificationList] = useState(); 
+  // const [notificationList,setNotificationList] = useState();
 
   // const eventSource = new EventSource(`/api/sse/subscribe/${memberId}`);
   // console.log("구독완료!")
@@ -42,14 +42,23 @@ const Notification = () => {
 
       eventSource.addEventListener("notification", (event) => {
         const data = JSON.parse(event.data);
-        console.log("📢 새로운 알림:", data.notification.message);
-        alert(data.notification.message);
+        // console.log("📢 새로운 알림:", data.notification.message);        
+
+        axios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
+        .then((result)=>{
+          console.log("getNotificationTop4"+result.data.notificationList)
+          props.setNotificationList(result.data.notificationList)
+        }
+        ).catch((err)=>{console.error(err)})
+
+        setTimeout(() => alert(data.notification.message), 2000);        
+
       });
 
       eventSource.onerror = () => {
-        console.log("SSE 연결 종료됨, 5초 후 재연결 시도");
+        console.log("SSE 연결 종료됨, 10초 후 재연결 시도");
         eventSource.close();  // 연결 종료
-        setTimeout(createEventSource, 5000);  // 5초 후 재연결 시도
+        setTimeout(createEventSource, 10000);  // 10초 후 재연결 시도
       };
     };
 
@@ -63,7 +72,7 @@ const Notification = () => {
         console.log("SSE 연결 종료됨 (언마운트)");
       }
     };
-  }, [memberId]); 
+  }, []);
 
 
 
@@ -75,7 +84,7 @@ const Notification = () => {
     axios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
     .then((result)=>{
       console.log("getNotificationTop4"+result.data.notificationList)
-      setNotificationList(result.data.notificationList)
+      props.setNotificationList(result.data.notificationList)
     }
     ).catch((err)=>{console.error(err)}) 
 
@@ -88,9 +97,10 @@ const Notification = () => {
     axios.post(`/api/notification/updateNotificationRead`, null ,{ params: { notificationId , memberId:loginUser.memberId } })
     .then((result)=>{
       console.log("updateNotificationRead"+result.data.notificationList)
-      setNotificationList(result.data.notificationList)
+      props.setNotificationList(result.data.notificationList)
+      
     }
-    ).catch((err)=>{console.error(err)}) 
+    ).catch((err)=>{console.error(err)})
 
   }
   
@@ -99,14 +109,20 @@ const Notification = () => {
 
   return (
     <div className='notificationContainer'>
-      <IoIosNotifications id='IoIosNotifications' 
-      onClick={()=>getNotification()}/>
+      <IoIosNotifications
+        id='IoIosNotifications'
+        onClick={getNotification}
+        style={{ color: props.notificationList && props.notificationList.length > 0 ? 'red' : 'black' }}
+      />
+
+
 
       {isOpen && ( // isOpen이 true일 때만 렌더링
         <div className="notificationList">
+          {/* {notificationList.length} */}
           
-          {notificationList ? (
-            notificationList.map((notification, idx) => (
+          {props.notificationList && props.notificationList.length > 0 ? (
+            props.notificationList.map((notification, idx) => (
               <div key={idx}>
                 {notification.notificationId} - {notification.message}
                 <button onClick={() => updateNotificationRead(notification.notificationId)}>
@@ -114,7 +130,8 @@ const Notification = () => {
                 </button>
               </div>
             ))
-          ) : (
+          ) :
+          (
             <p>알림이 없습니다.</p>
           )}
         </div>
