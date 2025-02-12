@@ -64,5 +64,17 @@ public class MemberController2 {
         return result;
     }
 
+    @GetMapping("/getMatchedMember")
+    public HashMap<String, Object> getMatchedMember(@RequestParam("memberId") int memberId) {
+        HashMap<String, Object> result = new HashMap<>();
+//        System.out.println("getMatchedMember memberId : "+memberId);
+        List<Member> matchedMemberList = ms2.getMatchedMember(memberId);
+        System.out.println("matchedMemberList"+matchedMemberList);
+        result.put("matchedMemberList", matchedMemberList);
+        return result;
+    }
+
+
+
 
 }
