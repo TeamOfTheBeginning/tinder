@@ -18,15 +18,38 @@ const JoinForm = () => {
     const [profileimg, setProfileimg] = useState('')
     const [imgSrc, setImgSrc] = useState('')
     const [imgStyle, setImgStyle] = useState({display:"none"});
+    const [birthDate, setBirthDate] = useState('');
 
     const navigate = useNavigate();
 
-    async function onSubmit(){
+    const handleBirthDateChange = (e) => {
+        const selectedDate = new Date(e.target.value);
+        const today = new Date();
 
+        let calculatedAge = today.getFullYear() - selectedDate.getFullYear();
+        const monthDiff = today.getMonth() - selectedDate.getMonth();
+        const dayDiff = today.getDate() - selectedDate.getDate();
+        
+        if (selectedDate > today) {
+            alert("미래 날짜는 선택할 수 없습니다.");
+            return;
+        }
+        
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            calculatedAge--;
+        }
+
+        setBirthDate(e.target.value);
+        setAge(calculatedAge);
+    };
+
+    async function onSubmit(){
+        console.log(birthDate)
         if(email==''){ return alert('이메일을 입력하세요');}
         if(pwd==''){ return alert('패스워드를 입력하세요');}
         if(pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
         if(nickname==''){ return alert('닉네임을 입력하세요');}
+        if(age<18){return alert('만 18세 이상만 가입 가능합니다');}
         try{
             let result = await axios.post('/api/member/emailcheck', null, {params:{email}} );
             if(result.data.msg == 'no' ){
@@ -36,7 +59,7 @@ const JoinForm = () => {
             if(result.data.msg == 'no' ){
                 return alert('닉네임이 중복됩니다');
             }
-            result = await axios.post('/api/member/join', {email, pwd, nickname, phone, profileMsg : intro, profileImg :profileimg});
+            result = await axios.post('/api/member/join', {email, pwd, age, gender, nickname, phone, birthDate ,profileMsg : intro, profileImg :profileimg, zipnum});
             if(result.data.msg =='ok'){
                 alert('회원 가입이 완료되었습니다. 로그인하세요');
                 navigate('/');
@@ -75,9 +98,18 @@ const JoinForm = () => {
             </div>
             <div className='field'>
                 <label style={{flex:2}}>GENDER</label>
-                <input style={{flex:3}} type="select-box"  value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}/>
-                <label style={{flex:2}}>AGE</label>
-                <input style={{flex:3}} type="text"  value={age} onChange={(e)=>{setAge(e.currentTarget.value)}}/>
+                <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}>
+                    <option value='0'>남성</option>    
+                    <option value='1'>여성</option>
+                </select>
+                <label style={{flex:2}}>BIRTHDATE</label>
+                <input
+                    style={{flex:3}}
+                    type="date"
+                    value={birthDate}
+                    onChange={handleBirthDateChange}
+                    required
+                />
             </div>
             <div className='field'>
                 <label>PHONE</label>
@@ -85,7 +117,7 @@ const JoinForm = () => {
             </div>
             <div className='field'>
                 <label>ADDRESS</label>
-                <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}}/>
+                <input type="text"  value={zipnum} onChange={(e)=>{setZipnum(e.currentTarget.value)}}/>
             </div>
             <div className='field'>
                 <label>INTRO</label>

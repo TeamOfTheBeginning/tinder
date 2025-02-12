@@ -1,5 +1,6 @@
 package com.first.tinder.controller;
 
+import com.first.tinder.entity.Follow;
 import com.first.tinder.entity.Member;
 import com.first.tinder.service.MemberService;
 import jakarta.servlet.ServletContext;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/member")
@@ -172,6 +174,21 @@ public class MemberController {
     }
 
 
+    @PostMapping("/follow")
+    public HashMap<String, Object> follow( @RequestBody Follow follow) {
+        HashMap<String, Object> result = new HashMap<>();
+        ms.addFollow( follow );
+        result.put("msg", "ok");
+        return result;
+    }
+
+    @GetMapping("/getNickname/{memberId}")
+    public HashMap<String, Object> getNickname( @PathVariable("memberId") int memberId ){
+        HashMap<String, Object> result = new HashMap<>();
+        Member member = ms.getMemberById(memberId);
+        result.put("nickname", member.getNickname());
+        return result;
+    }
 
 
 
