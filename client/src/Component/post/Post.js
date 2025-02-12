@@ -11,7 +11,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setFollowings } from '../../store/userSlice';
+import { setFollower } from '../../store/userSlice';
 import { Cookies } from 'react-cookie';
 
 const settings = {
@@ -29,7 +29,7 @@ const Post = (props) => {
     const [likeList, setLikeList] = useState([])
     const [replyView, setReplyView] = useState({})
     const [viewVal, setViewVal] = useState(false)
-    const [ replyContent, setReplyContent] = useState('')
+    const [replyContent, setReplyContent] = useState('')
     const [replyList, setReplyList] = useState([])
 
     const dispatch = useDispatch()
@@ -171,7 +171,7 @@ const Post = (props) => {
                 {
                     ( 
                         ( props.post.member.memberId != loginUser.memberId) &&
-                        ( !props.followings.some( (following)=>(props.post.writer==following.fto)) )
+                        ( props.follower && Array.isArray(props.follower) && !props.follower.some( (follower)=>(props.post.member.memberId==follower.followed)) )
                     )?
                     (<button id='blueBtn' onClick={()=>{ onFollow(props.post.member.memberId) }} >FOLLOW</button>):
                     (null)
