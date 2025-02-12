@@ -24,16 +24,17 @@ const SideBar = () => {
   )
 
   return (
-    <div>
-      <div className='MenuBar'>
-        <div className='MenubarBtns'>
+    <div className='MenuBar'>
+      <div className='MenubarBtns'>
             <div id='btn'><img src={imgSrc} /></div>
-            <div id='btn'><IoHomeSharp /></div>
             
-            {/* <div id='btn' onClick={
+            <div id='btn' onClick={
+              ()=>{navigate('/main')}
+            }><IoHomeSharp /></div>
+            
+            <div id='btn' onClick={
               ()=>{navigate('/writePost')}
-              }><MdOutlineAddPhotoAlternate /></div> */}
-            <div id='btn'><MdOutlineAddPhotoAlternate /></div>
+              }><MdOutlineAddPhotoAlternate /></div>
 
             <div className='matching' id='btn' onClick={
               (SideViewer)=>{navigate('/match')}
@@ -52,15 +53,11 @@ const SideBar = () => {
 
             <div id='btn' onClick={
               ()=>{
-                // onLogout();
               navigate('/#')}
               }><IoLogOut /></div>
-        </div>
       </div>
 
-      <div className='SidebarContent'>
-        <div className='SideViewer'></div>
-      </div>
+      <div className='SideViewer'></div>
     </div>
   )
 }

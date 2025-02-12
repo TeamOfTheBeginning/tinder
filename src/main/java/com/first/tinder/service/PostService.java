@@ -32,54 +32,18 @@ public class PostService {
     @Autowired
     SseEmitterService ses;
 
-//    public Post insertPost(Post post) {
-//        // 포스트 추가
-//        Optional<Member> member = mr.findById( post.getWriter() );
-//        if (member.isPresent()) post.setMember( member.get() );
-//        Post p = pr.save(post);  // 레코드추가 + 방금추가된 레코드를 새로운 엔티티객에 저장
-//        int postid= p.getId();  // 방금 추가된 레코드의  id 저장
-//
-//        //  추가된 포스트의 content 추출
-//        String content = p.getContent();
-//
-//        // content 에서 해시태그들만 추출
-//        Matcher m = Pattern.compile("#([0-9a-zA-Z가-힣]*)").matcher(content);
-//        List<String> tags = new ArrayList<String>();
-//        while (m.find()) {
-//            //System.out.println(m.group(1));
-//            tags.add(m.group(1));
-//        }
-//
-//        // 추출된 해시테그들로 해시테그 작업
-//        int tagid = 0;
-//        for( String tag : tags ) {
-//            // tag 변수로 Hasgtag테이블 검색
-//            Optional<Hashtag> record = hr.findByWord(tag);
-//            // 있으면 아이디만 추출
-//            if( record.isPresent() ) tagid = record.get().getId();
-//             // 현재 워드가 없으면  hashtag 테이블에 새레코드 추가하고 아이디 추출
-//            else{
-//                Hashtag htnew = new Hashtag();
-//                htnew.setWord(tag);
-//                Hashtag htsave = hr.save(htnew);
-//                tagid = htsave.getId();
-//            }
-//            // 추출된 포스트 아이디와 테그 아이디로 posthash 테이블에 레코드 추가
-//            PostHash ph = new PostHash();
-//            ph.setPostid( postid );
-//            ph.setHashid( tagid );
-//            phr.save(ph);
-//        }
-//        // 추가된 post 리턴
-//        return p;
-//    }
+    public Post insertPost(Post post) {
+        Optional<Member> member = mr.findById( post.getWriter() );
+        if (member.isPresent()) post.setMember( member.get() );
+        Post p = pr.save(post);
+        int postId = p.getPostId();  // 방금 추가된 레코드의  id 저장
+        return p;
+    }
 
     @Autowired
     ImagesRepository ir;
 
-//    public void insertImage(Images images) {
-//        ir.save(images);
-//    }
+    public void insertImage(Images images) { ir.save(images) ; }
 
 
 //    public List<Post> getPostList(String word) {
