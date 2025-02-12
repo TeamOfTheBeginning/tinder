@@ -21,10 +21,12 @@ public class ChatGroupMember {
 	@JoinColumn(name = "chat_group_id")
 	ChatGroup chatGroup;
 
-	private String nickname;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "member_id")
+	Member member;
 	
-	public ChatGroupMember(Integer chatgroupid, String nickname) {
+//	public ChatGroupMember(Integer chatgroupid, String nickname) {
 //		this.chatgroupid = chatgroupid;
-		this.nickname = nickname;
-	}
+//		this.nickname = nickname;
+//	}
 }

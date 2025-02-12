@@ -39,7 +39,8 @@ const SideBar = () => {
               (SideViewer)=>{navigate('/match')}
               }><IoSparkles /></div>
             
-            <div id='btn'><TbMailHeart /></div>
+            <div id='btn' onClick={
+              ()=>{navigate('/findChatGroup')}}><TbMailHeart /></div>
 
             <div id='btn' onClick={
               ()=>{navigate('/myPage')}

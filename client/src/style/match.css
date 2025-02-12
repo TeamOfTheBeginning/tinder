@@ -1,0 +1,11 @@
+.matchBtns .matchBtn{
+    margin-left: 5px;
+    padding: 3px;
+    width: 60px;
+    height: 30px;
+    border-radius: 50px;
+    box-sizing: border-box;
+    border: none;
+    font-size: 11px;
+    color: #F7186A;
+}
