@@ -5,20 +5,22 @@ import { useNavigate } from "react-router-dom";
 import MainMenu from '../MainMenu';
 import { useSelector } from 'react-redux';
 
+
 const MyPage = () => {
 
     const loginUser = useSelector( state=>state.user );
     const [ imgSrc, setImgSrc ]=useState('');
     const navigate=useNavigate();
-    const [word, setWord] = useState('n')
-    const [imgList, setImgList] = useState([])
+    const [word, setWord] = useState('n');
+    const [imgList, setImgList] = useState([]);
+
     
     useEffect(
         ()=>{
             if( loginUser.profileImg ){
                 setImgSrc(`http://localhost:8070/userImg/${loginUser.profileImg}`);
             }
-
+        
         },[]
     )
 
@@ -65,6 +67,9 @@ const MyPage = () => {
                 <div id ="btn" onClick={()=>{ navigate('/editProfile')}}>Edit Profile</div>
                 <div id ="btn">Post Write</div>
             </div>
+
+
+         
 
             {/* <div className='userpost' >
                 {
