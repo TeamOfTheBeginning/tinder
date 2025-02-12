@@ -14,7 +14,7 @@ const Main = () => {
 
     const [postList, setPostList ] = useState([]);
     const navigate = useNavigate();
-    const [followings, setFollowings]=useState([]);
+    const [followed, setFollowed]=useState([]);
     const [paging, setPaging] = useState({})
     const [word, setWord] = useState('n')
     const loginUser = useSelector(state=>state.user);
@@ -22,7 +22,7 @@ const Main = () => {
 
     useEffect(
         ()=>{
-            // setFollowings( [...loginUser.followings] )
+            // setFollower( [...loginUser.follower] )
 
             axios.get(`/api/post/getPostList`, {params:{word,page:1}})
             .then((result)=>{
@@ -65,7 +65,7 @@ const Main = () => {
                         (postList)?(
                             postList.map((post, idx)=>{
                                 return (
-                                    <Post key={idx} post={post}  followings={followings}  setFollowings={setFollowings} />
+                                    <Post key={idx} post={post}  followed={followed}  setFollowed={setFollowed} />
                                 )
                             })
                         ):(null)
