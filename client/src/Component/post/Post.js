@@ -76,13 +76,12 @@ const Post = (props) => {
 
     async function onFollow(memberId){
         if( window.confirm(`${props.post.member.nickname} 님을 팔로우 하시겠습니까?`) ){
-            console.log(loginUser.memberId, memberId)
             let result = await axios.post('/api/member/follow', { follower:loginUser.memberId,  followed:memberId });
 
             result = await axios.get('/api/member/getLoginUser')
-            // props.setFollowings( [...result.data.followings] ) // 현재 운영중인  props.followings 변수 갱신
-            // dispatch( setFollowings(result.data.followings) )   // 리듀스 갱신
-            //loginUser['followings'] = result.data.followings   // 현재 loginUser변수 갱신. 현재 화면에서는 갱신의 필요가 없음
+            // props.setFollower( [...result.data.follower] ) // 현재 운영중인  props.followings 변수 갱신
+            // dispatch( setFollower(result.data.follower) )   // 리듀스 갱신
+            // loginUser['followings'] = result.data.followings   // 현재 loginUser변수 갱신. 현재 화면에서는 갱신의 필요가 없음
             cookies.set('user', JSON.stringify( loginUser ) , {path:'/', })  // 쿠키 갱신
         }else{
             return
@@ -171,7 +170,7 @@ const Post = (props) => {
                 {
                     ( 
                         ( props.post.member.memberId != loginUser.memberId) &&
-                        ( props.follower && Array.isArray(props.follower) && !props.follower.some( (follower)=>(props.post.member.memberId==follower.followed)) )
+                        ( !props.follower?.some( (follower)=>(props.post.member.memberId==follower.followed)) )
                     )?
                     (<button id='blueBtn' onClick={()=>{ onFollow(props.post.member.memberId) }} >FOLLOW</button>):
                     (null)
