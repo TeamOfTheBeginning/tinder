@@ -1,11 +1,14 @@
 package com.first.tinder.service;
 
+import com.first.tinder.dao.FollowRepository;
 import com.first.tinder.dao.MemberRepository;
+import com.first.tinder.entity.Follow;
 import com.first.tinder.entity.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -69,4 +72,29 @@ public class MemberService {
         }
 
     }
+
+
+    @Autowired
+    FollowRepository fr;
+
+    public void addFollow(Follow follow) {
+        Optional<Follow> followOptional = fr.findByFollowerAndFollowed(follow.getFollower(), follow.getFollowed());
+        if(followOptional.isPresent()) {
+            fr.delete(followOptional.get());
+            System.out.println("팔로우 취소");
+        }else{
+            fr.save(follow);
+            System.out.println("팔로우 합니다");
+        }
+    }
+
+//    public List<Follow> getFollowers(int id) {
+//        List<Follow> list = fr.findByFollower(id);
+//        return list;
+//    }
+//
+//    public List<Follow> getFollowings(int id) {
+//        List<Follow> list = fr.findByFollowed(id);
+//        return list;
+//    }
 }

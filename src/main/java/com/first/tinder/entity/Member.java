@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -30,6 +31,8 @@ public class Member {
     @Column(columnDefinition = "TINYINT")
     private int gender;
     private int age;
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
     private String profileImg;
     private String profileMsg;
     private String snsId;

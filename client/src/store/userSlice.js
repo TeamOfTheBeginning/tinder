@@ -16,18 +16,15 @@ const initialState={
     profileMsg:'',
     snsid:'',
     zipnum:'',
-    // followers:[],
-    // followings:[], 
+    followers:[],
+    followings:[], 
 }
 
 
 const getLoginUser=()=>{
-    // console.log('getLoginUser')
-    // console.log(cookies.get('user'))
     const memberinfo = cookies.get('user')
     
     if( memberinfo && memberinfo.email ){
-        // console.log('if 문 : getLoginUser2')
         memberinfo.memberId = decodeURIComponent( memberinfo.memberId )
         memberinfo.nickname = decodeURIComponent( memberinfo.nickname )
         memberinfo.age = decodeURIComponent( memberinfo.age )
@@ -76,15 +73,15 @@ export const userSlice=createSlice(
                 state.profileMsg = '';           
                 state.snsid = '';
                 state.zipnum = '';
-                // state.followers = [];
-                // state.followings = [];
+                state.followers = [];
+                state.followings = [];
             },
-            // setFollowings : (state, action)=>{
-            //     state.followings = action.payload;
-            // },
-            // setFollowers : (state, action)=>{
-            //     state.followers = action.payload;
-            // },
+            setFollowings : (state, action)=>{
+                state.followings = action.payload;
+            },
+            setFollowers : (state, action)=>{
+                state.followers = action.payload;
+            },
         }
     }
 )

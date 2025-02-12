@@ -38,8 +38,8 @@ const Post = (props) => {
     // redux에 저장된 로그인 유저 로딩
     let loginUser = useSelector( state=>state.user ); 
 
-    async function getNickname(id){
-        // const result = await axios.get(`/api/member/getNickname/${id}`)
+    async function getNickname(memberId){
+        // const result = await axios.get(`/api/member/getNickname/${memberId}`)
         // const nickname = result.data.nickname;
         // return result.data.nickname;
     }
@@ -75,18 +75,18 @@ const Post = (props) => {
     )
 
     async function onFollow(memberId){
-        // const writerNick = await getNickname(writer)
-        // if( window.confirm(`${writerNick} 님을 팔로우 하시겠습니까?`) ){
-        //     let result = await axios.post('/api/member/follow', { ffrom:loginUser.id,  fto:writer });
+        if( window.confirm(`${props.post.member.nickname} 님을 팔로우 하시겠습니까?`) ){
+            console.log(loginUser.memberId, memberId)
+            let result = await axios.post('/api/member/follow', { follower:loginUser.memberId,  followed:memberId });
 
-        //     result = await axios.get('/api/member/getLoginUser')
-        //     props.setFollowings( [...result.data.followings] ) // 현재 운영중인  props.followings 변수 갱신
-        //     dispatch( setFollowings(result.data.followings) )   // 리듀스 갱신
-        //     //loginUser['followings'] = result.data.followings   // 현재 loginUser변수 갱신. 현재 화면에서는 갱신의 필요가 없음
-        //     cookies.set('user', JSON.stringify( loginUser ) , {path:'/', })  // 쿠키 갱신
-        // }else{
-        //     return
-        // }
+            result = await axios.get('/api/member/getLoginUser')
+            // props.setFollowings( [...result.data.followings] ) // 현재 운영중인  props.followings 변수 갱신
+            // dispatch( setFollowings(result.data.followings) )   // 리듀스 갱신
+            //loginUser['followings'] = result.data.followings   // 현재 loginUser변수 갱신. 현재 화면에서는 갱신의 필요가 없음
+            cookies.set('user', JSON.stringify( loginUser ) , {path:'/', })  // 쿠키 갱신
+        }else{
+            return
+        }
     }
 
     async function onLike(){

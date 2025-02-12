@@ -13,9 +13,13 @@ const EditProfile = () => {
     const [pwd, setPwd] = useState('')
     const [pwdChk, setPwdChk ] = useState('')
     const [nickname, setNickname] = useState('')
+    const [gender, setGender] = useState('')
+    const [age, setAge] = useState('')
     const [phone, setPhone] = useState('')
     const [intro, setIntro] = useState('')
+    const [zipnum, setZipnum] = useState('')
     const [profileImg, setProfileImg] = useState('')
+    const [birthDate, setBirthDate] = useState('');
     const [imgSrc, setImgSrc] = useState('')
     const [imgStyle, setImgStyle] = useState({display:"none"});
     const navigate = useNavigate();
@@ -24,9 +28,34 @@ const EditProfile = () => {
     const cookies = new Cookies()
 
     
+    const handleBirthDateChange = (e) => {
+        const selectedDate = new Date(e.target.value);
+        const today = new Date();
+
+        let calculatedAge = today.getFullYear() - selectedDate.getFullYear();
+        const monthDiff = today.getMonth() - selectedDate.getMonth();
+        const dayDiff = today.getDate() - selectedDate.getDate();
+        
+        if (selectedDate > today) {
+            alert("미래 날짜는 선택할 수 없습니다.");
+            return;
+        }
+        
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            calculatedAge--;
+        }
+
+        setBirthDate(e.target.value);
+        setAge(calculatedAge);
+    };
+    
 
     useEffect(
         ()=>{
+            setAge(loginUser.age)
+            setBirthDate(loginUser.birthDate)
+            setZipnum(loginUser.zipnum)
+            setGender(loginUser.gender)
             setEmail( loginUser.email )
             setNickname( loginUser.nickname )
             setPhone( loginUser.phone )
@@ -62,7 +91,7 @@ const EditProfile = () => {
             if(result.data.msg == 'no' ){
                 return alert('닉네임이 중복됩니다');
             }
-            result = await axios.post('/api/member/update', {memberId:loginUser.memberId, email, pwd, nickname, phone, profileMsg:intro, profileImg });
+            result = await axios.post('/api/member/update', {memberId:loginUser.memberId, email, pwd, age, birthDate, gender, nickname, phone, zipnum, profileMsg:intro, profileImg });
             if(result.data.msg =='ok'){
                 alert('회원 정보 수정이 완료되었습니다.')
 
@@ -95,8 +124,27 @@ const EditProfile = () => {
                 <input type="text"  value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
             </div>
             <div className='field'>
+                <label style={{flex:2}}>GENDER</label>
+                <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}>
+                    <option value='0'>남성</option>    
+                    <option value='1'>여성</option>
+                </select>
+                <label style={{flex:2}}>BIRTHDATE</label>
+                <input
+                    style={{flex:3}}
+                    type="date"
+                    value={birthDate}
+                    onChange={handleBirthDateChange}
+                    required
+                />
+            </div>
+            <div className='field'>
                 <label>PHONE</label>
                 <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}}/>
+            </div>
+            <div className='field'>
+                <label>ADDRESS</label>
+                <input type="text"  value={zipnum} onChange={(e)=>{setZipnum(e.currentTarget.value)}}/>
             </div>
             <div className='field'>
                 <label>INTRO</label>
