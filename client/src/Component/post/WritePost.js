@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import MainMenu from '../MainMenu';
+import SideBar from '../SideBar';
+
+import '../../style/sidebar.css'
+import '../../style/Posts.css'
 import '../../style/writePost.css'
 
 import { useSelector } from 'react-redux';
@@ -54,127 +58,132 @@ const WritePost = () => {
 
         if( n == 1){
             setDivStyle2( fieldStyle );
-            setImgsrc1( `http://localhost:8070/images/${result.data.filename}`);
+            setImgsrc1( `http://localhost:8070/userImg/${result.data.filename}`);
         }else if( n == 2){
             setDivStyle3( fieldStyle );
-            setImgsrc2( `http://localhost:8070/images/${result.data.filename}`);
+            setImgsrc2( `http://localhost:8070/userImg/${result.data.filename}`);
         }else if( n == 3){
             setDivStyle4( fieldStyle );
-            setImgsrc3( `http://localhost:8070/images/${result.data.filename}`);
+            setImgsrc3( `http://localhost:8070/userImg/${result.data.filename}`);
         }else if( n == 4){
             setDivStyle5( fieldStyle );
-            setImgsrc4( `http://localhost:8070/images/${result.data.filename}`);
+            setImgsrc4( `http://localhost:8070/userImg/${result.data.filename}`);
         }else if( n == 5){
             setDivStyle6( fieldStyle );
-            setImgsrc5( `http://localhost:8070/images/${result.data.filename}`);
+            setImgsrc5( `http://localhost:8070/userImg/${result.data.filename}`);
         }else if( n == 6){
             setDivStyle7( fieldStyle );
-            setImgsrc6( `http://localhost:8070/images/${result.data.filename}`);
+            setImgsrc6( `http://localhost:8070/userImg/${result.data.filename}`);
         }else if( n == 7){
             setDivStyle8( fieldStyle );
-            setImgsrc7( `http://localhost:8070/images/${result.data.filename}`);
+            setImgsrc7( `http://localhost:8070/userImg/${result.data.filename}`);
         }else if( n == 8){
             setDivStyle9( fieldStyle );
-            setImgsrc8( `http://localhost:8070/images/${result.data.filename}`);
+            setImgsrc8( `http://localhost:8070/userImg/${result.data.filename}`);
         }else if( n == 9){
             setDivStyle10( fieldStyle );
-            setImgsrc9( `http://localhost:8070/images/${result.data.filename}`);
+            setImgsrc9( `http://localhost:8070/userImg/${result.data.filename}`);
         }else if( n == 10){
-            setImgsrc10( `http://localhost:8070/images/${result.data.filename}`);
+            setImgsrc10( `http://localhost:8070/userImg/${result.data.filename}`);
         }
 
         let arr = [...imgList];
         arr.push(result.data.filename);
         setIimgList( [...arr] );
 
-        console.log(imgList);
     }
 
     async function onSubmit(){
-        let result = await axios.post('/api/post/writePost', {content, writer:loginUser.id})
-        const postid = result.data.postid;
+        let result = await axios.post('/api/post/writePost', {content, memberId:loginUser.memberId, writer:loginUser.memberId})
+        
+        const post_id = result.data.post;
 
         // id하고 이미지 리스트의 이미지이름들로 images 테이블에 이미지 갯수만큼 레코드를 추가
         for(let i=0; i<imgList.length; i++){
-            await axios.post('/api/post/writeimages', {postid, savefilename:imgList[i]})
+            await axios.post('/api/post/writeimages', {post_id, savefileName:imgList[i]})
         }
         navigate('/main');
+
+        console.log(post_id);
     }
 
     return (
-        <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-            <MainMenu  setWord={setWord}/>
-            <div className='postWrite'>
-                <div className='title' style={{fontFamily:"Dancing Script" , fontSize:"150%"}}>POST WRITE FORM</div>
-                <div className='field'>
-                    <label>content</label>
-                    <textarea rows="7" value={content} onChange={(e)=>{setContent(e.currentTarget.value)}}></textarea>
-                </div>
+        <div className='Container'>            
+            <SideBar />
+            <div className='Content'>
+                {/* <MainMenu  setWord={setWord}/> */}
+                <div className='postWrite'>
+                    <div className='title' style={{fontSize:"150%"}}>{loginUser.memberId} now . . .</div>
+                    <div className='field'>
+                        <label>content</label>
+                        <textarea rows="7" value={content} onChange={(e)=>{setContent(e.currentTarget.value)}}></textarea>
+                    </div>
 
-                <div className='field' id='img1' style={fieldStyle} >
-                    <input type="file" onChange={(e)=>{ imgUpload(e, 1)}}/>
-                    <img src={imgSrc1} height="50"/>
-                </div>
-                
+                    <div className='field' id='img1' style={fieldStyle} >
+                        <input type="file" onChange={(e)=>{ imgUpload(e, 1)}}/>
+                        <img src={imgSrc1} height="50"/>
+                    </div>
+                    
 
-                <div className='field'  id='img2' style={divStyle2}>
-                    <input type="file" onChange={(e)=>{ imgUpload(e, 2)}} />
-                    <img src={imgSrc2} height="50"/>
-                </div>
-                
+                    <div className='field'  id='img2' style={divStyle2}>
+                        <input type="file" onChange={(e)=>{ imgUpload(e, 2)}} />
+                        <img src={imgSrc2} height="50"/>
+                    </div>
+                    
 
-                <div className='field'  id='img3' style={divStyle3}>
-                    <input type="file"  onChange={(e)=>{ imgUpload(e, 3)}}/>
-                    <img src={imgSrc3} height="50" />
-                </div>
-                
+                    <div className='field'  id='img3' style={divStyle3}>
+                        <input type="file"  onChange={(e)=>{ imgUpload(e, 3)}}/>
+                        <img src={imgSrc3} height="50" />
+                    </div>
+                    
 
-                <div className='field'  id='img4' style={divStyle4}>
-                    <input type="file"  onChange={(e)=>{ imgUpload(e, 4)}}/>
-                    <img src={imgSrc4} height="50"/>
-                </div>
-                
+                    <div className='field'  id='img4' style={divStyle4}>
+                        <input type="file"  onChange={(e)=>{ imgUpload(e, 4)}}/>
+                        <img src={imgSrc4} height="50"/>
+                    </div>
+                    
 
-                <div className='field'  id='img5' style={divStyle5}>
-                    <input type="file"  onChange={(e)=>{ imgUpload(e, 5)}}/>
-                    <img src={imgSrc5} height="50"/>
-                </div>
-                
+                    <div className='field'  id='img5' style={divStyle5}>
+                        <input type="file"  onChange={(e)=>{ imgUpload(e, 5)}}/>
+                        <img src={imgSrc5} height="50"/>
+                    </div>
+                    
 
-                <div className='field'  id='img6' style={divStyle6}>
-                    <input type="file"  onChange={(e)=>{ imgUpload(e, 6)}}/>
-                    <img src={imgSrc6} height="50"/>
-                </div>
-                
+                    <div className='field'  id='img6' style={divStyle6}>
+                        <input type="file"  onChange={(e)=>{ imgUpload(e, 6)}}/>
+                        <img src={imgSrc6} height="50"/>
+                    </div>
+                    
 
-                <div className='field'  id='img7' style={divStyle7}>
-                    <input type="file"  onChange={(e)=>{ imgUpload(e, 7)}}/>
-                    <img src={imgSrc7} height="50"/>
-                </div>
-                
+                    <div className='field'  id='img7' style={divStyle7}>
+                        <input type="file"  onChange={(e)=>{ imgUpload(e, 7)}}/>
+                        <img src={imgSrc7} height="50"/>
+                    </div>
+                    
 
-                <div className='field'  id='img8' style={divStyle8}>
-                    <input type="file"  onChange={(e)=>{ imgUpload(e, 8)}}/>
-                    <img src={imgSrc8} height="50"/>
-                </div>
-                
+                    <div className='field'  id='img8' style={divStyle8}>
+                        <input type="file"  onChange={(e)=>{ imgUpload(e, 8)}}/>
+                        <img src={imgSrc8} height="50"/>
+                    </div>
+                    
 
-                <div className='field'  id='img9' style={divStyle9}>
-                    <input type="file"  onChange={(e)=>{ imgUpload(e, 9)}}/>
-                    <img src={imgSrc9} height="50"/>
-                </div>
-                
+                    <div className='field'  id='img9' style={divStyle9}>
+                        <input type="file"  onChange={(e)=>{ imgUpload(e, 9)}}/>
+                        <img src={imgSrc9} height="50"/>
+                    </div>
+                    
 
-                <div className='field'  id='img10' style={divStyle10}>
-                    <input type="file"  onChange={(e)=>{ imgUpload(e, 10)}}/>
-                    <img src={imgSrc10} height="50"/>
-                </div>
-                
-                <div className='btns'>
-                    <button onClick={ ()=>{ onSubmit() } }>작성완료</button>
-                    <button onClick={ ()=>{ navigate('/main') } }>Main으로</button>
-                </div>
+                    <div className='field'  id='img10' style={divStyle10}>
+                        <input type="file"  onChange={(e)=>{ imgUpload(e, 10)}}/>
+                        <img src={imgSrc10} height="50"/>
+                    </div>
+                    
+                    <div className='btns'>
+                        <button onClick={ ()=>{ onSubmit() } }>작성완료</button>
+                        <button onClick={ ()=>{ navigate('/main') } }>Main으로</button>
+                    </div>
 
+                </div>
             </div>
         </div>
     )

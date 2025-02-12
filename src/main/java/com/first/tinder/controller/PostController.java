@@ -2,6 +2,7 @@ package com.first.tinder.controller;
 
 import com.first.tinder.dto.Paging;
 
+import com.first.tinder.entity.Images;
 import com.first.tinder.entity.Post;
 import com.first.tinder.entity.PostLikes;
 import com.first.tinder.service.PostService;
@@ -22,46 +23,46 @@ public class PostController {
     @Autowired
     PostService ps;
 
-//    @Autowired
-//    ServletContext context;
-//
-//    @PostMapping("/fileupload")
-//    public HashMap<String,Object> fileupload(@RequestParam("image") MultipartFile file) {
-//        HashMap<String,Object> result = new HashMap<>();
-//
-//        String path = context.getRealPath("/images");
-//        Calendar today = Calendar.getInstance();
-//        long dt = today.getTimeInMillis();
-//        String filename = file.getOriginalFilename();
-//        String fn1 = filename.substring(0, filename.indexOf(".") );
-//        String fn2 = filename.substring(filename.indexOf(".") );
-//        String uploadPath = path + "/" + fn1 + dt + fn2;
-//        try {
-//            file.transferTo( new File(uploadPath) );
-//            result.put("filename", fn1 + dt + fn2);
-//        } catch (IllegalStateException | IOException e) {
-//            e.printStackTrace();
-//        }
-//        return result;
-//
-//    }
+    @Autowired
+    ServletContext context;
+
+    @PostMapping("/fileupload")
+    public HashMap<String, Object> fileupload( @RequestParam("image") MultipartFile file ) {
+        HashMap<String, Object> result = new HashMap<>();
+        String path = context.getRealPath("/userImg");
+        Calendar today = Calendar.getInstance();
+        long dt = today.getTimeInMillis();
+        String filename = file.getOriginalFilename();
+        String fn1 = filename.substring(0, filename.indexOf(".") );
+        String fn2 = filename.substring(filename.indexOf(".") );
+        String uploadPath = path + "/" + fn1 + dt + fn2;
+        try {
+            file.transferTo( new File(uploadPath) );
+            result.put("filename", fn1 + dt + fn2);
+        } catch (IllegalStateException | IOException e) {
+            e.printStackTrace();
+        }
+        System.out.print(result);
+        return result;
+    }
 
 
-//    @PostMapping("/writePost")
-//    public HashMap<String,Object> writePost(@RequestBody Post post) {
-//        HashMap<String,Object> result = new HashMap<>();
-//        Post p = ps.insertPost(post);  // 방금 추가된 레코드의 id 를위해 추가된 레코드를 리턴
-//        result.put("postid", p.getId() );
-//        return result;
-//    }
+    @PostMapping("/writePost")
+    public HashMap<String,Object> writePost(@RequestBody Post post) {
+        HashMap<String,Object> result = new HashMap<>();
+        Post p = ps.insertPost(post);
+        result.put("postid", p.getPostId() );
+        return result;
+    }
 
-//    @PostMapping("/writeimages")
-//    public HashMap<String,Object> writeImages(@RequestBody Images images) {
-//        HashMap<String,Object> result = new HashMap<>();
-//        ps.insertImage( images );
-//        result.put("msg", "ok");
-//        return result;
-//    }
+    @PostMapping("/writeimages")
+    public HashMap<String,Object> writeImages(@RequestBody Images images) {
+        HashMap<String,Object> result = new HashMap<>();
+//        int postId = (int) data.get("post_id");
+        ps.insertImage( images );
+        result.put("msg", "ok");
+        return result;
+    }
 
 
     @GetMapping("/getPostList")

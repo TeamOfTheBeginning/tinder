@@ -6,7 +6,6 @@
 
 .App{
     width:99vw;
-    margin:2px;
     display: flex;
     justify-content: center;
     align-items: flex-start;
