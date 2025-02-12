@@ -10,14 +10,15 @@ const initialState={
     email:'',
     phone:'',
     gender:'',
+    birthDate:'',
     address:'',
     provider:'',
     profileImg:'',
     profileMsg:'',
     snsid:'',
     zipnum:'',
-    followers:[],
-    followings:[], 
+    follower:[],
+    followed:[], 
 }
 
 
@@ -29,6 +30,7 @@ const getLoginUser=()=>{
         memberinfo.nickname = decodeURIComponent( memberinfo.nickname )
         memberinfo.age = decodeURIComponent( memberinfo.age )
         memberinfo.email = decodeURIComponent( memberinfo.email )
+        memberinfo.birthDate = decodeURIComponent( memberinfo.birthDate )
         memberinfo.phone = decodeURIComponent( memberinfo.phone )
         memberinfo.gender = decodeURIComponent( memberinfo.gender )
         memberinfo.address = decodeURIComponent( memberinfo.address )
@@ -51,6 +53,7 @@ export const userSlice=createSlice(
                 state.nickname = action.payload.nickname;
                 state.age = action.payload.age;
                 state.email = action.payload.email;
+                state.birthDate = action.payload.birthDate;
                 state.phone = action.payload.phone;
                 state.gender = action.payload.gender;
                 state.address = action.payload.address;
@@ -68,22 +71,23 @@ export const userSlice=createSlice(
                 state.phone = '';
                 state.gender = '';
                 state.address = '';
+                state.birthDate = '';
                 state.provider = '';
                 state.profileImg = '';
                 state.profileMsg = '';           
                 state.snsid = '';
                 state.zipnum = '';
-                state.followers = [];
-                state.followings = [];
+                state.follower = [];
+                state.followed = [];
             },
-            setFollowings : (state, action)=>{
-                state.followings = action.payload;
+            setFollower : (state, action)=>{
+                state.follower = action.payload;
             },
-            setFollowers : (state, action)=>{
-                state.followers = action.payload;
+            setFollowed : (state, action)=>{
+                state.followed = action.payload;
             },
         }
     }
 )
-export const { loginAction, logoutAction, setFollowings, setFollowers } = userSlice.actions
+export const { loginAction, logoutAction, setFollower, setFollowed } = userSlice.actions
 export default userSlice.reducer

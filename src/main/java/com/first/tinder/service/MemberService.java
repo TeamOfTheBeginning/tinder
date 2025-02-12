@@ -88,13 +88,14 @@ public class MemberService {
         }
     }
 
-//    public List<Follow> getFollowers(int id) {
-//        List<Follow> list = fr.findByFollower(id);
-//        return list;
-//    }
-//
-//    public List<Follow> getFollowings(int id) {
-//        List<Follow> list = fr.findByFollowed(id);
-//        return list;
-//    }
+    public List<Follow> getFollower(int id) {
+       List<Follow> list = fr.findByFollower(id);
+        return list;
+    }
+
+    public List<Follow> getFollowed(int id) {
+        List<Follow> list = fr.findByFollowed(id);
+        return list;
+    }
+
 }

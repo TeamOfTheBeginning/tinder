@@ -38,22 +38,22 @@ const MyPage = () => {
                         <label>Nick Name</label>
                         <div>{loginUser.nickname}</div>
                     </div>
-                    {/* <div className='field'>
-                        <label>Followers</label>
+                    <div className='field'>
+                        <label>Follower</label>
                         <div>
                             {
-                                (loginUser.followers)?(loginUser.followers.length):(0)
+                                (loginUser.follower)?(loginUser.follower.length):(0)
                             }
                         </div>
                     </div>
                     <div className='field'>
-                        <label>Followings</label>
+                        <label>Followed</label>
                         <div>
                             {
-                                (loginUser.followings)?(loginUser.followings.length):(0)
+                                (loginUser.followed)?(loginUser.followed.length):(0)
                             }
                         </div>
-                    </div> */}
+                    </div>
                     <div className='field'>
                         <label>intro</label>
                         <div>{loginUser.profileMsg}</div>

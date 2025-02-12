@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useDispatch } from 'react-redux';
-import { loginAction, setFollowers, setFollowings } from '../store/userSlice';
+import { loginAction, setFollower, setFollowed } from '../store/userSlice';
 import {Cookies} from 'react-cookie'
 
 import '../style/mystargram.css'
@@ -30,16 +30,16 @@ const Login = () => {
                 const res = await axios.get('/api/member/getLoginUser');
                 const lUser = res.data.loginUser;
                 
-                // lUser['followings'] = res.data.followings;
-                // lUser['followers'] = res.data.followers;
+                lUser['follower'] = res.data.follower;
+                lUser['followed'] = res.data.followed;
                 cookies.set('user', JSON.stringify( lUser ) , {path:'/', })
                 
-                // cookies.set('followers', JSON.stringify( res.data.followers ) , {path:'/', })
-                // cookies.set('followings', JSON.stringify( res.data.followings ) , {path:'/', })
+                cookies.set('follower', JSON.stringify( res.data.follower ) , {path:'/', })
+                cookies.set('followed', JSON.stringify( res.data.followed ) , {path:'/', })
                 
                 dispatch( loginAction( res.data.loginUser ) )
-                // dispatch( setFollowers( res.data.followers ) )
-                // dispatch( setFollowings( res.data.followings ) )
+                dispatch( setFollower( res.data.follower ) )
+                dispatch( setFollowed( res.data.followed ) )
 
                 navigate('/main');
             }else{

@@ -51,12 +51,12 @@ public class MemberController {
         int id = (Integer) session.getAttribute("loginUser");
 
         Member member = ms.getMemberById(id);
-//        List<Follow> followers = ms.getFollowers(id);
-//        List<Follow> followings = ms.getFollowings(id);
+        List<Follow> follower = ms.getFollower(id);
+        List<Follow> followed = ms.getFollowed(id);
 
         result.put("loginUser", member);
-//        result.put("followers", followers);
-//        result.put("followings", followings);
+        result.put("follower", follower);
+        result.put("followed", followed);
 
         return result;
     }
