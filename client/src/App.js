@@ -7,7 +7,11 @@ import MyPage from "./Component/member/MyPage";
 import Match from "./Component/match/Match";
 import EditProfile from "./Component/member/EditProfile";
 import FindLiker from "./Component/match/FindLiker"
-import Matched from "./Component/match/Matched"
+import MatchedMember from "./Component/match/MatchedMember"
+import FindChatGroup from "./Component/chat/FindChatGroup"
+import ChatRoomFromChatGroup from "./Component/chat/ChatRoomFromChatGroup";
+import ChatRoomFromMatch from "./Component/chat/ChatRoomFromMatch"
+
 
 function App() {
   return (
@@ -20,7 +24,10 @@ function App() {
         <Route path="/match" element={<Match />} />
         <Route path="/editProfile" element={<EditProfile/>}/>
         <Route path="/findLiker" element={<FindLiker/>}/>
-        <Route path="/matched" element={<Matched/>}/>
+        <Route path="/matchedMember" element={<MatchedMember/>}/>
+        <Route path="/findChatGroup" element={<FindChatGroup/>}/>
+        <Route path="/chatRoomFromChatGroup/:chatGroupId" element={<ChatRoomFromChatGroup/>}/>
+        <Route path="/chatRoomFromMatch/:memberId" element={<ChatRoomFromMatch/>}/>
       </Routes>
     </div>
   );

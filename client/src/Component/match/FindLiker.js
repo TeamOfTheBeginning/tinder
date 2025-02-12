@@ -3,10 +3,13 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
+import '../../style/findliker.css';
+
 const FindLiker = () => {
 
     const loginUser = useSelector(state=>state.user);
     const navigate = useNavigate();
+    
     const [likerList, serLikerList] = useState();
 
     useEffect(() => {
@@ -19,30 +22,56 @@ const FindLiker = () => {
             .catch((err) => { console.error(err); });
     }, []);
 
+    async function like(memberId){
+
+        await axios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:memberId })
+        .then((result)=>{
+            console.log("result.data.msg"+result.data.msg)
+    
+            if(result.data.msg=='yes') {alert("좋아요가 완료되었습니다!")}
+            else if(result.data.msg=='no') {alert("좋아요가 취소되었습니다!")}
+            else {alert("시스템 오류!")}
+        }
+        ).catch((err)=>{console.error(err)})
+    
+    }
+
 
 
 
     return (
-        <div>
+        <div className='findLikerContainer'>
             {
                         (likerList)?(
                             likerList.map((liker, idx)=>{
                                 return (
-                                    <div key={idx}>
+                                    <div key={idx} className='findLikerListContainer'>
+                                        <div className='findLikerLeft'>
+                                            <img src={`http://localhost:8070/userImg/${liker.profileImg}`} />
+                                            <br/>
+                                        </div>
+
+                                        <div className='findLikerRight'>
+                                            <div className='findLikerProfile'>  
+                                            {liker.nickname}
+                                            ({liker.age})<br/>
+                                            {liker.profileMsg}</div>
+                                            <div className='findLikerBtns'>
+                                            <button onClick={()=>like(liker.memberId)}>좋아요</button>
+                                            {/* <button>쪽지</button> */}
+                                            </div>
+
+                                        </div>
                                         {/* {liker.memberId} */}
-                                        {liker.nickname}
-                                        {liker.age}<br/>
-                                        {liker.profileMsg}
-                                        <img src={`http://localhost:8070/userImg/${liker.profileImg}`} />
-                                        <br/>
-                                        <button>쪽지</button>
-                                        <button onClick={()=>navigate(-1)}>돌아가기</button>
+                                        
+                                        
+                                        
                                     </div>
                                 )
                             })
                         ):(null)
             }
-        
+            <button onClick={()=>navigate(-1)}>돌아가기</button>
         </div>
     )
 }

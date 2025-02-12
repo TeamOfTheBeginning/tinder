@@ -35,7 +35,7 @@ public class MemberService2 {
 //        List<Member> members = mr.findByGender(gender);
 
 
-        int ageRange = 2;
+        int ageRange = 3;
 
         List<Member> filteredMembers = mr.findByGenderAndAgeRange(gender, age - ageRange, age + ageRange);
 
@@ -110,6 +110,61 @@ public class MemberService2 {
 //            memberOpt.ifPresent(members::add); // Member가 존재하면 리스트에 추가
         }
         System.out.println("members"+members);
+        return members;
+    }
+
+//    public List<Member> getMatchedMember(int memberId) {
+//        List<Member> members = new ArrayList<>();
+//
+//        //일단 내가 좋아하는 사람들이 담긴 객체(MemberLikes) 조회
+//        List<MemberLikes> likedList = mlr.findByLiker(memberId);
+//        System.out.println("likerList"+likedList);
+//
+//        //좋아하는 사람들이 담긴 객체(MemberLikes) 순회
+//        for (MemberLikes like : likedList) {
+//            System.out.println("캉캉이가 좋아하는 사람 : "+like.getLiked());
+//
+//            //내가 좋아하는 사람이 좋아하는 사람들이 담긴 객체(MemberLikes) 조회
+//            List<MemberLikes> likedList2 = mlr.findByLiker(like.getLiked());
+//
+//            //내가 좋아하는 사람이 좋아하는 사람들이 담긴 객체(MemberLikes) 순회
+//            for (MemberLikes like2 : likedList2){
+//                System.out.println("캉캉이가 좋아하는 사람이 좋아하는 사람 : "+like2.getLiked());
+//
+//                //내가 좋아하는 사람이 좋아하는 사람이 나라면 데이터에 입력
+//                if (like2.getLiked() == memberId){
+//
+//                    //like2.getLiker() 에는 나를 좋아하는 사람의 memberId가 담겨있음
+//                    Optional<Member> memberOpt = mr.findByMemberId(like2.getLiker());
+//                    memberOpt.ifPresent(members::add);
+//                }
+//
+//            }
+//
+//        }
+//
+//        return members;
+//    }
+
+
+    public List<Member> getMatchedMember(int memberId) {
+        List<Member> members = new ArrayList<>();
+
+        // 내가 좋아하는 사람들이 담긴 객체(MemberLikes) 조회
+        List<MemberLikes> likedList = mlr.findByLiker(memberId);
+        System.out.println("likerList: " + likedList);
+
+        // 좋아하는 사람들의 liked 리스트에서 내가 좋아하는 사람의 좋아요 리스트를 두 번 순회
+        likedList.stream()
+                .map(MemberLikes::getLiked)  // 내가 좋아하는 사람을 가져옴
+                .flatMap(liked -> mlr.findByLiker(liked).stream())  // 내가 좋아하는 사람들의 좋아요 리스트 순회
+                .filter(like2 -> like2.getLiked() == memberId)  // 내가 좋아하는 사람의 좋아요 목록 중, 내가 있는 경우
+                .map(MemberLikes::getLiker)  // 나를 좋아하는 사람의 memberId를 가져옴
+                .map(likerId -> mr.findByMemberId(likerId))  // likerId로 회원 조회
+                .filter(Optional::isPresent)  // Optional이 비어 있지 않은 경우에만 추가
+                .map(Optional::get)  // Optional에서 Member 객체 추출
+                .forEach(members::add);  // 결과를 members 리스트에 추가
+
         return members;
     }
 }

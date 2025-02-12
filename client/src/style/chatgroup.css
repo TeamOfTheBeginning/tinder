@@ -1,0 +1,19 @@
+.chatGroupContainer{
+    width: 100%;
+    font-size: 150%;
+}
+
+.chatGroupMember{
+    display: flex;
+    flex-direction: row;
+}
+
+.findChatGroupListContainer{
+    padding: 10px;
+
+}
+
+.chatGroupBtns{
+    display: flex;
+    justify-content: center;
+}

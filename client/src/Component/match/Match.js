@@ -4,6 +4,8 @@ import MatchingMember from './MatchingMember'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
+import '../../style/match.css';
+
 const Match = () => {
 
   const [oppositeGender, setOppositeGender] = useState();
@@ -56,14 +58,17 @@ const Match = () => {
 
   return (
     <div className='matchContainer'>
-      <MatchingMember oppositeGender={oppositeGender}/>
-      <div className='matchContainerBtns'>
-      <button onClick={()=>rematch()}>재매칭</button>
-      <button onClick={()=>like()}>좋아요</button>
-      <button onClick={()=>navigate('/findLiker')}>Liker조회</button>
-      <button onClick={()=>navigate('/matched')}>매칭조회</button>
-      <button onClick={()=>navigate('/main')}>돌아가기</button>
+      <div className='matchBtns'>
+        <button className='matchBtn' onClick={()=>rematch()}>재매칭</button>
+        <button className='matchBtn' onClick={()=>like()}>좋아요</button>
+        <button className='matchBtn' onClick={()=>navigate('/findLiker')}>Liker조회</button>
+        <button className='matchBtn' onClick={()=>navigate('/matchedMember')}>매칭조회</button>
+        <button className='matchBtn' onClick={()=>navigate('/main')}>돌아가기</button>
       </div>
+
+
+      <MatchingMember oppositeGender={oppositeGender}/>
+      
     </div>
   )
 }

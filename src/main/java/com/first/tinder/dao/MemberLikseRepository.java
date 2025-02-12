@@ -10,4 +10,6 @@ public interface MemberLikseRepository extends JpaRepository<MemberLikes, Intege
     Optional<MemberLikes> findByLikerAndLiked(int liker, int liked);
 
     List<MemberLikes> findByLiked(int memberId);
+
+    List<MemberLikes> findByLiker(int memberId);
 }

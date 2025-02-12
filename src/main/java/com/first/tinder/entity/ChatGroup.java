@@ -17,11 +17,16 @@ public class ChatGroup {
 	@Column(name = "chat_group_id")
 	private Integer chatGroupId;
 
-	private String createdby;
+	@ManyToOne(fetch = FetchType.EAGER)  // Many ChatGroups can be created by one Member
+	@JoinColumn(name = "created_by")  // 외래 키 컬럼 이름 지정
+	private Member createdBy;  // Member 엔티티와 연관됨
+
+	private String chatGroupName;
+
 	private Integer memberCount;
 	
-	public ChatGroup(String createdby, Integer membercount) {
-		this.createdby = createdby;
+	public ChatGroup(Member createdby, Integer membercount) {
+		this.createdBy = createdby;
 		this.memberCount = membercount;
 	}
 }
