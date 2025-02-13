@@ -33,11 +33,11 @@ public class PostService {
     SseEmitterService ses;
 
     public Post insertPost(Post post) {
-        Optional<Member> member = mr.findById( post.getWriter() );
-        if (member.isPresent()) post.setMember( member.get() );
-        Post p = pr.save(post);
-        int postId = p.getPostId();  // 방금 추가된 레코드의  id 저장
-        return p;
+    Optional<Member> member = mr.findById(post.getMember().getMemberId());
+    if (member.isPresent()) post.setMember(member.get());
+    Post p = pr.save(post);
+    int postId = p.getPostId();
+    return p;
     }
 
 //    public List<Post> getPostList(String word) {
