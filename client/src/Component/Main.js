@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import SideBar from './SideBar';
 import Post from './post/Post';
-import Notification from './notification/Notification'
+import Notification from './Notification/Notification'
 
 import '../style/mystargram.css';
 import '../style/Posts.css';

@@ -12,6 +12,7 @@ import MatchedMember from "./Component/match/MatchedMember"
 import FindChatGroup from "./Component/chat/FindChatGroup"
 import ChatRoomFromChatGroup from "./Component/chat/ChatRoomFromChatGroup";
 import ChatRoomFromMatch from "./Component/chat/ChatRoomFromMatch"
+import RealTimeChat from "./Component/realtimechat/RealTimeChat"
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/findChatGroup" element={<FindChatGroup/>}/>
         <Route path="/chatRoomFromChatGroup/:chatGroupId" element={<ChatRoomFromChatGroup/>}/>
         <Route path="/chatRoomFromMatch/:memberId" element={<ChatRoomFromMatch/>}/>
+        <Route path="/realtimechat" element={<RealTimeChat />} />
       </Routes>
     </div>
   );
