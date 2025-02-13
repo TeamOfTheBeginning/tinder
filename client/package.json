@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",
+    "@stomp/stompjs": "^7.0.0",
     "axios": "^1.7.9",
     "cra-template": "1.2.0",
     "http-proxy-middleware": "^3.0.3",
@@ -19,7 +20,8 @@
     "react-slick": "^0.30.3",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "sockjs-client": "^1.6.1"
   },
   "scripts": {
     "start": "react-scripts start",
