@@ -96,6 +96,17 @@ public class PostController {
         return result;
     }
 
+    @GetMapping("/getPostOneWithin3daysOrderByRand")
+    public HashMap<String,Object> getPostOneWithin3daysOrderByRand(
+                ){
+        HashMap<String,Object> result = new HashMap<>();
+
+        Post postOne = ps.getPostOneWithin3daysOrderByRand();
+        System.out.println("postOne"+postOne.getPostId());
+        result.put("postOne",postOne);
+        return result;
+    }
+
     @GetMapping("/getImages/{postId}")
     public HashMap<String,Object> getImages(@PathVariable("postId") int postId) {
         HashMap<String,Object> result = new HashMap<>();
