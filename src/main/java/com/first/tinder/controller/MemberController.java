@@ -51,8 +51,10 @@ public class MemberController {
         int id = (Integer) session.getAttribute("loginUser");
 
         Member member = ms.getMemberById(id);
-        List<Follow> follower = ms.getFollower(id);
-        List<Follow> followed = ms.getFollowed(id);
+        List<Follow> follower = ms.getFollower(member);
+        List<Follow> followed = ms.getFollowed(member);
+        System.out.println("################################## followed: "+ followed);
+        System.out.println("################################## follower: "+ follower);
 
         result.put("loginUser", member);
         result.put("follower", follower);
@@ -175,9 +177,12 @@ public class MemberController {
 
 
     @PostMapping("/follow")
-    public HashMap<String, Object> follow( @RequestBody Follow follow) {
+    public HashMap<String, Object> follow( @RequestParam("follower") int follower, @RequestParam("followed") int followed ) {
+        System.out.println("##################################### : " + follower);
+        System.out.println("##################################### : " +followed);
+
         HashMap<String, Object> result = new HashMap<>();
-        ms.addFollow( follow );
+        ms.addFollow( follower, followed );
         result.put("msg", "ok");
         return result;
     }

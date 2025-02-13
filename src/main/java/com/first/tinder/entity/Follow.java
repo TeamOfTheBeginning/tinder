@@ -17,6 +17,13 @@ public class Follow {
 	@Column(name = "follow_id")
 	private Integer followId;
 
-	private int follower;
-	private int followed;
+	@ManyToOne(fetch = FetchType.EAGER)  // Many ChatGroups can be created by one Member
+	@JoinColumn(name = "follower")  // 외래 키 컬럼 이름 지정
+	private Member follower;  // Member 엔티티와 연관됨
+
+	@ManyToOne(fetch = FetchType.EAGER)  // Many ChatGroups can be created by one Member
+	@JoinColumn(name = "followed")  // 외래 키 컬럼 이름 지정
+	private Member followed;  // Member 엔티티와 연관됨
+
+
 }
