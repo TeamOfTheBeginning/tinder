@@ -13,7 +13,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws_real_chat")
-                .setAllowedOriginPatterns("*")
+                .setAllowedOrigins("http://192.168.0.44:3000", "http://localhost:3000")
                 .withSockJS();
     }
 
