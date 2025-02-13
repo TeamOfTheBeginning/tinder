@@ -23,8 +23,7 @@ const settings = {
     slidesToScroll:1
 }
 
-const Post = (props) => {
-
+const ToastPopupPost = (props) => {
     const [imgList, setImgList]=useState([])
     const [likeList, setLikeList] = useState([])
     const [replyView, setReplyView] = useState({})
@@ -49,19 +48,19 @@ const Post = (props) => {
 
             // setPostWriter( getNickname( props.post.member.nickname ) )
 
-            axios.get(`/api/post/getImages/${props.post.postId}` )
+            axios.get(`/api/post/getImages/${props.postOne.postId}` )
             .then((result)=>{ 
                 // console.log("result.data.imgList"+JSON.stringify(result.data.imgList))
                 setImgList( result.data.imgList );
             }).catch((err)=>{console.error(err)})
 
-            axios.get(`/api/post/getLikeList/${props.post.postId}`)
+            axios.get(`/api/post/getLikeList/${props.postOne.postId}`)
             .then((result)=>{
                 // console.log("result.data.likeList"+JSON.stringify(result.data.likeList))
                  setLikeList( [...result.data.likeList ] );
             }).catch((err)=>{console.error(err)})
 
-            axios.get(`/api/post/getReplyList/${props.post.postId}`)
+            axios.get(`/api/post/getReplyList/${props.postOne.postId}`)
             .then((result)=>{
                 // console.log(result.data.replyList2)
                 let temp = [...result.data.replyList2];
@@ -75,8 +74,8 @@ const Post = (props) => {
     )
 
     async function onFollow(memberId){
-        if( window.confirm(`${props.post.member.nickname} 님을 팔로우 하시겠습니까?`) ){
-            let result = await axios.post('/api/member/follow',null, {params:{ follower:loginUser.memberId,  followed:memberId }});
+        if( window.confirm(`${props.postOne.member.nickname} 님을 팔로우 하시겠습니까?`) ){
+            let result = await axios.post('/api/member/follow', { follower:loginUser.memberId,  followed:memberId });
 
             result = await axios.get('/api/member/getLoginUser')
             // props.setFollower( [...result.data.follower] ) // 현재 운영중인  props.followings 변수 갱신
@@ -92,9 +91,9 @@ const Post = (props) => {
         // 현재 로그인 유저의 닉네임과 현재 포스트의 id 로  like 작업
         // 현재 로그인 유저의 닉네임과 현재 포스트의 id 를 서버에 보내서 내역이 있으면 삭제 , 없으면 추가
         // likeList 재조회 & 갱신
-        let result = await axios.post('/api/post/addLike',null ,{params:{ postId:props.post.postId,  memberId:loginUser.memberId }})
+        let result = await axios.post('/api/post/addLike',null ,{params:{ postId:props.postOne.postId,  memberId:loginUser.memberId }})
 
-        result = await axios.get(`/api/post/getLikeList/${props.post.postId}` )
+        result = await axios.get(`/api/post/getLikeList/${props.postOne.postId}` )
         setLikeList( [...result.data.likeList] );
     }
 
@@ -115,11 +114,11 @@ const Post = (props) => {
     async function addReply(){
         try{
             // 현재포스트의 아이디와 로그인유저의 닉네임과 replyContent 변수값으로 reply 테이블에 레코드를 추가합니다
-            let result = await axios.post('/api/post/addReply', null ,{params :{postId:props.post.postId, memberId:loginUser.memberId , content:replyContent}})
+            let result = await axios.post('/api/post/addReply', null ,{params :{postId:props.postOne.postId, memberId:loginUser.memberId , content:replyContent}})
             setReplyContent('')
             // 댓글 추가후 댓글 입력란을 비웁니다
 
-            axios.get(`/api/post/getReplyList/${props.post.postId}`)
+            axios.get(`/api/post/getReplyList/${props.postOne.postId}`)
             .then((result)=>{
                 // console.log(result.data.replyList2)
                 let temp = [...result.data.replyList2];
@@ -162,17 +161,18 @@ const Post = (props) => {
     }
 
     return (
-        <div className='post'>
+        <div className='toastPopupPost'>
             <div className='writer' style={{display:"flex"}}>
-                <div>{props.post.postId}&nbsp;&nbsp;</div>
-                <div>{props.post.member.nickname}&nbsp;&nbsp;</div>
-                <div style={{marginRight:10}}>{formatDate(props.post.writedate)}</div>
+                <div> 오늘의 추천 게시물 <br /></div>
+                <div>&nbsp;&nbsp;{props.postOne.postId}&nbsp;&nbsp;</div>
+                <div>{props.postOne.member.nickname}&nbsp;&nbsp;</div>
+                <div style={{marginRight:10}}>{formatDate(props.postOne.writedate)}</div>
                 {
                     ( 
-                        ( props.post.member.memberId != loginUser.memberId) &&
-                        ( !props.follower?.some( (follower)=>(props.post.member.memberId==follower.followed)) )
+                        ( props.postOne.member.memberId != loginUser.memberId) &&
+                        ( !props.follower?.some( (follower)=>(props.postOne.member.memberId==follower.followed)) )
                     )?
-                    (<button id='blueBtn' onClick={()=>{ onFollow(props.post.member.memberId) }} >FOLLOW</button>):
+                    (<button id='blueBtn' onClick={()=>{ onFollow(props.postOne.member.memberId) }} >FOLLOW</button>):
                     (null)
                 }
                 
@@ -192,7 +192,7 @@ const Post = (props) => {
                 </Slider>
             }    
             </div>
-            <div className='content' style={{fontWeight:"bold"}}><pre>{props.post.content}</pre></div>
+            <div className='content' style={{fontWeight:"bold"}}><pre>{props.postOne.content}</pre></div>
 
             <div className='like'>
                 {
@@ -259,4 +259,4 @@ const Post = (props) => {
     )
 }
 
-export default Post
+export default ToastPopupPost

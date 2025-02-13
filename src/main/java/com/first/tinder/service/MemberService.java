@@ -77,24 +77,50 @@ public class MemberService {
     @Autowired
     FollowRepository fr;
 
-    public void addFollow(Follow follow) {
-        Optional<Follow> followOptional = fr.findByFollowerAndFollowed(follow.getFollower(), follow.getFollowed());
-        if(followOptional.isPresent()) {
-            fr.delete(followOptional.get());
-            System.out.println("팔로우 취소");
-        }else{
-            fr.save(follow);
-            System.out.println("팔로우 합니다");
+    public void addFollow(int follower, int followed) {
+
+        Member followerMember = getMemberById(follower);
+        Member followedMember = getMemberById(followed);
+
+        Optional<Member> Follower = mr.findById(follower);
+        if(Follower.isPresent()) {
+            followerMember=Follower.get();
         }
+        Optional<Member> Followed = mr.findById(followed);
+        if(Followed.isPresent()) {
+            followedMember=Followed.get();
+        }
+
+        Optional<Follow> Follow = fr.findByFollowerAndFollowed(followerMember,followedMember);
+        if(Follow.isPresent()) {
+            fr.delete(Follow.get());
+        }else{
+            Follow follow = new Follow();
+            follow.setFollower(followerMember);
+            follow.setFollowed(followedMember);
+            fr.save(follow);
+        }
+
     }
 
-    public List<Follow> getFollower(int id) {
-       List<Follow> list = fr.findByFollower(id);
+//    public void addFollow(Follow follow) {
+//        Optional<Follow> followOptional = fr.findByFollowerAndFollowed(follow.getFollower(), follow.getFollowed());
+//        if(followOptional.isPresent()) {
+//            fr.delete(followOptional.get());
+//            System.out.println("팔로우 취소");
+//        }else{
+//            fr.save(follow);
+//            System.out.println("팔로우 합니다");
+//        }
+//    }
+
+    public List<Follow> getFollower(Member member) {
+       List<Follow> list = fr.findByFollower(member);
         return list;
     }
 
-    public List<Follow> getFollowed(int id) {
-        List<Follow> list = fr.findByFollowed(id);
+    public List<Follow> getFollowed(Member member) {
+        List<Follow> list = fr.findByFollowed(member);
         return list;
     }
 

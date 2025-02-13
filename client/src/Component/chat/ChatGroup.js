@@ -46,7 +46,7 @@ const ChatGroup = (props) => {
                         </div>
                     )
                 })
-            ):(null)
+            ):("Loading...")
         }
         </div>
 
