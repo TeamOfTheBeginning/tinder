@@ -40,12 +40,6 @@ public class PostService {
         return p;
     }
 
-    @Autowired
-    ImagesRepository ir;
-
-    public void insertImage(Images images) { ir.save(images) ; }
-
-
 //    public List<Post> getPostList(String word) {
 //        List<Post> list=null;
 //        if( word==null || word.equals("") ) {
@@ -78,6 +72,12 @@ public class PostService {
 //        }
 //        return list;
 //    }
+
+    @Autowired
+    ImagesRepository ir;
+
+    public void insertImage(Images images) {
+        ir.save(images) ; }
 
     public List<Images> getImagesList(Post post) {
         List<Images> list = ir.findByPost( post );

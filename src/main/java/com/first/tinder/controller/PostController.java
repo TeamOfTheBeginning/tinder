@@ -55,15 +55,32 @@ public class PostController {
         return result;
     }
 
-    @PostMapping("/writeimages")
-    public HashMap<String,Object> writeImages(@RequestBody Images images) {
+    @PostMapping("/writeImages")
+    public HashMap<String,Object> writeImages(@RequestBody HashMap<String, Object> request) {
         HashMap<String,Object> result = new HashMap<>();
-//        int postId = (int) data.get("post_id");
-        ps.insertImage( images );
+
+        // 요청 데이터에서 postId 및 savefileName 추출
+        int postId = (int) request.get("postId");
+        String savefileName = (String) request.get("savefileName");
+
+        // ✅ postId를 이용하여 Post 객체 조회
+        Post post = ps.getPostByPostId(postId);
+        if (post == null) {
+            result.put("error", "Post not found");
+            return result;
+        }
+
+        // ✅ Post 객체를 설정하여 Images 엔티티 생성
+        Images images = new Images();
+        images.setPost(post);
+        images.setSavefileName(savefileName);
+
+        // ✅ DB 저장
+        ps.insertImage(images);
+
         result.put("msg", "ok");
         return result;
     }
-
 
     @GetMapping("/getPostList")
     public HashMap<String,Object> getPostList(
