@@ -95,8 +95,7 @@ const WritePost = () => {
     async function onSubmit(){
         let result = await axios.post('/api/post/writePost', {
             content,
-            memberId:loginUser.memberId,
-            writer:loginUser.memberId
+            member: {memberId: loginUser.memberId}
         });
         
         const post_id = result.data.postid;
@@ -107,11 +106,11 @@ const WritePost = () => {
             postId: post_id,  // ✅ postId 명확하게 전달
             savefileName: imgList[i]
         });
+        // console.log("memberId: ", result.data.memberId);
+        // console.log("post_id : ", post_id);
+        // console.log("imgList : ", imgList);
     }
         navigate('/main');
-
-        console.log("post_id : ", post_id);
-        console.log("imgList : ", imgList);
     }
 
     return (
