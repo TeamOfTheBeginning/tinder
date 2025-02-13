@@ -162,7 +162,7 @@ button{
     position: fixed;
     top: 90px;  /* 화면 상단에서 20px 간격 */
     right: 20px; /* 화면 오른쪽에서 20px 간격 */
-    z-index: 9999; /* 다른 요소보다 위에 표시 */
+    z-index: 9998; /* 다른 요소보다 위에 표시 */
     opacity: 0; /* 초기 opacity 1 */
     animation: fadeInOut 4.5s ease-in-out; /* 애니메이션 추가 */
     background-color: rgba(0, 0, 0, .8);
@@ -184,6 +184,7 @@ button{
     }
     100% {
         opacity: 0; /* 끝날 때 투명 */
+        
     }
 }
 

@@ -98,11 +98,9 @@ const Notification = (props) => {
     axios.post(`/api/notification/updateNotificationRead`, null ,{ params: { notificationId , memberId:loginUser.memberId } })
     .then((result)=>{
       console.log("updateNotificationRead"+result.data.notificationList)
-      props.setNotificationList(result.data.notificationList)
-      
+      props.setNotificationList(result.data.notificationList)      
     }
     ).catch((err)=>{console.error(err)})
-
   }
   
 
@@ -127,7 +125,8 @@ const Notification = (props) => {
               <div key={idx}>
                 {notification.notificationId} - {notification.message}
                 <button onClick={() => updateNotificationRead(notification.notificationId)}>
-                {notification.notificationId}읽음
+                {notification.notificationId}
+                읽음
                 </button>
               </div>
             ))
