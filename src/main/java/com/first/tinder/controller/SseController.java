@@ -21,7 +21,7 @@ public class SseController {
 
     @GetMapping("/subscribe/{memberId}")
     public SseEmitter subscribe(@PathVariable Integer memberId) {
-        System.out.println("subscribe@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println("subscribe@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+memberId);
         return sseEmitterService.subscribe(memberId);
     }
 }

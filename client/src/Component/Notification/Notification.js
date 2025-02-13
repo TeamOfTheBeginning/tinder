@@ -41,6 +41,7 @@ const Notification = (props) => {
       };
 
       eventSource.addEventListener("notification", (event) => {
+        console.log("SSE 구독됨");
         const data = JSON.parse(event.data);
         // console.log("📢 새로운 알림:", data.notification.message);        
 
