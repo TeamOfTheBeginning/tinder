@@ -1,4 +1,4 @@
-.topmenu{
+/* .topmenu{
     height: 100px;
     display: flex;
 }
@@ -23,20 +23,19 @@
     flex-direction: row;
     align-items:center;
     justify-content: space-around;
-}
+} */
 
 /* 원형 버튼 */
-#btn{
+/* #btn{
     display: flex;
     justify-content: center;    align-items: center;
     width:40px;    height:40px;
-    background-color: #ed6ea0;
     border-radius: 50%;
     box-sizing:border-box;
-}
+} */
 
 /* 아이콘 */
-.topmenu .menu #btn svg {
+/* .topmenu .menu #btn svg {
     width: 30px;    height: 30px;
     color: #fff;
-}
+} */

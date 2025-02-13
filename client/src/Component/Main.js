@@ -55,9 +55,7 @@ const Main = () => {
 
             <Notification setNotificationList={setNotificationList} notificationList={notificationList}/>
 
-            <div className='left'>
-                <SideBar />
-            </div>
+            <SideBar />
             
             {/* post */}
             <div className='PostList'>
