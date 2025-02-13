@@ -41,6 +41,7 @@ const Login = () => {
                 dispatch( setFollower( res.data.follower ) )
                 dispatch( setFollowed( res.data.followed ) )
 
+                localStorage.setItem("nickname", lUser.nickname);
                 navigate('/main');
             }else{
                 setPwd("");
