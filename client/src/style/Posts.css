@@ -143,36 +143,55 @@ button{
 }
 
 
-.toast-popup {
+.toastPopup1 {
     position: fixed;
-    top: 20px;  /* 화면 상단에서 20px 간격 */
+    top: 90px;  /* 화면 상단에서 20px 간격 */
+    right: 20px; /* 화면 오른쪽에서 20px 간격 */
+    width: 20vw;
+    z-index: 9999; /* 다른 요소보다 위에 표시 */
+    opacity: 0; /* 초기 opacity 1 */
+    animation: fadeInOut 4.5s ease-in-out; /* 애니메이션 추가 */
+    background-color: rgba(0, 0, 0, .8);
+}
+
+.toastPopup1Title{
+    color: white;
+}
+
+.toastPopup2 {
+    position: fixed;
+    top: 90px;  /* 화면 상단에서 20px 간격 */
     right: 20px; /* 화면 오른쪽에서 20px 간격 */
     z-index: 9999; /* 다른 요소보다 위에 표시 */
-    opacity: 1; /* 초기 opacity 1 */
-    animation: fadeInOut 5s ease-in-out; /* 애니메이션 추가 */
+    opacity: 0; /* 초기 opacity 1 */
+    animation: fadeInOut 4.5s ease-in-out; /* 애니메이션 추가 */
     background-color: rgba(0, 0, 0, .8);
+}
+
+.toastPopup2Title{
+    color: white;
 }
 
 @keyframes fadeInOut {
     0% {
-        opacity: 0;
-        transform: translateY(20px); /* 아래에서 위로 애니메이션 */
+        opacity: 0; /* 처음엔 투명 */
     }
     10% {
-        opacity: 1;
-        transform: translateY(0);
+        opacity: 1; /* 10% 지점에서 완전히 불투명 */
     }
     90% {
-        opacity: 1;
-        transform: translateY(0);
+        opacity: 1; /* 나머지 동안은 불투명 */
     }
     100% {
-        opacity: 0;
-        transform: translateY(20px); /* 다시 아래로 내려가면서 사라짐 */
+        opacity: 0; /* 끝날 때 투명 */
     }
 }
 
 /* 마우스를 올려놓았을 때 타이머 멈추기 */
-.toast-popup:hover {
+.toastPopup1:hover {
+    animation-play-state: paused; /* 애니메이션 멈추기 */
+}
+
+.toastPopup2:hover {
     animation-play-state: paused; /* 애니메이션 멈추기 */
 }

@@ -74,7 +74,4 @@ public class MemberController2 {
         return result;
     }
 
-
-
-
 }

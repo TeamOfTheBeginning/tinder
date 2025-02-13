@@ -66,9 +66,9 @@ const Match = () => {
         <button className='matchBtn' onClick={()=>navigate('/main')}>돌아가기</button>
       </div>
 
-
+      <div className='matchMemberContainer'>
       <MatchingMember oppositeGender={oppositeGender}/>
-      
+      </div>
     </div>
   )
 }
