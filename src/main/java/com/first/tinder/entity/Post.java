@@ -17,7 +17,6 @@ public class Post {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id")
     Member member;
-    private int writer;
     private String content;
 
     @CreationTimestamp
