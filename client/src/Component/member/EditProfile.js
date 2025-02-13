@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import MainMenu from '../MainMenu';
+import SideBar from '../SideBar';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction, } from '../../store/userSlice';
@@ -105,7 +105,7 @@ const EditProfile = () => {
 
     return (
         <div className='loginform'>
-            <MainMenu  setWord={setWord}/>
+            <SideBar  setWord={setWord}/>
             <div className="logo" style={{fontSize:"2.0rem"}}>MEMBER EDIT</div>
             <div className='field'>
                 <label>E-MAIL</label>

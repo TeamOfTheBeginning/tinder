@@ -2,11 +2,10 @@ import React, {useState, useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import MainMenu from '../MainMenu';
 import SideBar from '../SideBar';
 
 import '../../style/sidebar.css'
-import '../../style/Posts.css'
+import '../../style/posts.css'
 import '../../style/writePost.css'
 
 import { useSelector } from 'react-redux';
@@ -94,17 +93,25 @@ const WritePost = () => {
     }
 
     async function onSubmit(){
-        let result = await axios.post('/api/post/writePost', {content, memberId:loginUser.memberId, writer:loginUser.memberId})
+        let result = await axios.post('/api/post/writePost', {
+            content,
+            memberId:loginUser.memberId,
+            writer:loginUser.memberId
+        });
         
-        const post_id = result.data.post;
+        const post_id = result.data.postid;
 
-        // id하고 이미지 리스트의 이미지이름들로 images 테이블에 이미지 갯수만큼 레코드를 추가
-        for(let i=0; i<imgList.length; i++){
-            await axios.post('/api/post/writeimages', {post_id, savefileName:imgList[i]})
-        }
+        // ✅ postId를 HashMap 형태로 백엔드에 전달
+        for (let i = 0; i < imgList.length; i++) {
+        await axios.post('/api/post/writeImages', {
+            postId: post_id,  // ✅ postId 명확하게 전달
+            savefileName: imgList[i]
+        });
+    }
         navigate('/main');
 
-        console.log(post_id);
+        console.log("post_id : ", post_id);
+        console.log("imgList : ", imgList);
     }
 
     return (
