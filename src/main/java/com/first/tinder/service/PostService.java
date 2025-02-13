@@ -5,11 +5,15 @@ import com.first.tinder.dto.Paging;
 import com.first.tinder.entity.*;
 import com.first.tinder.service.dao.PostDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -33,11 +37,11 @@ public class PostService {
     SseEmitterService ses;
 
     public Post insertPost(Post post) {
-        Optional<Member> member = mr.findById( post.getWriter() );
-        if (member.isPresent()) post.setMember( member.get() );
-        Post p = pr.save(post);
-        int postId = p.getPostId();  // 방금 추가된 레코드의  id 저장
-        return p;
+    Optional<Member> member = mr.findById(post.getMember().getMemberId());
+    if (member.isPresent()) post.setMember(member.get());
+    Post p = pr.save(post);
+    int postId = p.getPostId();
+    return p;
     }
 
 //    public List<Post> getPostList(String word) {
@@ -211,9 +215,19 @@ public class PostService {
     }
 
 
+    public Post getPostOneWithin3daysOrderByRand() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -3);
+        Timestamp threeDaysAgo = new Timestamp(cal.getTimeInMillis());
 
+        // Pageable로 한 개의 결과만 가져오기
+        Pageable pageable = PageRequest.of(0, 1);
 
+        List<Post> posts = pr.findRandomPostWithinLast3Days(threeDaysAgo, pageable);
 
+        // 게시글이 있으면 첫 번째 게시글을 리턴, 없으면 null
+        return posts.isEmpty() ? null : posts.get(0);
+    }
 }
 
 

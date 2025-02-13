@@ -13,6 +13,7 @@ import FindChatGroup from "./Component/chat/FindChatGroup"
 import ChatRoomFromChatGroup from "./Component/chat/ChatRoomFromChatGroup";
 import ChatRoomFromMatch from "./Component/chat/ChatRoomFromMatch"
 import RealTimeChat from "./Component/realtimechat/RealTimeChat"
+import Search from "./Component/search/Search"
 
 
 function App() {
