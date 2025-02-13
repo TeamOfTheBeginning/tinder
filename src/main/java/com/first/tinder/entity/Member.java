@@ -40,7 +40,7 @@ public class Member {
     private String zipnum;
     private String address;
 
-    @ElementCollection(fetch = FetchType.LAZY)  // 테이블의 리스트가 아니라 단순데이터(String, Integer 등)이라고 MySQL 에 알려주는 어너테이션
+    @ElementCollection(fetch = FetchType.EAGER)  // 테이블의 리스트가 아니라 단순데이터(String, Integer 등)이라고 MySQL 에 알려주는 어너테이션
     @Builder.Default
     private List<MemberRole> memberRoleList = new ArrayList<MemberRole>();
 }

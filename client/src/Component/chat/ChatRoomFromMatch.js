@@ -63,13 +63,25 @@ const ChatRoomFromMatch = () => {
         {
             (chatList)?(
                 chatList.map((chat, idx)=>{
+
+                    const isOwnMessage = String(chat.sender.memberId) === String(loginUser.memberId);
+                    console.log("chat.sender.memberId"+chat.sender.memberId+"loginUser.memberId"+loginUser.memberId)
+                    console.log("isOwnMessage"+isOwnMessage)
+
                     return (
-                        <div key={idx} className='chat'>
-                            {chat.sender.nickname}&nbsp;{chat.content} &nbsp; {formatDate(chat.createdat)}
+                        <div key={idx} className={`chat ${isOwnMessage ? 'myChat' : ''}`}>
+                            <div className='chatContainer'>
+                                <div className='chatImg'>
+                                    <img src={`${process.env.REACT_APP_ADDRESS2}/userImg/${chat.sender.profileImg}`}/>&nbsp;
+                                </div>
+                                <div className='chatContent'>
+                                    {chat.sender.nickname}&nbsp; {formatDate(chat.createdat)}&nbsp;<br/>{chat.content} &nbsp; 
+                                </div>
+                            </div>
                         </div>
                     )
                 })
-            ):(null)
+            ):("Loading...")
         }
         </div>
 

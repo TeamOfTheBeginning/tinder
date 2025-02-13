@@ -96,6 +96,17 @@ public class PostController {
         return result;
     }
 
+    @GetMapping("/getPostOneWithin3daysOrderByRand")
+    public HashMap<String,Object> getPostOneWithin3daysOrderByRand(
+                ){
+        HashMap<String,Object> result = new HashMap<>();
+
+        Post postOne = ps.getPostOneWithin3daysOrderByRand();
+        System.out.println("postOne"+postOne.getPostId());
+        result.put("postOne",postOne);
+        return result;
+    }
+
     @GetMapping("/getImages/{postId}")
     public HashMap<String,Object> getImages(@PathVariable("postId") int postId) {
         HashMap<String,Object> result = new HashMap<>();
@@ -121,7 +132,6 @@ public class PostController {
             @RequestParam("postId") int postId,
             @RequestParam("memberId") int memberId
     ) {
-
         System.out.println("addLike postId : "+postId+" addLike memberId: "+memberId);
         HashMap<String,Object> result = new HashMap<>();
         ps.insertLikes(postId,memberId);
@@ -159,6 +169,5 @@ public class PostController {
         ps.deleteReply( replyId );
         result.put("msg", "ok");
         return result;
-
     }
 }

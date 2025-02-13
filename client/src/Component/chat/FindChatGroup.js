@@ -40,7 +40,7 @@ const FindChatGroup = () => {
               </div>
             )
           })
-        ):(null)
+        ):("Loading...")
       }
             
       <button onClick={()=>navigate(-1)}>돌아가기</button>

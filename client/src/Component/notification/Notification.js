@@ -41,6 +41,7 @@ const Notification = (props) => {
       };
 
       eventSource.addEventListener("notification", (event) => {
+        console.log("SSE 구독됨");
         const data = JSON.parse(event.data);
         // console.log("📢 새로운 알림:", data.notification.message);        
 
@@ -97,11 +98,9 @@ const Notification = (props) => {
     axios.post(`/api/notification/updateNotificationRead`, null ,{ params: { notificationId , memberId:loginUser.memberId } })
     .then((result)=>{
       console.log("updateNotificationRead"+result.data.notificationList)
-      props.setNotificationList(result.data.notificationList)
-      
+      props.setNotificationList(result.data.notificationList)      
     }
     ).catch((err)=>{console.error(err)})
-
   }
   
 
@@ -126,7 +125,8 @@ const Notification = (props) => {
               <div key={idx}>
                 {notification.notificationId} - {notification.message}
                 <button onClick={() => updateNotificationRead(notification.notificationId)}>
-                {notification.notificationId}읽음
+                {notification.notificationId}
+                읽음
                 </button>
               </div>
             ))
