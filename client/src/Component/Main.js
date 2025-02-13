@@ -144,9 +144,7 @@ const Main = () => {
 
             
 
-            <div className='left'>
-                <SideBar />
-            </div>
+            <SideBar />
             
             {/* post */}
             <div className='PostList'>

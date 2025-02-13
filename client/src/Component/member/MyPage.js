@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import '../../style/mypage.css'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import MainMenu from '../MainMenu';
+import SideBar from '../SideBar';
 import { useSelector } from 'react-redux';
 import Modal from './FollowModal';
 
@@ -36,7 +36,7 @@ const MyPage = () => {
 
     return (
         <div className='mypage'>
-            <MainMenu  setWord={setWord}/>
+            <SideBar  setWord={setWord}/>
             <div className='userinfo'>
                 <div className='img'>
                     <img src={imgSrc} />
