@@ -105,7 +105,6 @@ const EditProfile = () => {
 
     return (
         <div className='loginform'>
-            <SideBar  setWord={setWord}/>
             <div className="logo" style={{fontSize:"2.0rem"}}>MEMBER EDIT</div>
             <div className='field'>
                 <label>E-MAIL</label>

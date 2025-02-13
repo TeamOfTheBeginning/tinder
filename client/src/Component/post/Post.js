@@ -76,7 +76,7 @@ const Post = (props) => {
 
     async function onFollow(memberId){
         if( window.confirm(`${props.post.member.nickname} 님을 팔로우 하시겠습니까?`) ){
-            let result = await axios.post('/api/member/follow', { follower:loginUser.memberId,  followed:memberId });
+            let result = await axios.post('/api/member/follow',null, {params:{ follower:loginUser.memberId,  followed:memberId }});
 
             result = await axios.get('/api/member/getLoginUser')
             // props.setFollower( [...result.data.follower] ) // 현재 운영중인  props.followings 변수 갱신
