@@ -19,8 +19,7 @@ public class MemberController2 {
 
     @GetMapping("/getOppositeGender")
     public HashMap<String, Object> getOppositeGender(@RequestParam("gender") int gender,
-         @RequestParam("age") int age
-                                                     ) {
+         @RequestParam("age") int age) {
         HashMap<String, Object> result = new HashMap<>();
         System.out.println("gender1 : "+gender);
         System.out.println("age1 : "+age);
@@ -49,7 +48,6 @@ public class MemberController2 {
     public HashMap<String, Object> insertMemberLike(@RequestBody MemberLikes memberLikes) {
         HashMap<String, Object> result = new HashMap<>();
         System.out.println("memberLikes"+memberLikes);
-
         result.put("msg", ms2.checkLikes(memberLikes));
         return result;
     }
@@ -58,7 +56,6 @@ public class MemberController2 {
     public HashMap<String, Object> findLiker(@RequestParam("memberId") int memberId) {
         HashMap<String, Object> result = new HashMap<>();
         System.out.println("findLiker memberId : "+memberId);
-
         List<Member> likerList = ms2.findLiker(memberId);
         result.put("likerList", likerList);
         return result;

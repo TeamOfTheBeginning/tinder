@@ -132,7 +132,6 @@ public class PostController {
             @RequestParam("postId") int postId,
             @RequestParam("memberId") int memberId
     ) {
-
         System.out.println("addLike postId : "+postId+" addLike memberId: "+memberId);
         HashMap<String,Object> result = new HashMap<>();
         ps.insertLikes(postId,memberId);
@@ -170,6 +169,5 @@ public class PostController {
         ps.deleteReply( replyId );
         result.put("msg", "ok");
         return result;
-
     }
 }

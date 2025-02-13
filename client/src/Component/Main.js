@@ -98,7 +98,11 @@ const Main = () => {
         startTimer(remainingTime);
     };
 
+    const [isAnimationEnded, setIsAnimationEnded] = useState(false);
 
+    const handleAnimationEnd = () => {
+        setIsAnimationEnded(true);
+    };
 
 
 
@@ -116,6 +120,8 @@ const Main = () => {
                     className="toastPopup1"
                     onMouseEnter={pauseTimer}  // 마우스 오버 시 타이머 중단
                     onMouseLeave={resumeTimer} // 마우스 떠날 때 남은 시간부터 다시 시작
+                    onAnimationEnd={handleAnimationEnd} // 애니메이션 종료 후 처리
+                    style={{ pointerEvents: isAnimationEnded ? 'none' : 'auto' }} 
                 >
                     <div className='toastPopup1Title'>오늘의 추천 맴버</div>
                     <MatchingMember oppositeGender={oppositeGender}/>
@@ -127,6 +133,8 @@ const Main = () => {
                     className="toastPopup2"
                     onMouseEnter={pauseTimer}  // 마우스 오버 시 타이머 중단
                     onMouseLeave={resumeTimer} // 마우스 떠날 때 남은 시간부터 다시 시작
+                    onAnimationEnd={handleAnimationEnd} // 애니메이션 종료 후 처리
+                    style={{ pointerEvents: isAnimationEnded ? 'none' : 'auto' }} 
                 >
                     <div className='toastPopup2Title'>오늘의 추천 포스트</div>
                     <Post post={postOne}  followed={followed}  setFollowed={setFollowed} />
