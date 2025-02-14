@@ -203,7 +203,7 @@ function requestIdentityVerification() {
 }
 
 
-const handleIdentityVerification = async () => {
+    const handleIdentityVerification = async () => {
     setLoading(true);
     try {
       const response = await PortOne.requestIdentityVerification({
@@ -220,7 +220,7 @@ const handleIdentityVerification = async () => {
         return alert(response.message);
       }
 
-      const verificationResult = await fetch('/api/identityVerifications/verifyIdentity', {
+      const verificationResult = await fetch('/api/identityVerifications/verifyIdentity1', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -261,6 +261,7 @@ const handleIdentityVerification = async () => {
 
 
     return (
+
         <div className='join-form-container'>
             <div className='loginform'>
                 <div className="logo" style={{fontSize:"2.0rem"}}>Member Join</div>
@@ -323,16 +324,17 @@ const handleIdentityVerification = async () => {
                     <div><img src={imgSrc} style={imgStyle} /></div>
                 </div>
 
-            <div className='btns'>
-                <div id="btn" onClick={ ()=>{   handleIdentityVerification()    }  }>인증</div>
-                <div id="btn" onClick={ ()=>{   onSubmit()    }  }>JOIN</div>
-                <div id="btn" onClick={ ()=>{ navigate('/')   }  }>BACK</div>
+                <div className='btns'>
+                    <div id="btn" onClick={ ()=>{   handleIdentityVerification()    }  }>인증</div>
+                    <div id="btn" onClick={ ()=>{   onSubmit()    }  }>JOIN</div>
+                    <div id="btn" onClick={ ()=>{ navigate('/')   }  }>BACK</div>
+                </div>
+                <AddressModal
+                        isOpen={isAddressModalOpen}
+                        onClose={() => setIsAddressModalOpen(false)}
+                        onComplete={handleComplete}
+                />
             </div>
-            <AddressModal
-                    isOpen={isAddressModalOpen}
-                    onClose={() => setIsAddressModalOpen(false)}
-                    onComplete={handleComplete}
-            />
         </div>
 
 
