@@ -1,8 +1,45 @@
 import React, {useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import * as PortOne from "@portone/browser-sdk/v2";
 import '../../style/login.css';
+
+
+// const verificationResult = await fetch('/api/member2/authentication', {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({
+//         identityVerificationId,
+//     }),
+// });
+
+// const options = {
+//     method: 'POST',
+//     url: 'https://api.portone.io/identity-verifications/identityVerificationId/send',
+//     headers: {'Content-Type': 'application/json'},
+//     data: {channelKey: 'store-0ef99292-e8d5-4956-a265-e1ec0ee73634', customer: null, operator: null, method: null}
+//   };
+  
+//   try {
+//     const { data } = await axios.request(options);
+//     console.log(data);
+//   } catch (error) {
+//     console.error(error);
+// }
+
+// const response = await PortOne.requestIdentityVerification({
+//     // Store ID 설정
+//     storeId: "store-0ef99292-e8d5-4956-a265-e1ec0ee73634",
+//     // 채널 키 설정
+//     channelKey: "channel-key-25d873a4-cbf7-4561-b583-4417087fdb76",
+//     paymentId: `payment-${crypto.randomUUID()}`,
+//     // orderName: "본인 인증",
+//     // totalAmount: 1000,
+//     // currency: "CURRENCY_KRW",
+//     // payMethod: "CARD",
+// });
+
+
 
 const JoinForm = () => {
 
@@ -19,6 +56,8 @@ const JoinForm = () => {
     const [imgSrc, setImgSrc] = useState('')
     const [imgStyle, setImgStyle] = useState({display:"none"});
     const [birthDate, setBirthDate] = useState('');
+    const [loading, setLoading] = useState(false);
+    
 
     const navigate = useNavigate();
 
@@ -77,6 +116,99 @@ const JoinForm = () => {
         setProfileimg(result.data.filename)
     }
 
+
+
+   
+// function requestPayment() {
+//   PortOne.requestPayment({
+//     storeId: "store-4ff4af41-85e3-4559-8eb8-0d08a2c6ceec", // 고객사 storeId로 변경해주세요.
+//     channelKey: "channel-key-9987cb87-6458-4888-b94e-68d9a2da896d", // 콘솔 결제 연동 화면에서 채널 연동 시 생성된 채널 키를 입력해주세요.
+//     paymentId: `payment${crypto.randomUUID()}`,
+//     orderName: "나이키 와플 트레이너 2 SD",
+//     totalAmount: 1000,
+//     currency: "CURRENCY_KRW",
+//     payMethod: "CARD",
+//     customer: {
+//       fullName: "포트원",
+//       phoneNumber: "010-0000-1234",
+//       email: "test@portone.io",
+//     },
+//   });
+// }
+
+function requestIdentityVerification() {
+  PortOne.requestIdentityVerification({
+    // 고객사 storeId로 변경해주세요.
+    storeId: "store-0ef99292-e8d5-4956-a265-e1ec0ee73634",
+    identityVerificationId: `identity-verification-${crypto.randomUUID()}`,
+    // 연동 정보 메뉴의 채널 관리 탭에서 확인 가능합니다.
+    channelKey: "channel-key-25d873a4-cbf7-4561-b583-4417087fdb76",
+    });
+
+
+    // if (response.code !== undefined) {
+    //     return alert(response.message);
+    // }
+}
+
+
+const handleIdentityVerification = async () => {
+    setLoading(true);
+    try {
+      const response = await PortOne.requestIdentityVerification({
+        // 고객사 storeId로 변경해주세요.
+        storeId: "store-0ef99292-e8d5-4956-a265-e1ec0ee73634",
+        identityVerificationId: `identity-verification-${crypto.randomUUID()}`,
+        // 연동 정보 메뉴의 채널 관리 탭에서 확인 가능합니다.
+        channelKey: "channel-key-a6f549c2-b895-4933-ad92-117931b006a5",
+      });
+      
+      console.log('결제 요청 응답:', response);
+
+      if (response.code !== undefined) {
+        return alert(response.message);
+      }
+      
+      const verificationResult = await fetch('/api/identityVerifications/verifyIdentity', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            identityVerificationId:response.identityVerificationId,
+        }),
+      })
+      .then(response => response.json())  // JSON 응답을 파싱
+        .then(data => {
+            // 응답 데이터 처리
+            if (data === "Identity Verified") {
+            console.log("인증 성공!");
+            } else if (data === "Verification Failed") {
+            console.log("인증 실패!");
+            } else if (data === "API Error") {
+            console.log("API 오류 발생!");
+            } else if (data === "API Request Failed") {
+            console.log("API 요청 실패!");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+      console.log("verificationResult"+JSON.stringify(verificationResult))
+
+
+    } catch (error) {
+      console.error('본인 인증 오류:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+    
+    
+    
+      
+    
+      
+
     return (
         <div className='loginform'>
             <div className="logo" style={{fontSize:"2.0rem"}}>Member Join</div>
@@ -133,6 +265,7 @@ const JoinForm = () => {
             </div>
 
             <div className='btns'>
+                <div id="btn" onClick={ ()=>{   handleIdentityVerification()    }  }>인증</div>
                 <div id="btn" onClick={ ()=>{   onSubmit()    }  }>JOIN</div>
                 <div id="btn" onClick={ ()=>{ navigate('/')   }  }>BACK</div>
             </div>
