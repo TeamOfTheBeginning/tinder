@@ -1,24 +1,16 @@
 package com.first.tinder.dto.realtimechat;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.first.tinder.common.enums.MessageType;
 import lombok.*;
 
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Getter
-@Setter
 @Builder
 public class MessageResponseDTO {
-    @JsonProperty("type")
-    private MessageType type;
-
-    @JsonProperty("content")
-    private String content;
-
-    @JsonProperty("sessionId")
-    private String sessionId;
-
-    @JsonProperty("nickname")
-    private String nickname;
+    private final MessageType type;
+    private final String content;
+    private final String sessionId;
+    private final String nickname;
+    private final String profileImg;
 }

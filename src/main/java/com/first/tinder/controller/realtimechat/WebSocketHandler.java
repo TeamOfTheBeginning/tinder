@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -20,28 +19,20 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebSocketHandler {
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final Map<String, String> sessionNicknames = new ConcurrentHashMap<>();
 
     @EventListener
     public void handleSessionConnect(SessionConnectEvent event) {
         SimpMessageHeaderAccessor accessor = SimpMessageHeaderAccessor.wrap(event.getMessage());
-        String nickname = accessor.getFirstNativeHeader("nickname");
-
-        if (nickname == null || nickname.trim().isEmpty()) {
-            log.warn("Nickname is missing in CONNECT headers.");
-            nickname = "Guest_" + accessor.getSessionId();
-        }
-
         String sessionId = accessor.getSessionId();
-        sessionNicknames.put(sessionId, nickname);
+        String nickname = accessor.getFirstNativeHeader("nickname");
+        nickname = (nickname == null || nickname.trim().isEmpty()) ? "Guest_" + sessionId : nickname;
 
-        if (accessor.getSessionAttributes() != null) {
-            accessor.getSessionAttributes().put("nickname", nickname);
-        } else {
-            log.error("Session attributes are null! Cannot store nickname.");
+        if (accessor.getSessionAttributes() == null) {
+            accessor.setSessionAttributes(new ConcurrentHashMap<>());
         }
+        accessor.getSessionAttributes().put("nickname", nickname);
 
-        log.info("[SessionConnected]: sessionId = " + sessionId + ", nickname = " + nickname);
+        log.info("[SessionConnected]: sessionId = {}, nickname = {}", sessionId, nickname);
 
         MessageResponseDTO responsedto = MessageResponseDTO.builder()
                 .type(MessageType.SYSTEM)
@@ -55,14 +46,11 @@ public class WebSocketHandler {
 
     @EventListener
     public void handleSessionDisconnect(SessionDisconnectEvent event) {
-        String sessionId = SimpMessageHeaderAccessor.wrap(event.getMessage()).getSessionId();
-        String nickname = sessionNicknames.remove(sessionId);
+        SimpMessageHeaderAccessor accessor = SimpMessageHeaderAccessor.wrap(event.getMessage());
+        String sessionId = accessor.getSessionId();
+        String nickname = (String) accessor.getSessionAttributes().getOrDefault("nickname", "Unknown User");
 
-        if (nickname == null) {
-            nickname = "Unknown User";
-        }
-
-        log.info("[SessionDisconnected]: sessionId = " + sessionId + ", nickname = " + nickname);
+        log.info("[SessionDisconnected]: sessionId = {}, nickname = {}", sessionId, nickname);
 
         MessageResponseDTO responsedto = MessageResponseDTO.builder()
                 .type(MessageType.SYSTEM)

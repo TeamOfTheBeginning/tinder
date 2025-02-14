@@ -66,15 +66,23 @@
     margin-left: 10px;
     padding: 10px 15px;
     border: none;
-    background-color: #007bff;
+    background-color: #ed6ea0;
     color: white;
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s;
     height: 40px;
+    font-size: 15px;
   }
   
   .chat-input button:hover {
-    background-color: #0056b3;
+    background-color: #e5577c;
+  }
+
+  .chat-h{
+    background-color: black;
+  }
+  .chat-h:hover{
+    background-color: white;
   }
   
