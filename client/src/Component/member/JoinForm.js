@@ -1,8 +1,10 @@
 import React, {useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
+import DaumPostcode from 'react-daum-postcode';
 import axios from "axios";
 import * as PortOne from "@portone/browser-sdk/v2";
 import '../../style/login.css';
+import AddressModal from './AddressModal';
 
 
 // const verificationResult = await fetch('/api/member2/authentication', {
@@ -19,7 +21,7 @@ import '../../style/login.css';
 //     headers: {'Content-Type': 'application/json'},
 //     data: {channelKey: 'store-0ef99292-e8d5-4956-a265-e1ec0ee73634', customer: null, operator: null, method: null}
 //   };
-  
+
 //   try {
 //     const { data } = await axios.request(options);
 //     console.log(data);
@@ -51,14 +53,61 @@ const JoinForm = () => {
     const [age, setAge] = useState('')
     const [phone, setPhone] = useState('')
     const [intro, setIntro] = useState('')
+    const [address, setAddress] = useState('');
     const [zipnum, setZipnum] = useState('')
     const [profileimg, setProfileimg] = useState('')
     const [imgSrc, setImgSrc] = useState('')
     const [imgStyle, setImgStyle] = useState({display:"none"});
     const [birthDate, setBirthDate] = useState('');
     const [loading, setLoading] = useState(false);
-    
 
+    const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+    const [latitude, setLatitude] = useState('');
+    const [longitude, setLongitude] = useState('');
+
+
+    const convertAddressToCoordinates = (address) => {
+        return new Promise((resolve, reject) => {
+            const geocoder = new window.kakao.maps.services.Geocoder();
+            geocoder.addressSearch(address, (result, status) => {
+                if (status === window.kakao.maps.services.Status.OK) {
+                    resolve({
+                        latitude: result[0].y,
+                        longitude: result[0].x
+                    });
+                } else {
+                    reject(new Error('주소를 변환할 수 없습니다.'));
+                }
+            });
+        });
+    };
+
+        const handleComplete = async (data) => {
+            let fullAddress = data.address;
+            let extraAddress = '';
+
+            if (data.addressType === 'R') {
+                if (data.bname !== '') {
+                    extraAddress += data.bname;
+                }
+                if (data.buildingName !== '') {
+                    extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+                }
+                fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+            }
+
+            setZipnum(data.zonecode);
+            setAddress(fullAddress);
+            try {
+                const coordinates = await convertAddressToCoordinates(fullAddress);
+                setLatitude(coordinates.latitude);
+                setLongitude(coordinates.longitude);
+            } catch (error) {
+                console.error('주소 변환 중 오류 발생:', error);
+                alert('주소를 좌표로 변환하는 데 실패했습니다.');
+            }
+            setIsAddressModalOpen(false);
+        };
     const navigate = useNavigate();
 
     const handleBirthDateChange = (e) => {
@@ -83,7 +132,9 @@ const JoinForm = () => {
     };
 
     async function onSubmit(){
-        console.log(birthDate)
+        console.log(longitude)
+        console.log(latitude)
+        console.log(address)
         if(email==''){ return alert('이메일을 입력하세요');}
         if(pwd==''){ return alert('패스워드를 입력하세요');}
         if(pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
@@ -98,7 +149,7 @@ const JoinForm = () => {
             if(result.data.msg == 'no' ){
                 return alert('닉네임이 중복됩니다');
             }
-            result = await axios.post('/api/member/join', {email, pwd, age, gender, nickname, phone, birthDate ,profileMsg : intro, profileImg :profileimg, zipnum});
+            result = await axios.post('/api/member/join', {email, pwd, age, gender, nickname, phone, birthDate , address, latitude, longitude, profileMsg : intro, profileImg :profileimg, zipnum});
             if(result.data.msg =='ok'){
                 alert('회원 가입이 완료되었습니다. 로그인하세요');
                 navigate('/');
@@ -118,7 +169,7 @@ const JoinForm = () => {
 
 
 
-   
+
 // function requestPayment() {
 //   PortOne.requestPayment({
 //     storeId: "store-4ff4af41-85e3-4559-8eb8-0d08a2c6ceec", // 고객사 storeId로 변경해주세요.
@@ -162,13 +213,13 @@ const handleIdentityVerification = async () => {
         // 연동 정보 메뉴의 채널 관리 탭에서 확인 가능합니다.
         channelKey: "channel-key-a6f549c2-b895-4933-ad92-117931b006a5",
       });
-      
+
       console.log('결제 요청 응답:', response);
 
       if (response.code !== undefined) {
         return alert(response.message);
       }
-      
+
       const verificationResult = await fetch('/api/identityVerifications/verifyIdentity', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -202,75 +253,95 @@ const handleIdentityVerification = async () => {
       setLoading(false);
     }
   };
-    
-    
-    
-      
-    
-      
+
+
+
+
+
+
 
     return (
-        <div className='loginform'>
-            <div className="logo" style={{fontSize:"2.0rem"}}>Member Join</div>
-            <div className='field'>
-                <label>E-MAIL</label>
-                <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
-            </div>
-            <div className='field'>
-                <label>PASSWORD</label>
-                <input type="password"  value={pwd} onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
-            </div>
-            <div className='field'>
-                <label>RETYPE PW</label>
-                <input type="password"  value={pwdChk} onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
-            </div>
-            <div className='field'>
-                <label>NICKNAME</label>
-                <input type="text"  value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
-            </div>
-            <div className='field'>
-                <label style={{flex:2}}>GENDER</label>
-                <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}>
-                    <option value='0'>남성</option>    
-                    <option value='1'>여성</option>
-                </select>
-                <label style={{flex:2}}>BIRTHDATE</label>
-                <input
-                    style={{flex:3}}
-                    type="date"
-                    value={birthDate}
-                    onChange={handleBirthDateChange}
-                    required
-                />
-            </div>
-            <div className='field'>
-                <label>PHONE</label>
-                <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}}/>
-            </div>
-            <div className='field'>
-                <label>ADDRESS</label>
-                <input type="text"  value={zipnum} onChange={(e)=>{setZipnum(e.currentTarget.value)}}/>
-            </div>
-            <div className='field'>
-                <label>INTRO</label>
-                <input type="text"  value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
-            </div>
-            <div className='field'>
-                <label>PROFILE IMG</label>
-                <input type="file" onChange={(e)=>{fileUpload(e)}}/>
-            </div>
-            <div className='field'>
-                <label>Profile img preview</label>
-                <div><img src={imgSrc} style={imgStyle} /></div>
-            </div>
+        <div className='join-form-container'>
+            <div className='loginform'>
+                <div className="logo" style={{fontSize:"2.0rem"}}>Member Join</div>
+                <div className='field'>
+                    <label>E-MAIL</label>
+                    <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
+                </div>
+                <div className='field'>
+                    <label>PASSWORD</label>
+                    <input type="password"  value={pwd} onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
+                </div>
+                <div className='field'>
+                    <label>RETYPE PW</label>
+                    <input type="password"  value={pwdChk} onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
+                </div>
+                <div className='field'>
+                    <label>NICKNAME</label>
+                    <input type="text"  value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
+                </div>
+                <div className='field'>
+                    <label style={{flex:2}}>GENDER</label>
+                    <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}>
+                        <option value='0'>남성</option>
+                        <option value='1'>여성</option>
+                    </select>
+                    <label style={{flex:2}}>BIRTHDATE</label>
+                    <input
+                        style={{flex:3}}
+                        type="date"
+                        value={birthDate}
+                        onChange={handleBirthDateChange}
+                        required
+                    />
+
+                </div>
+                <div className='field'>
+                    <label>PHONE</label>
+                    <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}}/>
+                </div>
+                <div className='field'>
+                    <label>ADDRESS</label>
+                    <input style={{flex:'3.2'}} type="text" value={zipnum} readOnly placeholder="우편번호" />
+                    <button onClick={() => setIsAddressModalOpen(true)}>주소 검색</button>
+                </div>
+                <div className='field'>
+                    <label style={{flex:1}}></label>
+                    <input type="text" value={address} readOnly placeholder="주소" />
+
+                </div>
+                <div className='field'>
+                    <label>INTRO</label>
+                    <input type="text"  value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
+                </div>
+                <div className='field'>
+                    <label>PROFILE IMG</label>
+                    <input type="file" onChange={(e)=>{fileUpload(e)}}/>
+                </div>
+                <div className='field'>
+                    <label>Profile img preview</label>
+                    <div><img src={imgSrc} style={imgStyle} /></div>
+                </div>
 
             <div className='btns'>
                 <div id="btn" onClick={ ()=>{   handleIdentityVerification()    }  }>인증</div>
                 <div id="btn" onClick={ ()=>{   onSubmit()    }  }>JOIN</div>
                 <div id="btn" onClick={ ()=>{ navigate('/')   }  }>BACK</div>
             </div>
+            <AddressModal
+                    isOpen={isAddressModalOpen}
+                    onClose={() => setIsAddressModalOpen(false)}
+                    onComplete={handleComplete}
+            />
         </div>
+
+
+
     )
+
+
 }
+
+
 
 export default JoinForm

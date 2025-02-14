@@ -108,6 +108,47 @@
     height: 30px;
 }
 
+/* 모달창 */
+
+.join-form-container {
+    position: relative;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 5px;
+    position: relative;
+    width: 600px;
+    max-width: 90%;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #333;
+  }
+  
+  
+  
 
 
 /* 반응형 스타일 */

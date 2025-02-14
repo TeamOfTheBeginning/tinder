@@ -1,7 +1,10 @@
+/* MenuBar (왼쪽 고정) */
 .MenuBar {
     position: fixed;
+    left: 0;
+    top: 0;
     width: 55px;
-    height: 96vh;
+    height: 100vh;
     padding-top: 45px;
     display: flex;
     justify-content: center;
@@ -9,33 +12,26 @@
     background-size: 400% 100%;
     border-radius: 0 50px 50px 0;
     animation: colorChange 3s ease infinite;
+    z-index: 1001;  /* SideViewer보다 위에 있도록 설정 */
 }
 
-@keyframes colorChange{
-    0%{
-        background-position: 0% 50%;
-    }
-    50%{
-        background-position: 100% 50%;
-    }
-    100%{
-        background-position: 0% 50%;
-    }
+@keyframes colorChange {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .MenubarBtns {
-    display: flex; flex-direction: column;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    width:40px;    height:40px;
-    border-radius: 50%;
-    box-sizing:border-box;
 }
 
-/* 프로필 이미지 */
 .profileImg {
-    border: 1px solid red;
     border-radius: 50%;
-    box-sizing: border-box;
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
 }
 .profileImg img {
     width: 100%;
@@ -56,18 +52,33 @@
     transition: transform 0.1s ease-in-out;
 }
 
-.btn svg:hover{
+.btn svg:hover {
     cursor: pointer;
     transform: scale(1.3);
 }
 
+
+/* SideViewer 기본 스타일 */
 .SideViewer {
-    position: absolute;
-    left: -500px;
+    position: fixed;
+    top: 0;
+    left: 55px; /* MenuBar 바로 오른쪽 */
     width: 500px;
     height: 100%;
-    padding-top: 45px;
-    background-color: rgba(237, 110, 161, 0.5);
+    /* background-color: rgba(237, 110, 161, 0.9); */
+    background-color: #fff;
     border-radius: 0 50px 50px 0;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* 숨길 때 클릭 방지 */
+    z-index: 1000;
+}
+
+/* SideViewer가 열릴 때 */
+.SideViewer.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto; /* 클릭 가능 */
 }
