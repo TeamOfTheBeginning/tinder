@@ -1,14 +1,11 @@
 package com.first.tinder.dto.realtimechat;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Getter
-@Setter
 @Builder
 public class MessageRequestDTO {
-    @JsonProperty("content")
-    private String content;
+    private final String content;
 }
