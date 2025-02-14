@@ -33,6 +33,8 @@ public class Member {
     private int age;
     @Temporal(TemporalType.DATE)
     private Date birthDate;
+    private Double latitude;
+    private Double longitude;
     private String profileImg;
     private String profileMsg;
     private String snsId;
