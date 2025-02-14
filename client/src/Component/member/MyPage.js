@@ -15,10 +15,16 @@ const MyPage = () => {
     const navigate=useNavigate();
     const [word, setWord] = useState('n');
     const [imgList, setImgList] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isFollowerModalOpen, setIsFollowerModalOpen] = useState(false);
+    const [isFollowedModalOpen, setIsFollowedModalOpen] = useState(false);
 
-    const toggleModal = () => {
-        setIsModalOpen(!isModalOpen);
+
+    const toggleFollowerModal = () => {
+        setIsFollowerModalOpen(!isFollowerModalOpen);
+      };
+      
+      const toggleFollowedModal = () => {
+        setIsFollowedModalOpen(!isFollowedModalOpen);
       };
       
 
@@ -51,7 +57,7 @@ const MyPage = () => {
                         <div>{loginUser.nickname}</div>
                     </div>
                     <div className='field'>
-                        <label onClick={toggleModal} style={{cursor:'pointer'}}>Follower</label>
+                        <label onClick={toggleFollowerModal} style={{cursor:'pointer'}}>Follower</label>
                         <div>
                             {
                                 (loginUser.followed)?(loginUser.followed.length):(0)
@@ -59,7 +65,7 @@ const MyPage = () => {
                         </div>
                     </div>
                     <div className='field'>
-                        <label>Followed</label>
+                        <label onClick={toggleFollowedModal} style={{cursor:'pointer'}} >Followed</label>
                         <div>
                             {
                                 (loginUser.follower)?(loginUser.follower.length):(0)
@@ -78,7 +84,7 @@ const MyPage = () => {
                 <div id ="btn">Post Write</div>
             </div>
 
-            <Modal isOpen={isModalOpen} onClose={toggleModal}>
+            <Modal isOpen={isFollowerModalOpen} onClose={toggleFollowerModal}>
             <h2>나를 팔로우한 사용자</h2>
             <ul>
                 {loginUser.followed && loginUser.followed.map((followed, index) => (
@@ -89,6 +95,20 @@ const MyPage = () => {
                 ))}
             </ul>
             </Modal>
+
+            <Modal isOpen={isFollowedModalOpen} onClose={toggleFollowedModal}>
+            <h2>내가 팔로우한 사용자</h2>
+            <ul>
+                {loginUser.follower && loginUser.follower.map((follower, index) => (
+                <li key={index}>
+                    팔로우 nickname: {follower.followed.nickname}, profile: <img src={`http://localhost:8070/userImg/${follower.followed.profileImg}`} style={{width : '70px', height:'70px'}} />
+                </li>
+                ))}
+            </ul>
+            </Modal>
+
+
+
                     
          
 
