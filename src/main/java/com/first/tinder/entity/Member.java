@@ -25,12 +25,14 @@ public class Member {
     @Column(name = "member_id")
     private int memberId;
     private String nickname;
+    private String memberName;
     private String email;
     private String pwd;
     private String phone;
     @Column(columnDefinition = "TINYINT")
     private int gender;
     private int age;
+    private int account;
     @Temporal(TemporalType.DATE)
     private Date birthDate;
     private Double latitude;

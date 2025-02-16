@@ -30,7 +30,10 @@ const FindChatGroup = () => {
 
 
   return (
-    <div className='findChatGroupContainer'>      
+    <div className='findChatGroupContainer'>
+      <div className='findChatGroupBtns'>
+        <button>쪽지보내기</button>
+      </div>
       {
         (chatGroupList)?(
           chatGroupList.map((chatGroup, idx)=>{
@@ -43,7 +46,7 @@ const FindChatGroup = () => {
         ):("Loading...")
       }
             
-      <button onClick={()=>navigate(-1)}>돌아가기</button>
+      {/* <button onClick={()=>navigate(-1)}>돌아가기</button> */}
 
     </div>
   )
