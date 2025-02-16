@@ -230,7 +230,7 @@ const JoinForm = () => {
                 <div className='field'>
                     <label>NAME</label>
                     <input type="text"  value={memberName} onChange={(e)=>{setNickname(e.currentTarget.value)}} readOnly/>
-                </div>                
+                </div>
                 <div className='field'>
                     <label style={{flex:2}}>GENDER</label>
                     {/* 직접 선택하게 할 경우 */}

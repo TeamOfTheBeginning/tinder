@@ -2,13 +2,9 @@ package com.first.tinder.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.first.tinder.dao.MemberRepository;
-import com.first.tinder.entity.Member;
-import com.first.tinder.util.IdentityVerificationRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.first.tinder.dto.IdentityVerificationRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpEntity;
@@ -17,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/identityVerifications")
