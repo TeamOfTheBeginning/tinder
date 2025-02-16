@@ -54,7 +54,7 @@ const Match = () => {
         <button className='matchBtn' onClick={()=>rematch()}>재매칭</button>        
         <button className='matchBtn' onClick={()=>navigate('/findLiker')}>Liker조회</button>
         <button className='matchBtn' onClick={()=>navigate('/matchedMember')}>매칭조회</button>
-        <button className='matchBtn' onClick={()=>navigate('/main')}>돌아가기</button>
+        {/* <button className='matchBtn' onClick={()=>navigate('/main')}>돌아가기</button> */}
       </div>
 
       <div className='matchMemberContainer'>
