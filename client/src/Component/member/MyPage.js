@@ -21,7 +21,6 @@ const MyPage = () => {
     const [imgList, setImgList] = useState([]);
     const [isFollowerModalOpen, setIsFollowerModalOpen] = useState(false);
     const [isFollowedModalOpen, setIsFollowedModalOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
 
     const dispatch = useDispatch()
     const cookies = new Cookies()
@@ -47,8 +46,7 @@ const MyPage = () => {
         },[]
     )
 
-    const requestPayment = async () => {        
-        // setLoading(true);
+    const requestPayment = async () => {
     try {
         const response = await PortOne.requestPayment({
             storeId: "store-0ef99292-e8d5-4956-a265-e1ec0ee73634", // 고객사 storeId로 변경해주세요.
@@ -102,9 +100,7 @@ const MyPage = () => {
 
     } catch (error) {
         console.error('본인 인증 오류:', error);
-    } finally {
-        // setLoading(false);
-    }
+    } finally { }
 
 
 
@@ -148,7 +144,7 @@ const MyPage = () => {
                             <div>{loginUser.profileMsg}</div>
                         </div>
                         <div className='field'>
-                            <label>account</label>
+                            <label>충전금액</label>
                             <div>{loginUser.account}</div>
                         </div>
                     </div>
