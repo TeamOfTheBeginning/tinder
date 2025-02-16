@@ -5,7 +5,11 @@ import { useNavigate } from "react-router-dom";
 import SideBar from '../SideBar';
 import { useSelector } from 'react-redux';
 import Modal from './FollowModal';
+import * as PortOne from "@portone/browser-sdk/v2";
 
+import { useDispatch } from 'react-redux';
+import { loginAction, setFollower, setFollowed } from '../../store/userSlice';
+import {Cookies} from 'react-cookie'
 
 
 const MyPage = () => {
@@ -17,16 +21,19 @@ const MyPage = () => {
     const [imgList, setImgList] = useState([]);
     const [isFollowerModalOpen, setIsFollowerModalOpen] = useState(false);
     const [isFollowedModalOpen, setIsFollowedModalOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
 
+    const dispatch = useDispatch()
+    const cookies = new Cookies()
 
     const toggleFollowerModal = () => {
         setIsFollowerModalOpen(!isFollowerModalOpen);
-      };
-      
-      const toggleFollowedModal = () => {
-        setIsFollowedModalOpen(!isFollowedModalOpen);
-      };
-      
+    };
+    
+    const toggleFollowedModal = () => {
+    setIsFollowedModalOpen(!isFollowedModalOpen);
+    };
+    
 
     
     useEffect(
@@ -39,6 +46,69 @@ const MyPage = () => {
         
         },[]
     )
+
+    const requestPayment = async () => {        
+        // setLoading(true);
+    try {
+        const response = await PortOne.requestPayment({
+            storeId: "store-0ef99292-e8d5-4956-a265-e1ec0ee73634", // 고객사 storeId로 변경해주세요.
+            channelKey: "channel-key-32253616-9557-4cb7-ab9c-ecc20d5e5de5", // 콘솔 결제 연동 화면에서 채널 연동 시 생성된 채널 키를 입력해주세요.
+            paymentId: `payment${Date.now()}`,
+            orderName: "틴더 결제",
+            totalAmount: 1,
+            currency: "CURRENCY_KRW",
+            payMethod: "CARD",
+            customer: {
+                fullName: loginUser.nickname,
+                phoneNumber: loginUser.phone,
+                email: loginUser.email,
+            },
+            bypass: {
+                inicis_v2: {
+                logo_url: "https://portone.io/assets/portone.87061e94.avif",
+                logo_2nd: "https://admin.portone.io/assets/img/auth/lock.png",
+                parentemail: "parentemail",
+                Ini_SSGPAY_MDN: "01012341234",
+                acceptmethod: ["SKIN(#F7186A)", "below1000", "ocb"],
+                P_CARD_OPTION: "selcode=14",
+                P_NMANE: "포트원",
+                P_RESERVED: ["below1000=Y", "noeasypay=Y"]
+                }
+            }
+        });
+
+        if (response.code !== undefined) {
+            // 오류 발생
+            return alert(response.message);
+        }
+        
+          // /payment/complete 엔드포인트를 구현해야 합니다. 다음 목차에서 설명합니다.
+        const notified = await fetch('/api/payment/complete', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // paymentId와 주문 정보를 서버에 전달합니다
+        body: JSON.stringify({
+            paymentId: response.paymentId,
+            memberId: loginUser.memberId,
+            // 주문 정보...
+        }),
+        });
+        alert("결제완료")
+
+        const res = await axios.get('/api/member/getLoginUser');
+        const lUser = res.data.loginUser;
+        cookies.set('user', JSON.stringify( lUser ) , {path:'/', })
+        dispatch( loginAction( res.data.loginUser ) )
+
+    } catch (error) {
+        console.error('본인 인증 오류:', error);
+    } finally {
+        // setLoading(false);
+    }
+
+
+
+    }
 
     return (
         <div className='Container'>
@@ -77,12 +147,17 @@ const MyPage = () => {
                             <label>intro</label>
                             <div>{loginUser.profileMsg}</div>
                         </div>
+                        <div className='field'>
+                            <label>account</label>
+                            <div>{loginUser.account}</div>
+                        </div>
                     </div>
                 </div>
 
                 <div className='btns' >
                     <div id ="btn" onClick={()=>{ navigate('/editProfile')}}>Edit Profile</div>
-                    <div id ="btn">Post Write</div>
+                    <div id ="btn">&nbsp;Post Write</div>
+                    <div id ="btn" onClick={()=>{requestPayment()}}>&nbsp;<button>충전</button></div>
                 </div>
 
                 <Modal isOpen={isFollowerModalOpen} onClose={toggleFollowerModal}>
