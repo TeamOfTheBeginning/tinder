@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3000") // React 프론트엔드 허용
+//@CrossOrigin(origins = "http://localhost:3000") // React 프론트엔드 허용
 @RestController
 @RequestMapping("/api/member")
 @RequiredArgsConstructor
