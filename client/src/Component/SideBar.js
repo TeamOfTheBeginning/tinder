@@ -14,6 +14,7 @@ import { FaRandom } from "react-icons/fa";
 
 import WritePost from "./post/WritePost";
 import Match from "./match/Match";
+import FindChatGroupRandom from './chat/FindChatGroupRandom';
 import FindChatGroup from "./chat/FindChatGroup";
 import MyPage from "./member/MyPage";
 import Search from "./search/Search";
@@ -176,7 +177,7 @@ const SideBar = () => {
           <IoSparkles />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('match')}>
+        <div className='btn' onClick={() => handleMenuClick('chatRandom')}>
           <FaRandom />
         </div>
 
@@ -209,6 +210,7 @@ const SideBar = () => {
         <div className='sideViewerContent'>
           {selectedMenu === 'writePost' && <WritePost />}
           {selectedMenu === 'match' && <Match />}
+          {selectedMenu === 'findChatGroupRandom' && <FindChatGroupRandom />}
           {selectedMenu === 'findChatGroup' && <FindChatGroup />}
           {selectedMenu === 'mypage' && <MyPage />}
           {selectedMenu === 'search' && <Search />}
