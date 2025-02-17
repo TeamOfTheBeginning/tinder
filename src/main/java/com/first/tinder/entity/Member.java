@@ -44,6 +44,8 @@ public class Member {
     private String zipnum;
     private String address;
 
+    private int temp;  // 기본값을 Java에서 설정
+
     @Column(columnDefinition = "TINYINT")
     private int ei=0;
 

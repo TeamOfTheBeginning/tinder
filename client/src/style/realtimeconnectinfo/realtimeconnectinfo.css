@@ -1,0 +1,11 @@
+.realtimeConnectInfoContent{
+    position: fixed;
+    top: 2%;
+    right: 8%;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2sease-in-out;
+}
