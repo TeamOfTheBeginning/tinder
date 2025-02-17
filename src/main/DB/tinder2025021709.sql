@@ -229,10 +229,10 @@ CREATE TABLE `member` (
   `longitude` double DEFAULT NULL,
   `account` int NOT NULL,
   `member_name` varchar(255) DEFAULT NULL,
-  `ei` tinyint DEFAULT NULL,
-  `jp` tinyint DEFAULT NULL,
-  `ns` tinyint DEFAULT NULL,
-  `tf` tinyint DEFAULT NULL,
+  `ei` tinyint DEFAULT '0',
+  `jp` tinyint DEFAULT '0',
+  `ns` tinyint DEFAULT '0',
+  `tf` tinyint DEFAULT '0',
   PRIMARY KEY (`member_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
