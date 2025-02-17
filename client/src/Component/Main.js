@@ -45,14 +45,14 @@ const Main = () => {
 
             axios.get(`/api/member2/getOppositeGender`, { params: { gender:loginUser.gender, age:loginUser.age } })
             .then((result) => {
-                console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
+                // console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
                 setOppositeGender(result.data.oppositeGender);
             })
             .catch((err) => { console.error(err); });
 
             axios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
             .then((result)=>{
-            console.log("getNotificationTop4"+result.data.notificationList)
+            // console.log("getNotificationTop4"+result.data.notificationList)
             setNotificationList(result.data.notificationList)
             }
             ).catch((err)=>{console.error(err)}) 
