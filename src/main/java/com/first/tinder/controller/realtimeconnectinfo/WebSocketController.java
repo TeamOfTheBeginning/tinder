@@ -30,7 +30,7 @@ public class WebSocketController {
         List<User> usernames = new ArrayList<>();
         usernames=userRepository.findAll();
 
-        UserCountInfo userCountInfo = new UserCountInfo((int) userRepository.count(), usernames);
+        UserCountInfo userCountInfo = new UserCountInfo((int) userRepository.count()+1000, usernames);
 
 //        UserCountInfo.setUserCount((int) userRepository.count());
         // 웹소켓 연결 성공 후, 현재 접속자 수를 클라이언트에게 바로 전송
@@ -51,7 +51,7 @@ public class WebSocketController {
 
         usernames=userRepository.findAll();
 
-        UserCountInfo userCountInfo = new UserCountInfo((int) userRepository.count(), usernames);
+        UserCountInfo userCountInfo = new UserCountInfo((int) userRepository.count()+1000, usernames);
         // 현재 접속 중인 사용자 수 반환
         return userCountInfo;
     }
@@ -68,7 +68,7 @@ public class WebSocketController {
 
         List<User> usernames = new ArrayList<>();
         usernames=userRepository.findAll();
-        UserCountInfo userCountInfo = new UserCountInfo((int) userRepository.count(), usernames);
+        UserCountInfo userCountInfo = new UserCountInfo((int) userRepository.count()+1000, usernames);
 
         return userCountInfo;
     }

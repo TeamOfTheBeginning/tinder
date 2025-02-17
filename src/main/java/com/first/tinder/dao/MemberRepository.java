@@ -22,4 +22,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     List<Member> findByGenderAndAgeRange(@Param("gender") int gender, @Param("minAge") int minAge, @Param("maxAge") int maxAge);
 
     Optional<Member> findByMemberId(int liker);
+
+    List<Member> findAllByNickname(String name);
 }

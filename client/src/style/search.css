@@ -9,3 +9,11 @@
 
     border: 1px solid black;
 }
+
+.searchMemberImg{
+    width: 50px;
+}
+
+.searchMemberImg img{
+    width: 100%;
+}

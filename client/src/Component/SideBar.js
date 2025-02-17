@@ -10,6 +10,7 @@ import { IoHomeSharp, IoSparkles, IoSearch, IoLogOut } from "react-icons/io5";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { TbMailHeart } from "react-icons/tb";
 import { IoClose } from "react-icons/io5";
+import { FaRandom } from "react-icons/fa";
 
 import WritePost from "./post/WritePost";
 import Match from "./match/Match";
@@ -173,6 +174,10 @@ const SideBar = () => {
 
         <div className='btn' onClick={() => handleMenuClick('match')}>
           <IoSparkles />
+        </div>
+
+        <div className='btn' onClick={() => handleMenuClick('match')}>
+          <FaRandom />
         </div>
 
         <div className='btn' onClick={() => handleMenuClick('findChatGroup')}>

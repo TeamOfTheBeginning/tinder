@@ -20,4 +20,8 @@ public interface ChatGroupMemberRepository extends JpaRepository<ChatGroupMember
             "AND c.chatGroup IN (SELECT cm.chatGroup FROM ChatGroupMember cm WHERE cm.member = :member1) " +
             "AND c.chatGroup IN (SELECT cm.chatGroup FROM ChatGroupMember cm WHERE cm.member = :member2)")
     List<ChatGroup> findTwoPersonChatGroup(@Param("member1") Member member1, @Param("member2") Member member2);
+
+
+
+
 }

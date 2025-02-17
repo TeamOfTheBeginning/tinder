@@ -167,4 +167,8 @@ public class MemberService2 {
 
         return members;
     }
+
+    public List<Member> getMembersWithNickname(String nickname) {
+        return mr.findAllByNickname(nickname);
+    }
 }
