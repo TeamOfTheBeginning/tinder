@@ -24,7 +24,6 @@ const JoinForm = () => {
     const [imgStyle, setImgStyle] = useState({display:"none"});
     const [birthDate, setBirthDate] = useState('');
     const [adultVerification, setAdultVerification] = useState(false);
-    const [loading, setLoading] = useState(false);
 
     const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
     const [latitude, setLatitude] = useState('');
@@ -106,7 +105,7 @@ const JoinForm = () => {
         if(pwd==''){ return alert('패스워드를 입력하세요');}
         if(pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
         if(nickname==''){ return alert('닉네임을 입력하세요');}
-        if(age<18){return alert('만 18세 이상만 가입 가능합니다');}
+        // if(age<18){return alert('만 18세 이상만 가입 가능합니다');}
         try{
             let result = await axios.post('/api/member/emailcheck', null, {params:{email}} );
             if(result.data.msg == 'no' ){
@@ -116,7 +115,7 @@ const JoinForm = () => {
             if(result.data.msg == 'no' ){
                 return alert('닉네임이 중복됩니다');
             }
-            result = await axios.post('/api/member/join', {email, pwd, age, gender, nickname, phone, birthDate , address, latitude, longitude, profileMsg : intro, profileImg :profileimg, zipnum});
+            result = await axios.post('/api/member/join', {email, pwd, age, gender, nickname, memberName, phone, birthDate , address, latitude, longitude, profileMsg : intro, profileImg :profileimg, zipnum});
             if(result.data.msg =='ok'){
                 alert('회원 가입이 완료되었습니다. 로그인하세요');
                 navigate('/');
@@ -129,14 +128,13 @@ const JoinForm = () => {
         formData.append('image',  e.target.files[0]);
         const result = await axios.post('/api/member/fileupload', formData);
         console.log(result);
-        setImgSrc(`http://localhost:8070/userImg/${result.data.filename}`);
+        setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
         setImgStyle({display:"block", width:"200px"});
         setProfileimg(result.data.filename)
     }
 
 
     const handleIdentityVerification = async () => {
-        setLoading(true);
         try {
             const response = await PortOne.requestIdentityVerification({
             // 고객사 storeId로 변경해주세요.
@@ -176,6 +174,7 @@ const JoinForm = () => {
                 setMemberName(data.name)
                 setPhone(data.phoneNumber)
                 setBirthDate(data.birthDate)
+
                 if(data.gender==='MALE'){setGender(0)}
                 else if(data.gender==='FEMALE'){setGender(1)}
                 else{
@@ -205,19 +204,10 @@ const JoinForm = () => {
 
     } catch (error) {
     console.error('본인 인증 오류:', error);
-    } finally {
-    setLoading(false);
-    }
+    } finally {}
 };
 
-
-
-
-
-
-
     return (
-
         <div className='join-form-container'>
             <div className='loginform'>
                 <div className="logo" style={{fontSize:"2.0rem"}}>Member Join</div>

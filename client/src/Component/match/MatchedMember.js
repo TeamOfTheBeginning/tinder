@@ -41,7 +41,7 @@ const MatchedMember = () => {
                         return (
                             <div key={idx} className='matchedMemberListContainer'>
                                 <div className='matchedMemberLeft'>
-                                    <img src={`http://localhost:8070/userImg/${matchedMember.profileImg}`} />
+                                    <img src={`http://localhost:8070/userimg/${matchedMember.profileImg}`} />
                                     <br/>
                                 </div>
 

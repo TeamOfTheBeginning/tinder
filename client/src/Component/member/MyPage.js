@@ -21,7 +21,6 @@ const MyPage = () => {
     const [imgList, setImgList] = useState([]);
     const [isFollowerModalOpen, setIsFollowerModalOpen] = useState(false);
     const [isFollowedModalOpen, setIsFollowedModalOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
 
     const dispatch = useDispatch()
     const cookies = new Cookies()
@@ -47,8 +46,7 @@ const MyPage = () => {
         },[]
     )
 
-    const requestPayment = async () => {        
-        // setLoading(true);
+const requestPayment = async () => {
     try {
         const response = await PortOne.requestPayment({
             storeId: "store-0ef99292-e8d5-4956-a265-e1ec0ee73634", // 고객사 storeId로 변경해주세요.
@@ -84,14 +82,14 @@ const MyPage = () => {
         
           // /payment/complete 엔드포인트를 구현해야 합니다. 다음 목차에서 설명합니다.
         const notified = await fetch('/api/payment/complete', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        // paymentId와 주문 정보를 서버에 전달합니다
-        body: JSON.stringify({
-            paymentId: response.paymentId,
-            memberId: loginUser.memberId,
-            // 주문 정보...
-        }),
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            // paymentId와 주문 정보를 서버에 전달합니다
+            body: JSON.stringify({
+                paymentId: response.paymentId,
+                memberId: loginUser.memberId,
+                // 주문 정보...
+            }),
         });
         alert("결제완료")
 
@@ -102,13 +100,12 @@ const MyPage = () => {
 
     } catch (error) {
         console.error('본인 인증 오류:', error);
-    } finally {
-        // setLoading(false);
-    }
+    } finally { }
+}
 
-
-
-    }
+const buyItems = async () => {
+    
+}
 
     return (
         <div className='Container'>
@@ -148,7 +145,7 @@ const MyPage = () => {
                             <div>{loginUser.profileMsg}</div>
                         </div>
                         <div className='field'>
-                            <label>account</label>
+                            <label>충전금액</label>
                             <div>{loginUser.account}</div>
                         </div>
                     </div>
@@ -158,6 +155,7 @@ const MyPage = () => {
                     <div id ="btn" onClick={()=>{ navigate('/editProfile')}}>Edit Profile</div>
                     <div id ="btn">&nbsp;Post Write</div>
                     <div id ="btn" onClick={()=>{requestPayment()}}>&nbsp;<button>충전</button></div>
+                    <div id ="btn" onClick={()=>{buyItems()}}>&nbsp;<button>결제</button></div>
                 </div>
 
                 <Modal isOpen={isFollowerModalOpen} onClose={toggleFollowerModal}>
@@ -165,7 +163,7 @@ const MyPage = () => {
                 <ul>
                     {loginUser.followed && loginUser.followed.map((followed, index) => (
                     <li key={index}> {/* key는 index가 아닌 고유한 값을 사용하는 것이 좋습니다 (예: followed.followId) */}
-                        팔로워 nickname: {followed.follower.nickname}, profile: <img src={`http://localhost:8070/userImg/${followed.follower.profileImg}`} style={{width : '70px', height:'70px'}} /> 
+                        팔로워 nickname: {followed.follower.nickname}, profile: <img src={`http://localhost:8070/userimg/${followed.follower.profileImg}`} style={{width : '70px', height:'70px'}} /> 
                         
                     </li>
                     ))}
@@ -177,7 +175,7 @@ const MyPage = () => {
                 <ul>
                     {loginUser.follower && loginUser.follower.map((follower, index) => (
                     <li key={index}>
-                        팔로우 nickname: {follower.followed.nickname}, profile: <img src={`http://localhost:8070/userImg/${follower.followed.profileImg}`} style={{width : '70px', height:'70px'}} />
+                        팔로우 nickname: {follower.followed.nickname}, profile: <img src={`http://localhost:8070/userimg/${follower.followed.profileImg}`} style={{width : '70px', height:'70px'}} />
                     </li>
                     ))}
                 </ul>
