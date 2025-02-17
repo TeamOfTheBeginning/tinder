@@ -56,7 +56,7 @@ const Login = () => {
         }catch(err){ console.error(err)}
     }
 
-    const [userCount, setUserCount] = useState(0);
+    const [userCount, setUserCount] = useState();
     const [client, setClient] = useState(null);
 
     useEffect(() => {
@@ -77,7 +77,18 @@ const Login = () => {
             // 서버로부터 접속자 수 업데이트를 실시간으로 받기 위해 구독
             stompClient.subscribe('/topic/userCount', (message) => {
             console.log("Received message:", message.body);
-            setUserCount(parseInt(message.body));  // 서버에서 받은 접속자 수 업데이트
+
+            const parsedMessage = JSON.parse(message.body);
+
+            console.log("parsedMessage"+parsedMessage)
+            
+            console.log("parsedMessage.userCount"+parsedMessage.userCount)
+
+            const userCount = Number(parsedMessage.userCount);
+
+            setUserCount(userCount);
+
+            // setUserCount(parseInt(message.body.userCount));  // 서버에서 받은 접속자 수 업데이트
             });
           },
           onDisconnect: () => {
