@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class MessageResponseDTO {
     private final MessageType type;
+    private final Long roomId;
     private final String content;
     private final String sessionId;
     private final String nickname;
