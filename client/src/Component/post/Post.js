@@ -184,7 +184,7 @@ const Post = (props) => {
                         (imgList)?(
                             imgList.map((img, idx)=>{
                                 return (
-                                    <img key={idx} src={`${process.env.REACT_APP_ADDRESS2}/userImg/${img.savefileName}`} width="750" height="700"/>
+                                    <img key={idx} src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} width="750" height="700"/>
                                 )
                             })
                         ):(null)

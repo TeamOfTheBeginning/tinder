@@ -128,12 +128,12 @@ function ChatPage() {
             ) : (
               <div className="chat-bubble">
                 <img
-                  src={profileImgUrls[msg.nickname] || "http://localhost:8070/userImg/default.jpg"}
+                  src={profileImgUrls[msg.nickname] || "http://localhost:8070/userimg/default.jpg"}
                   alt="profile"
                   width="40"
                   height="40"
                   style={{ borderRadius: "50%", marginRight: "10px" }}
-                  onError={(e) => (e.target.src = "http://localhost:8070/userImg/default.jpg")}
+                  onError={(e) => (e.target.src = "http://localhost:8070/userimg/default.jpg")}
                 />
                 <strong>{msg.nickname}: </strong> {msg.content}
               </div>

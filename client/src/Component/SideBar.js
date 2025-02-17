@@ -25,7 +25,7 @@ const SideBar = () => {
 
   useEffect(() => {
     if (loginUser.profileImg) {
-      setProfileImg(`http://localhost:8070/userImg/${loginUser.profileImg}`);
+      setProfileImg(`http://localhost:8070/userimg/${loginUser.profileImg}`);
     }
   }, [loginUser]);
 

@@ -70,7 +70,7 @@ const ChatRoomFromChatGroup = () => {
                         <div key={idx} className={`chat ${isOwnMessage ? 'myChat' : ''}`}>
                             <div className='chatContainer'>
                                 <div className='chatImg'>
-                                    <img src={`${process.env.REACT_APP_ADDRESS2}/userImg/${chat.sender.profileImg}`}/>&nbsp;
+                                    <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${chat.sender.profileImg}`}/>&nbsp;
                                 </div>
                                 <div className='chatContent'>
                                     {chat.sender.nickname}&nbsp; {formatDate(chat.createdat)}&nbsp;<br/>{chat.content} &nbsp; 

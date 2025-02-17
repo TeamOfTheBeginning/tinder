@@ -128,7 +128,7 @@ const WritePost = () => {
 
       setImgSrcs((prevImgSrcs) => {
         const newImgSrcs = [...prevImgSrcs];
-        newImgSrcs[index] = `http://localhost:8070/userImg/${result.data.filename}`;
+        newImgSrcs[index] = `http://localhost:8070/userimg/${result.data.filename}`;
         return newImgSrcs;
       });
 

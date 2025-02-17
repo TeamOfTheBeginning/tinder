@@ -61,7 +61,7 @@ const EditProfile = () => {
             setPhone( loginUser.phone )
             setIntro( loginUser.profileMsg )
             if( loginUser.profileImg ){
-                setImgSrc(`http://localhost:8070/userImg/${loginUser.profileImg}`)
+                setImgSrc(`http://localhost:8070/userimg/${loginUser.profileImg}`)
                 setImgStyle({display:'block', width:'200px'})
             }
             setProfileImg(loginUser.profileImg);
@@ -72,7 +72,7 @@ const EditProfile = () => {
         const formData = new FormData();
         formData.append('image',  e.target.files[0]);
         const result = await axios.post('/api/member/fileupload', formData);
-        setImgSrc(`http://localhost:8070/userImg/${result.data.filename}`);
+        setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
         setImgStyle({display:"block", width:"200px"});
         setProfileImg(result.data.filename)
     }

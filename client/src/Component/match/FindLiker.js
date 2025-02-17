@@ -47,7 +47,7 @@ const FindLiker = () => {
                                 return (
                                     <div key={idx} className='findLikerListContainer'>
                                         <div className='findLikerLeft'>
-                                            <img src={`http://localhost:8070/userImg/${liker.profileImg}`} />
+                                            <img src={`http://localhost:8070/userimg/${liker.profileImg}`} />
                                             <br/>
                                         </div>
 
