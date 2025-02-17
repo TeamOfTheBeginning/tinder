@@ -7,5 +7,7 @@ import lombok.*;
 @Getter
 @Builder
 public class MessageRequestDTO {
+    private final Long roomId;
     private final String content;
+    private final String nickname;
 }
