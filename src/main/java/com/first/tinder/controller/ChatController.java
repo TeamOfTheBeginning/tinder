@@ -7,8 +7,10 @@ import com.first.tinder.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/chat")
@@ -68,8 +70,31 @@ public class ChatController {
         List<Chat> chatList = cs.findChatList(chatGroupId);
         result.put("chatList",chatList);
         return result;
-
     }
+
+    @PostMapping("/setMessageRoom")
+    public HashMap<String,Object> setMessageRoom(@RequestParam("inviteMemberIdList") String inviteMemberIdList,@RequestParam("memberId") int memberId){
+        HashMap<String,Object> result = new HashMap<>();
+        List<Integer> inviteMemberIds = Arrays.stream(inviteMemberIdList.split(","))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+
+
+
+        System.out.println("inviteMemberList1"+inviteMemberIds);
+
+        inviteMemberIds.add(memberId);
+
+        System.out.println("inviteMemberList2"+inviteMemberIds);
+
+        System.out.println("memberId"+memberId);
+
+        int chatGroupId = cs.setMessageRoom(inviteMemberIds,memberId);
+        result.put("chatGroupId",chatGroupId);
+
+        return result;
+    }
+
 
 
 

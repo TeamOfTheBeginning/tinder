@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -253,4 +250,48 @@ public class ChatService {
 
         return result;
     }
+
+    public int setMessageRoom(List<Integer> memberIds, int memberId) {
+        // Sort memberIds in ascending order
+        Collections.sort(memberIds);
+
+        // Find existing chat group with the same members
+        List<ChatGroup> existingChatGroups = cgr.findChatGroupByMemberIds(memberIds, memberIds.size());
+
+        if (!existingChatGroups.isEmpty()) {
+            return existingChatGroups.get(0).getChatGroupId();  // If a matching group is found, return its ID
+        }
+
+        // If no existing group is found, create a new chat group
+        ChatGroup newChatGroup = new ChatGroup();
+        newChatGroup.setChatGroupName("New Group for " + String.join(", ", memberIds.toString()));
+        newChatGroup.setMemberCount(memberIds.size());  // Set the number of members for the new group
+
+        // Create the new group and associate members
+        Optional<Member> creatorMember = mr.findById(memberId);
+        if (creatorMember.isPresent()) {
+            newChatGroup.setCreatedBy(creatorMember.get());
+        }
+
+        // Save the new chat group
+        cgr.save(newChatGroup);
+
+        // Add members to the new chat group
+        for (Integer memberId1 : memberIds) {
+            Optional<Member> member = mr.findById(memberId1);
+            if (member.isPresent()) {
+                ChatGroupMember newChatGroupMember = new ChatGroupMember();
+                newChatGroupMember.setChatGroup(newChatGroup);
+                newChatGroupMember.setMember(member.get());
+                cgmr.save(newChatGroupMember);
+            }
+        }
+
+        // Return the ID of the newly created chat group
+        return newChatGroup.getChatGroupId();
+    }
+
+
+
+
 }

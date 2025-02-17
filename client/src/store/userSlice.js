@@ -18,6 +18,7 @@ const initialState={
     snsid:'',
     zipnum:'',
     account:'',
+    temp:'',
     follower:[],
     followed:[], 
 }
@@ -43,6 +44,7 @@ const getLoginUser=()=>{
         memberinfo.latitude = decodeURIComponent( memberinfo.latitude )
         memberinfo.longitude = decodeURIComponent( memberinfo.longitude )
         memberinfo.account = decodeURIComponent( memberinfo.account )
+        memberinfo.temp = decodeURIComponent( memberinfo.temp )
     }
     return memberinfo
 }
@@ -69,6 +71,7 @@ export const userSlice=createSlice(
                 state.latitude = action.payload.latitude;
                 state.longitude = action.payload.longitude;
                 state.account = action.payload.account;
+                state.temp = action.payload.temp;
             },
             logoutAction:(state)=>{
                 state.memberId = '';
@@ -87,6 +90,7 @@ export const userSlice=createSlice(
                 state.latitude = '';
                 state.longitude = '';
                 state.account = '';
+                state.temp = '';
                 state.follower = [];
                 state.followed = [];
             },

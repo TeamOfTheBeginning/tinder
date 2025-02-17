@@ -71,4 +71,13 @@ public class MemberController2 {
         return result;
     }
 
+    @GetMapping("/getMembersWithNickname")
+    public HashMap<String, Object> getMembersWithNickname(@RequestParam("word") String word) {
+        HashMap<String, Object> result = new HashMap<>();
+
+        List<Member> membersWithName = ms2.getMembersWithNickname(word);
+        result.put("memberList", membersWithName);
+        return result;
+    }
+
 }

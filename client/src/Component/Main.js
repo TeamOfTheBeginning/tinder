@@ -9,8 +9,10 @@ import Notification from './notification/Notification'
 import ToastPopupPost from './post/ToastPopupPost';
 import MatchingMember from './match/MatchingMember';
 
+
 import '../style/mystargram.css';
 import '../style/posts.css';
+
 
 const Main = () => {
 
@@ -114,6 +116,8 @@ const Main = () => {
         <div className='Container'>
 
             <Notification setNotificationList={setNotificationList} notificationList={notificationList}/>
+
+            
             
             {showToast1 && (
                 <div

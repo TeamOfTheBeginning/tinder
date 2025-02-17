@@ -148,6 +148,10 @@ const buyItems = async () => {
                             <label>충전금액</label>
                             <div>{loginUser.account}</div>
                         </div>
+                        <div className='field'>
+                            <label>온도</label>
+                            <div>{loginUser.temp}</div>
+                        </div>
                     </div>
                 </div>
 
