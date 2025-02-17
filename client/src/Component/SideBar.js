@@ -134,6 +134,26 @@ const SideBar = () => {
       client.publish({ destination: '/app/leave', body: JSON.stringify({ username }) });
     };
 
+    useEffect(() => {
+      // 창을 닫을 때 handleLeave 호출
+      const handleBeforeUnload = () => {
+        if (loginUser.email && client) {
+          client.publish({
+            destination: '/app/leave',
+            body: JSON.stringify({ username:loginUser.email }),
+          });
+        }
+      };
+  
+      // 페이지를 떠나기 전에 호출되는 이벤트 리스너 추가
+      window.addEventListener('beforeunload', handleBeforeUnload);
+  
+      // 컴포넌트 언마운트 시, 이벤트 리스너 제거
+      return () => {
+        window.removeEventListener('beforeunload', handleBeforeUnload);
+      };
+    }, [loginUser.email, client]);
+
   return (
     <div className='MenuBar'>
       <RealtimeConnectInfo />
