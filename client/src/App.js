@@ -15,6 +15,7 @@ import ChatRoomFromMatch from "./Component/chat/ChatRoomFromMatch"
 import ChatRoomFromRandom from "./Component/chat/ChatRoomFromRandom"
 import RealTimeChat from "./Component/realtimechat/RealTimeChat"
 import Search from "./Component/search/Search"
+import NearMember from "./Component/member/NearMember";
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route path="/chatRoomFromMatch/:memberId" element={<ChatRoomFromMatch/>}/>
         <Route path="/chatRoomFromRandom/:chatGroupId" element={<ChatRoomFromRandom/>}/>
         <Route path="/realtimechat" element={<RealTimeChat />} />
+        <Route path="/nearMember" element={<NearMember />} />
       </Routes>
     </div>
   );

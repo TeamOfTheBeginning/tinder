@@ -12,6 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -53,8 +56,6 @@ public class MemberController {
         Member member = ms.getMemberById(id);
         List<Follow> follower = ms.getFollower(member);
         List<Follow> followed = ms.getFollowed(member);
-        System.out.println("################################## followed: "+ followed);
-        System.out.println("################################## follower: "+ follower);
 
         result.put("loginUser", member);
         result.put("follower", follower);
@@ -73,6 +74,19 @@ public class MemberController {
             result.put("msg", "ok");
         return result;
     }
+
+    @GetMapping("/nearby")
+    public List<Member> getNearbyMembers(
+            @RequestParam double latitude,
+            @RequestParam double longitude,
+            @RequestParam int maxDistance,
+            @RequestParam int memberId
+    ) {
+        return ms.findNearbyMembers(latitude, longitude, maxDistance, memberId);
+    }
+
+
+
 
     @PostMapping("/nicknamecheck")
     public HashMap<String, Object> nicknamecheck( @RequestParam("nickname") String nickname ) {
@@ -100,7 +114,7 @@ public class MemberController {
     @PostMapping("/fileupload")
     public HashMap<String, Object> fileupload( @RequestParam("image") MultipartFile file ) {
         HashMap<String, Object> result = new HashMap<>();
-        String path = context.getRealPath("/userImg");
+        String path = context.getRealPath("/userimg");
         Calendar today = Calendar.getInstance();
         long dt = today.getTimeInMillis();
         String filename = file.getOriginalFilename();
@@ -122,6 +136,19 @@ public class MemberController {
     public HashMap<String, Object> join(@RequestBody Member member) {
         System.out.println("join0!!");
         HashMap<String, Object> result = new HashMap<>();
+
+        // Date를 LocalDate로 변환
+        LocalDate birthLocalDate = member.getBirthDate().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        // 현재 날짜
+        LocalDate now = LocalDate.now();
+
+        // 나이 계산
+        int age = Period.between(birthLocalDate, now).getYears();
+        member.setAge(age); // Member 객체에 나이 설정
+
         ms.insertMember(member);
         result.put("msg", "ok");
         return result;

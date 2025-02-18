@@ -75,26 +75,6 @@ const JoinForm = () => {
 
     const navigate = useNavigate();
 
-    const handleBirthDateChange = (e) => {
-        const selectedDate = new Date(e.target.value);
-        const today = new Date();
-
-        let calculatedAge = today.getFullYear() - selectedDate.getFullYear();
-        const monthDiff = today.getMonth() - selectedDate.getMonth();
-        const dayDiff = today.getDate() - selectedDate.getDate();
-        
-        if (selectedDate > today) {
-            alert("미래 날짜는 선택할 수 없습니다.");
-            return;
-        }
-        
-        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-            calculatedAge--;
-        }
-
-        setBirthDate(e.target.value);
-        setAge(calculatedAge);
-    };
 
     async function onSubmit(){
         console.log(longitude)
@@ -242,10 +222,10 @@ const JoinForm = () => {
                     
                     {/* 수정 불가능 하게 할 경우 */}
                     <input
-                        style={{flex:3}}
-                        type="text"
-                        value={birthDate}
-                    />
+                    type="date" // type을 date로 변경
+                    value={birthDate}
+                    required
+                />
 
                     {/* 수정 가능하게 할 경우 */}
                     {/* <input
