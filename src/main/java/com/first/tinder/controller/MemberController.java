@@ -40,13 +40,14 @@ public class MemberController {
             result.put("msg", "이메일을 확인하세요");
         }else if( !member.getPwd().equals( pwd ) ) {
             result.put("msg", "패스워드를 확인하세요");
-        }else {
+        }else if(member.getTemp() < 30){
+            result.put("msg", "온도가 낮아 서비스를 이용하실 수 없습니다.");
+        }else{
             result.put("msg", "ok");
             System.out.println("member id test :" + member.getMemberId());
             session.setAttribute("loginUser", member.getMemberId() );
         }
         return result;
-
     }
 
     @GetMapping("/getLoginUser")
