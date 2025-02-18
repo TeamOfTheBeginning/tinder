@@ -1,11 +1,7 @@
 package com.first.tinder.service;
 
-import com.first.tinder.dao.MemberLikseRepository;
-import com.first.tinder.dao.MemberRepository;
-import com.first.tinder.dao.NotificationRepository;
-import com.first.tinder.entity.Member;
-import com.first.tinder.entity.MemberLikes;
-import com.first.tinder.entity.Notification;
+import com.first.tinder.dao.*;
+import com.first.tinder.entity.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +26,12 @@ public class MemberService2 {
 
     @Autowired
     SseEmitterService ses;
+
+    @Autowired
+    ChatGroupRepository cgr;
+
+    @Autowired
+    ChatGroupMemberRepository cgmr;
 
     public Member getOppsiteGender(int gender, int age) {
 //        List<Member> members = mr.findByGender(gender);
@@ -170,5 +172,64 @@ public class MemberService2 {
 
     public List<Member> getMembersWithNickname(String nickname) {
         return mr.findAllByNickname(nickname);
+    }
+
+    public void setTempUp(int chatGroupId, int memberId) {
+        Member m = new Member();
+        Member mm = new Member();
+        ChatGroup cg = new ChatGroup();
+        List<ChatGroupMember> cgm = new ArrayList<>();
+
+        Optional<Member> member = mr.findById(memberId);
+        if (member.isPresent()) {
+           m = member.get();
+        }
+
+        Optional<ChatGroup> chatGroup = cgr.findByChatGroupId(chatGroupId);
+        if (chatGroup.isPresent()) {
+            cg = chatGroup.get();
+        }
+
+        cgm = cgmr.findByChatGroup(cg);
+        for (ChatGroupMember cm : cgm) {
+            if(cm.getMember()!=m){
+                mm=cm.getMember();
+            }
+        }
+
+        System.out.println("mm"+mm);
+
+        mm.setTemp(mm.getTemp()+1);
+        System.out.println("mm"+mm);
+    }
+
+    public void setTempDownAndBlock(int chatGroupId, int memberId) {
+        Member m = new Member();
+        Member mm = new Member();
+        ChatGroup cg = new ChatGroup();
+        List<ChatGroupMember> cgm = new ArrayList<>();
+
+        Optional<Member> member = mr.findById(memberId);
+        if (member.isPresent()) {
+            m = member.get();
+        }
+
+        Optional<ChatGroup> chatGroup = cgr.findByChatGroupId(chatGroupId);
+        if (chatGroup.isPresent()) {
+            cg = chatGroup.get();
+        }
+
+        cgm = cgmr.findByChatGroup(cg);
+        for (ChatGroupMember cm : cgm) {
+            if(cm.getMember()!=m){
+                mm=cm.getMember();
+            }
+        }
+
+        System.out.println("mm"+mm);
+
+        mm.setTemp(mm.getTemp()-1);
+        System.out.println("mm"+mm);
+
     }
 }

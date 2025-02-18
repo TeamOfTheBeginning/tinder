@@ -80,4 +80,26 @@ public class MemberController2 {
         return result;
     }
 
+    @PostMapping("/setTempUp")
+    public HashMap<String, Object> setTempUp(@RequestParam("chatGroupId") int chatGroupId, @RequestParam("memberId") int memberId) {
+        HashMap<String, Object> result = new HashMap<>();
+        System.out.println("chatGroupId : "+chatGroupId+" memberId : "+memberId);
+
+        ms2.setTempUp(chatGroupId,memberId);
+
+        result.put("msg", "yes");
+        return result;
+    }
+
+    @PostMapping("/setTempDownAndBlock")
+    public HashMap<String, Object> setTempDownAndBlock(@RequestParam("chatGroupId") int chatGroupId, @RequestParam("memberId") int memberId) {
+        HashMap<String, Object> result = new HashMap<>();
+        System.out.println("chatGroupId : "+chatGroupId+" memberId : "+memberId);
+
+        ms2.setTempDownAndBlock(chatGroupId,memberId);
+
+        result.put("msg", "yes");
+        return result;
+    }
+
 }

@@ -48,10 +48,30 @@ const ChatRoomFromRandom = () => {
             
             setChatList(result.data.chatList);
         })
-        .catch((err) => { console.error(err); });
-        
+        .catch((err) => { console.error(err); });        
     }
 
+    async function setTempUp(){
+
+        axios.post(`/api/member2/setTempUp`, null ,{ params: { chatGroupId,memberId:loginUser.memberId } })
+        .then((result) => {
+            if(result.data.msg=='yes')
+                alert("상대 온도가 상승되었습니다.")
+            else{ alert("오류발생") }            
+        })
+        .catch((err) => { console.error(err); });
+    }
+
+    async function setTempDownAndBlock(){
+
+        axios.post(`/api/member2/setTempDownAndBlock`, null ,{ params: { chatGroupId,memberId:loginUser.memberId } })
+        .then((result) => {
+            if(result.data.msg=='yes')
+                alert("상대 온도가 하락/차단 되었습니다.")
+            else{ alert("오류발생") }   
+        })
+        .catch((err) => { console.error(err); });
+    }
 
 
     return (
@@ -92,8 +112,8 @@ const ChatRoomFromRandom = () => {
 
         <div className='chatRoomEvaluateTemp'>
             <div>
-                <button>좋아요</button>
-                <button>싫어요/차단</button>
+                <button onClick={()=>setTempUp()}>좋아요</button>
+                <button onClick={()=>setTempDownAndBlock()}>싫어요/차단</button>
             </div>
         </div>
         
