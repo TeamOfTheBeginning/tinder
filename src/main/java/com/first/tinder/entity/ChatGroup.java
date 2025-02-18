@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -20,6 +23,9 @@ public class ChatGroup {
 	@ManyToOne(fetch = FetchType.EAGER)  // Many ChatGroups can be created by one Member
 	@JoinColumn(name = "created_by")  // 외래 키 컬럼 이름 지정
 	private Member createdBy;  // Member 엔티티와 연관됨
+
+	@CreationTimestamp
+	private Timestamp createdDate;
 
 	private String chatGroupName;
 

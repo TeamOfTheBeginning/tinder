@@ -1,13 +1,7 @@
 package com.first.tinder.service;
 
-import com.first.tinder.dao.ChatGroupMemberRepository;
-import com.first.tinder.dao.ChatGroupRepository;
-import com.first.tinder.dao.ChatRepository;
-import com.first.tinder.dao.MemberRepository;
-import com.first.tinder.entity.Chat;
-import com.first.tinder.entity.ChatGroup;
-import com.first.tinder.entity.ChatGroupMember;
-import com.first.tinder.entity.Member;
+import com.first.tinder.dao.*;
+import com.first.tinder.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +27,9 @@ public class ChatService {
     @Autowired
     private MemberService2 ms2;
 
+    @Autowired
+    BlockRepository br;
+
     public List<ChatGroup> findChatGroup(int memberId) {
         //챗 그룹 리스트 생성
         List<ChatGroup> chatGroupList = new ArrayList<>();
@@ -45,7 +42,7 @@ public class ChatService {
             Member m = member.get();
             
             //맴버로 ChatGroupMember 객체 조회
-            List<ChatGroupMember> chatGroupMemberList = cgmr.findByMember(m);
+            List<ChatGroupMember> chatGroupMemberList = cgmr.findByMemberOrderByChatGroupMemberIdDesc(m);
             
             //ChatGroupMember 객체에서 ChatGroup 추출
             for(ChatGroupMember chatGroupMember : chatGroupMemberList) {
@@ -331,7 +328,7 @@ public class ChatService {
             Member m = member.get();
 
             //맴버로 ChatGroupMember 객체 조회
-            List<ChatGroupMember> chatGroupMemberList = cgmr.findByMember(m);
+            List<ChatGroupMember> chatGroupMemberList = cgmr.findByMemberOrderByChatGroupMemberIdDesc(m);
 
             //ChatGroupMember 객체에서 ChatGroup 추출
             for(ChatGroupMember chatGroupMember : chatGroupMemberList) {
@@ -359,41 +356,26 @@ public class ChatService {
 
     public int setAnonymousMessageRoom(int memberId) {
         ChatGroup newChatGroup = new ChatGroup();
+        Member m = new Member();
+        Member oppositeGender = new Member();
+        
+        //이미 차단 여부에대한 필터링을 마친 이성만 조회
+        oppositeGender = ms2.getOppsiteGender2(memberId);
 
         Optional<Member> member = mr.findById(memberId);
         if (member.isPresent()) {
-            Member m = member.get();
-            int age = m.getAge();
-            int gender = m.getGender();
-
-            Member oppositeGender;
-
-            if (gender==0) {
-                System.out.println("gender2 : "+gender);
-                gender=1;
-                System.out.println("gender3 : "+gender);
-                oppositeGender = ms2.getOppsiteGender(gender,age);
-            }else {
-                System.out.println("gender22 : "+gender);
-                gender=0;
-                System.out.println("gender33 : "+gender);
-                oppositeGender = ms2.getOppsiteGender(gender,age);
-            }
-
-
-            // If no existing group is found, create a new chat group
+            m = member.get();
 
             newChatGroup.setChatGroupName("익명채팅");
             newChatGroup.setMemberCount(2);  // Set the number of members for the new group
             newChatGroup.setCreatedBy(m);
             newChatGroup.setAnonymity(1);
-
             // Save the new chat group
             cgr.save(newChatGroup);
 
             ChatGroupMember newChatGroupMember = new ChatGroupMember();
             newChatGroupMember.setChatGroup(newChatGroup);
-            newChatGroupMember.setMember(member.get());
+            newChatGroupMember.setMember(m);
             cgmr.save(newChatGroupMember);
 
             ChatGroupMember newChatGroupMember2 = new ChatGroupMember();

@@ -44,15 +44,25 @@ const ChatRoomFromChatGroup = () => {
     }
 
     async function sendMessage() {
-
-        axios.post(`/api/chat/sendMessage`, null ,{ params: { content:message,chatGroupId,sender:loginUser.memberId } })
-        .then((result) => {
-            
-            setChatList(result.data.chatList);
-        })
-        .catch((err) => { console.error(err); });
-
-        
+        try {
+            const response = await axios.post(`/api/chat/sendMessage`, null, {
+                params: { content: message, chatGroupId, sender: loginUser.memberId }
+            });
+    
+            if (response.data.expired) {
+                alert("이 채팅방은 12시간이 지나 만료되었습니다. 메시지를 보낼 수 없습니다.");
+                return;
+            }
+    
+            if (response.data.blocked) {
+                alert("메시지를 보낼 수 없습니다. 차단한 사용자 또는 차단된 사용자와의 대화입니다.");
+                return;
+            }
+    
+            setChatList(response.data.chatList);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
   return (
@@ -73,7 +83,7 @@ const ChatRoomFromChatGroup = () => {
                                     <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${chat.sender.profileImg}`}/>&nbsp;
                                 </div>
                                 <div className='chatContent'>
-                                    {chat.sender.nickname}&nbsp; {formatDate(chat.createdat)}&nbsp;<br/>{chat.content} &nbsp; 
+                                    {chat.sender.nickname}&nbsp; {formatDate(chat.createdDate)}&nbsp;<br/>{chat.content} &nbsp; 
                                 </div>
                             </div>
                         </div>

@@ -1,5 +1,6 @@
 package com.first.tinder.controller;
 
+import com.first.tinder.dao.MemberRepository;
 import com.first.tinder.entity.Member;
 import com.first.tinder.entity.MemberLikes;
 import com.first.tinder.service.MemberService2;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/member2")
@@ -16,13 +18,27 @@ public class MemberController2 {
     @Autowired
     private MemberService2 ms2;
 
+    @Autowired
+    MemberRepository mr;
+
+
 
     @GetMapping("/getOppositeGender")
-    public HashMap<String, Object> getOppositeGender(@RequestParam("gender") int gender,
-         @RequestParam("age") int age) {
+    public HashMap<String, Object> getOppositeGender(@RequestParam("memberId") int memberId) {
         HashMap<String, Object> result = new HashMap<>();
-        System.out.println("gender1 : "+gender);
-        System.out.println("age1 : "+age);
+
+        System.out.println("memberId = " + memberId);
+
+        Member m = new Member();
+
+        Optional<Member> loginMember = mr.findByMemberId(memberId);
+        if (loginMember.isPresent()) {
+            m = loginMember.get();
+        }
+
+        int gender = m.getGender();
+        int age = m.getAge();
+
         Member oppositeGender;
 
         if (gender==0) {
@@ -36,6 +52,22 @@ public class MemberController2 {
             System.out.println("gender33 : "+gender);
             oppositeGender = ms2.getOppsiteGender(gender,age);
         }
+
+        System.out.println(oppositeGender);
+
+        result.put("oppositeGender", oppositeGender);
+        return result;
+    }
+
+
+    @GetMapping("/getOppositeGender2")
+    public HashMap<String, Object> getOppositeGender2(@RequestParam("memberId") int memberId) {
+        HashMap<String, Object> result = new HashMap<>();
+
+        System.out.println("memberId = " + memberId);
+
+        Member oppositeGender;
+        oppositeGender = ms2.getOppsiteGender2(memberId);
 
         System.out.println(oppositeGender);
 
@@ -72,10 +104,10 @@ public class MemberController2 {
     }
 
     @GetMapping("/getMembersWithNickname")
-    public HashMap<String, Object> getMembersWithNickname(@RequestParam("word") String word) {
+    public HashMap<String, Object> getMembersWithNickname(@RequestParam("word") String word,@RequestParam("memberId") int memberId) {
         HashMap<String, Object> result = new HashMap<>();
 
-        List<Member> membersWithName = ms2.getMembersWithNickname(word);
+        List<Member> membersWithName = ms2.getMembersWithNickname(word, memberId);
         result.put("memberList", membersWithName);
         return result;
     }
@@ -91,12 +123,23 @@ public class MemberController2 {
         return result;
     }
 
-    @PostMapping("/setTempDownAndBlock")
-    public HashMap<String, Object> setTempDownAndBlock(@RequestParam("chatGroupId") int chatGroupId, @RequestParam("memberId") int memberId) {
+    @PostMapping("/setTempDown")
+    public HashMap<String, Object> setTempDown(@RequestParam("chatGroupId") int chatGroupId, @RequestParam("memberId") int memberId) {
         HashMap<String, Object> result = new HashMap<>();
         System.out.println("chatGroupId : "+chatGroupId+" memberId : "+memberId);
 
-        ms2.setTempDownAndBlock(chatGroupId,memberId);
+        ms2.setTempDown(chatGroupId,memberId);
+
+        result.put("msg", "yes");
+        return result;
+    }
+
+    @PostMapping("/addBlockedFromRandomChat")
+    public HashMap<String, Object> addBlockedFromRandomChat(@RequestParam("chatGroupId") int chatGroupId, @RequestParam("memberId") int memberId) {
+        HashMap<String, Object> result = new HashMap<>();
+        System.out.println("chatGroupId : "+chatGroupId+" memberId : "+memberId);
+
+        ms2.addBlockedFromRandomChat(chatGroupId,memberId);
 
         result.put("msg", "yes");
         return result;

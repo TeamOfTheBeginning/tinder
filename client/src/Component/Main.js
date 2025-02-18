@@ -43,7 +43,7 @@ const Main = () => {
                 
             }).catch((err)=>{console.error(err)})
 
-            axios.get(`/api/member2/getOppositeGender`, { params: { gender:loginUser.gender, age:loginUser.age } })
+            axios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
                 // console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
                 setOppositeGender(result.data.oppositeGender);

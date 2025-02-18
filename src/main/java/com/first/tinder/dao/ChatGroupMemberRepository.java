@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ChatGroupMemberRepository extends JpaRepository<ChatGroupMember, Integer> {
-    List<ChatGroupMember> findByMember(Member m);
+    List<ChatGroupMember> findByMemberOrderByChatGroupMemberIdDesc(Member m);
 
     List<ChatGroupMember> findByChatGroup(ChatGroup chatGroup);
 

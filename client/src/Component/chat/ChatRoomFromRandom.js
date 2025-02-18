@@ -41,15 +41,27 @@ const ChatRoomFromRandom = () => {
         return `${year}/${month}/${day} ${hours}:${minutes}`;
         }
 
-    async function sendMessage() {
-
-        axios.post(`/api/chat/sendMessage`, null ,{ params: { content:message,chatGroupId,sender:loginUser.memberId } })
-        .then((result) => {
-            
-            setChatList(result.data.chatList);
-        })
-        .catch((err) => { console.error(err); });        
-    }
+        async function sendMessage() {
+            try {
+                const response = await axios.post(`/api/chat/sendMessage`, null, {
+                    params: { content: message, chatGroupId, sender: loginUser.memberId }
+                });
+        
+                if (response.data.expired) {
+                    alert("이 채팅방은 12시간이 지나 만료되었습니다. 메시지를 보낼 수 없습니다.");
+                    return;
+                }
+        
+                if (response.data.blocked) {
+                    alert("메시지를 보낼 수 없습니다. 차단한 사용자 또는 차단된 사용자와의 대화입니다.");
+                    return;
+                }
+        
+                setChatList(response.data.chatList);
+            } catch (error) {
+                console.error(error);
+            }
+        }
 
     async function setTempUp(){
 
@@ -64,13 +76,24 @@ const ChatRoomFromRandom = () => {
 
     async function setTempDownAndBlock(){
 
-        axios.post(`/api/member2/setTempDownAndBlock`, null ,{ params: { chatGroupId,memberId:loginUser.memberId } })
-        .then((result) => {
-            if(result.data.msg=='yes')
-                alert("상대 온도가 하락/차단 되었습니다.")
-            else{ alert("오류발생") }   
-        })
-        .catch((err) => { console.error(err); });
+        if(window.confirm("상대방을 차단합니다.")){
+            axios.post(`/api/member2/setTempDown`, null ,{ params: { chatGroupId,memberId:loginUser.memberId } })
+            .then((result) => {
+                if(result.data.msg=='yes')
+                    alert("상대 온도가 하락 되었습니다.")
+                else{ alert("오류발생") }   
+            })
+            .catch((err) => { console.error(err); });            
+
+            axios.post(`/api/member2/addBlockedFromRandomChat`, null ,{ params: { chatGroupId,memberId:loginUser.memberId } })
+            .then((result) => {
+                if(result.data.msg=='yes')
+                    alert("상대가 차단 되었습니다.")
+                else{ alert("오류발생") }   
+            })
+            .catch((err) => { console.error(err); });
+
+        }        
     }
 
 
@@ -92,7 +115,7 @@ const ChatRoomFromRandom = () => {
                                     {/* <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${chat.sender.profileImg}`}/>&nbsp; */}
                                 </div>
                                 <div className='chatContent'>
-                                    &nbsp; {formatDate(chat.createdat)}&nbsp;<br/>{chat.content} &nbsp; 
+                                    &nbsp; {formatDate(chat.createdDate)}&nbsp;<br/>{chat.content} &nbsp; 
                                 </div>
                             </div>
                         </div>

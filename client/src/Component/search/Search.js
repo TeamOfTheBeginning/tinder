@@ -17,7 +17,7 @@ const Search = () => {
 
   async function findMember(){
 
-    axios.get(`/api/member2/getMembersWithNickname`, { params: { word } })
+    axios.get(`/api/member2/getMembersWithNickname`, { params: { word, memberId:loginUser.memberId } })
     .then((result)=>{
       console.log(result.data.memberList)
       setMemberList(result.data.memberList)
