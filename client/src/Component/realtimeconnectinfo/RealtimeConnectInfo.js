@@ -11,6 +11,8 @@ const RealtimeConnectInfo = () => {
   const [userCount, setUserCount] = useState(0);
   const [userNames, setUserNames] = useState();
   const [client, setClient] = useState(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     // WebSocket 클라이언트 설정
@@ -66,18 +68,51 @@ const RealtimeConnectInfo = () => {
     };
   }, []);
 
+  function toggle(){
+    setIsOpen(!isOpen);
+  }
+
   return (
     <div className='realtimeConnectInfoContainer'>
-      <div className='realtimeConnectInfoContent'><FaUser />:{userCount}<br/>
+      <div 
+      className='realtimeConnectInfoContent' 
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
+      onClick={()=>toggle()}
+      >
+      <FaUser id='FaUser'/>
+      
+        {showTooltip && (
+          <div 
+            style={{
+              position: 'absolute',
+              bottom: '70%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              background: 'black',
+              color: 'white',
+              padding: '5px 10px',
+              borderRadius: '5px',
+              fontSize: '12px',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {userCount}
+          </div>
+        )}
 
-        {(userNames)?(userNames.map((userName, idx)=>{
-                    return (
-                        <div key={idx}>
-                            {userName.username}&nbsp;
-                        </div>
-                    )
-                })):("접속한유저가 없습니다.")}
-      </div>
+        {isOpen && (<div className='realTimeAccessUserList'>
+          {(userNames)?(userNames.map((userName, idx)=>{
+                      return (
+                          <div key={idx}>
+                              {userName.username}&nbsp;
+                          </div>
+                      )
+                  })):("접속한유저가 없습니다.")}
+                </div>
+        )}
+        </div>
+      
     </div>
   )
 }

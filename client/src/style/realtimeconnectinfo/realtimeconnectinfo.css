@@ -7,5 +7,29 @@
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    transition: transform 0.2sease-in-out;
+    transition: transform 0.2s ease-in-out;
+}
+
+#FaUser{
+    position: fixed;
+    top: 2.25%;
+    right: 8.15%;
+    width: 45px;
+    height: 45px;
+    /* border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+#FaUser:hover {
+    transform: scale(0.9);
+}
+
+.realTimeAccessUserList{
+    position: fixed;
+    top: 10%;
+    right: 8%;
+    width: 100px;
+    height: 100px;
 }
