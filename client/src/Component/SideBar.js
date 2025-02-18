@@ -5,17 +5,19 @@ import { useNavigate } from "react-router-dom";
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
-import { CgProfile } from "react-icons/cg";
+// import { CgProfile } from "react-icons/cg";
 import { IoHomeSharp, IoSparkles, IoSearch, IoLogOut } from "react-icons/io5";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { TbMailHeart } from "react-icons/tb";
 import { IoClose } from "react-icons/io5";
 import { FaRandom } from "react-icons/fa";
+import { HiOutlineChatAlt2 } from "react-icons/hi";
 
 import WritePost from "./post/WritePost";
 import Match from "./match/Match";
 import FindChatGroupRandom from './chat/FindChatGroupRandom';
 import FindChatGroup from "./chat/FindChatGroup";
+import RealTimeChat from "./realtimechat/RealTimeChat"
 import MyPage from "./member/MyPage";
 import Search from "./search/Search";
 
@@ -185,9 +187,13 @@ const SideBar = () => {
           <TbMailHeart />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('mypage')}>
-          <CgProfile />
+        <div className='btn' onClick={() => handleMenuClick('realtimechat')}>
+          <HiOutlineChatAlt2 />
         </div>
+
+        {/* <div className='btn' onClick={() => handleMenuClick('mypage')}>
+          <CgProfile />
+        </div> */}
 
         <div className='btn' onClick={() => handleMenuClick('search')}>
           <IoSearch />
@@ -212,6 +218,7 @@ const SideBar = () => {
           {selectedMenu === 'match' && <Match />}
           {selectedMenu === 'findChatGroupRandom' && <FindChatGroupRandom />}
           {selectedMenu === 'findChatGroup' && <FindChatGroup />}
+          {selectedMenu === 'realtimechat' && <RealTimeChat />}
           {selectedMenu === 'mypage' && <MyPage />}
           {selectedMenu === 'search' && <Search />}
         </div>
