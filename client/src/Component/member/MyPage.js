@@ -157,7 +157,7 @@ const buyItems = async () => {
 
                 <div className='btns' >
                     <div id ="btn" onClick={()=>{ navigate('/editProfile')}}>Edit Profile</div>
-                    <div id ="btn">&nbsp;Post Write</div>
+                    <div id ="btn"onClick={()=>{ navigate('/nearMember', {state :{loginUser:loginUser}})}}>&nbsp;Post Write</div>
                     <div id ="btn" onClick={()=>{requestPayment()}}>&nbsp;<button>충전</button></div>
                     <div id ="btn" onClick={()=>{buyItems()}}>&nbsp;<button>결제</button></div>
                 </div>
