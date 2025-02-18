@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 
-import '../../style/chatroomfromchatgroup.css';
+import '../../style/message/chatroomfromchatgroup.css';
 
 const ChatRoomFromChatGroup = () => {
     const { chatGroupId } = useParams();

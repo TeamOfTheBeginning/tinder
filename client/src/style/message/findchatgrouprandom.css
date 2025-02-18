@@ -1,0 +1,53 @@
+.findChatGroupRandomContainer{
+    width: 100%;
+    /* height: 100vh; */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border: 1px solid black;
+}
+
+.findChatGroupRandomContainer button{
+    margin-left: 5px;
+    padding: 3px;
+    width: 60px;
+    height: 30px;
+    border-radius: 50px;
+    box-sizing: border-box;
+    border: none;
+    font-size: 11px;
+    color: #F7186A;
+}
+
+.findChatGroupListContainer{
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center;
+    align-items: center; */
+
+    width: 80%;
+    height: 15vh;
+    border: 1px solid black;
+
+}
+
+.findChatGroupLeft{
+    
+    border: 1px solid black;
+
+
+}
+
+.findChatGroupLeft img{
+    height: 100%;
+}
+
+.findChatGroupRandomBtns{
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+}

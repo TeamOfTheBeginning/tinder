@@ -24,6 +24,9 @@ public class ChatGroup {
 	private String chatGroupName;
 
 	private Integer memberCount;
+
+	@Column(columnDefinition = "TINYINT")
+	private int anonymity=0;
 	
 	public ChatGroup(Member createdby, Integer membercount) {
 		this.createdBy = createdby;

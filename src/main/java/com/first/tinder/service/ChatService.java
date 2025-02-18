@@ -30,6 +30,9 @@ public class ChatService {
     @Autowired
     ChatRepository cr;
 
+    @Autowired
+    private MemberService2 ms2;
+
     public List<ChatGroup> findChatGroup(int memberId) {
         //챗 그룹 리스트 생성
         List<ChatGroup> chatGroupList = new ArrayList<>();
@@ -46,10 +49,17 @@ public class ChatService {
             
             //ChatGroupMember 객체에서 ChatGroup 추출
             for(ChatGroupMember chatGroupMember : chatGroupMemberList) {
-                
-                //리스트에 담는다
-                chatGroupList.add(chatGroupMember.getChatGroup());
+
+                ChatGroup chatGroup =chatGroupMember.getChatGroup();
+
+                if(chatGroup.getAnonymity()==0){
+
+                    System.out.println("chatGroup.getChatGroupId()"+chatGroup.getChatGroupId());
+                    //리스트에 담는다
+                    chatGroupList.add(chatGroup);}
             }
+
+
 
 
 
@@ -255,8 +265,25 @@ public class ChatService {
         // Sort memberIds in ascending order
         Collections.sort(memberIds);
 
+        List<Member> members = new ArrayList<>();
+
+        for(int memberId1 : memberIds){
+
+            Optional<Member> member1 = mr.findById(memberId1);
+            if (member1.isPresent()) {
+                Member m = member1.get();
+                members.add(m);
+            }
+        }
+
+        System.out.println("members"+members);
+        System.out.println("members.size()"+members.size());
+
+        List<ChatGroup> existingChatGroups = new ArrayList<>();
+        existingChatGroups = cgmr.findChatGroupByMembers(members, members.size());
+
         // Find existing chat group with the same members
-        List<ChatGroup> existingChatGroups = cgr.findChatGroupByMemberIds(memberIds, memberIds.size());
+//        List<ChatGroup> existingChatGroups = cgr.findChatGroupByMemberIds(memberIds, memberIds.size());
 
         if (!existingChatGroups.isEmpty()) {
             return existingChatGroups.get(0).getChatGroupId();  // If a matching group is found, return its ID
@@ -292,6 +319,89 @@ public class ChatService {
     }
 
 
+    public List<ChatGroup> findChatGroupRandom(int memberId) {
+        //챗 그룹 리스트 생성
+        List<ChatGroup> chatGroupList = new ArrayList<>();
+
+        //받은 memberid로 맴버객체조회
+        Optional<Member> member = mr.findByMemberId(memberId);
+
+        //맴버존재 한다면
+        if (member.isPresent()) {
+            Member m = member.get();
+
+            //맴버로 ChatGroupMember 객체 조회
+            List<ChatGroupMember> chatGroupMemberList = cgmr.findByMember(m);
+
+            //ChatGroupMember 객체에서 ChatGroup 추출
+            for(ChatGroupMember chatGroupMember : chatGroupMemberList) {
+
+                ChatGroup chatGroup =chatGroupMember.getChatGroup();
+
+                if(chatGroup.getAnonymity()==1){
+
+                    System.out.println("chatGroup.getChatGroupId()"+chatGroup.getChatGroupId());
+
+                //리스트에 담는다
+                chatGroupList.add(chatGroup);}
+            }
 
 
+
+
+
+
+        }
+
+
+        return chatGroupList;
+    }
+
+    public int setAnonymousMessageRoom(int memberId) {
+        ChatGroup newChatGroup = new ChatGroup();
+
+        Optional<Member> member = mr.findById(memberId);
+        if (member.isPresent()) {
+            Member m = member.get();
+            int age = m.getAge();
+            int gender = m.getGender();
+
+            Member oppositeGender;
+
+            if (gender==0) {
+                System.out.println("gender2 : "+gender);
+                gender=1;
+                System.out.println("gender3 : "+gender);
+                oppositeGender = ms2.getOppsiteGender(gender,age);
+            }else {
+                System.out.println("gender22 : "+gender);
+                gender=0;
+                System.out.println("gender33 : "+gender);
+                oppositeGender = ms2.getOppsiteGender(gender,age);
+            }
+
+
+            // If no existing group is found, create a new chat group
+
+            newChatGroup.setChatGroupName("익명채팅");
+            newChatGroup.setMemberCount(2);  // Set the number of members for the new group
+            newChatGroup.setCreatedBy(m);
+            newChatGroup.setAnonymity(1);
+
+            // Save the new chat group
+            cgr.save(newChatGroup);
+
+            ChatGroupMember newChatGroupMember = new ChatGroupMember();
+            newChatGroupMember.setChatGroup(newChatGroup);
+            newChatGroupMember.setMember(member.get());
+            cgmr.save(newChatGroupMember);
+
+            ChatGroupMember newChatGroupMember2 = new ChatGroupMember();
+            newChatGroupMember2.setChatGroup(newChatGroup);
+            newChatGroupMember2.setMember(oppositeGender);
+            cgmr.save(newChatGroupMember2);
+        }
+
+        return newChatGroup.getChatGroupId();
+    }
 }

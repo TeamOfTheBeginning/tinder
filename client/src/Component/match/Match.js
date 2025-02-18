@@ -4,7 +4,7 @@ import MatchingMember from './MatchingMember'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
-import '../../style/match.css';
+import '../../style/match/match.css';
 
 const Match = () => {
 

@@ -1,0 +1,19 @@
+.chatGroupRandomContainer{
+    width: 100%;
+    font-size: 150%;
+}
+
+.chatGroupRandomMember{
+    display: flex;
+    flex-direction: row;
+}
+
+.findChatGroupListContainer{
+    padding: 10px;
+
+}
+
+.chatGroupRandomBtns{
+    display: flex;
+    justify-content: center;
+}

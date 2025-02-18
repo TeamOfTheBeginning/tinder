@@ -23,5 +23,17 @@ public interface ChatGroupMemberRepository extends JpaRepository<ChatGroupMember
 
 
 
+    @Query("SELECT c.chatGroup FROM ChatGroupMember c " +
+            "WHERE c.chatGroup.memberCount = :size " +
+            "AND c.chatGroup IN (" +
+            "   SELECT cm.chatGroup FROM ChatGroupMember cm " +
+            "   WHERE cm.member IN :members " +
+            "   GROUP BY cm.chatGroup " +
+            "   HAVING COUNT(cm.member) = :size" +
+            ")")
+    List<ChatGroup> findChatGroupByMembers(@Param("members") List<Member> members,
+                                           @Param("size") long size);
+
+
 
 }

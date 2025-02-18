@@ -3,34 +3,30 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 
-import '../../style/chatroomfrommatch.css';
+import '../../style/message/chatroomfromrandom.css';
 
 const ChatRoomFromRandom = () => {
 
-    const { memberId } = useParams();
-    console.log("memberId"+memberId);
-    const loginUser = useSelector(state=>state.user);
-    console.log("loginUser.memberId"+loginUser.memberId);
+    const { chatGroupId } = useParams();
+    
     const navigate = useNavigate();
+    const loginUser = useSelector(state=>state.user);
 
     const [chatList, setChatList] = useState();
     const [message, setMessage] = useState();
-    const [chatGroupId, setChatGroupId] = useState();
-    
+
     const handleInputChange = (e) => {
         setMessage(e.target.value); // 사용자 입력을 상태에 저장
     };
 
-    useEffect(() => {    
-        axios.get(`/api/chat/getChatList2`, { params: { myMemberId:loginUser.memberId,matchedMemberId:memberId } })
-        .then((result) => {
-            console.log("chatList"+JSON.stringify(result.data.chatList))
-            setChatList(result.data.chatList);
-            setChatGroupId(result.data.chatGroupId);
-            console.log("chatList"+JSON.stringify(chatList))
-        })
-        .catch((err) => { console.error(err); });
-    }, []);
+    useEffect(() => {
+        // console.log(loginUser)
+        axios.get(`/api/chat/getChatList1`, { params: { chatGroupId } })
+            .then((result) => {
+                setChatList(result.data.chatList);
+            })
+            .catch((err) => { console.error(err); });
+        }, []);
 
     const formatDate = (dateString) => {
         const date = new Date(dateString); // ISO 8601 형식의 문자열을 Date 객체로 변환

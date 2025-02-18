@@ -70,7 +70,7 @@ const Search = () => {
 
     axios.post(`/api/chat/setMessageRoom`,null ,{ params: { 
       inviteMemberIdList: inviteMemberListStr , memberId:loginUser.memberId
-  } } )
+    } } )
     .then((result)=>{
       console.log("result.data.chatGroupId"+result.data.chatGroupId)
       enterChatRoomFromChatGroup(result.data.chatGroupId);

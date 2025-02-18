@@ -179,7 +179,7 @@ const SideBar = () => {
           <IoSparkles />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('chatRandom')}>
+        <div className='btn' onClick={() => handleMenuClick('findChatGroupRandom')}>
           <FaRandom />
         </div>
 

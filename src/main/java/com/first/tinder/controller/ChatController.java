@@ -22,14 +22,20 @@ public class ChatController {
     @GetMapping("/findChatGroup")
     public HashMap<String,Object> findChatGroup(@RequestParam("memberId") int memberId) {
         HashMap<String,Object> result = new HashMap<>();
-
         List<ChatGroup> chatGroupList = cs.findChatGroup(memberId);
-
 //        List<Member> chatMemberList = cs.findChatMember(memberId);
-
 //        result.put("chatMemberList",chatMemberList);
         result.put("chatGroupList",chatGroupList);
+        return result;
+    }
 
+    @GetMapping("/findChatGroupRandom")
+    public HashMap<String,Object> findChatGroupRandom(@RequestParam("memberId") int memberId) {
+        HashMap<String,Object> result = new HashMap<>();
+        List<ChatGroup> chatGroupList = cs.findChatGroupRandom(memberId);
+//        List<Member> chatMemberList = cs.findChatMember(memberId);
+//        result.put("chatMemberList",chatMemberList);
+        result.put("chatGroupList",chatGroupList);
         return result;
     }
 
@@ -78,20 +84,21 @@ public class ChatController {
         List<Integer> inviteMemberIds = Arrays.stream(inviteMemberIdList.split(","))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
-
-
-
-        System.out.println("inviteMemberList1"+inviteMemberIds);
-
+//        System.out.println("inviteMemberList1"+inviteMemberIds);
         inviteMemberIds.add(memberId);
-
-        System.out.println("inviteMemberList2"+inviteMemberIds);
-
-        System.out.println("memberId"+memberId);
-
+//        System.out.println("inviteMemberList2"+inviteMemberIds);
+//        System.out.println("memberId"+memberId);
         int chatGroupId = cs.setMessageRoom(inviteMemberIds,memberId);
         result.put("chatGroupId",chatGroupId);
 
+        return result;
+    }
+
+    @PostMapping("/setAnonymousMessageRoom")
+    public HashMap<String,Object> setAnonymousMessageRoom(@RequestParam("memberId") int memberId){
+        HashMap<String,Object> result = new HashMap<>();
+        int chatGroupId = cs.setAnonymousMessageRoom(memberId);
+        result.put("chatGroupId",chatGroupId);
         return result;
     }
 
