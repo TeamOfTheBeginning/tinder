@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -21,9 +24,15 @@ public class ChatGroup {
 	@JoinColumn(name = "created_by")  // 외래 키 컬럼 이름 지정
 	private Member createdBy;  // Member 엔티티와 연관됨
 
+	@CreationTimestamp
+	private Timestamp createdDate;
+
 	private String chatGroupName;
 
 	private Integer memberCount;
+
+	@Column(columnDefinition = "TINYINT")
+	private int anonymity=0;
 	
 	public ChatGroup(Member createdby, Integer membercount) {
 		this.createdBy = createdby;

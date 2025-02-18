@@ -35,5 +35,5 @@ public class Chat {
 	private String content;
 
 	@CreationTimestamp
-	private Timestamp createdat;
+	private Timestamp createdDate;
 }

@@ -1,0 +1,67 @@
+.chatRoomFromRandomContainer{
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* border: 1px solid black; */
+}
+
+.chatRoomFromRandomContents{
+    /* border: 1px solid black; */
+
+    width: 40vw;
+}
+
+.chatRoomFromRandomContents .chat {    
+    /* border: 1px solid black; */
+    background-color: #f0f0f0;  /* 기본 배경색 */
+    text-align: left;  /* 기본 텍스트 정렬 */
+
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+/* 로그인한 사용자의 메시지 스타일 */
+.chatRoomFromRandomContents .chat.myChat {
+    /* background-color: #ed6ea0;   */
+    /* 다른 배경 색 */
+    text-align: right;  /* 오른쪽 정렬 */
+
+    justify-content: end;
+}
+
+.chatRoomFromRandomContents .chatContainer{
+    display: flex;
+    flex-direction: row;
+
+    /* border: 1px solid black; */
+
+    width: 20vw;
+}
+
+.chatRoomFromRandomContents .chatImg{
+    width: 5vh;
+    height: 5vh;
+
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+.chatRoomFromRandomContents img{
+    width: 100%;
+}
+
+.chatRoomFromRandomContents .chatContent{
+    border: 1px solid black;
+    width: 100%;
+}

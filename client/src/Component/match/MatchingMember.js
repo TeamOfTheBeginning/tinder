@@ -2,7 +2,7 @@ import React, {useState, useEffect, useMemo, useRef} from 'react'
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-import '../../style/matchingmember.css';
+import '../../style/match/matchingmember.css';
 
 
 const MatchingMember = (props) => {

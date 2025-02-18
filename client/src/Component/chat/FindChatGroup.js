@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import ChatGroup from './ChatGroup';
 
-import '../../style/findchatgroup.css';
+import '../../style/message/findchatgroup.css';
 
 const FindChatGroup = () => {
 
@@ -31,9 +31,9 @@ const FindChatGroup = () => {
 
   return (
     <div className='findChatGroupContainer'>
-      <div className='findChatGroupBtns'>
+      {/* <div className='findChatGroupBtns'>
         <button>쪽지보내기</button>
-      </div>
+      </div> */}
       {
         (chatGroupList)?(
           chatGroupList.map((chatGroup, idx)=>{

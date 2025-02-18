@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
-import '../../style/matchedmember.css';
+import '../../style/match/matchedmember.css';
 
 const MatchedMember = () => {
 
