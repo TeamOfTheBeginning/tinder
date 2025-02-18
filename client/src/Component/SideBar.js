@@ -14,6 +14,7 @@ import { FaRandom } from "react-icons/fa";
 
 import WritePost from "./post/WritePost";
 import Match from "./match/Match";
+import FindChatGroupRandom from './chat/FindChatGroupRandom';
 import FindChatGroup from "./chat/FindChatGroup";
 import MyPage from "./member/MyPage";
 import Search from "./search/Search";
@@ -91,14 +92,14 @@ const SideBar = () => {
           });
 
           // 서버로부터 접속자 수 업데이트를 실시간으로 받기 위해 구독
-          stompClient.subscribe('/topic/userCount', (message) => {
-            console.log("Received message:", message.body);
+          stompClient.subscribe('/topic/real_chat/userCount', (message) => {
+            // console.log("Received message:", message.body);
 
             const parsedMessage = JSON.parse(message.body);
 
-            console.log("parsedMessage"+parsedMessage)
+            // console.log("parsedMessage"+parsedMessage)
 
-            console.log("parsedMessage.userCount"+parsedMessage.userCount)
+            // console.log("parsedMessage.userCount"+parsedMessage.userCount)
 
             const userCount = Number(parsedMessage.userCount);
 
@@ -176,7 +177,7 @@ const SideBar = () => {
           <IoSparkles />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('match')}>
+        <div className='btn' onClick={() => handleMenuClick('chatRandom')}>
           <FaRandom />
         </div>
 
@@ -209,6 +210,7 @@ const SideBar = () => {
         <div className='sideViewerContent'>
           {selectedMenu === 'writePost' && <WritePost />}
           {selectedMenu === 'match' && <Match />}
+          {selectedMenu === 'findChatGroupRandom' && <FindChatGroupRandom />}
           {selectedMenu === 'findChatGroup' && <FindChatGroup />}
           {selectedMenu === 'mypage' && <MyPage />}
           {selectedMenu === 'search' && <Search />}

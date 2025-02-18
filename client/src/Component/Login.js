@@ -75,14 +75,15 @@ const Login = () => {
             });
 
             // 서버로부터 접속자 수 업데이트를 실시간으로 받기 위해 구독
-            stompClient.subscribe('/topic/userCount', (message) => {
-            console.log("Received message:", message.body);
+            stompClient.subscribe('/topic/real_chat/userCount', (message) => {
+            // console.log("Received message:", message.body);
+            // alert(message.body);
 
             const parsedMessage = JSON.parse(message.body);
 
-            console.log("parsedMessage"+parsedMessage)
+            // console.log("parsedMessage"+parsedMessage)
             
-            console.log("parsedMessage.userCount"+parsedMessage.userCount)
+            // console.log("parsedMessage.userCount"+parsedMessage.userCount)
 
             const userCount = Number(parsedMessage.userCount);
 

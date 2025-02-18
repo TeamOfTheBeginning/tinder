@@ -3,17 +3,15 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
-import '../../style/chatgroup.css';
+const ChatGroupRandom = () => {
 
-const ChatGroup = (props) => {
-    
     const [chatMemberList, setChatMemberList] = useState();
     const navigate = useNavigate();
     const loginUser = useSelector(state=>state.user);
 
     function enterChatRoomFromChatGroup(chatGroupId){
         console.log(chatGroupId);
-        navigate(`/chatRoomFromChatGroup/${chatGroupId}`);
+        navigate(`/chatRoomFromRandom/${chatGroupId}`);
     }
 
     useEffect(() => {
@@ -26,17 +24,15 @@ const ChatGroup = (props) => {
             .catch((err) => { console.error(err); });
     }, []);
 
-
-
-return (
-    <div className='chatGroupContainer'>
-        <div className='chatGroupProfile'>
+  return (
+    <div className='chatGroupRandomContainer'>
+        <div className='chatGroupRandomProfile'>
             
         {props.chatGroup.chatGroupName}
         ({props.chatGroup.memberCount}인)<br/>
 
         </div>
-        <div className='chatGroupMember'>
+        <div className='chatGroupRandomMember'>
         {
             (chatMemberList)?(
                 chatMemberList.map((chatMember, idx)=>{
@@ -50,11 +46,11 @@ return (
         }
         </div>
 
-        <div className='chatGroupBtns'>
+        <div className='chatGroupRandomBtns'>
             <button onClick={()=>enterChatRoomFromChatGroup(props.chatGroup.chatGroupId)}>입장</button>
         </div>
     </div>
   )
 }
 
-export default ChatGroup
+export default ChatGroupRandom

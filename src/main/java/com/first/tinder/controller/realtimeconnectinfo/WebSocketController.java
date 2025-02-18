@@ -26,20 +26,21 @@ public class WebSocketController {
     // 웹소켓 연결 초기화 시, 클라이언트에게 접속자 수 전송
     @MessageMapping("/getUserCount")
     public void getUserCount() {
+        System.out.println("getUserCount");
 
-        List<User> usernames = new ArrayList<>();
-        usernames=userRepository.findAll();
+        List<User> usernames = userRepository.findAll() ;
+//        usernames=userRepository.findAll();
 
         UserCountInfo userCountInfo = new UserCountInfo((int) userRepository.count()+1000, usernames);
 
 //        UserCountInfo.setUserCount((int) userRepository.count());
         // 웹소켓 연결 성공 후, 현재 접속자 수를 클라이언트에게 바로 전송
-        messagingTemplate.convertAndSend("/topic/userCount", userCountInfo);
+        messagingTemplate.convertAndSend("/topic/real_chat/userCount", userCountInfo);
     }
 
     // 사용자가 접속할 때마다 호출되는 메서드
     @MessageMapping("/join")
-    @SendTo("/topic/userCount")
+    @SendTo("/topic/real_chat/userCount")
     public UserCountInfo handleJoin(User user) {
         // 사용자 접속 시 DB에 저장
         System.out.println("user"+user);
@@ -58,7 +59,7 @@ public class WebSocketController {
 
     // 사용자 퇴장 시 호출되는 메서드
     @MessageMapping("/leave")
-    @SendTo("/topic/userCount")
+    @SendTo("/topic/real_chat/userCount")
     public UserCountInfo handleLeave(User user) {
         // 사용자 퇴장 시 DB에서 삭제
         System.out.println("user"+user);
