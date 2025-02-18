@@ -1,13 +1,7 @@
 package com.first.tinder.service;
 
-import com.first.tinder.dao.ChatGroupMemberRepository;
-import com.first.tinder.dao.ChatGroupRepository;
-import com.first.tinder.dao.ChatRepository;
-import com.first.tinder.dao.MemberRepository;
-import com.first.tinder.entity.Chat;
-import com.first.tinder.entity.ChatGroup;
-import com.first.tinder.entity.ChatGroupMember;
-import com.first.tinder.entity.Member;
+import com.first.tinder.dao.*;
+import com.first.tinder.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +24,12 @@ public class ChatService {
     @Autowired
     ChatRepository cr;
 
+    @Autowired
+    private MemberService2 ms2;
+
+    @Autowired
+    BlockRepository br;
+
     public List<ChatGroup> findChatGroup(int memberId) {
         //챗 그룹 리스트 생성
         List<ChatGroup> chatGroupList = new ArrayList<>();
@@ -42,14 +42,21 @@ public class ChatService {
             Member m = member.get();
             
             //맴버로 ChatGroupMember 객체 조회
-            List<ChatGroupMember> chatGroupMemberList = cgmr.findByMember(m);
+            List<ChatGroupMember> chatGroupMemberList = cgmr.findByMemberOrderByChatGroupMemberIdDesc(m);
             
             //ChatGroupMember 객체에서 ChatGroup 추출
             for(ChatGroupMember chatGroupMember : chatGroupMemberList) {
-                
-                //리스트에 담는다
-                chatGroupList.add(chatGroupMember.getChatGroup());
+
+                ChatGroup chatGroup =chatGroupMember.getChatGroup();
+
+                if(chatGroup.getAnonymity()==0){
+
+                    System.out.println("chatGroup.getChatGroupId()"+chatGroup.getChatGroupId());
+                    //리스트에 담는다
+                    chatGroupList.add(chatGroup);}
             }
+
+
 
 
 
@@ -255,8 +262,25 @@ public class ChatService {
         // Sort memberIds in ascending order
         Collections.sort(memberIds);
 
+        List<Member> members = new ArrayList<>();
+
+        for(int memberId1 : memberIds){
+
+            Optional<Member> member1 = mr.findById(memberId1);
+            if (member1.isPresent()) {
+                Member m = member1.get();
+                members.add(m);
+            }
+        }
+
+        System.out.println("members"+members);
+        System.out.println("members.size()"+members.size());
+
+        List<ChatGroup> existingChatGroups = new ArrayList<>();
+        existingChatGroups = cgmr.findChatGroupByMembers(members, members.size());
+
         // Find existing chat group with the same members
-        List<ChatGroup> existingChatGroups = cgr.findChatGroupByMemberIds(memberIds, memberIds.size());
+//        List<ChatGroup> existingChatGroups = cgr.findChatGroupByMemberIds(memberIds, memberIds.size());
 
         if (!existingChatGroups.isEmpty()) {
             return existingChatGroups.get(0).getChatGroupId();  // If a matching group is found, return its ID
@@ -292,6 +316,74 @@ public class ChatService {
     }
 
 
+    public List<ChatGroup> findChatGroupRandom(int memberId) {
+        //챗 그룹 리스트 생성
+        List<ChatGroup> chatGroupList = new ArrayList<>();
+
+        //받은 memberid로 맴버객체조회
+        Optional<Member> member = mr.findByMemberId(memberId);
+
+        //맴버존재 한다면
+        if (member.isPresent()) {
+            Member m = member.get();
+
+            //맴버로 ChatGroupMember 객체 조회
+            List<ChatGroupMember> chatGroupMemberList = cgmr.findByMemberOrderByChatGroupMemberIdDesc(m);
+
+            //ChatGroupMember 객체에서 ChatGroup 추출
+            for(ChatGroupMember chatGroupMember : chatGroupMemberList) {
+
+                ChatGroup chatGroup =chatGroupMember.getChatGroup();
+
+                if(chatGroup.getAnonymity()==1){
+
+                    System.out.println("chatGroup.getChatGroupId()"+chatGroup.getChatGroupId());
+
+                //리스트에 담는다
+                chatGroupList.add(chatGroup);}
+            }
 
 
+
+
+
+
+        }
+
+
+        return chatGroupList;
+    }
+
+    public int setAnonymousMessageRoom(int memberId) {
+        ChatGroup newChatGroup = new ChatGroup();
+        Member m = new Member();
+        Member oppositeGender = new Member();
+        
+        //이미 차단 여부에대한 필터링을 마친 이성만 조회
+        oppositeGender = ms2.getOppsiteGender2(memberId);
+
+        Optional<Member> member = mr.findById(memberId);
+        if (member.isPresent()) {
+            m = member.get();
+
+            newChatGroup.setChatGroupName("익명채팅");
+            newChatGroup.setMemberCount(2);  // Set the number of members for the new group
+            newChatGroup.setCreatedBy(m);
+            newChatGroup.setAnonymity(1);
+            // Save the new chat group
+            cgr.save(newChatGroup);
+
+            ChatGroupMember newChatGroupMember = new ChatGroupMember();
+            newChatGroupMember.setChatGroup(newChatGroup);
+            newChatGroupMember.setMember(m);
+            cgmr.save(newChatGroupMember);
+
+            ChatGroupMember newChatGroupMember2 = new ChatGroupMember();
+            newChatGroupMember2.setChatGroup(newChatGroup);
+            newChatGroupMember2.setMember(oppositeGender);
+            cgmr.save(newChatGroupMember2);
+        }
+
+        return newChatGroup.getChatGroupId();
+    }
 }

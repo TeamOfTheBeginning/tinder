@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
+import axios from 'axios';
+
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
@@ -92,9 +94,9 @@ const SideBar = () => {
         connectHeaders: {
           // 필요한 경우 인증 정보 추가
         },
-        debug: function (str) {
-          console.log(str);
-        },
+        // debug: function (str) {
+        //   console.log(str);
+        // },
         onConnect: () => {
           console.log('WebSocket connected');
         
@@ -189,7 +191,7 @@ const SideBar = () => {
           <IoSparkles />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('chatRandom')}>
+        <div className='btn' onClick={() => handleMenuClick('findChatGroupRandom')}>
           <FaRandom />
         </div>
 
@@ -208,6 +210,12 @@ const SideBar = () => {
         <div className='btn' onClick={() => handleMenuClick('search')}>
           <IoSearch />
         </div>
+
+        {/* 테스트버튼 */}
+        {/* <div className='btn' onClick={() => { test(loginUser.memberId); }}>
+
+          <IoLogOut />
+        </div> */}
 
         <div className='btn' onClick={() => { navigate('/'); handleLeave(loginUser.email); }}>
 

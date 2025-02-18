@@ -20,7 +20,7 @@ const RealtimeConnectInfo = () => {
         // 필요한 경우 인증 정보 추가
       },
       debug: function (str) {
-        console.log(str);
+        // console.log(str);
       },
       onConnect: () => {
         console.log('WebSocket connected');

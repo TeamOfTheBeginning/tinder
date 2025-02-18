@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ChatGroupMemberRepository extends JpaRepository<ChatGroupMember, Integer> {
-    List<ChatGroupMember> findByMember(Member m);
+    List<ChatGroupMember> findByMemberOrderByChatGroupMemberIdDesc(Member m);
 
     List<ChatGroupMember> findByChatGroup(ChatGroup chatGroup);
 
@@ -21,6 +21,18 @@ public interface ChatGroupMemberRepository extends JpaRepository<ChatGroupMember
             "AND c.chatGroup IN (SELECT cm.chatGroup FROM ChatGroupMember cm WHERE cm.member = :member2)")
     List<ChatGroup> findTwoPersonChatGroup(@Param("member1") Member member1, @Param("member2") Member member2);
 
+
+
+    @Query("SELECT c.chatGroup FROM ChatGroupMember c " +
+            "WHERE c.chatGroup.memberCount = :size " +
+            "AND c.chatGroup IN (" +
+            "   SELECT cm.chatGroup FROM ChatGroupMember cm " +
+            "   WHERE cm.member IN :members " +
+            "   GROUP BY cm.chatGroup " +
+            "   HAVING COUNT(cm.member) = :size" +
+            ")")
+    List<ChatGroup> findChatGroupByMembers(@Param("members") List<Member> members,
+                                           @Param("size") long size);
 
 
 

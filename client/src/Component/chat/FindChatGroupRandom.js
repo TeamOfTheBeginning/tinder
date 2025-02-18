@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
-import ChatGroupRandom from './ChatGroup';
+import ChatGroupRandom from './ChatGroupRandom';
 
-import '../../style/findchatgroup.css';
+import '../../style/message/findchatgrouprandom.css';
 
 const FindChatGroupRandom = () => {
 
@@ -16,7 +16,7 @@ const FindChatGroupRandom = () => {
 
     useEffect(() => {
         console.log(loginUser)
-        axios.get(`/api/chat/findChatGroup`, { params: { memberId:loginUser.memberId } })
+        axios.get(`/api/chat/findChatGroupRandom`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
                 console.log("result.data.chatGroupList: " + JSON.stringify(result.data.chatGroupList));
                 serChatGroupList(result.data.chatGroupList);
@@ -24,23 +24,45 @@ const FindChatGroupRandom = () => {
             .catch((err) => { console.error(err); });
     }, []);
 
+    function enterChatRoomFromChatGroupRandom(chatGroupId){
+        console.log(chatGroupId);
+        navigate(`/chatRoomFromRandom/${chatGroupId}`);
+    }
+
+    function setAnonymousMessageRoom(){
+        console.log("setAnonymousMessageRoom")
+        
+
+        axios.post(`/api/chat/setAnonymousMessageRoom`,null ,{ params: { 
+            memberId:loginUser.memberId
+          } } )
+          .then((result)=>{
+            console.log("result.data.chatGroupId"+result.data.chatGroupId)
+            enterChatRoomFromChatGroupRandom(result.data.chatGroupId);
+          }
+          ).catch((err)=>{console.error(err)}) 
+
+    }
+
+
+
 
     return (
-        <div className='chatRandomContainer'>
-            <div className='chatRandomBtns'>
-                <button>랜덤쪽지보내기</button>
+        <div className='findChatGroupRandomContainer'>
+            <div className='findChatGroupRandomBtns'>
+                <button onClick={()=>setAnonymousMessageRoom()}>랜덤쪽지보내기</button>
             </div>
 
-            {
-        (chatGroupList)?(
-            chatGroupList.map((chatGroup, idx)=>{
-            return (
-                <div key={idx} className='findChatGroupListContainer'>
-                    <ChatGroupRandom chatGroup={chatGroup}/>
-                </div>
-            )
-            })
-        ):("Loading...")
+        {
+            (chatGroupList)?(
+                chatGroupList.map((chatGroup, idx)=>{
+                return (
+                    <div key={idx} className='findChatGroupListContainer'>
+                        <ChatGroupRandom chatGroup={chatGroup}/>
+                    </div>
+                )
+                })
+            ):("Loading...")
         }
         
         </div>

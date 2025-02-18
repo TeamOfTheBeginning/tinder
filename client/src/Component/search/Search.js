@@ -17,7 +17,7 @@ const Search = () => {
 
   async function findMember(){
 
-    axios.get(`/api/member2/getMembersWithNickname`, { params: { word } })
+    axios.get(`/api/member2/getMembersWithNickname`, { params: { word, memberId:loginUser.memberId } })
     .then((result)=>{
       console.log(result.data.memberList)
       setMemberList(result.data.memberList)
@@ -58,6 +58,17 @@ const Search = () => {
     navigate(`/chatRoomFromChatGroup/${chatGroupId}`);
   }
 
+  async function block(memberId){
+
+    axios.post(`/api/member2/addBlockedFromSearch`, null ,{ params: { blockedId : memberId , blockerId : loginUser.memberId } })
+    .then((result) => {
+        if(result.data.msg=='yes'){alert("상대가 차단 되었습니다.")}
+        else if(result.data.msg=='no')    {alert("차단 해제 되었습니다.")}        
+        else{ alert("오류발생") }
+    })
+    .catch((err) => { console.error(err); });
+  }
+
   function setMessageRoom(){
     if(!inviteMemberList){
       alert("맴버를 선택하세요");
@@ -70,7 +81,7 @@ const Search = () => {
 
     axios.post(`/api/chat/setMessageRoom`,null ,{ params: { 
       inviteMemberIdList: inviteMemberListStr , memberId:loginUser.memberId
-  } } )
+    } } )
     .then((result)=>{
       console.log("result.data.chatGroupId"+result.data.chatGroupId)
       enterChatRoomFromChatGroup(result.data.chatGroupId);
@@ -100,8 +111,9 @@ const Search = () => {
                             
                             
                             <div className='searchMemberImg'><img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${member.profileImg}`}/></div>{member.nickname}&nbsp; 
+                            
                             <div onClick={()=>enterChatRoomFromSearchedMember(member.memberId)}><button>쪽지</button></div>
-
+                            <div onClick={()=>block(member.memberId)}><button>차단/해제</button></div>
                             <div onClick={()=>inviteMemberForMessage(member)}><button>대화초대</button></div>
                         </div>
                     )

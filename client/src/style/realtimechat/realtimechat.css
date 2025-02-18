@@ -181,3 +181,13 @@
   background-color: #e5577c;
 }
 
+.home-icon {
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.home-icon:hover {
+  color: #007bff;
+}
