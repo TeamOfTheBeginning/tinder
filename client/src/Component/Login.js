@@ -50,8 +50,8 @@ const Login = () => {
                 localStorage.setItem("nickname", lUser.nickname);
                 navigate('/main');
             }else{
-                setPwd("");
-                return alert(result.data.msg);
+              setPwd("");
+              return alert(result.data.msg);
             }
         }catch(err){ console.error(err)}
     }
