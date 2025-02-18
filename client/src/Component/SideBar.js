@@ -17,6 +17,7 @@ import WritePost from "./post/WritePost";
 import Match from "./match/Match";
 import FindChatGroupRandom from './chat/FindChatGroupRandom';
 import FindChatGroup from "./chat/FindChatGroup";
+import RealTimeChat from "./realtimechat/RealTimeChat"
 import MyPage from "./member/MyPage";
 import Search from "./search/Search";
 
@@ -186,7 +187,7 @@ const SideBar = () => {
           <TbMailHeart />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('')}>
+        <div className='btn' onClick={() => handleMenuClick('realtimechat')}>
           <HiOutlineChatAlt2 />
         </div>
 
@@ -217,6 +218,7 @@ const SideBar = () => {
           {selectedMenu === 'match' && <Match />}
           {selectedMenu === 'findChatGroupRandom' && <FindChatGroupRandom />}
           {selectedMenu === 'findChatGroup' && <FindChatGroup />}
+          {selectedMenu === 'realtimechat' && <RealTimeChat />}
           {selectedMenu === 'mypage' && <MyPage />}
           {selectedMenu === 'search' && <Search />}
         </div>
