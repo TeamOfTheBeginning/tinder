@@ -20,6 +20,7 @@ import FindChatGroup from "./chat/FindChatGroup";
 import RealTimeChat from "./realtimechat/RealTimeChat"
 import MyPage from "./member/MyPage";
 import Search from "./search/Search";
+import EditProfile from './member/EditProfile';
 
 import RealtimeConnectInfo from './realtimeconnectinfo/RealtimeConnectInfo';
 
@@ -30,6 +31,7 @@ const SideBar = () => {
   const [profileImg, setProfileImg] = useState('');
   const navigate = useNavigate();
   const [selectedMenu, setSelectedMenu] = useState(null);
+  const [subMenu, setSubMenu] = useState(null); // MyPage 내 서브 메뉴 관리
   const sideViewerRef = useRef(null); // SideViewer 영역을 참조
 
   useEffect(() => {
@@ -40,13 +42,16 @@ const SideBar = () => {
 
   // 메뉴 클릭 시 SideViewer 제어
   const handleMenuClick = (menu) => {
-    if (selectedMenu === menu) {
-      setSelectedMenu(null); // 같은 메뉴 클릭 시 닫기
-    } else {
-      setSelectedMenu(null); // 기존 메뉴 닫기
-      setTimeout(() => setSelectedMenu(menu), 200); // 애니메이션 후 변경
-    }
+    setSelectedMenu(null);
+    setTimeout(() => {
+      setSelectedMenu(menu);
+      setSubMenu(null); // MyPage에서 다른 곳으로 이동 시 초기화
+    }, 200);
   };
+
+  const openSubMenu = (menu) => {
+    setSubMenu(menu);  // 'editProfile'을 설정하여 EditProfile을 SideViewer 내에서 열 수 있게 함
+};
 
   // SideViewer 닫기
   const closeSideViewer = () => {
@@ -54,11 +59,16 @@ const SideBar = () => {
   };
 
   // SideViewer 외부 클릭 시 닫기
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      if (sideViewerRef.current && !sideViewerRef.current.contains(e.target)) {
-        setSelectedMenu(null); // 외부 클릭 시 닫기
-      }
+    useEffect(() => {
+      const handleOutsideClick = (e) => {
+        if (
+          sideViewerRef.current &&
+          !sideViewerRef.current.contains(e.target) &&
+          selectedMenu &&
+          selectedMenu !== 'realtimechat' // realTimeChat이 열려 있을 때는 닫히지 않도록 예외처리
+        ) {
+          setSelectedMenu(null);
+        }
     };
 
     // document에 클릭 이벤트 리스너 추가
@@ -68,7 +78,7 @@ const SideBar = () => {
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
-  }, []);
+  }, [selectedMenu]);
 
   
   const [userCount, setUserCount] = useState();
@@ -219,7 +229,11 @@ const SideBar = () => {
           {selectedMenu === 'findChatGroupRandom' && <FindChatGroupRandom />}
           {selectedMenu === 'findChatGroup' && <FindChatGroup />}
           {selectedMenu === 'realtimechat' && <RealTimeChat />}
-          {selectedMenu === 'mypage' && <MyPage />}
+          {selectedMenu === 'mypage' && (
+            subMenu === 'editProfile'
+              ? <EditProfile />
+              : <MyPage openSubMenu={openSubMenu} />
+          )}
           {selectedMenu === 'search' && <Search />}
         </div>
       </div>
