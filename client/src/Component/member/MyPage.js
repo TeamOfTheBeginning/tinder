@@ -32,6 +32,8 @@ const MyPage = () => {
     const toggleFollowedModal = () => {
     setIsFollowedModalOpen(!isFollowedModalOpen);
     };
+
+    
     
 
     

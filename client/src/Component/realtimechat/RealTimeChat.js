@@ -23,6 +23,10 @@ function ChatPage() {
   const stompClientRef = useRef(null);
   const navigate = useNavigate();
   const [isAtBottom, setIsAtBottom] = useState(true);
+  const navigateWithinSideViewer = (path) => {
+    navigate(path); // 경로 이동만 수행하고 SideViewer 상태는 유지
+  };
+  
 
   useEffect(() => {
     if (!nickname) {
