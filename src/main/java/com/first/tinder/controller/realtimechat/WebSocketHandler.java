@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class WebSocketHandler {
+public class WebSocketHandler { // 채팅방 이벤트 (입, 퇴장)
 
     private final SimpMessagingTemplate messagingTemplate;
 

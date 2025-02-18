@@ -1,8 +1,12 @@
 package com.first.tinder.service;
 
 import com.first.tinder.dao.FollowRepository;
+import com.first.tinder.dao.HobbyCategoryRepository;
+import com.first.tinder.dao.HobbyRepository;
 import com.first.tinder.dao.MemberRepository;
 import com.first.tinder.entity.Follow;
+import com.first.tinder.entity.Hobby;
+import com.first.tinder.entity.HobbyCategory;
 import com.first.tinder.entity.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,9 +38,9 @@ public class MemberService {
 
     public Member getMemberByNickname(String nickname) {
 
-        Optional<Member> member = mr.findByNickname( nickname );
-        if(member.isPresent()) return member.get();
-        else  return null;
+        Optional<Member> member = mr.findByNickname(nickname);
+        if (member.isPresent()) return member.get();
+        else return null;
 
     }
 
@@ -48,9 +52,9 @@ public class MemberService {
 
         Optional<Member> member = mr.findById(id);
 
-        if(member.isPresent()) {
+        if (member.isPresent()) {
             return member.get();
-        }else{
+        } else {
             return null;
         }
     }
@@ -58,7 +62,7 @@ public class MemberService {
     public void updateMember(Member member) {
 
         Optional<Member> memberOptional = mr.findById(member.getMemberId());
-        if(memberOptional.isPresent()) {
+        if (memberOptional.isPresent()) {
             Member updateMember = memberOptional.get();
             updateMember.setEmail(member.getEmail());
             updateMember.setNickname(member.getNickname());
@@ -71,6 +75,8 @@ public class MemberService {
             updateMember.setGender(member.getGender());
             updateMember.setZipnum(member.getZipnum());
 
+            // 변경 사항을 데이터베이스에 저장
+            mr.save(updateMember);
         }
 
     }
@@ -171,4 +177,23 @@ public class MemberService {
         // km를 m로 변환하여 반환 (소수점 둘째 자리에서 반올림)
         return Math.round(distance * 1000.0) / 1000.0;
     }
+
+    @Autowired
+    private HobbyRepository hobbyRepository;
+
+    @Autowired
+    private HobbyCategoryRepository hobbyCategoryRepository;
+
+    public List<Hobby> getAllHobbies() {
+        return hobbyRepository.findAll();
+    }
+
+    public List<HobbyCategory> getAllHobbyCategories() {
+        return hobbyCategoryRepository.findAll();
+    }
+
+    public List<Hobby> getHobbiesByIds(List<Integer> ids) {
+        return hobbyRepository.findAllById(ids);
+    }
+
 }

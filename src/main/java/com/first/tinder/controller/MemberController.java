@@ -1,12 +1,13 @@
 package com.first.tinder.controller;
 
 import com.first.tinder.entity.Follow;
+import com.first.tinder.entity.Hobby;
+import com.first.tinder.entity.HobbyCategory;
 import com.first.tinder.entity.Member;
 import com.first.tinder.service.MemberService;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -202,7 +203,6 @@ public class MemberController {
         return result;
     }
 
-
     @PostMapping("/follow")
     public HashMap<String, Object> follow( @RequestParam("follower") int follower, @RequestParam("followed") int followed ) {
         System.out.println("##################################### : " + follower);
@@ -222,15 +222,31 @@ public class MemberController {
         return result;
     }
 
+    // 취미 카테고리 및 취미 데이터 제공 API
+    @GetMapping("/hobbies")
+    public HashMap<String, Object> getHobbies() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("categories", ms.getAllHobbyCategories());
+        result.put("hobbies", ms.getAllHobbies());
+        return result;
+    }
 
+    // 선택된 취미 업데이트 API
+    @PostMapping("/updateHobbies")
+    public HashMap<String, Object> updateHobbies(@RequestBody HashMap<String, Object> payload) {
+        int memberId = (int) payload.get("memberId");
+        List<Integer> hobbyIds = (List<Integer>) payload.get("hobbies");
 
+        Member member = ms.getMemberById(memberId);
+        List<Hobby> hobbies = ms.getHobbiesByIds(hobbyIds);
 
+        member.setHobbies(hobbies);
+        ms.updateMember(member);
 
-
-
-
-
-
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("msg", "ok");
+        return result;
+    }
 
 
 }
