@@ -517,4 +517,33 @@ public Member getOppsiteGender2(int memberId) {
     return oppositeGender;
 }
 
+    public String addBlockedFromSearch(int blockedId, int blockerId) {
+
+    Member blocker = new Member();
+    Member blocked = new Member();
+
+    Optional<Member> blockerMember = mr.findByMemberId(blockerId);
+    if (blockerMember.isPresent()) {
+        blocker = blockerMember.get();
+    }
+    Optional<Member> blockedMember = mr.findByMemberId(blockedId);
+    if (blockedMember.isPresent()) {
+        blocked = blockedMember.get();
+    }
+
+    Optional<Block> block = br.findByBlockedAndBlocker(blocked, blocker);
+    if (block.isPresent()) {
+        System.out.println("차단 해제합니다.");
+        br.delete(block.get());
+        return "no";
+    }else{
+        System.out.println("차단합니다.");
+        Block block1 = new Block();
+        block1.setBlocker(blocker);
+        block1.setBlocked(blocked);
+        br.save(block1);
+        return "yes";
+    }
+
+    }
 }

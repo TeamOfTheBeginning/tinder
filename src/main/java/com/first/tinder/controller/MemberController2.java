@@ -3,6 +3,7 @@ package com.first.tinder.controller;
 import com.first.tinder.dao.MemberRepository;
 import com.first.tinder.entity.Member;
 import com.first.tinder.entity.MemberLikes;
+import com.first.tinder.service.BlockService;
 import com.first.tinder.service.MemberService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,9 @@ public class MemberController2 {
 
     @Autowired
     MemberRepository mr;
+
+    @Autowired
+    BlockService bs;
 
 
 
@@ -142,6 +146,15 @@ public class MemberController2 {
         ms2.addBlockedFromRandomChat(chatGroupId,memberId);
 
         result.put("msg", "yes");
+        return result;
+    }
+
+    @PostMapping("/addBlockedFromSearch")
+    public HashMap<String,Object> addBlockedFromSearch(@RequestParam("blockedId") int blockedId,@RequestParam("blockerId") int blockerId){
+        HashMap<String, Object> result = new HashMap<>();
+        System.out.println("blockedId : "+blockedId+" blockerId : "+blockerId);
+
+        result.put("msg", ms2.addBlockedFromSearch(blockedId,blockerId));
         return result;
     }
 
