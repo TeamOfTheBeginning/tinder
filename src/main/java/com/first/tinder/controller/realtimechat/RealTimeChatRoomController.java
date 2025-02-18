@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-//@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/realtime-chatrooms")
 @RequiredArgsConstructor
@@ -24,6 +23,7 @@ public class RealTimeChatRoomController {
     private final RealTimeChatRoomService chatRoomService;
     private final RealTimeChatRoomRepository chatRoomRepository;
 
+    /** ✅ 채팅방 목록 조회 */
     @GetMapping("/list")
     public ResponseEntity<List<Map<String, Object>>> getAllChatRooms() {
         List<RealTimeChatRoom> chatRooms = chatRoomRepository.findAll();
@@ -41,6 +41,7 @@ public class RealTimeChatRoomController {
         return ResponseEntity.ok(responseList);
     }
 
+    /** ✅ 채팅방 생성 */
     @PostMapping("/create")
     public ResponseEntity<RealTimeChatRoom> createRoom(
             @RequestParam String name,
@@ -54,13 +55,14 @@ public class RealTimeChatRoomController {
 
         try {
             RealTimeChatRoom chatRoom = chatRoomService.createRoom(name, isPrivate, password, nickname);
+
             return ResponseEntity.ok(chatRoom);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
     }
 
-
+    /** ✅ 비밀번호 검증 */
     @PostMapping("/validate")
     public ResponseEntity<Map<String, Boolean>> validateRoomPassword(
             @RequestParam Long roomId,
@@ -78,22 +80,23 @@ public class RealTimeChatRoomController {
 
         return ResponseEntity.ok(response);
     }
+
+    /** ✅ 채팅방 삭제 */
     @DeleteMapping("/delete/{roomId}")
     public ResponseEntity<Map<String, String>> deleteChatRoom(
             @PathVariable Long roomId,
             @RequestParam String nickname) {
 
         Map<String, String> response = new HashMap<>();
-
         boolean isDeleted = chatRoomService.deleteRoom(roomId, nickname);
 
         if (isDeleted) {
             response.put("message", "채팅방이 삭제되었습니다.");
+
             return ResponseEntity.ok(response);
         } else {
             response.put("message", "채팅방 삭제 권한이 없습니다.");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
         }
     }
-
 }
