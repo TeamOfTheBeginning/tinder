@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -124,4 +126,49 @@ public class MemberService {
         return list;
     }
 
+
+    public List<Member> findNearbyMembers(double latitude, double longitude, int maxDistance, int memberId) {
+
+        Member loginUser = mr.findById(memberId).orElse(null);
+        if (loginUser == null) {
+            // loginUser가 존재하지 않는 경우, 빈 목록을 반환하거나 예외를 던질 수 있습니다.
+            return Collections.emptyList();
+        }
+
+        int loginUserGender = loginUser.getGender();
+
+        List<Member> nearbyMembers = mr.findAll().stream()
+                .filter(member -> member.getGender() != loginUserGender) // loginUser와 성별이 다른 Member만 필터링
+                .filter(member -> calculateDistance(latitude, longitude, member.getLatitude(), member.getLongitude()) <= maxDistance)
+                .collect(Collectors.toList());
+
+        return nearbyMembers;
+    }
+
+
+    private static final int EARTH_RADIUS = 6371; // 지구의 반지름 (km)
+
+    private double calculateDistance(double lat1, double lon1, Double lat2, Double lon2) {
+        if (lat2 == null || lon2 == null) {
+            // lat2 또는 lon2가 null인 경우 거리를 계산할 수 없으므로, 매우 큰 값을 반환하거나, 예외를 던집니다.
+            return Double.MAX_VALUE; // 매우 큰 값을 반환하는 예시
+        }
+
+        // 위도와 경도를 라디안으로 변환
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+
+        // Haversine 공식
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // 거리 계산 (km)
+        double distance = EARTH_RADIUS * c;
+
+        // km를 m로 변환하여 반환 (소수점 둘째 자리에서 반올림)
+        return Math.round(distance * 1000.0) / 1000.0;
+    }
 }
