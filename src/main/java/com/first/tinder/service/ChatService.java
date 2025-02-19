@@ -6,6 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -25,7 +30,13 @@ public class ChatService {
     ChatRepository cr;
 
     @Autowired
-    private MemberService2 ms2;
+    MemberService2 ms2;
+
+    @Autowired
+    ChatGroupQuizRepository cgqr;
+
+    @Autowired
+    QuizRepository qr;
 
     @Autowired
     BlockRepository br;
@@ -337,10 +348,30 @@ public class ChatService {
 
                 if(chatGroup.getAnonymity()==1){
 
-                    System.out.println("chatGroup.getChatGroupId()"+chatGroup.getChatGroupId());
+                    if(chatGroup.getActivation()==0) {
+                        System.out.println("chatGroup.getChatGroupId()" + chatGroup.getChatGroupId());
 
-                //리스트에 담는다
-                chatGroupList.add(chatGroup);}
+
+                        Timestamp createdTimestamp = chatGroup.getCreatedDate();
+
+                        // 현재 시간의 Timestamp 가져오기
+                        Timestamp nowTimestamp = Timestamp.from(Instant.now());
+
+                        // 두 시간의 차이 계산 (밀리초 단위)
+                        long diffInMillis = Math.abs(nowTimestamp.getTime() - createdTimestamp.getTime());
+
+                        // 1시간 = 60분 = 3600초 = 3,600,000 밀리초
+                        if (diffInMillis <= 3_600_000) {
+                            System.out.println("1시간 이내의 데이터입니다.");
+
+                            //리스트에 담는다
+                            chatGroupList.add(chatGroup);
+
+                        } else {
+                            System.out.println("1시간 초과된 데이터입니다.");
+                        }
+                    }
+                }
             }
 
 
@@ -382,8 +413,39 @@ public class ChatService {
             newChatGroupMember2.setChatGroup(newChatGroup);
             newChatGroupMember2.setMember(oppositeGender);
             cgmr.save(newChatGroupMember2);
+
+            List<Quiz> quizzes = qr.findThreeRandomQuizzes();
+            long currentTime = System.currentTimeMillis();
+
+            for (int i = 0; i < quizzes.size(); i++) {
+                ChatGroupQuiz chatGroupQuiz = new ChatGroupQuiz();
+                chatGroupQuiz.setChatGroup(newChatGroup);
+                chatGroupQuiz.setQuiz(quizzes.get(i));
+
+                // 현재 시간 가져오기
+                LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES); // 초 & 밀리초 제거
+
+                // 1분, 2분, 3분씩 증가
+                LocalDateTime scheduledTime = now.plusMinutes(i + 2);
+
+                // Timestamp 변환 (정확한 분 단위 적용)
+                Timestamp transmissionTime = Timestamp.valueOf(scheduledTime);
+
+                chatGroupQuiz.setTransmissionTime(transmissionTime);
+
+                cgqr.save(chatGroupQuiz);
+            }
+
+
         }
 
         return newChatGroup.getChatGroupId();
+    }
+
+    public void setChatRoomDeactivated(int chatGroupId) {
+        ChatGroup chatGroup = cgr.findByChatGroupId(chatGroupId)
+                .orElse(new ChatGroup());
+
+        chatGroup.setActivation(1);
     }
 }

@@ -98,12 +98,12 @@ public class ChatController {
         ChatGroup chatGroup = cgr.findById(chatGroupId)
                 .orElseThrow(() -> new RuntimeException("Chat group not found"));
 
-        // 🔹 1️⃣ 채팅방 생성 후 12시간이 지났는지 확인
+        // 🔹 1️⃣ 채팅방 생성 후 1시간이 지났는지 확인
         Instant createdInstant = chatGroup.getCreatedDate().toInstant();
         Instant now = Instant.now();
         Duration duration = Duration.between(createdInstant, now);
 
-        if (duration.toHours() >= 12) {
+        if (duration.toHours() >= 1) {
             result.put("expired", true);
             result.put("message", "This chat group has expired. You cannot send messages anymore.");
             return result;
@@ -117,7 +117,18 @@ public class ChatController {
             return result;
         }
 
-        // 🔹 3️⃣ 메시지 전송
+        // 🔹 3️⃣ 비활성화 확인
+        if(chatGroup.getActivation()==1){
+            result.put("deactivated", true);
+            result.put("message", "You cannot send messages. Either you blocked someone or you are blocked.");
+            return result;
+        }
+
+        
+        
+        
+        
+        // 4 메시지 전송
         cs.sendMessage(chatGroupId, sender, content);
         List<Chat> chatList = cs.findChatList(chatGroupId);
         result.put("chatList", chatList);
@@ -149,6 +160,15 @@ public class ChatController {
         HashMap<String,Object> result = new HashMap<>();
         int chatGroupId = cs.setAnonymousMessageRoom(memberId);
         result.put("chatGroupId",chatGroupId);
+        return result;
+    }
+
+    @PostMapping("/setChatRoomDeactivated")
+    public HashMap<String,Object> setChatRoomDeactivated(@RequestParam("chatGroupId") int chatGroupId){
+        HashMap<String,Object> result = new HashMap<>();
+        System.out.println("chatGroupId : "+chatGroupId+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        cs.setChatRoomDeactivated(chatGroupId);
+        result.put("result","yes");
         return result;
     }
 

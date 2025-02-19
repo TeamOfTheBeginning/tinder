@@ -33,6 +33,9 @@ public class ChatGroup {
 
 	@Column(columnDefinition = "TINYINT")
 	private int anonymity=0;
+
+	@Column(columnDefinition = "TINYINT")
+	private int activation;
 	
 	public ChatGroup(Member createdby, Integer membercount) {
 		this.createdBy = createdby;
