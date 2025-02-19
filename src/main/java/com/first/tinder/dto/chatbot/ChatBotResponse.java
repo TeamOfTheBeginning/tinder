@@ -1,19 +1,19 @@
 package com.first.tinder.dto.chatbot;
 
 public class ChatBotResponse {
-    private String response;
+    private String reply;
 
     public ChatBotResponse() {}
 
-    public ChatBotResponse(String response) {
-        this.response = response;
+    public ChatBotResponse(String reply) {
+        this.reply = reply;
     }
 
-    public String getResponse() {
-        return response;
+    public String getReply() {
+        return reply;
     }
 
-    public void setResponse(String response) {
-        this.response = response;
+    public void setReply(String reply) {
+        this.reply = reply;
     }
 }

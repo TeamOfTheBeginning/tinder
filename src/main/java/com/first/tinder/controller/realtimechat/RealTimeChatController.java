@@ -38,7 +38,6 @@ public class RealTimeChatController { // 실시간 채팅 메시지를 처리
             return;
         }
 
-        // ✅ 닉네임 가져오기
         String nickname = requestDto.getNickname();
         if (nickname == null || nickname.trim().isEmpty()) {
             if (accessor.getUser() != null) {
@@ -47,29 +46,29 @@ public class RealTimeChatController { // 실시간 채팅 메시지를 처리
         }
 
         if (nickname == null || nickname.trim().isEmpty()) {
-            log.warn("🚨 닉네임이 누락됨: {}", requestDto);
+//            log.warn("🚨 닉네임이 누락됨: {}", requestDto);
             return;
         }
 
-        log.info("💬 [채팅 메시지] Room ID: {}, 닉네임: {}, 내용: {}", roomId, nickname, requestDto.getContent());
+//        log.info("💬 [채팅 메시지] Room ID: {}, 닉네임: {}, 내용: {}", roomId, nickname, requestDto.getContent());
 
         Member user = memberRepository.findByNickname(nickname).orElse(null);
 
         if (user == null) {
-            log.warn("🚨 사용자({})를 찾을 수 없음!", nickname);
+//            log.warn("🚨 사용자({})를 찾을 수 없음!", nickname);
             return;
         }
 
         if (!chatRoomService.isUserAllowed(roomId, user)) {
-            log.warn("🚨 권한 없는 사용자({})가 방 {}에 메시지 전송 시도!", nickname, roomId);
+//            log.warn("🚨 권한 없는 사용자({})가 방 {}에 메시지 전송 시도!", nickname, roomId);
 
             boolean added = chatRoomService.addUserToRoom(roomId, user);
             if (!added) {
-                log.warn("🚨 사용자({})를 방 {}에 추가할 수 없음!", nickname, roomId);
+//                log.warn("🚨 사용자({})를 방 {}에 추가할 수 없음!", nickname, roomId);
                 return;
             }
 
-            log.info("✅ 사용자({})가 방 {}에 정상적으로 추가됨", nickname, roomId);
+//            log.info("✅ 사용자({})가 방 {}에 정상적으로 추가됨", nickname, roomId);
         }
 
         MessageResponseDTO response = MessageResponseDTO.builder()
