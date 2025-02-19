@@ -52,7 +52,7 @@ const ChatRoomFromMatch = () => {
             });
     
             if (response.data.expired) {
-                alert("이 채팅방은 12시간이 지나 만료되었습니다. 메시지를 보낼 수 없습니다.");
+                alert("이 채팅방은 1시간이 지나 만료되었습니다. 메시지를 보낼 수 없습니다.");
                 return;
             }
     
