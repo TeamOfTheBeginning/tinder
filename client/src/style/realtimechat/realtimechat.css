@@ -191,3 +191,36 @@
 .home-icon:hover {
   color: #007bff;
 }
+
+/* 시스템 메시지 스타일 */
+.system-message {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #666;
+  margin: 10px 0;
+  padding: 8px 12px;
+  background: #f1f1f1;
+  border-radius: 10px;
+  max-width: 80%;
+  align-self: center;
+}
+
+.user-list {
+  margin-top: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.user-nickname {
+  background-color: #f0f0f0;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.no-user {
+  color: gray;
+  font-size: 14px;
+}
