@@ -47,6 +47,8 @@ const Login = () => {
                 dispatch( setFollower( res.data.follower ) )
                 dispatch( setFollowed( res.data.followed ) )
 
+                handleJoin(lUser.memberId)
+
                 localStorage.setItem("nickname", lUser.nickname);
                 navigate('/main');
             }else{
@@ -112,8 +114,8 @@ const Login = () => {
     }, []);
 
  // 사용자가 접속하거나 퇴장하는 메서드
-  const handleJoin = (username) => {
-    client.publish({ destination: '/app/join', body: JSON.stringify({ username }) });
+  const handleJoin = (memberId) => {
+    client.publish({ destination: '/app/join', body: JSON.stringify({ memberId }) });
   };
 
     return (
@@ -131,7 +133,7 @@ const Login = () => {
                 <input type="password" value={pwd} onChange={(e)=>{ setPwd(e.currentTarget.value)}} />
             </div>        
             <div className='btns'>
-                <div id="btn" onClick={()=>{onLoginLocal(); handleJoin(email)}}><IoLogIn />&nbsp;LOGIN</div>
+                <div id="btn" onClick={()=>{onLoginLocal(); }}><IoLogIn />&nbsp;LOGIN</div>
                 <div id="btn" onClick={()=>{navigate('/joinForm')}}><IoCreateOutline />&nbsp;JOIN</div>
             </div>
             <div className='snslogin'>
