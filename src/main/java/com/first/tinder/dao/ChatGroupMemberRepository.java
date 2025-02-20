@@ -35,5 +35,5 @@ public interface ChatGroupMemberRepository extends JpaRepository<ChatGroupMember
                                            @Param("size") long size);
 
 
-
+    List<ChatGroupMember> findAllByChatGroup(ChatGroup c);
 }

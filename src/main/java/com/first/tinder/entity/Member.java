@@ -31,43 +31,40 @@ public class Member {
     private String phone;
     @Column(columnDefinition = "TINYINT")
     private int gender;
+
     private int age;
-    private int account;
     @Temporal(TemporalType.DATE)
     private Date birthDate;
-    private Double latitude;
-    private Double longitude;
-    private String profileImg;
-    private String profileMsg;
-    private String snsId;
-    private String provider;
+
+    private int account;
+
     private String zipnum;
     private String address;
+    private Double latitude;
+    private Double longitude;
+
+    private String profileImg;
+    private String profileMsg;
+
+    private String snsId;
+    private String provider;
 
     private int temp;  // 기본값을 Java에서 설정
-
-    @Column(columnDefinition = "TINYINT")
-    private int ei=0;
-
-    @Column(columnDefinition = "TINYINT")
-    private int ns=0;
-
-    @Column(columnDefinition = "TINYINT")
-    private int tf=0;
-
-    @Column(columnDefinition = "TINYINT")
-    private int jp=0;
 
     @ElementCollection(fetch = FetchType.EAGER)  // 테이블의 리스트가 아니라 단순데이터(String, Integer 등)이라고 MySQL 에 알려주는 어너테이션
     @Builder.Default
     private List<MemberRole> memberRoleList = new ArrayList<MemberRole>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "member_hobby",
             joinColumns = @JoinColumn(name = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "hobby_id")
     )
     private List<Hobby> hobbies;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "member_info_id")
+    Member memberInfoId;
 
 }
