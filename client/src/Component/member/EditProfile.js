@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import SideBar from '../SideBar';
+import '../../style/mypage.css'
 
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction, } from '../../store/userSlice';

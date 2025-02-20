@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import '../../style/mypage.css'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import SideBar from '../SideBar';
@@ -15,8 +14,9 @@ import {Cookies} from 'react-cookie'
 const MyPage = () => {
 
     const loginUser = useSelector( state=>state.user );
+    const [profileImg, setProfileImg] = useState('');
     const [ imgSrc, setImgSrc ]=useState('');
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     const [word, setWord] = useState('n');
     const [imgList, setImgList] = useState([]);
     const [isFollowerModalOpen, setIsFollowerModalOpen] = useState(false);
@@ -32,21 +32,15 @@ const MyPage = () => {
     const toggleFollowedModal = () => {
     setIsFollowedModalOpen(!isFollowedModalOpen);
     };
-
     
-    
-
-    
-    useEffect(
-        ()=>{
-            if( loginUser.profileImg ){
-                setImgSrc(`http://localhost:8070/userImg/${loginUser.profileImg}`);
-            }
-
-            console.log(loginUser.followed);
-        
-        },[]
-    )
+    useEffect(() => {
+        if (loginUser.profileImg) {
+          setProfileImg(`http://localhost:8070/userimg/${loginUser.profileImg}`);
+        }
+        else{
+            
+        }
+      }, [loginUser]);
 
 const requestPayment = async () => {
     try {
@@ -111,12 +105,13 @@ const buyItems = async () => {
 
     return (
         <div className='Container'>
-            <SideBar  setWord={setWord}/>
+            {/* <SideBar setWord={setWord}/> */}
             <div className='mypage'>
+                <div className='img'>
+                    <img src={imgSrc} />
+                </div>
                 <div className='userinfo'>
-                    <div className='img'>
-                        <img src={imgSrc} />
-                    </div>
+                    
                     <div className='profile'>
                         <div className='field'>
                             <label>E-mail</label>
