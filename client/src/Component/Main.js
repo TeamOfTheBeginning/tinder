@@ -2,17 +2,21 @@ import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { FiX } from "react-icons/fi";
+import { FcCustomerSupport } from "react-icons/fc";
 
 import SideBar from './SideBar';
 import Post from './post/Post';
 import Notification from './notification/Notification'
 import ToastPopupPost from './post/ToastPopupPost';
 import MatchingMember from './match/MatchingMember';
+import ChatBot from './chatbot/ChatBot';
+
 
 
 import '../style/mystargram.css';
 import '../style/posts.css';
-
+import '../style/chatbot/chatbot.css';
 
 const Main = () => {
 
@@ -25,6 +29,17 @@ const Main = () => {
     const loginUser = useSelector(state=>state.user);
     const [notificationList,setNotificationList] = useState();
     const [oppositeGender, setOppositeGender] = useState();
+    const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+    const [chatMessages, setChatMessages] = useState([]);
+
+    const toggleChatbot = () => {
+        if (!isChatbotOpen) {
+            setChatMessages([
+                { role: "assistant", content: "안녕하세요! 무엇을 도와드릴까요?" }
+            ]);
+        }
+        setIsChatbotOpen(!isChatbotOpen);
+    };      
 
     useEffect(
         ()=>{
@@ -163,6 +178,15 @@ const Main = () => {
                     }
             </div>
 
+            <div className="customer-service-icon" onClick={toggleChatbot}>
+                {isChatbotOpen ? <FiX size={24} /> : <FcCustomerSupport size={24} />}
+            </div>
+
+            {isChatbotOpen && (
+                <div className="chatbot-popup">
+                    <ChatBot chatMessages={chatMessages} />
+                </div>
+            )}
         </div>
     )
 }
