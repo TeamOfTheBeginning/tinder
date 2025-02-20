@@ -44,14 +44,44 @@
     outline:none;
 }
 
-.field input[type="file"] {
-    flex: 4 1 auto; 
-    border-radius: 10px;
-    border: 1px solid #ed6ea0;
-}
-
 .field img {
     flex: 1 1 auto; 
-    border-radius: 10px;
-    border: 1px solid blue;
+    border-radius: 20px;
+    height:50px;
 }
+
+/* 버튼 */
+
+/* 파일 업로드 버튼 */
+.field button {
+    width: 80px;
+    cursor: pointer;
+}
+
+.btns {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+.btns button {
+    width: 80px;
+    height: 30px;
+    background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 300% 100%;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btns button:hover{
+    background-position: 100% 0;
+    color: #fff;
+  }
+  
+  #file {
+    display: none;
+  }
