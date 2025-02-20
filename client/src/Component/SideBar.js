@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-
 import axios from 'axios';
 
 import { Client } from '@stomp/stompjs';
@@ -14,6 +13,7 @@ import { TbMailHeart } from "react-icons/tb";
 import { IoClose } from "react-icons/io5";
 import { FaRandom } from "react-icons/fa";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 import WritePost from "./post/WritePost";
 import Match from "./match/Match";
@@ -23,12 +23,14 @@ import RealTimeChat from "./realtimechat/RealTimeChat"
 import MyPage from "./member/MyPage";
 import Search from "./search/Search";
 import EditProfile from './member/EditProfile';
+import NearMember from './member/NearMember';
 
 import RealtimeConnectInfo from './realtimeconnectinfo/RealtimeConnectInfo';
 
 import '../style/sidebar.css';
 
 const SideBar = () => {
+  
   const loginUser = useSelector(state => state.user);
   const [profileImg, setProfileImg] = useState('');
   const navigate = useNavigate();
@@ -44,6 +46,7 @@ const SideBar = () => {
 
   // 메뉴 클릭 시 SideViewer 제어
   const handleMenuClick = (menu) => {
+    console.log(loginUser)
     setSelectedMenu(null);
     setTimeout(() => {
       setSelectedMenu(menu);
@@ -191,6 +194,10 @@ const SideBar = () => {
           <IoSparkles />
         </div>
 
+        <div className='btn' onClick={() => handleMenuClick('nearMember')}>
+          <FaMapMarkerAlt />
+        </div>
+
         <div className='btn' onClick={() => handleMenuClick('findChatGroupRandom')}>
           <FaRandom />
         </div>
@@ -235,6 +242,7 @@ const SideBar = () => {
         {selectedMenu === 'writePost' && <WritePost closeSideViewer={closeSideViewer} />}
           {selectedMenu === 'match' && <Match />}
           {selectedMenu === 'findChatGroupRandom' && <FindChatGroupRandom />}
+          {selectedMenu === 'nearMember' && <NearMember loginUser={loginUser}/>}
           {selectedMenu === 'findChatGroup' && <FindChatGroup />}
           {selectedMenu === 'realtimechat' && <RealTimeChat />}
           {selectedMenu === 'mypage' && (

@@ -196,4 +196,9 @@ public class MemberService {
         return hobbyRepository.findAllById(ids);
     }
 
+    public Member getMemberBySnsId(String id) {
+        Optional<Member> member = mr.findBySnsId( id );
+        if(member.isPresent()) return member.get();
+        else  return null;
+    }
 }
