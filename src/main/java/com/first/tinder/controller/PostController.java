@@ -29,7 +29,7 @@ public class PostController {
     @PostMapping("/fileupload")
     public HashMap<String, Object> fileupload( @RequestParam("image") MultipartFile file ) {
         HashMap<String, Object> result = new HashMap<>();
-        String path = context.getRealPath("/userImg");
+        String path = context.getRealPath("/userimg");
         Calendar today = Calendar.getInstance();
         long dt = today.getTimeInMillis();
         String filename = file.getOriginalFilename();

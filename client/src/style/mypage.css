@@ -1,4 +1,4 @@
-.mypage{
+ .mypage{
     width:800px;
     border:1px solid black;
     margin:2px;
@@ -7,19 +7,20 @@
 }
 .mypage .userinfo{
     width:100%;
-    border:1px solid blue;
     display: flex;
 }
-.mypage .userinfo .img{
+.mypage .img{
     flex-basis:250px;    
     border:1px solid orange;
 }
-.mypage .userinfo .img img{
+.mypage .img img{
     width:250px;
     height:250px;
     border-radius: 50%;
     border:1px dotted blue;
 }
+
+/*
 .mypage .userinfo .profile{
     flex:1;
     border:1px solid green;
@@ -69,4 +70,4 @@
 .userpost div img{
     width:100%;
 }
-
+ */

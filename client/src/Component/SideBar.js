@@ -226,13 +226,13 @@ const SideBar = () => {
       {/* SideViewer */}
       <div className={`SideViewer ${selectedMenu ? 'show' : ''}`} ref={sideViewerRef}>
         <div className='sideViewerHeader'>
-          <button className='closeBtn' onClick={closeSideViewer}>
+          <div className='closeBtn' onClick={closeSideViewer}>
             <IoClose />
-          </button>
+          </div>
         </div>
 
         <div className='sideViewerContent'>
-          {selectedMenu === 'writePost' && <WritePost />}
+        {selectedMenu === 'writePost' && <WritePost closeSideViewer={closeSideViewer} />}
           {selectedMenu === 'match' && <Match />}
           {selectedMenu === 'findChatGroupRandom' && <FindChatGroupRandom />}
           {selectedMenu === 'findChatGroup' && <FindChatGroup />}

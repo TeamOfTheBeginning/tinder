@@ -32,10 +32,11 @@ function ChatPage() {
   const subscriptionRef = useRef([]);
   const navigate = useNavigate();
   const [isAtBottom, setIsAtBottom] = useState(true);
+  const [userList, setUserList] = useState([]);
+
   const navigateWithinSideViewer = (path) => {
     navigate(path); // 경로 이동만 수행하고 SideViewer 상태는 유지
   };
-  const [userList, setUserList] = useState([]);
 
   useEffect(() => {
     if (!nickname) {
