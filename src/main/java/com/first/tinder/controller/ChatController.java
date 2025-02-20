@@ -98,6 +98,63 @@ public class ChatController {
         ChatGroup chatGroup = cgr.findById(chatGroupId)
                 .orElseThrow(() -> new RuntimeException("Chat group not found"));
 
+//        // 🔹 1️⃣ 채팅방 생성 후 1시간이 지났는지 확인
+//        Instant createdInstant = chatGroup.getCreatedDate().toInstant();
+//        Instant now = Instant.now();
+//        Duration duration = Duration.between(createdInstant, now);
+//
+//        if (duration.toHours() >= 1) {
+//            result.put("expired", true);
+//            result.put("message", "This chat group has expired. You cannot send messages anymore.");
+//            return result;
+//        }
+
+        // 🔹 2️⃣ 차단 여부 확인 (이전 코드 유지)
+        boolean isBlocked = bs.isBlocked(senderMember, chatGroup);
+        if (isBlocked) {
+            result.put("blocked", true);
+            result.put("message", "You cannot send messages. Either you blocked someone or you are blocked.");
+            return result;
+        }
+
+//        // 🔹 3️⃣ 비활성화 확인
+//        if(chatGroup.getActivation()==1){
+//            result.put("deactivated", true);
+//            result.put("message", "You cannot send messages. Either you blocked someone or you are blocked.");
+//            return result;
+//        }
+
+        
+        
+        
+        
+        // 4 메시지 전송
+        cs.sendMessage(chatGroupId, sender, content);
+        List<Chat> chatList = cs.findChatList(chatGroupId);
+        result.put("chatList", chatList);
+        result.put("expired", false);
+        result.put("blocked", false);
+
+        return result;
+    }
+
+
+
+    @PostMapping("/sendMessageInAnonymityRoom")
+    public HashMap<String, Object> sendMessageInAnonymityRoom(
+            @RequestParam("content") String content,
+            @RequestParam("chatGroupId") int chatGroupId,
+            @RequestParam("sender") int sender) {
+
+        HashMap<String, Object> result = new HashMap<>();
+        System.out.println("chatGroupId: " + chatGroupId + " sender: " + sender + " content: " + content);
+
+        Member senderMember = mr.findById(sender)
+                .orElseThrow(() -> new RuntimeException("Sender not found"));
+
+        ChatGroup chatGroup = cgr.findById(chatGroupId)
+                .orElseThrow(() -> new RuntimeException("Chat group not found"));
+
         // 🔹 1️⃣ 채팅방 생성 후 1시간이 지났는지 확인
         Instant createdInstant = chatGroup.getCreatedDate().toInstant();
         Instant now = Instant.now();
@@ -124,12 +181,12 @@ public class ChatController {
             return result;
         }
 
-        
-        
-        
-        
+
+
+
+
         // 4 메시지 전송
-        cs.sendMessage(chatGroupId, sender, content);
+        cs.sendMessageInAnonymityRoom(chatGroupId, sender, content);
         List<Chat> chatList = cs.findChatList(chatGroupId);
         result.put("chatList", chatList);
         result.put("expired", false);
@@ -145,10 +202,7 @@ public class ChatController {
         List<Integer> inviteMemberIds = Arrays.stream(inviteMemberIdList.split(","))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
-//        System.out.println("inviteMemberList1"+inviteMemberIds);
-        inviteMemberIds.add(memberId);
-//        System.out.println("inviteMemberList2"+inviteMemberIds);
-//        System.out.println("memberId"+memberId);
+
         int chatGroupId = cs.setMessageRoom(inviteMemberIds,memberId);
         result.put("chatGroupId",chatGroupId);
 

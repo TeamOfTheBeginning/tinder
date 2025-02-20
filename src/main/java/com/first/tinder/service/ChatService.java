@@ -41,6 +41,12 @@ public class ChatService {
     @Autowired
     BlockRepository br;
 
+    @Autowired
+    NotificationRepository nr;
+
+    @Autowired
+    SseEmitterService ses;
+
     public List<ChatGroup> findChatGroup(int memberId) {
         //챗 그룹 리스트 생성
         List<ChatGroup> chatGroupList = new ArrayList<>();
@@ -62,26 +68,28 @@ public class ChatService {
 
                 if(chatGroup.getAnonymity()==0){
 
-                    System.out.println("chatGroup.getChatGroupId()"+chatGroup.getChatGroupId());
+                    chatGroupList.add(chatGroup);
 
-                    Timestamp createdTimestamp = chatGroup.getCreatedDate();
-
-                    // 현재 시간의 Timestamp 가져오기
-                    Timestamp nowTimestamp = Timestamp.from(Instant.now());
-
-                    // 두 시간의 차이 계산 (밀리초 단위)
-                    long diffInMillis = Math.abs(nowTimestamp.getTime() - createdTimestamp.getTime());
+//                    System.out.println("chatGroup.getChatGroupId()"+chatGroup.getChatGroupId());
+//
+//                    Timestamp createdTimestamp = chatGroup.getCreatedDate();
+//
+//                    // 현재 시간의 Timestamp 가져오기
+//                    Timestamp nowTimestamp = Timestamp.from(Instant.now());
+//
+//                    // 두 시간의 차이 계산 (밀리초 단위)
+//                    long diffInMillis = Math.abs(nowTimestamp.getTime() - createdTimestamp.getTime());
 
                     // 1시간 = 60분 = 3600초 = 3,600,000 밀리초
-                    if (diffInMillis <= 3_600_000) {
-                        System.out.println("1시간 이내의 데이터입니다.");
-
-                        //리스트에 담는다
-                        chatGroupList.add(chatGroup);
-
-                    } else {
-                        System.out.println("1시간 초과된 데이터입니다.");
-                    }
+//                    if (diffInMillis <= 3_600_000) {
+//                        System.out.println("1시간 이내의 데이터입니다.");
+//
+//                        //리스트에 담는다
+//                        chatGroupList.add(chatGroup);
+//
+//                    } else {
+//                        System.out.println("1시간 초과된 데이터입니다.");
+//                    }
 
                 }
             }
@@ -145,6 +153,81 @@ public class ChatService {
                 System.out.println("메시지 저장완료");
 
             }
+
+            List<ChatGroupMember> chatGroupMembers = cgmr.findAllByChatGroup(c);
+            if(!chatGroupMembers.isEmpty()){
+
+                for(ChatGroupMember chatGroupMember : chatGroupMembers) {
+                    Member chatGroupMember1 = chatGroupMember.getMember();
+                    if(!chatGroupMember1.equals(member.get())){
+
+                        Notification notification = new Notification();
+                        notification.setMember(chatGroupMember1); // 알림을 받을 사용자
+                        notification.setMessagefrom(member.get().getNickname()); // 좋아요 누른 사용자 이름
+                        notification.setMessage(member.get().getNickname() + "님이 회원님에게 "+c.getChatGroupName()+" 방에서 쪽지를 보냈습니다.");
+                        notification.setReadOnNot(0);
+
+                        Notification afternotification =  nr.save(notification); // 저장
+
+                        // ✅ SSE 알림 전송
+                        ses.sendNotification(chatGroupMember1.getMemberId(), notification.getMessage(), afternotification);
+
+                    }
+                }
+
+            }
+
+
+
+
+        }
+    }
+
+
+    public void sendMessageInAnonymityRoom(int chatGroupId, int sender, String content) {
+        Optional<ChatGroup> chatGroup = cgr.findByChatGroupId(chatGroupId);
+        if (chatGroup.isPresent()) {
+            ChatGroup c = chatGroup.get();
+
+            Optional<Member> member = mr.findByMemberId(sender);
+            if (member.isPresent()) {
+                Member m = member.get();
+
+                Chat chat = new Chat();
+                chat.setChatGroup(c);
+                chat.setSender(m);
+                chat.setContent(content);
+                cr.save(chat);
+                System.out.println("메시지 저장완료");
+
+            }
+
+            List<ChatGroupMember> chatGroupMembers = cgmr.findAllByChatGroup(c);
+            if(!chatGroupMembers.isEmpty()){
+
+                for(ChatGroupMember chatGroupMember : chatGroupMembers) {
+                    Member chatGroupMember1 = chatGroupMember.getMember();
+                    if(!chatGroupMember1.equals(member.get())){
+
+                        Notification notification = new Notification();
+                        notification.setMember(chatGroupMember1); // 알림을 받을 사용자
+                        notification.setMessagefrom(member.get().getNickname()); // 좋아요 누른 사용자 이름
+                        notification.setMessage("익명의 회원님이 회원님에게 "+c.getChatGroupName()+" 방에서 쪽지를 보냈습니다.");
+                        notification.setReadOnNot(0);
+
+                        Notification afternotification =  nr.save(notification); // 저장
+
+                        // ✅ SSE 알림 전송
+                        ses.sendNotification(chatGroupMember1.getMemberId(), notification.getMessage(), afternotification);
+
+                    }
+                }
+
+            }
+
+
+
+
         }
     }
 
@@ -205,6 +288,22 @@ public class ChatService {
                         chatGroupMember3.setChatGroup(returnChatGroup);
                         chatGroupMember3.setMember(mm);
                         cgmr.save(chatGroupMember3);
+
+
+                        Notification notification = new Notification();
+                        notification.setMember(mm); // 알림을 받을 사용자
+                        notification.setMessagefrom(m.getNickname()); // 좋아요 누른 사용자 이름
+                        notification.setMessage(m.getNickname() + "님이 회원님에게 "+chatGroup2.getChatGroupName()+" 방에 초대 했습니다.");
+                        notification.setReadOnNot(0);
+
+                        Notification afternotification =  nr.save(notification); // 저장
+
+                        // ✅ SSE 알림 전송
+                        ses.sendNotification(mm.getMemberId(), notification.getMessage(), afternotification);
+
+
+
+
 
                         chatGroupId = returnChatGroup.getChatGroupId();
                     }
@@ -289,25 +388,48 @@ public class ChatService {
     }
 
     public int setMessageRoom(List<Integer> memberIds, int memberId) {
+        List<Integer> oldMemberIds = new ArrayList<>(memberIds);
+
+
+        System.out.println("oldMemberIds"+oldMemberIds);
+
+        List<Integer> allMemberIds = new ArrayList<>(memberIds);
+
+
+        System.out.println("allMemberIds 1"+allMemberIds);
+
         // Sort memberIds in ascending order
-        Collections.sort(memberIds);
+        allMemberIds.add(memberId);
 
-        List<Member> members = new ArrayList<>();
+        System.out.println("allMemberIds 2"+allMemberIds);
 
-        for(int memberId1 : memberIds){
+        Collections.sort(allMemberIds);
 
-            Optional<Member> member1 = mr.findById(memberId1);
+        System.out.println("allMemberIds 3"+allMemberIds);
+
+        Set<Integer> uniqueallMemberIds = new TreeSet<>(allMemberIds); // 중복 제거 + 자동 정렬
+        List<Integer> sortedUniqueallMemberIds = new ArrayList<>(uniqueallMemberIds);
+
+        System.out.println("sortedUniqueallMemberIds"+sortedUniqueallMemberIds);
+
+        Member mymember = mr.findByMemberId(memberId)
+                .orElse(new Member());
+
+        List<Member> allMembers = new ArrayList<>();
+
+        for(int eachMemberId : allMemberIds){
+            Optional<Member> member1 = mr.findById(eachMemberId);
             if (member1.isPresent()) {
                 Member m = member1.get();
-                members.add(m);
+                allMembers.add(m);
             }
         }
 
-        System.out.println("members"+members);
-        System.out.println("members.size()"+members.size());
+        System.out.println("allMembers"+allMembers);
+        System.out.println("allMembers.size()"+allMembers.size());
 
         List<ChatGroup> existingChatGroups = new ArrayList<>();
-        existingChatGroups = cgmr.findChatGroupByMembers(members, members.size());
+        existingChatGroups = cgmr.findChatGroupByMembers(allMembers, allMembers.size());
 
         // Find existing chat group with the same members
 //        List<ChatGroup> existingChatGroups = cgr.findChatGroupByMemberIds(memberIds, memberIds.size());
@@ -318,7 +440,7 @@ public class ChatService {
 
         // If no existing group is found, create a new chat group
         ChatGroup newChatGroup = new ChatGroup();
-        newChatGroup.setChatGroupName("New Group for " + String.join(", ", memberIds.toString()));
+        newChatGroup.setChatGroupName(mymember.getNickname()+" 의 "+ allMemberIds.size() + " 인 채팅방");
         newChatGroup.setMemberCount(memberIds.size());  // Set the number of members for the new group
 
         // Create the new group and associate members
@@ -331,14 +453,32 @@ public class ChatService {
         cgr.save(newChatGroup);
 
         // Add members to the new chat group
-        for (Integer memberId1 : memberIds) {
-            Optional<Member> member = mr.findById(memberId1);
+        for (Integer eachMemberId : allMemberIds) {
+            Optional<Member> member = mr.findById(eachMemberId);
             if (member.isPresent()) {
                 ChatGroupMember newChatGroupMember = new ChatGroupMember();
                 newChatGroupMember.setChatGroup(newChatGroup);
                 newChatGroupMember.setMember(member.get());
                 cgmr.save(newChatGroupMember);
             }
+        }
+
+        System.out.println("oldMemberIds"+oldMemberIds);
+        for(Integer eachMemberId : oldMemberIds){
+            Optional<Member> member = mr.findById(eachMemberId);
+            if (member.isPresent()) {
+            Notification notification = new Notification();
+            notification.setMember(member.get()); // 알림을 받을 사용자
+            notification.setMessagefrom(mymember.getNickname()); // 좋아요 누른 사용자 이름
+            notification.setMessage(mymember.getNickname() + "님이 회원님에게 "+newChatGroup.getChatGroupName()+" 방에 초대 했습니다.");
+            notification.setReadOnNot(0);
+
+            Notification afternotification =  nr.save(notification); // 저장
+
+            // ✅ SSE 알림 전송
+            ses.sendNotification(member.get().getMemberId(), notification.getMessage(), afternotification);
+            }
+
         }
 
         // Return the ID of the newly created chat group
@@ -432,6 +572,18 @@ public class ChatService {
             newChatGroupMember2.setChatGroup(newChatGroup);
             newChatGroupMember2.setMember(oppositeGender);
             cgmr.save(newChatGroupMember2);
+
+
+            Notification notification = new Notification();
+            notification.setMember(oppositeGender); // 알림을 받을 사용자
+            notification.setMessagefrom(m.getNickname()); // 좋아요 누른 사용자 이름
+            notification.setMessage("익명의 회원님이 회원님에게 "+newChatGroup.getChatGroupName()+" 방에 초대 했습니다.");
+            notification.setReadOnNot(0);
+
+            Notification afternotification =  nr.save(notification); // 저장
+
+            // ✅ SSE 알림 전송
+            ses.sendNotification(oppositeGender.getMemberId(), notification.getMessage(), afternotification);
 
             List<Quiz> quizzes = qr.findThreeRandomQuizzes();
             long currentTime = System.currentTimeMillis();
