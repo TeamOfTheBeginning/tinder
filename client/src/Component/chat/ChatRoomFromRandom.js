@@ -97,7 +97,7 @@ const ChatRoomFromRandom = () => {
         if (chatWaiting) return;
 
         try {
-            const response = await axios.post(`/api/chat/sendMessage`, null, {
+            const response = await axios.post(`/api/chat/sendMessageInAnonymityRoom`, null, {
                 params: { content: message, chatGroupId, sender: loginUser.memberId }
             });
 

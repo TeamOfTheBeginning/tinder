@@ -45,6 +45,7 @@ const RealtimeConnectInfo = () => {
         // console.log("parsedMessage.usernames"+JSON.stringify(parsedMessage.usernames));
 
         // setUserCount(parseInt(message.body.userCount));  // 서버에서 받은 접속자 수 업데이트
+        console.log(parsedMessage.usernames)
 
         setUserNames(parsedMessage.usernames);
         });
@@ -105,7 +106,7 @@ const RealtimeConnectInfo = () => {
           {(userNames)?(userNames.map((userName, idx)=>{
                       return (
                           <div key={idx}>
-                              {userName.username}&nbsp;
+                              {userName.member.nickname}&nbsp;
                           </div>
                       )
                   })):("접속한유저가 없습니다.")}

@@ -149,8 +149,8 @@ const SideBar = () => {
     //   client.publish({ destination: '/app/join', body: JSON.stringify({ username }) });
     // };
   
-    const handleLeave = (username) => {
-      client.publish({ destination: '/app/leave', body: JSON.stringify({ username }) });
+    const handleLeave = (memberId) => {
+      client.publish({ destination: '/app/leave', body: JSON.stringify({ memberId }) });
     };
 
     useEffect(() => {
@@ -159,7 +159,7 @@ const SideBar = () => {
         if (loginUser.email && client) {
           client.publish({
             destination: '/app/leave',
-            body: JSON.stringify({ username:loginUser.email }),
+            body: JSON.stringify({ memberId:loginUser.memberId }),
           });
         }
       };
@@ -224,7 +224,8 @@ const SideBar = () => {
           <IoLogOut />
         </div> */}
 
-        <div className='btn' onClick={() => { navigate('/'); handleLeave(loginUser.email); }}>
+        <div className='btn' onClick={() => { navigate('/'); handleLeave(loginUser.memberId); }}>
+
           <IoLogOut />
         </div>
       </div>
