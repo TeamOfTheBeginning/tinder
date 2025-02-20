@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import '../../style/nearmember.css';
+import { useSelector } from 'react-redux';
+
 
 const NearMember = () => {
-    const location = useLocation();
-    const loginUser = location.state?.loginUser; // 옵셔널 체이닝 사용
+    const loginUser = useSelector(state => state.user);
     const [nearbyMembers, setNearbyMembers] = useState([]);
-    const [maxDistance, setMaxDistance] = useState(1000);
     const [searchDistance, setSearchDistance] = useState(1000); // 검색할 거리를 저장하는 상태
 
     const handleSearch = async () => {
+        ;
+        console.log(loginUser);
         // loginUser가 null 또는 undefined인 경우 처리
         if (!loginUser || !loginUser.latitude || !loginUser.longitude) {
             console.warn("loginUser 정보가 유효하지 않습니다.");
@@ -34,20 +37,27 @@ const NearMember = () => {
     };
 
     return (
-        <div>
+        <div className="near-member-container">
             <h2>주변 이성 회원</h2>
-            <label>
-                최대 거리 (km):
-                <input
-                    type="number"
-                    value={searchDistance} // 현재 검색 거리 값
-                    onChange={(e) => setSearchDistance(parseInt(e.target.value, 10))} // 검색 거리 업데이트
-                />
-            </label>
-            <button onClick={handleSearch}>검색</button> {/* 검색 버튼 */}
-            <ul>
+            <div className="search-controls">
+                <label>
+                    최대 거리 (km):
+                    <input
+                        type="number"
+                        value={searchDistance}
+                        onChange={(e) => setSearchDistance(parseInt(e.target.value, 10))}
+                    />
+                </label>
+                <button onClick={handleSearch}>검색</button>
+            </div>
+            <ul className="member-list">
                 {nearbyMembers.map(member => (
-                    <li key={member.id}>{member.nickname}</li>
+                    <li key={member.memberId} className="member-item">
+                        <img src={member.avatarUrl || 'default-avatar.png'} className="member-avatar" />
+                        <div className="member-info">
+                            <div className="member-name">{member.nickname}</div>
+                        </div>
+                    </li>
                 ))}
             </ul>
         </div>
