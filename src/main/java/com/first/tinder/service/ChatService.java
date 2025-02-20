@@ -63,8 +63,27 @@ public class ChatService {
                 if(chatGroup.getAnonymity()==0){
 
                     System.out.println("chatGroup.getChatGroupId()"+chatGroup.getChatGroupId());
-                    //리스트에 담는다
-                    chatGroupList.add(chatGroup);}
+
+                    Timestamp createdTimestamp = chatGroup.getCreatedDate();
+
+                    // 현재 시간의 Timestamp 가져오기
+                    Timestamp nowTimestamp = Timestamp.from(Instant.now());
+
+                    // 두 시간의 차이 계산 (밀리초 단위)
+                    long diffInMillis = Math.abs(nowTimestamp.getTime() - createdTimestamp.getTime());
+
+                    // 1시간 = 60분 = 3600초 = 3,600,000 밀리초
+                    if (diffInMillis <= 3_600_000) {
+                        System.out.println("1시간 이내의 데이터입니다.");
+
+                        //리스트에 담는다
+                        chatGroupList.add(chatGroup);
+
+                    } else {
+                        System.out.println("1시간 초과된 데이터입니다.");
+                    }
+
+                }
             }
 
 
