@@ -46,6 +46,11 @@ const WritePost = ({ closeSideViewer }) => {
       return;
     }
 
+    if (imgList.length === 0) {
+      alert("사진을 최소 1장 이상 첨부해주세요.");
+      return;
+    }
+
     try {
       const result = await axios.post("/api/post/writePost", {
         content,
@@ -78,8 +83,9 @@ const WritePost = ({ closeSideViewer }) => {
       <div className="Content">
         <div className="postWrite">
           <div className="title" style={{ fontSize: "150%" }}>
-            {loginUser.memberId} now . . .
+            {loginUser.nickname} now . . .
           </div>
+
           <form onSubmit={onSubmit}>
             <div className="field">
               <label style={{ display: "none" }}>content</label>
@@ -103,7 +109,6 @@ const WritePost = ({ closeSideViewer }) => {
                 {imgSrcs[index] && <img src={imgSrcs[index]} height="50" />}
               </div>
             ))}
-
             <div className="btns">
               <button type="submit">작성완료</button>
             </div>
