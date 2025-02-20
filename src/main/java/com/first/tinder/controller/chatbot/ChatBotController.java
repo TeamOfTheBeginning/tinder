@@ -16,8 +16,8 @@ public class ChatBotController {
         this.chatBotService = chatBotService;
     }
 
-    @PostMapping("/ask")
-    public ChatBotResponse askChatBot(@RequestBody ChatBotRequest request) {
-        return chatBotService.getChatBotResponse(request);
+    @PostMapping("/ask/{userId}")
+    public ChatBotResponse askChatBot(@PathVariable String userId, @RequestBody ChatBotRequest request) {
+        return chatBotService.getChatBotResponse(userId, request);
     }
 }
