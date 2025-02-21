@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import '../../style/nearmember.css';
 import { useSelector } from 'react-redux';
 
+import '../../style/nearmember.css';
 
 const NearMember = () => {
     const loginUser = useSelector(state => state.user);
@@ -69,8 +69,8 @@ const NearMember = () => {
                         <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${member.profileImg}`} className="member-avatar" />
                         <div className="member-info">
                             <div className="member-name">{member.nickname}</div>
-                            <div className='matchingMemberBtns'>
-                                <button className='matchBtn' onClick={()=>like(member.memberId)}>좋아요</button>
+                            <div className='nearMemberBtns'>
+                                <button className='nearMemberBtn' onClick={()=>like(member.memberId)}>좋아요</button>
                             </div>
                         </div>
                     </li>

@@ -128,6 +128,25 @@ const EditProfile = () => {
                 memberId:loginUser.memberId, email, pwd, age, birthDate, gender, nickname, phone, zipnum, profileMsg:intro, profileImg,                 
             });
 
+            // 숫자 값으로 변환
+            const mbtiToNumber = {
+                "E": "0", "I": "1",
+                "N": "0", "S": "1",
+                "T": "0", "F": "1",
+                "J": "0", "P": "1"
+                };    
+
+                const numberValue = inputValue.split('').map(char => mbtiToNumber[char]).join('');
+
+            try {
+                // 서버에 데이터 전송
+                const response = await axios.post('/api/member2/updateMBTI',null ,{ params:{numberValue,memberId:loginUser.memberId} });
+                console.log(response.data); // 응답 처리
+                
+            } catch (error) {
+            console.error('Error sending data:', error);
+            }
+
             let result2 = await axios.post('/api/member/updateHobbies',{
                 memberId:loginUser.memberId,
                 // ✅ 선택한 취미 전송
@@ -143,6 +162,55 @@ const EditProfile = () => {
             }
         }catch(err){  console.error(err);     }
     }
+
+
+    const [inputValue, setInputValue] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+
+  const mbtiList = [
+    "INTJ", "INTP", "ENTJ", "ENTP",
+    "INFJ", "INFP", "ENFJ", "ENFP",
+    "ISTJ", "ISFJ", "ESTJ", "ESFJ",
+    "ISTP", "ISFP", "ESTP", "ESFP"
+  ];
+  
+
+  const handleChange = (event) => {
+    const value = event.target.value.toUpperCase();
+    setInputValue(value);
+    
+    if (value) {
+      const filteredList = mbtiList.filter(mbti => mbti.startsWith(value));
+      setSuggestions(filteredList);
+    } else {
+      setSuggestions([]);
+    }
+  };  
+
+//   const handleSubmit = async (event) => {
+//     event.preventDefault();
+
+//     // 숫자 값으로 변환
+//     const mbtiToNumber = {
+//       "E": "0", "I": "1",
+//       "N": "0", "S": "1",
+//       "T": "0", "F": "1",
+//       "J": "0", "P": "1"
+//     };    
+
+//     const numberValue = inputValue.split('').map(char => mbtiToNumber[char]).join('');
+
+//     console.log("numberValue"+numberValue)
+
+//     try {
+//       // 서버에 데이터 전송
+//       const response = await axios.get('/api/member2/getMembersWithMBTI', { params:{numberValue,memberId:loginUser.memberId} });
+//       console.log(response.data); // 응답 처리
+      
+//     } catch (error) {
+//       console.error('Error sending data:', error);
+//     }
+//   };
 
     return (
         <div className='Container'>
@@ -192,6 +260,37 @@ const EditProfile = () => {
                     <label>INTRO</label>
                     <input type="text"  value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
                 </div>
+
+
+                <div className='field'>
+                    <label>MBTI</label>
+                    <div>
+                        {/* <form onSubmit={handleSubmit}> */}
+                        <input 
+                            type="text" 
+                            value={inputValue} 
+                            onChange={handleChange} 
+                            placeholder="MBTI 입력"
+                        />
+                        {/* <button type="submit">전송</button> */}
+                        {/* </form> */}
+                        {suggestions.length > 0 && (
+                        <ul>
+                            {suggestions.map((suggestion, index) => (
+                            <li 
+                                key={index}
+                            >
+                                {suggestion}
+                            </li>
+                            ))}
+                        </ul>
+                        )}
+                    </div> 
+                    
+
+                </div>
+
+
 
                 <div className="field">
                     <label>HOBBY</label>

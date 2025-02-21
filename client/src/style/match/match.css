@@ -1,4 +1,4 @@
-.matchBtns .matchBtn{
+/* .matchBtns .matchBtn{
     margin-left: 5px;
     padding: 3px;
     width: 60px;
@@ -8,8 +8,27 @@
     border: none;
     font-size: 11px;
     color: #F7186A;
-}
+} */
 
 .matchMemberContainer{
     /* width: 30vw; */
+}
+
+.matchBtns .matchBtn{
+    width: 80px;
+    height: 30px;
+    background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 300% 100%;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}
+
+.matchBtns .matchBtn:hover{
+    background-position: 100% 0;
+    color: #fff;
 }

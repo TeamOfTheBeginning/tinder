@@ -39,7 +39,28 @@ const MyPage = ({openSubMenu}) => {
         else{
             
         }
-      }, [loginUser]);
+    }, [loginUser]);
+
+    function ei(ei){
+    if(ei==0){return "E"}
+    else{return "I"};
+    }
+
+    function ns(ns){
+    if(ns==0){return "N"}
+    else{return "S"};
+    }
+
+    function tf(tf){
+    if(tf==0){return "T"}
+    else{return "F"};
+    }
+
+    function jp(jp){
+    if(jp==0){return "J"}
+    else{return "P"};
+    }
+
 
     const requestPayment = async () => {
     try {
@@ -148,13 +169,22 @@ const buyItems = async () => {
                             <label>온도</label>
                             <div>{loginUser.temp}</div>
                         </div>
+                        <div className='field'>
+                            <label>MBTI</label>
+                            <div>
+                                {ei(loginUser.memberInfo.ei)}
+                                {ns(loginUser.memberInfo.ns)}
+                                {tf(loginUser.memberInfo.tf)}
+                                {jp(loginUser.memberInfo.jp)}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div className='btns' >
-                    <div id ="btn" onClick={()=> openSubMenu('editProfile')}>Edit Profile</div>
-                    <div id ="btn" onClick={()=>{requestPayment()}}>&nbsp;<button>충전</button></div>
-                    <div id ="btn" onClick={()=>{buyItems()}}>&nbsp;<button>결제</button></div>
+                    <div id ="btn" onClick={()=> openSubMenu('editProfile')}><button>정보수정</button></div>&nbsp;
+                    <div id ="btn" onClick={()=>{requestPayment()}}><button>충전</button></div>&nbsp;
+                    <div id ="btn" onClick={()=>{buyItems()}}><button>결제</button></div>
                 </div>
 
                 <Modal isOpen={isFollowerModalOpen} onClose={toggleFollowerModal}>

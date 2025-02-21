@@ -181,4 +181,27 @@ public class MemberController2 {
         return result;
     }
 
+    @PostMapping("/updateMBTI")
+    public HashMap<String,Object> updateMBTI (@RequestParam("numberValue") String numberValue,@RequestParam("memberId") int memberId){
+        HashMap<String, Object> result = new HashMap<>();
+        System.out.println("numberValue : "+numberValue+" memberId : "+memberId);
+
+        int ei = Character.getNumericValue(numberValue.charAt(0)); // E/I
+        int ns = Character.getNumericValue(numberValue.charAt(1)); // N/S
+        int tf = Character.getNumericValue(numberValue.charAt(2)); // T/F
+        int jp = Character.getNumericValue(numberValue.charAt(3)); // J/P
+
+        System.out.println("ei = " + ei);
+        System.out.println("ns = " + ns);
+        System.out.println("tf = " + tf);
+        System.out.println("jp = " + jp);
+
+        ms2.setMemberMBTI(ei, ns, tf, jp,memberId);
+
+
+
+//        result.put("msg", "yes");
+        return result;
+    }
+
 }

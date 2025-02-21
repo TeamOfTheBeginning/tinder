@@ -223,6 +223,26 @@ const ChatRoomFromRandom = () => {
 
     };
 
+    function ei(ei){
+        if(ei==0){return "E"}
+        else{return "I"};
+    }
+
+    function ns(ns){
+        if(ns==0){return "N"}
+        else{return "S"};
+    }
+
+    function tf(tf){
+        if(tf==0){return "T"}
+        else{return "F"};
+    }
+
+    function jp(jp){
+        if(jp==0){return "J"}
+        else{return "P"};
+    }
+
 
     return (
         <div className='chatRoomFromRandomContainer'>
@@ -237,6 +257,13 @@ const ChatRoomFromRandom = () => {
 
                     return (
                         <div key={idx} className={`chat ${isOwnMessage ? 'myChat' : ''}`}>
+                            <div className='chatImg'>
+                            {ei(chat.sender.memberInfo.ei)}
+                            {ns(chat.sender.memberInfo.ns)}
+                            {tf(chat.sender.memberInfo.tf)}
+                            {jp(chat.sender.memberInfo.jp)}
+                                
+                            </div>
                             <div className='chatContainer'>
                                 <div className='chatContent'>
                                     &nbsp; {formatDate(chat.createdDate)}&nbsp;<br/>{chat.content} &nbsp; 
