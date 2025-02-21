@@ -36,6 +36,19 @@ const NearMember = () => {
         }
     };
 
+    async function like(memberId){
+
+        await axios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , memberId })
+        .then((result)=>{
+            console.log("result.data.msg"+result.data.msg)
+    
+            if(result.data.msg=='yes') {alert("좋아요가 완료되었습니다!")}
+            else if(result.data.msg=='no') {alert("좋아요가 취소되었습니다!")}
+            else {alert("시스템 오류!")}
+        }
+        ).catch((err)=>{console.error(err)})    
+      }
+
     return (
         <div className="near-member-container">
             <h2>주변 이성 회원</h2>
@@ -53,9 +66,12 @@ const NearMember = () => {
             <ul className="member-list">
                 {nearbyMembers.map(member => (
                     <li key={member.memberId} className="member-item">
-                        <img src={member.avatarUrl || 'default-avatar.png'} className="member-avatar" />
+                        <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${member.profileImg}`} className="member-avatar" />
                         <div className="member-info">
                             <div className="member-name">{member.nickname}</div>
+                            <div className='matchingMemberBtns'>
+                                <button className='matchBtn' onClick={()=>like(member.memberId)}>좋아요</button>
+                            </div>
                         </div>
                     </li>
                 ))}
