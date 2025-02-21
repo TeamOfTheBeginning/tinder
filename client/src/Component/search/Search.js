@@ -94,10 +94,12 @@ const Search = () => {
   const [suggestions, setSuggestions] = useState([]);
 
   const mbtiList = [
-    "INTJ", "INFP", "ISFJ", "ENTP", "ESFJ", "ESTP",
-    "ISFP", "INTP", "ENFJ", "ISTJ", "ESTJ", "ENTJ",
-    "INFJ", "ESFP", "ISFJ", "ISTP"
+    "INTJ", "INTP", "ENTJ", "ENTP",
+    "INFJ", "INFP", "ENFJ", "ENFP",
+    "ISTJ", "ISFJ", "ESTJ", "ESFJ",
+    "ISTP", "ISFP", "ESTP", "ESFP"
   ];
+  
 
   const handleChange = (event) => {
     const value = event.target.value.toUpperCase();
@@ -109,33 +111,7 @@ const Search = () => {
     } else {
       setSuggestions([]);
     }
-  };
-
-  // const handleSuggestionClick = async (suggestion) => {
-  //   setInputValue(suggestion);
-  //   setSuggestions([]);
-    
-  //   // 숫자 값으로 변환
-  //   const mbtiToNumber = {
-  //     "E": "0", "I": "1",
-  //     "N": "0", "S": "1",
-  //     "T": "0", "F": "1",
-  //     "J": "0", "P": "1"
-  //   };
-
-  //   const numberValue = suggestion.split('').map(char => mbtiToNumber[char]).join('');
-
-  //   console.log("numberValue"+numberValue)
-
-  //   try {
-  //     // 서버에 데이터 전송
-  //     const response = await axios.get('/api/member2/getMembersWithMBTI', { params:{numberValue,memberId:loginUser.memberId} });
-  //     console.log(response.data); // 응답 처리
-  //     setMemberList(response.data.memberList)
-  //   } catch (error) {
-  //     console.error('Error sending data:', error);
-  //   }
-  // };
+  };  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -161,17 +137,6 @@ const Search = () => {
       console.error('Error sending data:', error);
     }
   };
-
-  async function findMemberWithMBTI(){
-
-    axios.get(`/api/member2/getMembersWithMBTI`, { params: { word, memberId:loginUser.memberId } })
-    .then((result)=>{
-      console.log(result.data.memberList)
-      setMemberList(result.data.memberList)
-    }
-    ).catch((err)=>{console.error(err)}) 
-
-  }
 
 
   return (

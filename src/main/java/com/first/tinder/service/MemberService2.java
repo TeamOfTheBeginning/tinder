@@ -388,4 +388,13 @@ public Member getOppsiteGender2(int memberId) {
     }
 
     }
+
+    public void setMemberMBTI(int ei, int ns, int tf, int jp, int memberId) {
+        Member member = mr.findByMemberId(memberId).orElse(null);
+        member.getMemberInfo().setEi(ei);
+        member.getMemberInfo().setNs(ns);
+        member.getMemberInfo().setTf(tf);
+        member.getMemberInfo().setJp(jp);
+
+    }
 }

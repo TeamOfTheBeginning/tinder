@@ -42,6 +42,26 @@ const MyPage = () => {
         }
       }, [loginUser]);
 
+      function ei(ei){
+        if(ei==0){return "E"}
+        else{return "I"};
+      }
+    
+      function ns(ns){
+        if(ns==0){return "N"}
+        else{return "S"};
+      }
+    
+      function tf(tf){
+        if(tf==0){return "T"}
+        else{return "F"};
+      }
+    
+      function jp(jp){
+        if(jp==0){return "J"}
+        else{return "P"};
+      }
+
 const requestPayment = async () => {
     try {
         const response = await PortOne.requestPayment({
@@ -148,6 +168,15 @@ const buyItems = async () => {
                         <div className='field'>
                             <label>온도</label>
                             <div>{loginUser.temp}</div>
+                        </div>
+                        <div className='field'>
+                            <label>MBTI</label>
+                            <div>                                
+                                {ei(loginUser.memberInfo.ei)}
+                                {ns(loginUser.memberInfo.ns)}
+                                {tf(loginUser.memberInfo.tf)}
+                                {jp(loginUser.memberInfo.jp)}
+                            </div>
                         </div>
                     </div>
                 </div>
