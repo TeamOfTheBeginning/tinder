@@ -182,9 +182,9 @@ const buyItems = async () => {
                 </div>
 
                 <div className='btns' >
-                    <div id ="btn" onClick={()=> openSubMenu('editProfile')}>Edit Profile</div>
-                    <div id ="btn" onClick={()=>{requestPayment()}}>&nbsp;<button>충전</button></div>
-                    <div id ="btn" onClick={()=>{buyItems()}}>&nbsp;<button>결제</button></div>
+                    <div id ="btn" onClick={()=> openSubMenu('editProfile')}><button>정보수정</button></div>&nbsp;
+                    <div id ="btn" onClick={()=>{requestPayment()}}><button>충전</button></div>&nbsp;
+                    <div id ="btn" onClick={()=>{buyItems()}}><button>결제</button></div>
                 </div>
 
                 <Modal isOpen={isFollowerModalOpen} onClose={toggleFollowerModal}>
