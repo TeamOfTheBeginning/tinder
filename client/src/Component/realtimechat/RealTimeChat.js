@@ -362,10 +362,10 @@ function ChatPage() {
               const imageUrl = msg.profileImg && msg.profileImg.trim() !== ""
               ? msg.profileImg.startsWith("http")
                 ? msg.profileImg
-                : msg.profileImg.startsWith("/uploads")
+                : msg.profileImg.startsWith("/userimg")
                 ? `${API_BASE_URL}${msg.profileImg}`
-                : `${API_BASE_URL}/uploads/${msg.profileImg}`
-                : `${API_BASE_URL}/uploads/default.jpg`; // 기본 이미지 적용                   
+                : `${API_BASE_URL}/userimg/${msg.profileImg}`
+                : `${API_BASE_URL}/userimg/default.jpg`; // 기본 이미지 적용                   
   
               return (
                 <div key={index} className={`message ${msg.nickname === nickname ? "self" : "other"}`}>
@@ -383,7 +383,7 @@ function ChatPage() {
               placeholder="메시지를 입력하세요..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             />
             <button onClick={sendMessage}>전송</button>
           </div>

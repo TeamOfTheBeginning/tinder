@@ -75,7 +75,7 @@ public class RealTimeChatController { // 실시간 채팅 메시지를 처리
                 .roomId(roomId)
                 .content(requestDto.getContent())
                 .nickname(nickname)
-                .profileImg(user.getProfileImg() != null ? user.getProfileImg() : "/uploads/default.jpg")
+                .profileImg(user.getProfileImg() != null ? user.getProfileImg() : "/userimg/default.jpg")
                 .build();
 
         messagingTemplate.convertAndSend("/topic/real_chat/" + roomId, response);

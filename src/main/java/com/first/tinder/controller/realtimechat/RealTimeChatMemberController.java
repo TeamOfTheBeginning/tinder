@@ -33,8 +33,8 @@ public class RealTimeChatMemberController { // 회원 프로필 이미지
         String profileImg = realtimeChatmemberRepository.findByNickname(nickname)
                 .map(Member::getProfileImg)
                 .filter(img -> !img.isEmpty())
-                .map(img -> serverUrl + "/uploads/" + img)
-                .orElse(serverUrl + "/uploads/default.jpg");
+                .map(img -> serverUrl + "/userimg/" + img)
+                .orElse(serverUrl + "/userimg/default.jpg");
 
         return ResponseEntity.ok(profileImg);
     }
