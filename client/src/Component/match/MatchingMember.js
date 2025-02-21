@@ -50,7 +50,7 @@ const MatchingMember = (props) => {
 
 
       <div className='matchingMemberTitle'>
-        &nbsp;&nbsp;{props.oppositeGender.nickname} ({props.oppositeGender.age})
+        &nbsp;&nbsp;{props.oppositeGender.nickname}({props.oppositeGender.age})
 
         &nbsp;&nbsp;{props.oppositeGender.address}
 

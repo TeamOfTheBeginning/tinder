@@ -13,7 +13,7 @@
 }
 
 .findChatGroupContainer button{
-    margin-left: 5px;
+    /* margin-left: 5px;
     padding: 3px;
     width: 60px;
     height: 30px;
@@ -21,7 +21,27 @@
     box-sizing: border-box;
     border: none;
     font-size: 11px;
-    color: #F7186A;
+    color: #F7186A; */
+}
+
+
+.findChatGroupContainer button{
+    width: 80px;
+    height: 30px;
+    background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 300% 100%;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}
+
+.findChatGroupContainer button:hover{
+    background-position: 100% 0;
+    color: #fff;
 }
 
 .findChatGroupListContainer{
