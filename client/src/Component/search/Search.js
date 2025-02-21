@@ -155,9 +155,9 @@ const Search = () => {
                     type="text" 
                     value={inputValue} 
                     onChange={handleChange} 
-                    placeholder="MBTI 입력"
+                    placeholder="MBTI 입력"                    
                   />
-                  <button type="submit">전송</button>
+                  <button type="submit">MBTI</button>
                 </form>
                 {suggestions.length > 0 && (
                   <ul>

@@ -50,7 +50,7 @@ const FindChatGroupRandom = () => {
     return (
         <div className='findChatGroupRandomContainer'>
             <div className='findChatGroupRandomBtns'>
-                <button onClick={()=>setAnonymousMessageRoom()}>랜덤쪽지보내기</button>
+                <button onClick={()=>setAnonymousMessageRoom()}>랜덤쪽지</button>
             </div>
 
         {

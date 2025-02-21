@@ -52,7 +52,9 @@ const MatchingMember = (props) => {
       <div className='matchingMemberTitle'>
         &nbsp;&nbsp;{props.oppositeGender.nickname} ({props.oppositeGender.age})
 
-        &nbsp;&nbsp;
+        &nbsp;&nbsp;{props.oppositeGender.address}
+
+        &nbsp;&nbsp;&nbsp;
         {props.oppositeGender.temp}도
 
         &nbsp;&nbsp;{ei(props.oppositeGender.memberInfo.ei)}
