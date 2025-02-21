@@ -29,6 +29,7 @@
     font-weight: 400;
     font-style: normal;
     font-size: 150%;
+
 }
 
 .matchingMemberImg{
@@ -62,6 +63,13 @@
 .matchingMemberMsg{
     border: 1px solid black;
 
+    font-family: "Gowun Dodum", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 150%;
+}
+
+.matchingMemberInfo{
     font-family: "Gowun Dodum", serif;
     font-weight: 400;
     font-style: normal;

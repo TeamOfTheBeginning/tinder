@@ -51,6 +51,14 @@ const MatchingMember = (props) => {
 
       <div className='matchingMemberTitle'>
         &nbsp;&nbsp;{props.oppositeGender.nickname} ({props.oppositeGender.age})
+
+        &nbsp;&nbsp;
+        {props.oppositeGender.temp}도
+
+        &nbsp;&nbsp;{ei(props.oppositeGender.memberInfo.ei)}
+        {ns(props.oppositeGender.memberInfo.ns)}
+        {tf(props.oppositeGender.memberInfo.tf)}
+        {jp(props.oppositeGender.memberInfo.jp)}        
       </div>
       
       <div className='matchingMemberImg'>
@@ -64,10 +72,6 @@ const MatchingMember = (props) => {
       </div>
 
       <div className='matchingMemberInfo'>
-        &nbsp;&nbsp;{ei(props.oppositeGender.memberInfo.ei)}
-        {ns(props.oppositeGender.memberInfo.ns)}
-        {tf(props.oppositeGender.memberInfo.tf)}
-        {jp(props.oppositeGender.memberInfo.jp)}
         
       </div>
 

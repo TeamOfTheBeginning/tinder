@@ -93,7 +93,7 @@ const SideBar = () => {
   useEffect(() => {
       // WebSocket 클라이언트 설정
       const stompClient = new Client({
-        brokerURL: 'ws://localhost:8070/ws_real_chat',  // 서버의 WebSocket 엔드포인트
+        brokerURL: `ws://${process.env.REACT_APP_ADDRESS2}/ws_real_chat`,  // 서버의 WebSocket 엔드포인트
         connectHeaders: {
           // 필요한 경우 인증 정보 추가
         },
@@ -131,7 +131,7 @@ const SideBar = () => {
         onStompError: (frame) => {
           console.error('STOMP error: ', frame);
         },
-        webSocketFactory: () => new SockJS('http://localhost:8070/ws_real_chat'),
+        webSocketFactory: () => new SockJS(`${process.env.REACT_APP_ADDRESS2}/ws_real_chat`),
       });
   
       stompClient.activate();
