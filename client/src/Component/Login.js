@@ -119,30 +119,31 @@ const Login = () => {
   };
 
     return (
-        
-        <div className='loginform'>
+        <div className='container'>
+          <div className='loginform'>
 
-            <RealtimeConnectInfo />
+              <RealtimeConnectInfo />
 
-            <div className='field'>
-                <label>EMAIL</label>
-                <input type="text" value={email} onChange={(e)=>{ setEmail(e.currentTarget.value)}} />
-            </div>        
-            <div className='field'>
-                <label>PASSWORD</label>
-                <input type="password" value={pwd} onChange={(e)=>{ setPwd(e.currentTarget.value)}} />
-            </div>        
-            <div className='btns'>
-                <div id="btn" onClick={()=>{onLoginLocal(); }}><IoLogIn />&nbsp;LOGIN</div>
-                <div id="btn" onClick={()=>{navigate('/joinForm')}}><IoCreateOutline />&nbsp;JOIN</div>
-            </div>
-            <div className='snslogin'>
-                <button id="kakao" onClick={
-                    ()=>{
-                        window.location.href='http://localhost:8070/member/kakaostart';
-                    }
-                }>카카오로 시작하기</button>
-            </div>
+              <div className='field'>
+                  <label>EMAIL</label>
+                  <input type="text" value={email} onChange={(e)=>{ setEmail(e.currentTarget.value)}} />
+              </div>        
+              <div className='field'>
+                  <label>PASSWORD</label>
+                  <input type="password" value={pwd} onChange={(e)=>{ setPwd(e.currentTarget.value)}} />
+              </div>        
+              <div className='btns'>
+                  <div id="btn" onClick={()=>{onLoginLocal(); }}><IoLogIn />&nbsp;LOGIN</div>
+                  <div id="btn" onClick={()=>{navigate('/joinForm')}}><IoCreateOutline />&nbsp;JOIN</div>
+              </div>
+              <div className='snslogin'>
+                  <button id="kakao" onClick={
+                      ()=>{
+                          window.location.href='http://localhost:8070/member/kakaostart';
+                      }
+                  }>카카오로 시작하기</button>
+              </div>
+          </div>
         </div>
         
     )
