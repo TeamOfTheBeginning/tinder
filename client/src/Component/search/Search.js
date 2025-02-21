@@ -178,14 +178,23 @@ const Search = () => {
             (memberList)?(
               memberList.map((member, idx)=>{
                     return (
-                        <div key={idx}>
+                        <div key={idx} className='searchMemberContainer'>
                             
                             
-                            <div className='searchMemberImg'><img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${member.profileImg}`}/></div>{member.nickname}&nbsp; 
-                            
-                            <div onClick={()=>enterChatRoomFromSearchedMember(member.memberId)}><button>쪽지</button></div>
-                            <div onClick={()=>block(member.memberId)}><button>차단/해제</button></div>
-                            <div onClick={()=>inviteMemberForMessage(member)}><button>대화초대</button></div>
+                            <div className='searchMemberImg'>
+                              <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${member.profileImg}`}/>
+                              {member.nickname}&nbsp; 
+                            </div>
+                            <div className='searchMemberContent'>
+                              
+                              
+                              <div onClick={()=>enterChatRoomFromSearchedMember(member.memberId)}><button>쪽지</button></div>
+                              
+                              <div onClick={()=>inviteMemberForMessage(member)}><button>대화초대</button></div>
+
+                              <div onClick={()=>block(member.memberId)}><button>차단/해제</button></div>
+                              
+                            </div>                            
                         </div>
                     )
                 })

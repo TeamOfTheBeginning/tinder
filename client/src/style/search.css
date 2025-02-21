@@ -10,6 +10,13 @@
     border: 1px solid black;
 }
 
+.searchMemberContainer{
+    display: flex;
+    flex-direction: row;
+
+    margin-bottom: 20px;
+}
+
 .searchMemberImg{
     width: 50px;
 }
