@@ -320,10 +320,15 @@ public Member getOppsiteGender2(int memberId) {
     int ageRange = 3;
     int age = m.getAge();
 
+    // 나이의 최솟값과 최댓값 계산
+    int minAge = age - ageRange < 18 ? 18 : age - ageRange; // 18세 미만이면 18로 설정
+    int maxAge = age + ageRange;
+
     System.out.println("My Gender: " + gender);
     System.out.println("My Age: " + age);
 
-    List<Member> filteredMembers = mr.findByGenderAndAgeRange(gender, age - ageRange, age + ageRange);
+    // 필터링된 멤버 리스트 가져오기
+    List<Member> filteredMembers = mr.findByGenderAndAgeRange(gender, minAge, maxAge);
     Collections.shuffle(filteredMembers);
 
     for (Member candidate : filteredMembers) {
