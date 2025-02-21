@@ -191,6 +191,26 @@ public class MemberService2 {
                 .collect(Collectors.toList());
     }
 
+    public List<Member> getMembersByMBTI(int ei, int ns, int tf, int jp, int memberId) {
+        Member mymember = mr.findById(memberId).orElseThrow(); // 현재 로그인한 사용자 가져오기
+        int gender = mymember.getGender();
+        gender = (gender == 0) ? 1 : 0; // 반대 성별로 설정
+
+        // 반대 성별의 MBTI를 가진 멤버 목록 가져오기
+        List<Member> members = mr.findByMemberInfo_EiAndMemberInfo_NsAndMemberInfo_TfAndMemberInfo_JpAndGender(ei, ns, tf, jp, gender);
+
+        // 나를 차단한 사용자 목록 가져오기
+        List<Block> blockedByOthers = br.findAllByBlocked(mymember);
+        List<Member> blockedByOthersList = blockedByOthers.stream()
+                .map(Block::getBlocker)
+                .collect(Collectors.toList());
+
+        // 차단된 사용자를 제외하고 반환
+        return members.stream()
+                .filter(member -> !blockedByOthersList.contains(member))
+                .collect(Collectors.toList());
+    }
+
     public void setTempUp(int chatGroupId, int memberId) {
         Member m = new Member();
         Member mm = new Member();
@@ -300,10 +320,15 @@ public Member getOppsiteGender2(int memberId) {
     int ageRange = 3;
     int age = m.getAge();
 
+    // 나이의 최솟값과 최댓값 계산
+    int minAge = age - ageRange < 18 ? 18 : age - ageRange; // 18세 미만이면 18로 설정
+    int maxAge = age + ageRange;
+
     System.out.println("My Gender: " + gender);
     System.out.println("My Age: " + age);
 
-    List<Member> filteredMembers = mr.findByGenderAndAgeRange(gender, age - ageRange, age + ageRange);
+    // 필터링된 멤버 리스트 가져오기
+    List<Member> filteredMembers = mr.findByGenderAndAgeRange(gender, minAge, maxAge);
     Collections.shuffle(filteredMembers);
 
     for (Member candidate : filteredMembers) {

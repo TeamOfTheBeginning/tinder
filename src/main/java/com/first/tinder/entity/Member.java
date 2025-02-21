@@ -55,16 +55,8 @@ public class Member {
     @Builder.Default
     private List<MemberRole> memberRoleList = new ArrayList<MemberRole>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "member_hobby",
-            joinColumns = @JoinColumn(name = "member_id"),
-            inverseJoinColumns = @JoinColumn(name = "hobby_id")
-    )
-    private List<Hobby> hobbies;
-
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_info_id")
-    Member memberInfoId;
+    MemberInfo memberInfo;
 
 }

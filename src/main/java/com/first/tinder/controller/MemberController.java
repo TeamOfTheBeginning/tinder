@@ -1,11 +1,10 @@
 package com.first.tinder.controller;
 
+import com.first.tinder.dao.MemberRepository;
 import com.first.tinder.dto.KakaoProfile;
 import com.first.tinder.dto.OAuthToken;
-import com.first.tinder.entity.Follow;
-import com.first.tinder.entity.Hobby;
-import com.first.tinder.entity.HobbyCategory;
-import com.first.tinder.entity.Member;
+import com.first.tinder.entity.*;
+import com.first.tinder.service.MemberInfoService;
 import com.first.tinder.service.MemberService;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletContext;
@@ -34,6 +33,9 @@ public class MemberController {
 
     @Autowired
     MemberService ms;
+
+    @Autowired
+    MemberInfoService mis;
 
 
     @PostMapping("/loginlocal")
@@ -347,13 +349,18 @@ public class MemberController {
     @PostMapping("/updateHobbies")
     public HashMap<String, Object> updateHobbies(@RequestBody HashMap<String, Object> payload) {
         int memberId = (int) payload.get("memberId");
+
         List<Integer> hobbyIds = (List<Integer>) payload.get("hobbies");
+        System.out.println("memberId"+memberId+"hobbyIds"+hobbyIds);
 
         Member member = ms.getMemberById(memberId);
+        MemberInfo memberInfo = member.getMemberInfo();
         List<Hobby> hobbies = ms.getHobbiesByIds(hobbyIds);
 
-        member.setHobbies(hobbies);
-        ms.updateMember(member);
+        memberInfo.setHobbies(hobbies);
+        System.out.println("memberInfo@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+memberInfo);
+//        ms.updateMember(member);
+        mis.updateMemberInfo(memberInfo);
 
         HashMap<String, Object> result = new HashMap<>();
         result.put("msg", "ok");
