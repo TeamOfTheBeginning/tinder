@@ -1,12 +1,17 @@
 package com.first.tinder.service.chatbot;
 
+import com.first.tinder.dao.chatbot.ChatBotHistoryRepository;
 import com.first.tinder.dto.chatbot.ChatBotRequest;
 import com.first.tinder.dto.chatbot.ChatBotResponse;
+import com.first.tinder.entity.chatbot.ChatBotHistory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -19,28 +24,41 @@ public class ChatBotService {
 
     private final RestTemplate restTemplate;
     private final WorldInfoService worldInfoService;
+    private final ChatBotHistoryRepository chatbotHistoryRepository;
 
-    // 사용자별 대화 기록을 저장하는 Map
-    private static final Map<String, List<Map<String, String>>> chatHistory = new HashMap<>();
-
-    public ChatBotService(RestTemplate restTemplate, WorldInfoService worldInfoService) {
+    public ChatBotService(RestTemplate restTemplate, WorldInfoService worldInfoService, ChatBotHistoryRepository chatbotHistoryRepository) {
         this.restTemplate = restTemplate;
         this.worldInfoService = worldInfoService;
+        this.chatbotHistoryRepository = chatbotHistoryRepository;
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(ChatBotService.class);
 
     public ChatBotResponse getChatBotResponse(String userId, ChatBotRequest request) {
         String userMessage = request.getMessage().toLowerCase();
 
-        // 사용자의 이전 대화 이력 가져오기 (없으면 새로 생성)
-        chatHistory.putIfAbsent(userId, new ArrayList<>());
-        List<Map<String, String>> messages = chatHistory.get(userId);
+        saveChatHistory(userId, "user", userMessage);
 
-        // 1. 특정 키워드(날씨, 시간) 처리
+        List<ChatBotHistory> chatHistories = chatbotHistoryRepository.findByUserIdOrderByTimestampAsc(userId);
+        logger.info("새로운 대화 기록 개수: {}", chatHistories.size());
+        if (chatHistories.size() > 10) {
+            chatHistories = chatHistories.subList(chatHistories.size() - 10, chatHistories.size());
+        }
+
+        List<Map<String, String>> messages = new ArrayList<>();
+        for (ChatBotHistory chat : chatHistories) {
+            messages.add(Map.of("role", chat.getRole(), "content", chat.getContent()));
+        }
+
+        saveChatHistory(userId, "user", userMessage);
+
         if (userMessage.contains("시간") || userMessage.contains("몇 시")) {
             String city = extractCity(userMessage);
             if (!city.isEmpty()) {
                 String time = worldInfoService.getTimeByCity(city);
-                return saveAndReturnResponse(userId, userMessage, city + "의 현재 시간은 " + time + "입니다.");
+                return saveAndReturnResponse(userId, userMessage, time);
+            } else {
+                return saveAndReturnResponse(userId, userMessage, "어느 도시의 시간을 원하시나요?");
             }
         }
 
@@ -49,28 +67,26 @@ public class ChatBotService {
             if (!city.isEmpty()) {
                 String weather = worldInfoService.getWeatherByCity(city);
                 return saveAndReturnResponse(userId, userMessage, weather);
+            } else {
+                return saveAndReturnResponse(userId, userMessage, "어느 도시의 날씨를 원하시나요?");
             }
         }
 
-        // 2. OpenAI API 요청을 위한 설정
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setBearerAuth(openAiApiKey);
 
-            // OpenAI API에 전달할 messages 리스트
-            List<Map<String, String>> openAiMessages = new ArrayList<>(messages);
-            openAiMessages.add(Map.of("role", "user", "content", request.getMessage()));
+            messages.add(Map.of("role", "user", "content", request.getMessage()));
 
             Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("model", "gpt-4o");
-            requestBody.put("messages", openAiMessages); // 대화 기록 포함
+            requestBody.put("messages", messages);
             requestBody.put("temperature", 0.5);
 
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
             ResponseEntity<Map> response = restTemplate.exchange(OPENAI_API_URL, HttpMethod.POST, entity, Map.class);
 
-            // OpenAI 응답 처리
             if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
                 List<Map<String, Object>> choices = (List<Map<String, Object>>) response.getBody().get("choices");
                 if (choices != null && !choices.isEmpty()) {
@@ -85,26 +101,47 @@ public class ChatBotService {
     }
 
     private ChatBotResponse saveAndReturnResponse(String userId, String userMessage, String botResponse) {
-        // 대화 기록 저장
-        List<Map<String, String>> messages = chatHistory.get(userId);
-        messages.add(Map.of("role", "user", "content", userMessage));
-        messages.add(Map.of("role", "assistant", "content", botResponse));
-
-        // 최근 대화 10개까지만 유지
-        if (messages.size() > 20) {
-            messages.subList(0, messages.size() - 20).clear();
-        }
-
+        saveChatHistory(userId, "assistant", botResponse);
         return new ChatBotResponse(botResponse);
     }
 
+    private void saveChatHistory(String userId, String role, String content) {
+        ChatBotHistory chatHistory = ChatBotHistory.builder()
+                .userId(userId)
+                .role(role)
+                .content(content)
+                .timestamp(LocalDateTime.now())
+                .build();
+        chatbotHistoryRepository.save(chatHistory);
+    }
+
     private String extractCity(String message) {
-        List<String> knownCities = List.of("서울", "뉴욕", "런던", "도쿄", "베를린");
+        Map<String, String> cityMappings = Map.of(
+                "한국", "서울",
+                "미국", "뉴욕",
+                "영국", "런던",
+                "일본", "도쿄",
+                "독일", "베를린",
+                "프랑스", "파리",
+                "호주", "시드니",
+                "중국", "베이징",
+                "러시아", "모스크바"
+        );
+
+        List<String> knownCities = List.of("서울", "뉴욕", "런던", "도쿄", "베를린", "파리", "시드니", "로스앤젤레스", "베이징", "모스크바");
+
+        for (String country : cityMappings.keySet()) {
+            if (message.contains(country)) {
+                return cityMappings.get(country);
+            }
+        }
+
         for (String city : knownCities) {
             if (message.contains(city)) {
                 return city;
             }
         }
+
         return "";
     }
 }
