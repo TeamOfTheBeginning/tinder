@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "../../style/chatbot/chatbot.css";
 
-const ChatBot = ({ initialMessages = [] }) => {
+const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const chatContainerRef = useRef(null);
@@ -70,7 +70,14 @@ const ChatBot = ({ initialMessages = [] }) => {
       <div className="chatbot-messages" ref={chatContainerRef}>
         {messages.map((msg, index) => (
           <div key={index} className={`chatbot-message ${msg.role}`}>
-            <span className="chatbot-text">{msg.content}</span>
+            <span className="chatbot-text">
+              {msg.content.split("\n").map((line, i) => (
+                <React.Fragment key={i}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))}
+            </span>
           </div>
         ))}
       </div>
@@ -80,7 +87,7 @@ const ChatBot = ({ initialMessages = [] }) => {
           className="chatbot-input"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           placeholder="메시지를 입력하세요..."
         />
         <button className="chatbot-send" onClick={sendMessage}>전송</button>

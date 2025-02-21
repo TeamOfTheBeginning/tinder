@@ -1,12 +1,11 @@
 package com.first.tinder.service.chatbot;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -22,38 +21,54 @@ public class WorldInfoService {
     }
 
     public String getTimeByCity(String city) {
-        String timeZone = getTimeZone(city);
-        String apiUrl = "http://worldtimeapi.org/api/timezone/" + timeZone;
-
-
-        try {
-            ResponseEntity<Map> response = restTemplate.getForEntity(apiUrl, Map.class);
-
-            if (response.getBody() != null && response.getBody().get("datetime") != null) {
-                String dateTime = (String) response.getBody().get("datetime");
-                LocalDateTime localDateTime = LocalDateTime.parse(dateTime.substring(0, 19));
-
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 (E) a h시 mm분", Locale.KOREAN);
-                return localDateTime.format(formatter);
-            }
-        } catch (Exception e) {
-            return "시간 정보를 가져올 수 없습니다.";
+        String timeZone = getTimeZone(city); // 도시명을 타임존으로 변환
+        if (timeZone.isEmpty()) {
+            return city + "의 시간 정보를 찾을 수 없습니다.";
         }
-        return "시간 정보를 가져올 수 없습니다.";
-    }
 
-    // ☀️ 특정 도시의 현재 날씨 조회
-    public String getWeatherByCity(String city) {
-        String englishCity = convertToEnglishCity(city);
-        String apiUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + englishCity + "&appid=" + openWeatherApiKey + "&units=metric&lang=kr";
-
+        String apiUrl = "https://www.timeapi.io/api/Time/current/zone?timeZone=" + timeZone;
 
         try {
             ResponseEntity<Map> response = restTemplate.getForEntity(apiUrl, Map.class);
 
             if (response.getBody() != null) {
+                Integer year = (Integer) response.getBody().get("year");
+                Integer month = (Integer) response.getBody().get("month");
+                Integer day = (Integer) response.getBody().get("day");
+                Integer hour = (Integer) response.getBody().get("hour");
+                Integer minute = (Integer) response.getBody().get("minute");
+
+                return String.format(
+                        "%s의 현재 날짜는 %d년 %d월 %d일이며, 시간은 %d시 %d분입니다.",
+                        city, year, month, day, hour, minute
+                );
+            }
+        } catch (Exception e) {
+            System.err.println("🚨 시간 API 호출 오류: " + e.getMessage());
+        }
+        return city + "의 시간 정보를 가져올 수 없습니다.";
+    }
+
+    // ☀️ 특정 도시의 현재 날씨 조회
+    public String getWeatherByCity(String city) {
+        String englishCity = convertToEnglishCity(city);
+        if (englishCity.isEmpty()) {
+            return "어느 도시의 날씨를 원하시나요?";
+        }
+
+        String apiUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + englishCity +
+                "&appid=" + openWeatherApiKey + "&units=metric&lang=kr";
+
+        try {
+            ResponseEntity<Map> response = restTemplate.getForEntity(apiUrl, Map.class);
+
+            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
                 Map<String, Object> main = (Map<String, Object>) response.getBody().get("main");
                 List<Map<String, Object>> weatherList = (List<Map<String, Object>>) response.getBody().get("weather");
+
+                if (main == null || weatherList == null || weatherList.isEmpty()) {
+                    return city + "의 날씨 정보를 가져올 수 없습니다.";
+                }
 
                 double temp = (double) main.get("temp");
                 String description = weatherList.get(0).get("description").toString();
@@ -61,22 +76,27 @@ public class WorldInfoService {
                 return String.format("%s의 현재 기온은 %.1f°C이며, 날씨는 '%s'입니다.", city, temp, description);
             }
         } catch (Exception e) {
-            return "날씨 정보를 가져올 수 없습니다.";
+            System.err.println("🚨 날씨 API 호출 오류: " + e.getMessage());
         }
-        return "날씨 정보를 가져올 수 없습니다.";
+
+        return city + "의 날씨 정보를 가져올 수 없습니다.";
     }
 
-    // 🌍 도시별 표준 시간대 매핑
     private String getTimeZone(String city) {
         Map<String, String> cityToTimeZone = Map.of(
                 "서울", "Asia/Seoul",
+                "도쿄", "Asia/Tokyo",
                 "뉴욕", "America/New_York",
                 "런던", "Europe/London",
-                "도쿄", "Asia/Tokyo",
-                "베를린", "Europe/Berlin"
+                "베를린", "Europe/Berlin",
+                "파리", "Europe/Paris",
+                "시드니", "Australia/Sydney",
+                "로스앤젤레스", "America/Los_Angeles",
+                "베이징", "Asia/Shanghai",
+                "모스크바", "Europe/Moscow"
         );
 
-        return cityToTimeZone.getOrDefault(city, "Etc/UTC"); // 기본값: UTC
+        return cityToTimeZone.getOrDefault(city, "");
     }
 
     // 🔄 한글 도시명을 OpenWeather API에서 지원하는 영어로 변환
