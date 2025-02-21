@@ -116,6 +116,29 @@ public class MemberController2 {
         return result;
     }
 
+    @GetMapping("/getMembersWithMBTI")
+    public HashMap<String, Object> getMembersWithMBTI(@RequestParam("numberValue") String numberValue,@RequestParam("memberId") int memberId) {
+        HashMap<String, Object> result = new HashMap<>();
+
+        System.out.println("numberValue"+numberValue);
+        System.out.println("memberId"+memberId);
+
+        int ei = Character.getNumericValue(numberValue.charAt(0)); // E/I
+        int ns = Character.getNumericValue(numberValue.charAt(1)); // N/S
+        int tf = Character.getNumericValue(numberValue.charAt(2)); // T/F
+        int jp = Character.getNumericValue(numberValue.charAt(3)); // J/P
+
+        System.out.println("ei = " + ei);
+        System.out.println("ns = " + ns);
+        System.out.println("tf = " + tf);
+        System.out.println("jp = " + jp);
+
+        List<Member> membersWithMBTI = ms2.getMembersByMBTI(ei, ns, tf, jp,memberId);
+
+        result.put("memberList", membersWithMBTI);
+        return result;
+    }
+
     @PostMapping("/setTempUp")
     public HashMap<String, Object> setTempUp(@RequestParam("chatGroupId") int chatGroupId, @RequestParam("memberId") int memberId) {
         HashMap<String, Object> result = new HashMap<>();

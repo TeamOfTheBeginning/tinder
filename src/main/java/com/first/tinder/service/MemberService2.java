@@ -191,6 +191,26 @@ public class MemberService2 {
                 .collect(Collectors.toList());
     }
 
+    public List<Member> getMembersByMBTI(int ei, int ns, int tf, int jp, int memberId) {
+        Member mymember = mr.findById(memberId).orElseThrow(); // 현재 로그인한 사용자 가져오기
+        int gender = mymember.getGender();
+        gender = (gender == 0) ? 1 : 0; // 반대 성별로 설정
+
+        // 반대 성별의 MBTI를 가진 멤버 목록 가져오기
+        List<Member> members = mr.findByMemberInfo_EiAndMemberInfo_NsAndMemberInfo_TfAndMemberInfo_JpAndGender(ei, ns, tf, jp, gender);
+
+        // 나를 차단한 사용자 목록 가져오기
+        List<Block> blockedByOthers = br.findAllByBlocked(mymember);
+        List<Member> blockedByOthersList = blockedByOthers.stream()
+                .map(Block::getBlocker)
+                .collect(Collectors.toList());
+
+        // 차단된 사용자를 제외하고 반환
+        return members.stream()
+                .filter(member -> !blockedByOthersList.contains(member))
+                .collect(Collectors.toList());
+    }
+
     public void setTempUp(int chatGroupId, int memberId) {
         Member m = new Member();
         Member mm = new Member();

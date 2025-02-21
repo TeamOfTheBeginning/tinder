@@ -15,7 +15,7 @@ const Search = () => {
   const navigate = useNavigate();
   const loginUser = useSelector(state=>state.user);
 
-  async function findMember(){
+  async function findMemberWithNickname(){
 
     axios.get(`/api/member2/getMembersWithNickname`, { params: { word, memberId:loginUser.memberId } })
     .then((result)=>{
@@ -24,7 +24,7 @@ const Search = () => {
     }
     ).catch((err)=>{console.error(err)}) 
 
-  }
+  }  
 
   function enterChatRoomFromSearchedMember(memberId){
 
@@ -71,7 +71,7 @@ const Search = () => {
 
   function setMessageRoom(){
     if(!inviteMemberList){
-      alert("맴버를 선택하세요");
+      return alert("맴버를 선택하세요");
     }
 
     console.log("inviteMemberList : "+inviteMemberList)
@@ -90,16 +90,122 @@ const Search = () => {
     
   }
 
+  const [inputValue, setInputValue] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+
+  const mbtiList = [
+    "INTJ", "INFP", "ISFJ", "ENTP", "ESFJ", "ESTP",
+    "ISFP", "INTP", "ENFJ", "ISTJ", "ESTJ", "ENTJ",
+    "INFJ", "ESFP", "ISFJ", "ISTP"
+  ];
+
+  const handleChange = (event) => {
+    const value = event.target.value.toUpperCase();
+    setInputValue(value);
+    
+    if (value) {
+      const filteredList = mbtiList.filter(mbti => mbti.startsWith(value));
+      setSuggestions(filteredList);
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  // const handleSuggestionClick = async (suggestion) => {
+  //   setInputValue(suggestion);
+  //   setSuggestions([]);
+    
+  //   // 숫자 값으로 변환
+  //   const mbtiToNumber = {
+  //     "E": "0", "I": "1",
+  //     "N": "0", "S": "1",
+  //     "T": "0", "F": "1",
+  //     "J": "0", "P": "1"
+  //   };
+
+  //   const numberValue = suggestion.split('').map(char => mbtiToNumber[char]).join('');
+
+  //   console.log("numberValue"+numberValue)
+
+  //   try {
+  //     // 서버에 데이터 전송
+  //     const response = await axios.get('/api/member2/getMembersWithMBTI', { params:{numberValue,memberId:loginUser.memberId} });
+  //     console.log(response.data); // 응답 처리
+  //     setMemberList(response.data.memberList)
+  //   } catch (error) {
+  //     console.error('Error sending data:', error);
+  //   }
+  // };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    // 숫자 값으로 변환
+    const mbtiToNumber = {
+      "E": "0", "I": "1",
+      "N": "0", "S": "1",
+      "T": "0", "F": "1",
+      "J": "0", "P": "1"
+    };    
+
+    const numberValue = inputValue.split('').map(char => mbtiToNumber[char]).join('');
+
+    console.log("numberValue"+numberValue)
+
+    try {
+      // 서버에 데이터 전송
+      const response = await axios.get('/api/member2/getMembersWithMBTI', { params:{numberValue,memberId:loginUser.memberId} });
+      console.log(response.data); // 응답 처리
+      setMemberList(response.data.memberList)
+    } catch (error) {
+      console.error('Error sending data:', error);
+    }
+  };
+
+  async function findMemberWithMBTI(){
+
+    axios.get(`/api/member2/getMembersWithMBTI`, { params: { word, memberId:loginUser.memberId } })
+    .then((result)=>{
+      console.log(result.data.memberList)
+      setMemberList(result.data.memberList)
+    }
+    ).catch((err)=>{console.error(err)}) 
+
+  }
+
 
   return (
     <div className='searchContainer'>
-        
+        <h3>맴버를 검색합니다. <br/> 나를 차단한 사용자는 검색되지 않습니다.</h3>
         <div className='searchContainerInput'>
-            <input onChange={(e) => { setWord(e.target.value) }}></input>
-            <div className='searchContainerBtns'>
-              <button onClick={()=>findMember()}>맴버</button>
-              <button>MBTI</button>
-              {/* <button>해쉬태그</button> */}
+            
+            <div className='searchContainerNickname'>
+            <input onChange={(e) => { setWord(e.target.value) }}placeholder="닉네임 입력"></input><button onClick={()=>findMemberWithNickname()}>맴버</button>
+            </div>
+
+            <div className='searchContainerMBTI'>   
+              <div>
+                <form onSubmit={handleSubmit}>
+                  <input 
+                    type="text" 
+                    value={inputValue} 
+                    onChange={handleChange} 
+                    placeholder="MBTI 입력"
+                  />
+                  <button type="submit">전송</button>
+                </form>
+                {suggestions.length > 0 && (
+                  <ul>
+                    {suggestions.map((suggestion, index) => (
+                      <li 
+                        key={index}
+                      >
+                        {suggestion}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>           
             </div>
         </div>
         <div className='searchResult'>
@@ -122,7 +228,7 @@ const Search = () => {
         }
         </div>
         <div>
-          <h3>Invited Members:</h3>
+          <h3>초대 목록</h3>
             <ul>
               {/* 리스트의 내용을 화면에 출력 */}
               {(inviteMemberList)?

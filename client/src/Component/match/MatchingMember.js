@@ -22,6 +22,26 @@ const MatchingMember = (props) => {
     ).catch((err)=>{console.error(err)})    
   }
 
+  function ei(ei){
+    if(ei==0){return "E"}
+    else{return "I"};
+  }
+
+  function ns(ns){
+    if(ns==0){return "N"}
+    else{return "S"};
+  }
+
+  function tf(tf){
+    if(tf==0){return "T"}
+    else{return "F"};
+  }
+
+  function jp(jp){
+    if(jp==0){return "J"}
+    else{return "P"};
+  }
+
 
   if (!props.oppositeGender) return <p>Loading...</p>;
     
@@ -41,6 +61,14 @@ const MatchingMember = (props) => {
 
       <div className='matchingMemberMsg'>
         &nbsp;&nbsp;{props.oppositeGender.profileMsg}
+      </div>
+
+      <div className='matchingMemberInfo'>
+        &nbsp;&nbsp;{ei(props.oppositeGender.memberInfo.ei)}
+        {ns(props.oppositeGender.memberInfo.ns)}
+        {tf(props.oppositeGender.memberInfo.tf)}
+        {jp(props.oppositeGender.memberInfo.jp)}
+        
       </div>
 
       <div className='matchingMemberBtns'>

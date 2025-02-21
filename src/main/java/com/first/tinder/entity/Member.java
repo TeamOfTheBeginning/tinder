@@ -57,6 +57,6 @@ public class Member {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_info_id")
-    Member memberInfoId;
+    MemberInfo memberInfo;
 
 }

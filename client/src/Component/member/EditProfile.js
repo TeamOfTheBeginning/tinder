@@ -125,8 +125,13 @@ const EditProfile = () => {
                 return alert('닉네임이 중복됩니다');
             }
             result = await axios.post('/api/member/update', {
-                memberId:loginUser.memberId, email, pwd, age, birthDate, gender, nickname, phone, zipnum, profileMsg:intro, profileImg,
-                hobbies: selectedHobbies, // ✅ 선택한 취미 전송
+                memberId:loginUser.memberId, email, pwd, age, birthDate, gender, nickname, phone, zipnum, profileMsg:intro, profileImg,                 
+            });
+
+            let result2 = await axios.post('/api/member/updateHobbies',{
+                memberId:loginUser.memberId,
+                // ✅ 선택한 취미 전송
+                hobbies: selectedHobbies,
             });
 
             if(result.data.msg =='ok'){
