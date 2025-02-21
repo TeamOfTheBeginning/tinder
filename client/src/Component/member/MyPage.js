@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import SideBar from '../SideBar';
 import { useSelector } from 'react-redux';
 import Modal from './FollowModal';
 import * as PortOne from "@portone/browser-sdk/v2";
@@ -11,7 +10,7 @@ import { loginAction, setFollower, setFollowed } from '../../store/userSlice';
 import {Cookies} from 'react-cookie'
 
 
-const MyPage = () => {
+const MyPage = ({openSubMenu}) => {
 
     const loginUser = useSelector( state=>state.user );
     const [profileImg, setProfileImg] = useState('');
@@ -42,7 +41,7 @@ const MyPage = () => {
         }
       }, [loginUser]);
 
-const requestPayment = async () => {
+    const requestPayment = async () => {
     try {
         const response = await PortOne.requestPayment({
             storeId: "store-0ef99292-e8d5-4956-a265-e1ec0ee73634", // 고객사 storeId로 변경해주세요.
@@ -105,13 +104,13 @@ const buyItems = async () => {
 
     return (
         <div className='Container'>
-            {/* <SideBar setWord={setWord}/> */}
             <div className='mypage'>
                 <div className='img'>
                     <img src={imgSrc} />
+                    <div></div>
                 </div>
+
                 <div className='userinfo'>
-                    
                     <div className='profile'>
                         <div className='field'>
                             <label>E-mail</label>
@@ -153,8 +152,7 @@ const buyItems = async () => {
                 </div>
 
                 <div className='btns' >
-                    <div id ="btn" onClick={()=>{ navigate('/editProfile')}}>Edit Profile</div>
-                    <div id ="btn"onClick={()=>{ navigate('/nearMember', {state :{loginUser:loginUser}})}}>&nbsp;Post Write</div>
+                    <div id ="btn" onClick={()=> openSubMenu('editProfile')}>Edit Profile</div>
                     <div id ="btn" onClick={()=>{requestPayment()}}>&nbsp;<button>충전</button></div>
                     <div id ="btn" onClick={()=>{buyItems()}}>&nbsp;<button>결제</button></div>
                 </div>
