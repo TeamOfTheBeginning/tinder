@@ -46,8 +46,13 @@ const MatchingMember = (props) => {
   if (!props.oppositeGender) return <p>Loading...</p>;
     
   return (
-    <div className='matchingMemberContainer'>
-
+    <div className='matchingMemberContainer'>      
+      
+      <div className='matchingMemberImg'>
+        <div className='matchingMemberImgImg'>
+          <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${props.oppositeGender.profileImg}`} />
+        </div>
+      </div>
 
       <div className='matchingMemberTitle'>
         &nbsp;&nbsp;{props.oppositeGender.nickname}({props.oppositeGender.age})
@@ -61,12 +66,6 @@ const MatchingMember = (props) => {
         {ns(props.oppositeGender.memberInfo.ns)}
         {tf(props.oppositeGender.memberInfo.tf)}
         {jp(props.oppositeGender.memberInfo.jp)}        
-      </div>
-      
-      <div className='matchingMemberImg'>
-        <div className='matchingMemberImgImg'>
-          <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${props.oppositeGender.profileImg}`} />
-        </div>
       </div>
 
       <div className='matchingMemberMsg'>
