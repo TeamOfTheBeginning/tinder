@@ -1,73 +1,23 @@
- .mypage{
-    width:800px;
-    border:1px solid black;
-    margin:2px;
+.mypage{
+    width:500px;
     display: flex;
     flex-direction: column;
 }
 .mypage .userinfo{
-    width:100%;
+    width: 100%;
     display: flex;
 }
+.mypage .userinfo .field{
+    width: 100%;
+    display: flex;
+}
+
 .mypage .img{
-    flex-basis:250px;    
-    border:1px solid orange;
+    flex-basis: 250px;    
+    border: 1px solid orange;
 }
 .mypage .img img{
-    width:250px;
-    height:250px;
+    width: 250px;
+    height: 250px;
     border-radius: 50%;
-    border:1px dotted blue;
 }
-
-/*
-.mypage .userinfo .profile{
-    flex:1;
-    border:1px solid green;
-    display: flex;
-    flex-direction: column;
-}
-.mypage .userinfo .profile .field{
-    display: flex;
-    margin:5px;
-}
-.mypage .userinfo .profile .field label{
-    flex:1;
-    padding:5px;
-    font-weight: bold;
-}
-.mypage .userinfo .profile .field div{
-    flex:2;
-    padding:5px;
-}
-.mypage .btns{ 
-    display: flex;
-    margin:10px 0;
-}
-.mypage .btns button{
-    flex: 1;
-    padding:10px;
-    background-color: blue;
-    color:white;
-    font-weight: bold;
-    font-size: 1.0rem;
-    margin:2px;
-}
-
-.userpost{
-    width:100%;
-    border:1px solid blue;
-    display: grid;
-    grid-template-columns:1fr 1fr 1fr; 
-}
-
-.userpost div{
-    overflow: hidden;
-    display: flex;    
-    border:1px dotted blue;
-    height:250px;
-}
-.userpost div img{
-    width:100%;
-}
- */
