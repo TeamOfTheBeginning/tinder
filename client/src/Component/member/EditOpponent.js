@@ -211,7 +211,7 @@ const handleChange = (event) => {
     return (
         <div className='Container'>
             <SideBar  setWord={setWord}/>
-            <div className='loginform'>
+            <div className='editForm'>
                 <div className="logo" style={{fontSize:"2.0rem"}}>Opponent EDIT</div>
                 {/* <div className='field'>
                     <label>E-MAIL</label>
@@ -295,14 +295,16 @@ const handleChange = (event) => {
                             <div key={category.categoryId}>
                                 <h4>{category.categoryName}</h4>
                                 {hobbies.filter((h) => h.category.categoryId === category.categoryId).map((h) => (
-                                    <label key={h.hobbyId}>
-                                        <input 
-                                            type="checkbox" 
-                                            checked={selectedHobbies.includes(h.hobbyId)} 
-                                            onChange={() => handleHobbyChange(h.hobbyId)} 
+                                    <div>
+                                        <label key={h.hobbyId}>
+                                            {h.hobbyName}                                        
+                                        </label><br></br>
+                                        <input className='checkbox'
+                                        type="checkbox" 
+                                        checked={selectedHobbies.includes(h.hobbyId)} 
+                                        onChange={() => handleHobbyChange(h.hobbyId)} 
                                         />
-                                        {h.hobbyName}
-                                    </label>
+                                    </div>
                                 ))}
                             </div>
                         ))}
