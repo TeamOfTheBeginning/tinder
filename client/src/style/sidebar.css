@@ -135,5 +135,5 @@
     max-height: 100vh;
     /* 스크롤 없애기 */
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
 }

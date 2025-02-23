@@ -25,7 +25,7 @@
 
 .loginform {
     width: 500px;
-    height: 300px;
+    /* height: 300px; */
     padding: 20px;
     margin-top: 50px;
     min-width: 500px;

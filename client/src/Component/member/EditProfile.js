@@ -232,6 +232,7 @@ const EditProfile = () => {
     return m+b+t+i;
     }
 
+    const [person1, setPerson1] = useState([0, 0, 0, 0, 0]);
 
     return (
         <div className='Container'>
@@ -257,7 +258,7 @@ const EditProfile = () => {
                 <div className='field'>
                     <label style={{flex:2}}>GENDER</label>
                     <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}>
-                        <option value='0'>남성</option>    
+                        <option value='0'>남성</option>
                         <option value='1'>여성</option>
                     </select>
                     <label style={{flex:2}}>BIRTHDATE</label>
@@ -311,7 +312,22 @@ const EditProfile = () => {
 
                 </div>
 
-
+                {['흡연여부', '음주여부(주5회)' , '연애속도(빠름5)', '선호데이트방식(외부5)', '운동횟수(주5회)'].map((label, index) => (
+                    <div key={index} className='field' >
+                        <label>{label}: {person1[index]}</label>
+                        <input
+                            type="range"
+                            value={person1[index]}
+                            onChange={(e) => setPerson1((prev) => {
+                            const newArray = [...prev];
+                            newArray[index] = +e.target.value;
+                            return newArray;
+                            })}
+                            min={index === 0 ? 0 : 1}
+                            max={index === 0 ? 1 : 5}
+                        />
+                    </div>
+                ))}
 
                 <div className="field">
                     <label>HOBBY</label>
