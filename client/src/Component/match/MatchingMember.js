@@ -42,6 +42,29 @@ const MatchingMember = (props) => {
     else{return "P"};
   }
 
+  function calculateMbtiMatchPercentage(){
+    var percentage
+    var ei;
+    if(props.oppositeGender.memberInfo.ei == loginUser.opponentMemberInfo.ei){
+      ei = 1
+    }else{ei = 0}
+    if(props.oppositeGender.memberInfo.ns == loginUser.opponentMemberInfo.ns){
+      ns = 1
+    }else{ns = 0}
+    if(props.oppositeGender.memberInfo.tf == loginUser.opponentMemberInfo.tf){
+      tf = 1
+    }else{tf = 0}
+    if(props.oppositeGender.memberInfo.jp == loginUser.opponentMemberInfo.jp){
+      jp = 1
+    }else{jp = 0}
+
+
+    percentage = (ei+ns+tf+jp)/4
+    
+    return percentage;
+
+  }
+
 
   if (!props.oppositeGender) return <p>Loading...</p>;
     
@@ -65,7 +88,13 @@ const MatchingMember = (props) => {
         &nbsp;&nbsp;{ei(props.oppositeGender.memberInfo.ei)}
         {ns(props.oppositeGender.memberInfo.ns)}
         {tf(props.oppositeGender.memberInfo.tf)}
-        {jp(props.oppositeGender.memberInfo.jp)}        
+        {jp(props.oppositeGender.memberInfo.jp)}
+      </div>
+
+      <div>
+        <div>MBTI 매칭률 {calculateMbtiMatchPercentage()} </div>
+        <div>취미 매칭률 </div>
+
       </div>
 
       <div className='matchingMemberMsg'>

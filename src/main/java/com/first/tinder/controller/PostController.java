@@ -52,6 +52,7 @@ public class PostController {
         HashMap<String,Object> result = new HashMap<>();
         Post p = ps.insertPost(post);
         result.put("postid", p.getPostId() );
+        result.put("msg", "ok");
         return result;
     }
 

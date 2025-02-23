@@ -6,6 +6,7 @@ import com.first.tinder.dto.OAuthToken;
 import com.first.tinder.entity.*;
 import com.first.tinder.service.MemberInfoService;
 import com.first.tinder.service.MemberService;
+import com.first.tinder.service.OpponentMemberInfoService;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,9 @@ public class MemberController {
 
     @Autowired
     MemberInfoService mis;
+
+    @Autowired
+    OpponentMemberInfoService omis;
 
 
     @PostMapping("/loginlocal")
@@ -93,8 +97,9 @@ public class MemberController {
     @Value("${kakao.redirect_uri}")
     private String redirect_uri;
 
-    @RequestMapping("/kakaostart")
-    public @ResponseBody String kakaostart() {
+    @RequestMapping("/kakaoStart")
+    public @ResponseBody String kakaoStart() {
+        System.out.println("kakaoStart");
         String a = "<script type='text/javascript'>"
                 + "location.href='https://kauth.kakao.com/oauth/authorize?"
                 + "client_id=" + client_id + "&"
@@ -105,90 +110,86 @@ public class MemberController {
 
     @RequestMapping("/kakaoLogin")
     public void kakaoLogin(HttpServletRequest request, HttpServletResponse response ) throws IOException {
-        try {
-            String code = request.getParameter("code");
-            String endpoint = "https://kauth.kakao.com/oauth/token";
-            URL url = new URL(endpoint);
-            String bodyData = "grant_type=authorization_code&";
-            bodyData += "client_id=" + client_id + "&";
-            bodyData += "redirect_uri=" + redirect_uri + "&";
-            bodyData += "code=" + code;
 
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-            conn.setDoOutput(true);
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream(), "UTF-8"));
-            bw.write(bodyData);
-            bw.flush();
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            String input = "";
-            StringBuilder sb = new StringBuilder();
-            while ((input = br.readLine()) != null) {
-                sb.append(input);
-            }
-            Gson gson = new Gson();
-            OAuthToken oAuthToken = gson.fromJson(sb.toString(), OAuthToken.class);
-            String endpoint2 = "https://kapi.kakao.com/v2/user/me";
-            URL url2 = new URL(endpoint2);
+        String code = request.getParameter("code");
+        String endpoint = "https://kauth.kakao.com/oauth/token";
+        URL url = new URL(endpoint);
+        String bodyData = "grant_type=authorization_code&";
+        bodyData += "client_id=" + client_id + "&";
+        bodyData += "redirect_uri=" + redirect_uri + "&";
+        bodyData += "code=" + code;
 
-            HttpsURLConnection conn2 = (HttpsURLConnection) url2.openConnection();
-            conn2.setRequestProperty("Authorization", "Bearer " + oAuthToken.getAccess_token());
-            conn2.setDoOutput(true);
-            BufferedReader br2 = new BufferedReader(new InputStreamReader(conn2.getInputStream(), "UTF-8"));
-            String input2 = "";
-            StringBuilder sb2 = new StringBuilder();
-            while ((input2 = br2.readLine()) != null) {
-                sb2.append(input2);
-                System.out.println(input2);
-            }
-            System.out.println("Kakao API Response: " + sb2.toString()); // 응답 내용 로깅
-
-            Gson gson2 = new Gson();
-            KakaoProfile kakaoProfile = gson2.fromJson(sb2.toString(), KakaoProfile.class);
-
-            if (kakaoProfile == null) {
-                System.err.println("KakaoProfile is null!");
-                // TODO: 적절한 에러 처리 로직 추가
-                return; // 또는 예외를 던지거나, 에러 페이지로 리다이렉트
-            }
-
-            KakaoProfile.KakaoAccount ac = kakaoProfile.getAccount();
-            if (ac == null) {
-                System.err.println("KakaoAccount is null!");
-                // TODO: 적절한 에러 처리 로직 추가
-                return; // 또는 예외를 던지거나, 에러 페이지로 리다이렉트
-            }
-
-            com.first.tinder.dto.KakaoProfile.KakaoAccount.Profile pf = ac.getProfile();
-            System.out.println("id : " + kakaoProfile.getId());
-            System.out.println("KakaoAccount-Email : " + ac.getEmail());
-            System.out.println("Profile-Nickname : " + pf.getNickname());
-
-            Member member = ms.getMemberBySnsId( kakaoProfile.getId() );
-            if( member == null) {
-                member = new Member();
-                member.setEmail( kakaoProfile.getId() );
-                // 기존회원의 닉네임과 신규 카카오 회원의 닉네임이 중보되는 경우의 처리가 필요합니다.
-                member.setNickname( pf.getNickname() );
-                member.setProvider( "kakao" );
-                member.setPwd( "kakao" );
-                member.setSnsId( kakaoProfile.getId() );
-                ms.insertMember(member);
-            }
-            HttpSession session = request.getSession();
-            session.setAttribute("loginUser", member.getMemberId() );
-            response.sendRedirect("http://localhost:3000/savekakaoinfo");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            // TODO: 예외 처리 로직 (예: 에러 페이지 리다이렉트, 로그 기록 등)
-            response.sendRedirect("/error"); // 예시
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+        conn.setDoOutput(true);
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream(), "UTF-8"));
+        bw.write(bodyData);
+        bw.flush();
+        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+        String input = "";
+        StringBuilder sb = new StringBuilder();
+        while ((input = br.readLine()) != null) {
+            sb.append(input);
         }
+        Gson gson = new Gson();
+        OAuthToken oAuthToken = gson.fromJson(sb.toString(), OAuthToken.class);
+        String endpoint2 = "https://kapi.kakao.com/v2/user/me";
+        URL url2 = new URL(endpoint2);
+
+        HttpsURLConnection conn2 = (HttpsURLConnection) url2.openConnection();
+        conn2.setRequestProperty("Authorization", "Bearer " + oAuthToken.getAccess_token());
+        conn2.setDoOutput(true);
+        BufferedReader br2 = new BufferedReader(new InputStreamReader(conn2.getInputStream(), "UTF-8"));
+        String input2 = "";
+        StringBuilder sb2 = new StringBuilder();
+        while ((input2 = br2.readLine()) != null) {
+            sb2.append(input2);
+            System.out.println(input2);
+        }
+        System.out.println("Gson");
+
+        System.out.println("Kakao Response: " + sb2.toString());
+        Gson gson2 = new Gson();
+
+        System.out.println("gson2.fromJson(sb2.toString(), KakaoProfile.class)"+gson2.fromJson(sb2.toString(), KakaoProfile.class));
+
+
+        KakaoProfile kakaoProfile = gson2.fromJson(sb2.toString(), KakaoProfile.class);
+        KakaoProfile.KakaoAccount ac = kakaoProfile.getAccount();
+        KakaoProfile.KakaoAccount.Profile pf = ac.getProfile();
+        System.out.println("id : " + kakaoProfile.getId());
+        System.out.println("KakaoAccount-Email : ");
+        System.out.println("KakaoAccount-Email : " + ac.getEmail());
+        System.out.println("Profile-Nickname : " + pf.getNickname());
+
+        Member member = ms.getMemberBySnsId( kakaoProfile.getId() );
+        if( member == null) {
+
+            MemberInfo memberInfo = new MemberInfo();
+            MemberInfo returnMemberInfo = mis.insertMemberInfo(memberInfo);
+
+            OpponentMemberInfo opponentMemberInfo = new OpponentMemberInfo();
+            OpponentMemberInfo returnOpponentMemberInfo = omis.insertOpponentMemberInfo(opponentMemberInfo);
+
+            member = new Member();
+            member.setEmail( kakaoProfile.getId() );
+            // 기존회원의 닉네임과 신규 카카오 회원의 닉네임이 중보되는 경우의 처리가 필요합니다.
+            member.setNickname( pf.getNickname() );
+            member.setProvider( "kakao" );
+            member.setPwd( "kakao" );
+            member.setSnsId( kakaoProfile.getId() );
+            member.setTemp(37);
+            member.setMemberInfo( returnMemberInfo );
+            member.setOpponentMemberInfo( returnOpponentMemberInfo );
+            ms.insertMember(member);
+
+
+        }
+        HttpSession session = request.getSession();
+        session.setAttribute("loginUser", member.getMemberId() );
+        response.sendRedirect("http://localhost:3000/savekakaoinfo");
     }
-
-
-
 
     @GetMapping("/nearby")
     public List<Member> getNearbyMembers(
@@ -263,6 +264,17 @@ public class MemberController {
         // 나이 계산
         int age = Period.between(birthLocalDate, now).getYears();
         member.setAge(age); // Member 객체에 나이 설정
+
+        MemberInfo memberInfo = new MemberInfo();
+        MemberInfo returnMemberInfo = mis.insertMemberInfo(memberInfo);
+
+        OpponentMemberInfo opponentMemberInfo = new OpponentMemberInfo();
+        OpponentMemberInfo returnOpponentMemberInfo = omis.insertOpponentMemberInfo(opponentMemberInfo);
+
+
+        member.setTemp(37);
+        member.setMemberInfo(returnMemberInfo);
+        member.setOpponentMemberInfo(returnOpponentMemberInfo);
 
         ms.insertMember(member);
         result.put("msg", "ok");

@@ -1,10 +1,11 @@
 package com.first.tinder.controller;
 
 import com.first.tinder.dao.MemberRepository;
-import com.first.tinder.entity.Member;
-import com.first.tinder.entity.MemberLikes;
+import com.first.tinder.entity.*;
 import com.first.tinder.service.BlockService;
+import com.first.tinder.service.MemberService;
 import com.first.tinder.service.MemberService2;
+import com.first.tinder.service.OpponentMemberInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,12 @@ public class MemberController2 {
 
     @Autowired
     BlockService bs;
+
+    @Autowired
+    MemberService ms;
+
+    @Autowired
+    OpponentMemberInfoService omis;
 
 
 
@@ -201,6 +208,51 @@ public class MemberController2 {
 
 
 //        result.put("msg", "yes");
+        return result;
+    }
+
+
+
+    @PostMapping("/updateOpponentMBTI")
+    public HashMap<String,Object> updateOpponentMBTI (@RequestParam("numberValue") String numberValue,@RequestParam("memberId") int memberId){
+        HashMap<String, Object> result = new HashMap<>();
+        System.out.println("numberValue : "+numberValue+" memberId : "+memberId);
+
+        int ei = Character.getNumericValue(numberValue.charAt(0)); // E/I
+        int ns = Character.getNumericValue(numberValue.charAt(1)); // N/S
+        int tf = Character.getNumericValue(numberValue.charAt(2)); // T/F
+        int jp = Character.getNumericValue(numberValue.charAt(3)); // J/P
+
+        System.out.println("ei = " + ei);
+        System.out.println("ns = " + ns);
+        System.out.println("tf = " + tf);
+        System.out.println("jp = " + jp);
+
+        ms2.setOpponentMemberMBTI(ei, ns, tf, jp,memberId);
+
+//        result.put("msg", "yes");
+        return result;
+    }
+
+    // 선택된 취미 업데이트 API
+    @PostMapping("/updateOpponentHobbies")
+    public HashMap<String, Object> updateOpponentHobbies(@RequestBody HashMap<String, Object> payload) {
+        int memberId = (int) payload.get("memberId");
+
+        List<Integer> hobbyIds = (List<Integer>) payload.get("hobbies");
+        System.out.println("memberId"+memberId+"hobbyIds"+hobbyIds);
+
+        Member member = ms.getMemberById(memberId);
+        OpponentMemberInfo opponentMemberInfo = member.getOpponentMemberInfo();
+        List<Hobby> hobbies = ms.getHobbiesByIds(hobbyIds);
+
+        opponentMemberInfo.setHobbies(hobbies);
+        System.out.println("memberInfo@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+opponentMemberInfo);
+//        ms.updateMember(member);
+        omis.updateOpponentMemberInfo(opponentMemberInfo);
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("msg", "ok");
         return result;
     }
 

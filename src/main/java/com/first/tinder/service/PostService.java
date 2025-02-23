@@ -28,7 +28,9 @@ public class PostService {
     @Autowired
     HashtagRepository hr;
     @Autowired
-    PosthashRepository phr;
+    PosthashtagRepository phr;
+    @Autowired
+    PostMentionRepository pmr;
     @Autowired
     MemberRepository mr;
     @Autowired
@@ -41,7 +43,76 @@ public class PostService {
     if (member.isPresent()) post.setMember(member.get());
     Post p = pr.save(post);
     int postId = p.getPostId();
-    return p;
+
+        //  추가된 포스트의 content 추출
+        String content = p.getContent();
+
+        // content 에서 해시태그들만 추출
+        Matcher m = Pattern.compile("#([0-9a-zA-Z가-힣]*)").matcher(content);
+        List<String> tags = new ArrayList<String>();
+        while (m.find()) {
+            //System.out.println(m.group(1));
+            tags.add(m.group(1));
+        }
+
+        // 추출된 해시테그들로 해시테그 작업
+        Hashtag hashtag = null;
+        for( String tag : tags ) {
+            // tag 변수로 Hasgtag테이블 검색
+            Optional<Hashtag> record = hr.findByWord(tag);
+            // 있으면 아이디만 추출
+            if( record.isPresent() ) hashtag = record.get();
+                // 현재 워드가 없으면  hashtag 테이블에 새레코드 추가하고 아이디 추출
+            else{
+                Hashtag htnew = new Hashtag();
+                htnew.setWord(tag);
+                Hashtag htsave = hr.save(htnew);
+                hashtag = htsave;
+            }
+            // 추출된 포스트와  해쉬테그로 posthashtag 테이블에 레코드 추가
+            PostHashtag pht = new PostHashtag();
+            pht.setPost( p );
+            pht.setHashtag( hashtag );
+            phr.save(pht);
+        }
+
+        // content 에서 멘션들만 추출
+        Matcher m1 = Pattern.compile("@([0-9a-zA-Z가-힣]*)").matcher(content);
+        List<String> mentions = new ArrayList<String>();
+        while (m1.find()) {
+            //System.out.println(m.group(1));
+            mentions.add(m1.group(1));
+        }
+
+        // 추출된 해시테그들로 해시테그 작업
+//        PostMention postMention = null;
+        for( String mention : mentions ) {
+            PostMention postMention = new PostMention();
+            System.out.println(mention);
+
+            postMention.setPost( p );
+            postMention.setNickname(mention);
+
+            pmr.save(postMention);
+
+            Member memberByNickname = mr.findByNickname(mention).orElse(null);
+
+            Notification notification = new Notification();
+            notification.setMember(memberByNickname); // 알림을 받을 사용자
+            notification.setMessagefrom(member.get().getNickname()); // 좋아요 누른 사용자 이름
+            notification.setMessage(p.getPostId()+"번 게시물에서 "+member.get().getNickname() + "님이 회원님을 언급했습니다.");
+            notification.setReadOnNot(0);
+
+            Notification afternotification =  nr.save(notification); // 저장
+
+            // ✅ SSE 알림 전송
+            ses.sendNotification(memberByNickname.getMemberId(), notification.getMessage(), afternotification);
+
+
+        }
+
+
+        return p;
     }
 
 //    public List<Post> getPostList(String word) {

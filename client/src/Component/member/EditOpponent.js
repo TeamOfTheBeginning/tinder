@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loginAction, } from '../../store/userSlice';
 import {Cookies} from 'react-cookie'
 
-const EditProfile = () => {
+const EditOpponent = () => {
     const loginUser = useSelector( state=>state.user );
     const [email, setEmail] = useState('')
     const [pwd, setPwd] = useState('')
@@ -97,8 +97,8 @@ const EditProfile = () => {
                 ? prev.filter((id) => id !== hobbyId) // 체크 해제 시 제거
                 : [...prev, hobbyId] // 체크 시 추가
         );
-      };
-      
+    };
+    
 
     async function fileUpload(e){
         const formData = new FormData();
@@ -111,22 +111,22 @@ const EditProfile = () => {
 
     // ✅ 회원 정보 수정 요청
     async function onSubmit(){
-        if(email==''){ return alert('이메일을 입력하세요');}
-        if(loginUser.provider != 'kakao' && pwd==''){ return alert('패스워드를 입력하세요');}
-        if(loginUser.provider != 'kakao' && pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
-        if(nickname==''){ return alert('닉네임을 입력하세요');}
+        // if(email==''){ return alert('이메일을 입력하세요');}
+        // if(loginUser.provider != 'kakao' && pwd==''){ return alert('패스워드를 입력하세요');}
+        // if(loginUser.provider != 'kakao' && pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
+        // if(nickname==''){ return alert('닉네임을 입력하세요');}
         try{
-            let result = await axios.post('/api/member/emailcheckUpdate', null, {params:{email}} );
-            if(result.data.msg == 'no' ){
-                return alert('이메일이 중복됩니다');
-            }
-            result = await axios.post('/api/member/nicknamecheckUpdate', null, {params:{nickname}} );
-            if(result.data.msg == 'no' ){
-                return alert('닉네임이 중복됩니다');
-            }
-            result = await axios.post('/api/member/update', {
-                memberId:loginUser.memberId, email, pwd, age, birthDate, gender, nickname, phone, zipnum, profileMsg:intro, profileImg,                 
-            });
+            // let result = await axios.post('/api/member/emailcheckUpdate', null, {params:{email}} );
+            // if(result.data.msg == 'no' ){
+            //     return alert('이메일이 중복됩니다');
+            // }
+            // result = await axios.post('/api/member/nicknamecheckUpdate', null, {params:{nickname}} );
+            // if(result.data.msg == 'no' ){
+            //     return alert('닉네임이 중복됩니다');
+            // }
+            // result = await axios.post('/api/member/updateOpponent', {
+            //     memberId:loginUser.memberId, email, pwd, age, birthDate, gender, nickname, phone, zipnum, profileMsg:intro, profileImg,                 
+            // });
 
             // 숫자 값으로 변환
             const mbtiToNumber = {
@@ -140,21 +140,21 @@ const EditProfile = () => {
 
             try {
                 // 서버에 데이터 전송
-                const response = await axios.post('/api/member2/updateMBTI',null ,{ params:{numberValue,memberId:loginUser.memberId} });
+                const response = await axios.post('/api/member2/updateOpponentMBTI',null ,{ params:{numberValue,memberId:loginUser.memberId} });
                 console.log(response.data); // 응답 처리
                 
             } catch (error) {
             console.error('Error sending data:', error);
             }
 
-            let result2 = await axios.post('/api/member/updateHobbies',{
+            let result = await axios.post('/api/member2/updateOpponentHobbies',{
                 memberId:loginUser.memberId,
                 // ✅ 선택한 취미 전송
                 hobbies: selectedHobbies,
             });
 
             if(result.data.msg =='ok'){
-                alert('회원 정보 수정이 완료되었습니다.')
+                alert('상대 정보 수정이 완료되었습니다.')
                 const res = await axios.get('/api/member/getLoginUser');
                 cookies.set('user', JSON.stringify( res.data.loginUser ) , {path:'/', })
                 dispatch( loginAction( res.data.loginUser ) )
@@ -165,52 +165,28 @@ const EditProfile = () => {
 
 
     const [inputValue, setInputValue] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
+    const [suggestions, setSuggestions] = useState([]);
 
-  const mbtiList = [
-    "INTJ", "INTP", "ENTJ", "ENTP",
-    "INFJ", "INFP", "ENFJ", "ENFP",
-    "ISTJ", "ISFJ", "ESTJ", "ESFJ",
-    "ISTP", "ISFP", "ESTP", "ESFP"
-  ];
+    const mbtiList = [
+        "INTJ", "INTP", "ENTJ", "ENTP",
+        "INFJ", "INFP", "ENFJ", "ENFP",
+        "ISTJ", "ISFJ", "ESTJ", "ESFJ",
+        "ISTP", "ISFP", "ESTP", "ESFP"
+    ];
   
 
-  const handleChange = (event) => {
+const handleChange = (event) => {
     const value = event.target.value.toUpperCase();
     setInputValue(value);
     
     if (value) {
-      const filteredList = mbtiList.filter(mbti => mbti.startsWith(value));
-      setSuggestions(filteredList);
+        const filteredList = mbtiList.filter(mbti => mbti.startsWith(value));
+        setSuggestions(filteredList);
     } else {
-      setSuggestions([]);
+        setSuggestions([]);
     }
-  };  
+};
 
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-
-//     // 숫자 값으로 변환
-//     const mbtiToNumber = {
-//       "E": "0", "I": "1",
-//       "N": "0", "S": "1",
-//       "T": "0", "F": "1",
-//       "J": "0", "P": "1"
-//     };    
-
-//     const numberValue = inputValue.split('').map(char => mbtiToNumber[char]).join('');
-
-//     console.log("numberValue"+numberValue)
-
-//     try {
-//       // 서버에 데이터 전송
-//       const response = await axios.get('/api/member2/getMembersWithMBTI', { params:{numberValue,memberId:loginUser.memberId} });
-//       console.log(response.data); // 응답 처리
-      
-//     } catch (error) {
-//       console.error('Error sending data:', error);
-//     }
-//   };
     function calMBTI(ei,ns,tf,jp){
         var m
         var b
@@ -220,25 +196,24 @@ const EditProfile = () => {
 
         if(ei==0){m= "E"}
         else{m= "I"};
-    
+
         if(ns==0){b= "N"}
         else{b= "S"};
-    
+
         if(tf==0){t= "T"}
         else{t= "F"};
-    
+
         if(jp==0){i= "J"}
         else{i= "P"};
     return m+b+t+i;
     }
 
-
     return (
         <div className='Container'>
             <SideBar  setWord={setWord}/>
             <div className='loginform'>
-                <div className="logo" style={{fontSize:"2.0rem"}}>MEMBER EDIT</div>
-                <div className='field'>
+                <div className="logo" style={{fontSize:"2.0rem"}}>Opponent EDIT</div>
+                {/* <div className='field'>
                     <label>E-MAIL</label>
                     <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
                 </div>
@@ -280,13 +255,13 @@ const EditProfile = () => {
                 <div className='field'>
                     <label>INTRO</label>
                     <input type="text"  value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
-                </div>
+                </div> */}
 
 
                 <div className='field'>
                     <label>MBTI</label>
                     <div>
-                        내 MBTI : {calMBTI(loginUser.memberInfo.ei,loginUser.memberInfo.ns,loginUser.memberInfo.tf,loginUser.memberInfo.jp)}
+                    상대 MBTI : {calMBTI(loginUser.opponentMemberInfo.ei,loginUser.opponentMemberInfo.ns,loginUser.opponentMemberInfo.tf,loginUser.opponentMemberInfo.jp)}
                         <input 
                             type="text" 
                             value={inputValue} 
@@ -334,14 +309,14 @@ const EditProfile = () => {
                     </div>
                 </div>
 
-                <div className='field'>
+                {/* <div className='field'>
                     <label>PROFILE IMG</label>
                     <input type="file" onChange={(e)=>{fileUpload(e)}}/>
                 </div>
                 <div className='field'>
                     <label>Profile img preview</label>
                     <div><img src={imgSrc} style={imgStyle} /></div>
-                </div>
+                </div> */}
 
                 <div className='btns'>
                     <button onClick={ ()=>{   onSubmit()    }  }>EDIT</button>
@@ -352,4 +327,4 @@ const EditProfile = () => {
     )
 }
 
-export default EditProfile
+export default EditOpponent

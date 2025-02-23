@@ -195,6 +195,7 @@ import RealTimeChat from "./realtimechat/RealTimeChat";
 import MyPage from "./member/MyPage";
 import Search from "./search/Search";
 import EditProfile from './member/EditProfile';
+import EditOpponent from './member/EditOpponent';
 import NearMember from './member/NearMember';
 // style
 import '../style/sidebar.css';
@@ -382,9 +383,9 @@ const SideBar = () => {
           
           {selectedMenu === 'realtimechat' && <RealTimeChat />}
           {selectedMenu === 'mypage' && (
-            subMenu === 'editProfile'
-              ? <EditProfile />
-              : <MyPage openSubMenu={handleSubMenuClick} />
+            subMenu === 'editProfile' ? <EditProfile />
+            : subMenu === 'editOpponent' ? <EditOpponent />
+            : <MyPage openSubMenu={handleSubMenuClick} />
           )}
           {selectedMenu === 'search' && <Search />}
         </div>

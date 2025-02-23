@@ -59,4 +59,8 @@ public class Member {
     @JoinColumn(name = "member_info_id")
     MemberInfo memberInfo;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "opponent_member_info_id")
+    OpponentMemberInfo opponentMemberInfo;
+
 }

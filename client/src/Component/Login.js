@@ -139,7 +139,7 @@ const Login = () => {
               <div className='snslogin'>
                   <button id="kakao" onClick={
                       ()=>{
-                          window.location.href='http://localhost:8070/member/kakaostart';
+                          window.location.href='http://localhost:8070/member/kakaoStart';
                       }
                   }>카카오로 시작하기</button>
               </div>
