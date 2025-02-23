@@ -11,15 +11,21 @@ const initialState={
     phone:'',
     gender:'',
     birthDate:'',
+
+    zipnum:'',
     address:'',
+    latitude:'',
+    longitude:'',
+
     provider:'',
     profileImg:'',
     profileMsg:'',
-    snsid:'',
-    zipnum:'',
+    snsId:'',
+    
     account:'',
     temp:'',
     memberInfo:{},
+    opponentMemberInfo:{},
     follower:[],
     followed:[], 
 }
@@ -40,13 +46,14 @@ const getLoginUser=()=>{
         memberinfo.provider = decodeURIComponent( memberinfo.provider )
         memberinfo.profileImg = decodeURIComponent( memberinfo.profileImg )
         memberinfo.profileMsg = decodeURIComponent( memberinfo.profileMsg )        
-        memberinfo.snsid = decodeURIComponent( memberinfo.snsid )
+        memberinfo.snsId = decodeURIComponent( memberinfo.snsId )
         memberinfo.zipnum = decodeURIComponent( memberinfo.zipnum )
         memberinfo.latitude = decodeURIComponent( memberinfo.latitude )
         memberinfo.longitude = decodeURIComponent( memberinfo.longitude )
         memberinfo.account = decodeURIComponent( memberinfo.account )
         memberinfo.temp = decodeURIComponent( memberinfo.temp )
         memberinfo.memberInfo = decodeURIComponent( memberinfo.memberInfo )
+        memberinfo.opponentMemberInfo = decodeURIComponent( memberinfo.opponentMemberInfo )
     }
     return memberinfo
 }
@@ -68,13 +75,14 @@ export const userSlice=createSlice(
                 state.provider = action.payload.provider;
                 state.profileImg = action.payload.profileImg;
                 state.profileMsg = action.payload.profileMsg;             
-                state.snsid = action.payload.snsid;
+                state.snsId = action.payload.snsId;
                 state.zipnum = action.payload.zipnum;
                 state.latitude = action.payload.latitude;
                 state.longitude = action.payload.longitude;
                 state.account = action.payload.account;
                 state.temp = action.payload.temp;
                 state.memberInfo = action.payload.memberInfo;
+                state.opponentMemberInfo = action.payload.opponentMemberInfo;
             },
             logoutAction:(state)=>{
                 state.memberId = '';
@@ -88,13 +96,14 @@ export const userSlice=createSlice(
                 state.provider = '';
                 state.profileImg = '';
                 state.profileMsg = '';           
-                state.snsid = '';
+                state.snsId = '';
                 state.zipnum = '';
                 state.latitude = '';
                 state.longitude = '';
                 state.account = '';
                 state.temp = '';
                 state.memberInfo ={};
+                state.opponentMemberInfo ={};
                 state.follower = [];
                 state.followed = [];
             },
