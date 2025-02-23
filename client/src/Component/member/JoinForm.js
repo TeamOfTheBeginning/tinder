@@ -4,6 +4,7 @@ import DaumPostcode from 'react-daum-postcode';
 import axios from "axios";
 import * as PortOne from "@portone/browser-sdk/v2";
 import '../../style/login.css';
+import { IoCreateOutline } from "react-icons/io5";
 import AddressModal from './AddressModal';
 
 const JoinForm = () => {
@@ -75,7 +76,6 @@ const JoinForm = () => {
 
     const navigate = useNavigate();
 
-
     async function onSubmit(){
         console.log(longitude)
         console.log(latitude)
@@ -98,7 +98,7 @@ const JoinForm = () => {
             result = await axios.post('/api/member/join', {email, pwd, age, gender, nickname, memberName, phone, birthDate , address, latitude, longitude, profileMsg : intro, profileImg :profileimg, zipnum});
             if(result.data.msg =='ok'){
                 alert('회원 가입이 완료되었습니다. 로그인하세요');
-                navigate('/');
+                window.location.reload();
             }
         }catch(err){  console.error(err);     }
     }
@@ -188,21 +188,17 @@ const JoinForm = () => {
 };
 
     return (
-        <div className='join-form-container'>
-            <div className='loginform'>
-                <div className="logo" style={{fontSize:"2.0rem"}}>Member Join</div>
-                {/* <div className='field'>
-                    <label>성인인증</label>*/}
-                    <div className='btns'> 
-                        <div id="btn" onClick={ ()=>{   handleIdentityVerification()    }  }>성인인증</div>
-                    </div>
-                {/*</div> */}
-                <div className='field'>
-                    <label>NAME</label>
-                    <input type="text"  value={memberName} onChange={(e)=>{setNickname(e.currentTarget.value)}} readOnly/>
+        <div className='join-container'>
+            <div className='joinform'>
+                <div className='btns'>
+                    <div className="login-btn" onClick={ ()=>{   handleIdentityVerification()    }  }>성인인증</div>
                 </div>
-                <div className='field'>
-                    <label style={{flex:2}}>GENDER</label>
+                <div className='field' id="login-field">
+                    <label>NAME</label>
+                    <input type="text" placeholder="이름" value={memberName} onChange={(e)=>{setNickname(e.currentTarget.value)}} readOnly/>
+                </div>
+                <div className='field flex-row' id="login-field">
+                    <label>GENDER</label>
                     {/* 직접 선택하게 할 경우 */}
                     {/* <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}} readOnly>
                         
@@ -211,14 +207,12 @@ const JoinForm = () => {
                     </select> */}
 
                     {/* 인증시 받아오는 경우 */}
-                    <input
-                    style={{ flex: 2 }}
-                    type="text"
+                    <input type="text" placeholder="성별"
                     value={gender === "" || gender === null || gender === undefined ? "" : gender === 0 ? "남성" : "여성"}
                     readOnly
                     />
 
-                    <label style={{flex:2}}>&nbsp;&nbsp;BIRTHDATE&nbsp;&nbsp;</label>
+                    <label>&nbsp;&nbsp;BIRTHDATE&nbsp;&nbsp;</label>
                     
                     {/* 수정 불가능 하게 할 경우 */}
                     <input
@@ -237,53 +231,51 @@ const JoinForm = () => {
                     /> */}
 
                 </div>
-                <div className='field'>
+                <div className='field' id="login-field">
                     <label>PHONE</label>
-                    <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}} readOnly/>
+                    <input type="text" placeholder="전화번호" value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}} readOnly/>
                 </div>
-                <div className='field'>
+                <div className='field' id="login-field">
                     <label>E-MAIL</label>
-                    <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
+                    <input type="text" placeholder="E-MAIL" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
                 </div>
-                <div className='field'>
+                <div className='field' id="login-field">
                     <label>PASSWORD</label>
-                    <input type="password"  value={pwd} onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
+                    <input type="password" placeholder="PASSWORD" value={pwd} onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
                 </div>
-                <div className='field'>
+                <div className='field' id="login-field">
                     <label>RETYPE PW</label>
-                    <input type="password"  value={pwdChk} onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
+                    <input type="password" placeholder="RETYPE PW" value={pwdChk} onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
                 </div>
-                <div className='field'>
+                <div className='field' id="login-field">
                     <label>NICKNAME</label>
-                    <input type="text"  value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
+                    <input type="text" placeholder="NICKNAME" value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
                 </div>
-                <div className='field'>
-                    <label>ADDRESS</label>
-                    <input style={{flex:'3.2'}} type="text" value={zipnum} readOnly placeholder="우편번호" />
+                <div className='field flex-row' id="login-field">
+                    <label>ZIPNUM</label>
+                    <input type="text" value={zipnum} readOnly placeholder="우편번호" />
                     <button onClick={() => setIsAddressModalOpen(true)}>주소 검색</button>
                 </div>
-                <div className='field'>
-                    <label style={{flex:1}}></label>
+                <div className='field' id="login-field">
+                    <label>ADDRESS</label>
                     <input type="text" value={address} readOnly placeholder="주소" />
 
                 </div>
-                <div className='field'>
+                <div className='field' id="login-field">
                     <label>INTRO</label>
-                    <input type="text"  value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
+                    <input type="text" placeholder="INTRO" value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
                 </div>
-                <div className='field'>
+                <div className='field' id="login-field">
                     <label>PROFILE IMG</label>
                     <input type="file" onChange={(e)=>{fileUpload(e)}}/>
                 </div>
-                <div className='field'>
+                <div className='field' id="login-field">
                     <label>Profile img preview</label>
                     <div><img src={imgSrc} style={imgStyle} /></div>
                 </div>
 
                 <div className='btns'>
-                    {/* <div id="btn" onClick={ ()=>{   handleIdentityVerification()    }  }>성인인증</div> */}
-                    <div id="btn" onClick={ ()=>{   onSubmit()    }  }>JOIN</div>
-                    <div id="btn" onClick={ ()=>{ navigate('/')   }  }>BACK</div>
+                    <div className="login-btn" onClick={ ()=>{   onSubmit()    }  }><IoCreateOutline />JOIN</div>
                 </div>
                 <AddressModal
                         isOpen={isAddressModalOpen}
