@@ -19,10 +19,4 @@
         flex-direction: column;
 
     }
-    .loginform .field input, 
-    .loginform .btns button, 
-    .loginform .snslogin button{
-        margin: 5px 0;
-        padding:10px;
-    }
 }

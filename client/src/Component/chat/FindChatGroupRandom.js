@@ -7,7 +7,7 @@ import ChatGroupRandom from './ChatGroupRandom';
 
 import '../../style/message/findchatgrouprandom.css';
 
-const FindChatGroupRandom = () => {
+const FindChatGroupRandom = (onSubMenuSelect) => {
 
     const navigate = useNavigate();
     const loginUser = useSelector(state=>state.user);
@@ -26,7 +26,7 @@ const FindChatGroupRandom = () => {
 
     function enterChatRoomFromChatGroupRandom(chatGroupId){
         console.log(chatGroupId);
-        navigate(`/chatRoomFromRandom/${chatGroupId}`);
+        onSubMenuSelect(`/chatRoomFromRandom/${chatGroupId}`);
     }
 
     function setAnonymousMessageRoom(){

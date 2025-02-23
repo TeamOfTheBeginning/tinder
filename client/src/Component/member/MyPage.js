@@ -5,9 +5,11 @@ import { useSelector } from 'react-redux';
 import Modal from './FollowModal';
 import * as PortOne from "@portone/browser-sdk/v2";
 
+import '../../style/mypage.css';
+
 import { useDispatch } from 'react-redux';
 import { loginAction, setFollower, setFollowed } from '../../store/userSlice';
-import {Cookies} from 'react-cookie'
+import {Cookies} from 'react-cookie';
 
 
 const MyPage = ({openSubMenu}) => {

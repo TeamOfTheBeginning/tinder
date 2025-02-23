@@ -58,12 +58,6 @@
     cursor: pointer;
 }
 
-.btns {
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-  }
-
 .btns button {
     width: 80px;
     height: 30px;

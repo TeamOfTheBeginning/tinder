@@ -1,25 +1,144 @@
-.mypage{
-    width:500px;
+/* 전체 컨테이너 */
+.side-container {
+    position: fixed;
+    left: 55px; /* 사이드바(MenuBar)와 겹치지 않도록 조정 */
+    top: 0;
+    height: 100vh;
+    background-color: transparent; /* 배경 제거 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+/* 프로필 수정 폼 */
+.edit-profile-form {
+    width: 450px;
+    max-height: calc(100vh - 50px);
+    overflow-y: auto; /* 내부 스크롤 */
+    padding: 20px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.9); /* 배경을 약간 투명하게 */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 제목 */
+.edit-profile-form .logo {
+    font-size: 2rem;
+    text-align: center;
+    font-weight: bold;
+    color: #f7186a;
+    margin-bottom: 20px;
+}
+
+/* 입력 필드 */
+.field {
+    /*margin-bottom: 15px;*/
     display: flex;
     flex-direction: column;
 }
-.mypage .userinfo{
-    width: 100%;
-    display: flex;
-}
-.mypage .userinfo .field{
-    width: 100%;
-    display: flex;
+
+.field label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
 }
 
-.mypage .img{
-    flex-basis: 250px;    
-    border: 1px solid orange;
+.field select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
 }
-.mypage .img img{
-    width: 250px;
-    height: 250px;
+
+/* 버튼 그룹 */
+.btns {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 수정 버튼 */
+.edit-btn {
+    width: calc(50% - 10px);
+    padding: 10px;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: all 0.5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0.3;
+    font-size: 20px;
+    background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 300% 100%;
+    color: #fff;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-btn:hover {
+    background-position: 100% 0;
+}
+
+/* 프로필 이미지 미리보기 */
+.profile-img-preview {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.profile-img-preview img {
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #f7186a;
+}
+
+/* 취미 선택 */
+#hobby-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#hobby-container label {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    background: #f8f8f8;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#hobby-container input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 600px) {
+    .edit-profile-form {
+        width: 90%;
+        max-height: 85vh;
+        padding: 15px;
+    }
+
+    .field select {
+        font-size: 14px;
+    }
+
+    .btns {
+        flex-direction: column;
+    }
+
+    .edit-btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }
 
 .container{

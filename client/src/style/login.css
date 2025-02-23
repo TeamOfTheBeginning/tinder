@@ -19,7 +19,6 @@
     display: flex;
     justify-content: center;
     z-index: 1001;
-    overflow-x: hidden;
 }
 
 /* 배경 애니메이션 */
@@ -34,8 +33,6 @@
     display: flex;
     width: 100%;
     height: fit-content;
-    overflow-y: auto; /* 내부 스크롤 활성화 */
-    overflow-x: hidden;
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 0.8);
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
@@ -56,7 +53,10 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    overflow-x: hidden;
+}
+
+.signin .btns, .signup .btns{
+    width: 85%;
 }
 
 /* 회원가입 폼 */
@@ -67,37 +67,50 @@
     justify-content: center;
     align-items: flex-start;
     height: 100vh; /* 전체 화면 높이 */
-    overflow-y: auto; /* 내부 스크롤 가능 */
-    overflow-x: hidden;
 }
 .joinform {
-    width: 90%;
-    max-width: 450px; /* 최대 너비 제한 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
     border-radius: 20px;
-    overflow-y: auto; /* 스크롤 활성화 */
-    overflow-x: hidden;
     background-color: transparent; /* 배경 제거 */
     box-shadow: none; /* 그림자 제거 */
     padding: 0; /* 내부 여백 제거 */
 }
+.joinform .btns{
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+}
+
 
 /* 전환 버튼 그룹 */
 .toggle-btns {
     display: flex;
-    margin-left: 10px;
+    margin-left: 20px;
     padding: 0;
+}
+.toggle-btns button{
+    padding: 3px;
+    width: 60px;
+    height: 30px;
+    border-radius: 20px 20px 0 0 ;
+    box-sizing: border-box;
+    border: none;
+    font-size: 11px;
+    color: #fff;
+    background-color: #5C6A6E;
 }
 .toggle-btn {
     display: flex;  /* 플렉스 박스로 설정 */
     align-items: center;
     justify-content: center;  /* 수평 중앙 정렬 */
-    border-radius: 20px 20px 0 0 ;
-    border: none;
     cursor: pointer;
     transition: background-color 0.5s, color 0.5s;
     text-align: center; /* 추가: 텍스트 중앙 정렬 */
 }
-
 .toggle-btn.active {
     background-color: #f7186a;
     border: 2px solid #fff;
@@ -111,20 +124,38 @@
 
 /* 입력 필드 스타일 */
 .signin .field, .signup .field{
-    width: 300px;
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
 }
 
 .field {
     display: flex;
+    justify-content: space-between;
+    flex-direction: column; /* 기본적으로 세로 정렬 */
+    gap: 10px; /* 요소 간 간격 */
+    margin-bottom: 15px; /* 필드 간 여백 */
 }
 #login-field label {
     display: none;
 }
+
 .field input {
-    width: calc(80% - 20px);
+    flex: 1; /* 부모 요소 크기에 맞게 확장 */
+    padding: 10px; /* 내부 여백 추가 */
     border-radius: 10px;
+    font-size: 14px; /* 가독성을 위한 폰트 크기 */
     border: none;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* 약간의 깊이감 추가 */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+.field input:focus {
+    outline: none; /* 기본 브라우저 포커스 제거 */
+    border-color: #f7186a; /* 포커스 시 테두리 색상 변경 */
+    box-shadow: inset 0 1px 3px rgba(247,24,106,0.5), 
+                0px 0px 5px rgba(247,24,106,0.5); /* 포커스 시 강조 효과 */
+}
+
 
 /* 성별 & 생년월일을 한 줄에 두 개씩 정렬 (반응형 적용) */
 .field.flex-row {
@@ -141,13 +172,9 @@
 }
 
 /* 버튼 그룹 */
-.btns {
-    display: flex;
-    width:100%;
-}
 
 /* 로그인/회원가입 버튼 */
-.login-btn {
+.btns .login-btn {
     padding: 5px;
     border-radius: 25px;
     font-weight: bold;
@@ -155,7 +182,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 0.3;
+    flex: 1;
     font-size: 18px;
     background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
     background-size: 300% 100%;
@@ -189,6 +216,10 @@
 /* 모달창 */
 .join-form-container {
     position: relative;
+    display: flex; /* Flexbox 활성화 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    height: 100vh; /* 화면 전체 높이 */
+    width: 100vw; /* 화면 전체 너비 */
   }
 .modal {
     position: fixed;
@@ -228,12 +259,22 @@
     .loginform .joinform {
         display: flex;
         justify-content: center;
+        align-items: center;
         flex-direction: column;
-        width: calc(100% - 40px);
+        width: calc(95% - 40px);
         height: fit-content;
+        
     }
     .field.flex-row > * {
         flex: 1 1 100%; /* 한 줄에 하나씩 표시 */
         max-width: 100%;
+    }
+    .joinform .btns{
+        width: 100%;
+    }
+    .loginform .field input, 
+    .loginform .btns button, 
+    .loginform .snslogin button{
+        padding:8px;
     }
 }

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import '../../style/match/match.css';
 
-const Match = () => {
+const Match = ({ onSubMenuSelect }) => {
 
   const [oppositeGender, setOppositeGender] = useState();
   const navigate = useNavigate();
@@ -52,9 +52,8 @@ const Match = () => {
     <div className='matchContainer'>
       <div className='matchBtns'>
         <button className='matchBtn' onClick={()=>rematch()}>재매칭</button>        
-        <button className='matchBtn' onClick={()=>navigate('/findLiker')}>Liker조회</button>
-        <button className='matchBtn' onClick={()=>navigate('/matchedMember')}>매칭조회</button>
-        {/* <button className='matchBtn' onClick={()=>navigate('/main')}>돌아가기</button> */}
+        <button className='matchBtn' onClick={() => onSubMenuSelect('findLiker')}>Liker 조회</button>
+        <button className='matchBtn' onClick={() => onSubMenuSelect('matchedMember')}>매칭 조회</button>
       </div>
 
       <div className='matchMemberContainer'>

@@ -109,8 +109,15 @@ const WritePost = ({ closeSideViewer }) => {
                     index === 0 || index < imgList.length + 1 ? "flex" : "none",
                 }}
               >
-                <input type="file" onChange={(e) => imgUpload(e, index)} />
-                {imgSrcs[index] && <img src={imgSrcs[index]} height="50" />}
+                <label for="file">
+                  <div className="field">
+                    파일 첨부
+                    {imgSrcs[index] && <img src={imgSrcs[index]} />}
+                  </div>
+                </label>
+                <input type="file" id="file" onChange={(e) => imgUpload(e, index)} />
+
+                
               </div>
             ))}
             <div className="btns">

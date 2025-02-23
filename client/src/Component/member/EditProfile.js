@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import SideBar from '../SideBar';
-import '../../style/mypage.css'
+import '../../style/mypage.css';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction, } from '../../store/userSlice';
@@ -23,6 +23,7 @@ const EditProfile = () => {
     const [selectedHobbies, setSelectedHobbies] = useState([]); // 사용자가 선택한 취미
     const [intro, setIntro] = useState('')
     const [zipnum, setZipnum] = useState('')
+    const [address, setAddress] = useState('')
     const [profileImg, setProfileImg] = useState('')
     const [birthDate, setBirthDate] = useState('')
     const [imgSrc, setImgSrc] = useState('')
@@ -74,6 +75,7 @@ const EditProfile = () => {
         setAge(loginUser.age);
         setBirthDate(loginUser.birthDate);
         setZipnum(loginUser.zipnum);
+        setAddress(loginUser.address);
         setGender(loginUser.gender);
         setEmail(loginUser.email);
         setNickname(loginUser.nickname);
@@ -125,7 +127,7 @@ const EditProfile = () => {
                 return alert('닉네임이 중복됩니다');
             }
             result = await axios.post('/api/member/update', {
-                memberId:loginUser.memberId, email, pwd, age, birthDate, gender, nickname, phone, zipnum, profileMsg:intro, profileImg,                 
+                memberId:loginUser.memberId, email, pwd, age, birthDate, gender, nickname, phone, zipnum, address, profileMsg:intro, profileImg,
             });
 
             // 숫자 값으로 변환
@@ -235,13 +237,13 @@ const EditProfile = () => {
     const [person1, setPerson1] = useState([0, 0, 0, 0, 0]);
 
     return (
-        <div className='Container'>
+        <div className='side-container'>
             <SideBar  setWord={setWord}/>
-            <div className='editForm'>
+            <div className='editForm loginform'>
                 <div className="logo" style={{fontSize:"2.0rem"}}>MEMBER EDIT</div>
                 <div className='field'>
                     <label>E-MAIL</label>
-                    <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
+                    <input type="text" placeholder="E-MAIL" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
                 </div>
                 <div className='field'>
                     <label>PASSWORD</label>
@@ -299,7 +301,7 @@ const EditProfile = () => {
                         {suggestions.length > 0 && (
                         <ul>
                             {suggestions.map((suggestion, index) => (
-                            <li 
+                            <li
                                 key={index}
                             >
                                 {suggestion}
@@ -336,16 +338,15 @@ const EditProfile = () => {
                             <div key={category.categoryId}>
                                 <h4>{category.categoryName}</h4>
                                 {hobbies.filter((h) => h.category.categoryId === category.categoryId).map((h) => (
-                                    <div>
-                                        <label key={h.hobbyId}>
-                                            {h.hobbyName}                                        
-                                        </label><br></br>
+                                    <label key={h.hobbyId}>
+                                            {h.hobbyName}
                                         <input className='checkbox'
-                                        type="checkbox" 
-                                        checked={selectedHobbies.includes(h.hobbyId)} 
-                                        onChange={() => handleHobbyChange(h.hobbyId)} 
+                                        type="checkbox"
+                                        checked={selectedHobbies.includes(h.hobbyId)}
+                                        onChange={() => handleHobbyChange(h.hobbyId)}
                                         />
-                                    </div>
+                                        {h.hobbyName}
+                                    </label>
                                 ))}
                             </div>
                         ))}

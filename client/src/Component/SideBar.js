@@ -189,6 +189,8 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 // page import
 import WritePost from "./post/WritePost";
 import Match from "./match/Match";
+import FindLiker from './match/FindLiker';
+import MatchedMember from './match/MatchedMember';
 import FindChatGroupRandom from './chat/FindChatGroupRandom';
 import FindChatGroup from "./chat/FindChatGroup";
 import RealTimeChat from "./realtimechat/RealTimeChat";
@@ -231,7 +233,22 @@ const SideBar = () => {
   const closeSideViewer = () => {
     setSelectedMenu(null);
     setSubMenu(null);
+    
   };
+  
+  // 바깥 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sideViewerRef.current && !sideViewerRef.current.contains(event.target)) {
+        closeSideViewer(); // SideViewer 외부 클릭 시 닫기
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside); // 전역 클릭 이벤트 추가
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside); // 컴포넌트 언마운트 시 이벤트 제거
+    };
+  }, []);
 
     useEffect(() => {
       // WebSocket 클라이언트 설정
@@ -320,43 +337,43 @@ const SideBar = () => {
     <div className='MenuBar'>
       <RealtimeConnectInfo />
       <div className='MenubarBtns'>
-      <div className='profileImg' id='btn' onClick={() => handleMenuClick('mypage')}>
+      <div className='profileImg' onClick={() => handleMenuClick('mypage')}>
           <img src={profileImg} alt="Profile" />
         </div>
 
-        <div className='btn' onClick={() => navigate('/main')}>
+        <div className='sidebar-btn' onClick={() => navigate('/main')}>
           <IoHomeSharp />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('writePost')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('writePost')}>
           <MdOutlineAddPhotoAlternate />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('match')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('match')}>
           <IoSparkles />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('nearMember')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('nearMember')}>
           <FaMapMarkerAlt />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('findChatGroupRandom')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('findChatGroupRandom')}>
           <FaRandom />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('findChatGroup')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('findChatGroup')}>
           <TbMailHeart />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('realtimechat')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('realtimechat')}>
           <HiOutlineChatAlt2 />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('search')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('search')}>
           <IoSearch />
         </div>
 
-        <div className='btn' onClick={() => { navigate('/'); handleLeave(loginUser.memberId); }}>
+        <div className='sidebar-btn' onClick={() => { navigate('/'); handleLeave(loginUser.memberId); }}>
           <IoLogOut />
         </div>
 
@@ -372,7 +389,13 @@ const SideBar = () => {
 
         <div className='sideViewerContent'>
           {selectedMenu === 'writePost' && <WritePost closeSideViewer={closeSideViewer} />}
-          {selectedMenu === 'match' && <Match />}
+          {selectedMenu === 'match' && (
+            subMenu === 'findLiker'
+              ? <FindLiker />
+              : subMenu === 'matchedMember'
+              ? <MatchedMember />
+              : <Match onSubMenuSelect={handleSubMenuClick} />
+          )}
           {selectedMenu === 'nearMember' && <NearMember loginUser={loginUser}/>}
           {selectedMenu === 'findChatGroupRandom' && <FindChatGroupRandom />}
           {selectedMenu === 'findChatGroup' && (
