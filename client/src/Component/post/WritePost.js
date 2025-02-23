@@ -68,11 +68,15 @@ const WritePost = ({ closeSideViewer }) => {
         )
       );
 
-      // 게시글 작성 완료 후 SideViewer 닫기
-      closeSideViewer();
+      if(result.data.msg=="ok"){
+        alert("작성이 완료되었습니다.")
+        // 게시글 작성 완료 후 SideViewer 닫기
+        closeSideViewer();
 
-      // 메인 페이지로 이동
-      navigate("/main");
+        // 메인 페이지로 이동
+        navigate("/main");
+      }
+      
     } catch (error) {
       console.error("Error submitting post:", error);
     }

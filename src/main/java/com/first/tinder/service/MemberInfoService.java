@@ -22,4 +22,8 @@ public class MemberInfoService {
 //        memberInfo.setHobbies(memberInfo.getHobbies());
         memberInfoRepository.save(memberInfo);
     }
+
+    public MemberInfo insertMemberInfo(MemberInfo memberInfo) {
+        return memberInfoRepository.save(memberInfo);
+    }
 }

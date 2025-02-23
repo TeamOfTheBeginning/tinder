@@ -6,6 +6,7 @@ import JoinForm from "./Component/member/JoinForm";
 import MyPage from "./Component/member/MyPage";
 import Match from "./Component/match/Match";
 import EditProfile from "./Component/member/EditProfile";
+import EditOpponent from "./Component/member/EditOpponent";
 import FindLiker from "./Component/match/FindLiker"
 import WritePost from "./Component/post/WritePost"
 import MatchedMember from "./Component/match/MatchedMember"
@@ -17,6 +18,7 @@ import RealTimeChat from "./Component/realtimechat/RealTimeChat"
 import Search from "./Component/search/Search"
 import NearMember from "./Component/member/NearMember";
 import ChatBot from "./Component/chatbot/ChatBot";
+import Savekakaoinfo from './Component/member/Savekakaoinfo'
 
 
 function App() {
@@ -29,6 +31,7 @@ function App() {
         <Route path="/mypage" element={<MyPage/>} />
         <Route path="/match" element={<Match />} />
         <Route path="/editProfile" element={<EditProfile/>}/>
+        <Route path="/editOpponent" element={<EditOpponent/>}/>
         <Route path="/findLiker" element={<FindLiker/>}/>
         <Route path="/writePost" element={<WritePost />}/>
         <Route path="/matchedMember" element={<MatchedMember/>}/>
@@ -39,6 +42,7 @@ function App() {
         <Route path="/realtimechat" element={<RealTimeChat />} />
         <Route path="/nearMember" element={<NearMember />} />
         <Route path="/chatbot" element={<ChatBot />} />
+        <Route path="/savekakaoinfo" element={<Savekakaoinfo />} />
       </Routes>
     </div>
   );
