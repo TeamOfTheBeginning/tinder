@@ -25,11 +25,15 @@ public class ChatBotService {
     private final RestTemplate restTemplate;
     private final WorldInfoService worldInfoService;
     private final ChatBotHistoryRepository chatbotHistoryRepository;
+    private final NewsService newsService;
+    private final MusicService musicService;
 
-    public ChatBotService(RestTemplate restTemplate, WorldInfoService worldInfoService, ChatBotHistoryRepository chatbotHistoryRepository) {
+    public ChatBotService(RestTemplate restTemplate, WorldInfoService worldInfoService, ChatBotHistoryRepository chatbotHistoryRepository, NewsService newsService, MusicService musicService) {
         this.restTemplate = restTemplate;
         this.worldInfoService = worldInfoService;
         this.chatbotHistoryRepository = chatbotHistoryRepository;
+        this.newsService = newsService;
+        this.musicService = musicService;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ChatBotService.class);
@@ -50,7 +54,29 @@ public class ChatBotService {
             messages.add(Map.of("role", chat.getRole(), "content", chat.getContent()));
         }
 
-        saveChatHistory(userId, "user", userMessage);
+        if (userMessage.contains("뉴스") || userMessage.contains("최신 뉴스")) {
+            String news = newsService.getLatestNews();
+            return saveAndReturnResponse(userId, userMessage, news);
+        }
+
+        if (userMessage.contains("노래") || userMessage.contains("음악")) {
+            if (userMessage.contains("최신") && userMessage.contains("한국")) {
+                String music = musicService.getLatestKoreanMusic();
+                return saveAndReturnResponse(userId, userMessage, music);
+            } else if (userMessage.contains("최신")) {
+                String music = musicService.getLatestMusic();
+                return saveAndReturnResponse(userId, userMessage, music);
+            } else if (userMessage.contains("기쁠때") || userMessage.contains("행복할때")) {
+                String music = musicService.getMusicByMood("happy");
+                return saveAndReturnResponse(userId, userMessage, music);
+            } else if (userMessage.contains("우울할때") || userMessage.contains("슬플때")) {
+                String music = musicService.getMusicByMood("sad");
+                return saveAndReturnResponse(userId, userMessage, music);
+            } else if (userMessage.contains("로맨틱") || userMessage.contains("데이트")) {
+                String music = musicService.getMusicByMood("romantic");
+                return saveAndReturnResponse(userId, userMessage, music);
+            }
+        }
 
         if (userMessage.contains("시간") || userMessage.contains("몇 시")) {
             String city = extractCity(userMessage);

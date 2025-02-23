@@ -56,6 +56,10 @@ dependencies {
 
     //포트원 인증/결제
     implementation 'io.portone:server-sdk:0.15.0'
+
+    // music 크롤링 관련 의존성 추가
+    implementation 'org.jsoup:jsoup:1.15.3'
+
 }
 
 tasks.named('test') {
