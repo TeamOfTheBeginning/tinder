@@ -65,6 +65,30 @@ const MatchingMember = (props) => {
 
   }
 
+  const haversine = (lat1, lon1) => {
+    var lat2 = loginUser.latitude
+    var lon2 = loginUser.longitude
+
+
+    const R = 6371; // 지구 반지름 (단위: km)
+    
+    // 위도 및 경도를 라디안으로 변환
+    const toRadians = (degree) => (degree * Math.PI) / 180;
+    const phi1 = toRadians(lat1);
+    const phi2 = toRadians(lat2);
+    const deltaPhi = toRadians(lat2 - lat1);
+    const deltaLambda = toRadians(lon2 - lon1);
+
+    // Haversine 공식 적용
+    const a = Math.sin(deltaPhi / 2) ** 2 + 
+              Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return (R * c).toFixed(1); // 거리 (단위: km)
+};
+
+
+
 
   if (!props.oppositeGender) return <p>Loading...</p>;
     
@@ -94,6 +118,7 @@ const MatchingMember = (props) => {
       <div>
         <div>MBTI 매칭률 {calculateMbtiMatchPercentage()} </div>
         <div>취미 매칭률 </div>
+        <div>거리 : {haversine(props.oppositeGender.latitude,props.oppositeGender.longitude)} km</div>
 
       </div>
 
