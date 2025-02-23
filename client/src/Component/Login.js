@@ -2,26 +2,24 @@ import React, {useState, useEffect} from 'react'
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginAction, setFollower, setFollowed } from '../store/userSlice';
-import {Cookies} from 'react-cookie'
+import { Cookies } from 'react-cookie';
 
-import '../style/mystargram.css'
-import '../style/login.css'
-import { IoLogIn, IoCreateOutline } from "react-icons/io5";
-
+import '../style/login.css';
+import { IoLogIn, IoCreateOutline } from 'react-icons/io5';
 import RealtimeConnectInfo from './realtimeconnectinfo/RealtimeConnectInfo';
- 
-
+import JoinForm from "./member/JoinForm";
 
 const Login = () => {
-    const [email, setEmail]=useState('')
-    const [pwd, setPwd]=useState('')
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const cookies = new Cookies()
+    const [email, setEmail] = useState('');
+    const [pwd, setPwd] = useState('');
+    const [isSignUp, setIsSignUp] = useState(false); // Sign In / Sign Up 전환 상태
+    const navigate = useNavigate('');
+    const dispatch = useDispatch('');
+    const cookies = new Cookies('');
 
     async function onLoginLocal(){
         if( !email ){ return alert('이메일을 입력하세요')}
@@ -30,19 +28,19 @@ const Login = () => {
             const result = await axios.post('/api/member/loginlocal', null ,{ params:{email, pwd} })
             // console.log("1")
             // console.log(result)
-            
+
             if( result.data.msg == 'ok'){
 
                 const res = await axios.get('/api/member/getLoginUser');
                 const lUser = res.data.loginUser;
-                
+
                 lUser['follower'] = res.data.follower;
                 lUser['followed'] = res.data.followed;
                 cookies.set('user', JSON.stringify( lUser ) , {path:'/', })
-                
+
                 cookies.set('follower', JSON.stringify( res.data.follower ) , {path:'/', })
                 cookies.set('followed', JSON.stringify( res.data.followed ) , {path:'/', })
-                
+
                 dispatch( loginAction( res.data.loginUser ) )
                 dispatch( setFollower( res.data.follower ) )
                 dispatch( setFollowed( res.data.followed ) )
@@ -118,35 +116,74 @@ const Login = () => {
     client.publish({ destination: '/app/join', body: JSON.stringify({ memberId }) });
   };
 
+    const toggleForm = (isSignUpMode) => {
+      setIsSignUp(isSignUpMode);
+      setEmail('');
+      setPwd('');
+    };
+
     return (
-        <div className='container'>
-          <div className='loginform'>
+        <div className="container">
+            <div className="loginform-header">
+                <RealtimeConnectInfo />
+                <div className="toggle-btns">
+                    <button
+                        className={`toggle-btn ${!isSignUp ? 'active' : ''}`}
+                        onClick={() => setIsSignUp(false)}
+                    >
+                        LOGIN
+                    </button>
+                    <button
+                        className={`toggle-btn ${isSignUp ? 'active' : ''}`}
+                        onClick={() => setIsSignUp(true)}
+                    >
+                        JOIN
+                    </button>
+                    <button id="kakao" onClick={()=>{
+                        window.location.href='http://localhost:8070/member/kakaostart';
+                    }}>카카오로 시작</button>
+                </div>
 
-              <RealtimeConnectInfo />
-
-              <div className='field'>
-                  <label>EMAIL</label>
-                  <input type="text" value={email} onChange={(e)=>{ setEmail(e.currentTarget.value)}} />
-              </div>        
-              <div className='field'>
-                  <label>PASSWORD</label>
-                  <input type="password" value={pwd} onChange={(e)=>{ setPwd(e.currentTarget.value)}} />
-              </div>        
-              <div className='btns'>
-                  <div id="btn" onClick={()=>{onLoginLocal(); }}><IoLogIn />&nbsp;LOGIN</div>
-                  <div id="btn" onClick={()=>{navigate('/joinForm')}}><IoCreateOutline />&nbsp;JOIN</div>
-              </div>
-              <div className='snslogin'>
-                  <button id="kakao" onClick={
-                      ()=>{
-                          window.location.href='http://localhost:8070/member/kakaoStart';
-                      }
-                  }>카카오로 시작하기</button>
-              </div>
-          </div>
+                <div className="loginContent">
+                    <div className="loginform">
+                        {/* 조건부 렌더링 */}
+                        {!isSignUp ? (
+                            <div className="signin">
+                                <div className="field" id="login-field">
+                                    <label>E-MAIL</label>
+                                    <input
+                                        type="text"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="E-MAIL"
+                                    />
+                                </div>
+                                <div className="field" id="login-field">
+                                    <label>PASSWORD</label>
+                                    <input
+                                        type="password"
+                                        value={pwd}
+                                        onChange={(e) => setPwd(e.target.value)}
+                                        placeholder="PASSWORD"
+                                    />
+                                </div>
+                                <div className="btns">
+                                    <div className="login-btn" onClick={onLoginLocal}>
+                                        <IoLogIn />
+                                        &nbsp;LOGIN
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="signup">
+                                <JoinForm onCancel={() => setIsSignUp(false)} />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
         </div>
-        
-    )
-}
+    );
+};
 
-export default Login
+export default Login;
