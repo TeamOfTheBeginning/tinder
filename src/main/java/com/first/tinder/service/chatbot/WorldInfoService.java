@@ -44,7 +44,7 @@ public class WorldInfoService {
                 );
             }
         } catch (Exception e) {
-            System.err.println("🚨 시간 API 호출 오류: " + e.getMessage());
+            System.err.println("시간 API 호출 오류: " + e.getMessage());
         }
         return city + "의 시간 정보를 가져올 수 없습니다.";
     }
@@ -76,7 +76,7 @@ public class WorldInfoService {
                 return String.format("%s의 현재 기온은 %.1f°C이며, 날씨는 '%s'입니다.", city, temp, description);
             }
         } catch (Exception e) {
-            System.err.println("🚨 날씨 API 호출 오류: " + e.getMessage());
+            System.err.println("날씨 API 호출 오류: " + e.getMessage());
         }
 
         return city + "의 날씨 정보를 가져올 수 없습니다.";
