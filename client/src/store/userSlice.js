@@ -25,6 +25,7 @@ const initialState={
     account:'',
     temp:'',
     memberInfo:{},
+    opponentMemberInfo:{},
     follower:[],
     followed:[], 
 }
@@ -52,6 +53,7 @@ const getLoginUser=()=>{
         memberinfo.account = decodeURIComponent( memberinfo.account )
         memberinfo.temp = decodeURIComponent( memberinfo.temp )
         memberinfo.memberInfo = decodeURIComponent( memberinfo.memberInfo )
+        memberinfo.opponentMemberInfo = decodeURIComponent( memberinfo.opponentMemberInfo )
     }
     return memberinfo
 }
@@ -80,6 +82,7 @@ export const userSlice=createSlice(
                 state.account = action.payload.account;
                 state.temp = action.payload.temp;
                 state.memberInfo = action.payload.memberInfo;
+                state.opponentMemberInfo = action.payload.opponentMemberInfo;
             },
             logoutAction:(state)=>{
                 state.memberId = '';
@@ -100,6 +103,7 @@ export const userSlice=createSlice(
                 state.account = '';
                 state.temp = '';
                 state.memberInfo ={};
+                state.opponentMemberInfo ={};
                 state.follower = [];
                 state.followed = [];
             },

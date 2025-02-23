@@ -43,8 +43,10 @@ const MatchingMember = (props) => {
   }
 
   function calculateMbtiMatchPercentage(){
-    var percentage
-    var ei;
+    var percentage;
+    var ei = 0, ns = 0, tf = 0, jp = 0;
+    
+
     if(props.oppositeGender.memberInfo.ei == loginUser.opponentMemberInfo.ei){
       ei = 1
     }else{ei = 0}
