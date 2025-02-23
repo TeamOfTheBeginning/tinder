@@ -237,7 +237,7 @@ const EditProfile = () => {
     return (
         <div className='Container'>
             <SideBar  setWord={setWord}/>
-            <div className='loginform'>
+            <div className='editForm'>
                 <div className="logo" style={{fontSize:"2.0rem"}}>MEMBER EDIT</div>
                 <div className='field'>
                     <label>E-MAIL</label>
@@ -315,7 +315,7 @@ const EditProfile = () => {
                 {['흡연여부', '음주여부(주5회)' , '연애속도(빠름5)', '선호데이트방식(외부5)', '운동횟수(주5회)'].map((label, index) => (
                     <div key={index} className='field' >
                         <label>{label}: {person1[index]}</label>
-                        <input
+                        <input className='input'
                             type="range"
                             value={person1[index]}
                             onChange={(e) => setPerson1((prev) => {
@@ -336,14 +336,16 @@ const EditProfile = () => {
                             <div key={category.categoryId}>
                                 <h4>{category.categoryName}</h4>
                                 {hobbies.filter((h) => h.category.categoryId === category.categoryId).map((h) => (
-                                    <label key={h.hobbyId}>
-                                        <input 
-                                            type="checkbox" 
-                                            checked={selectedHobbies.includes(h.hobbyId)} 
-                                            onChange={() => handleHobbyChange(h.hobbyId)} 
+                                    <div>
+                                        <label key={h.hobbyId}>
+                                            {h.hobbyName}                                        
+                                        </label><br></br>
+                                        <input className='checkbox'
+                                        type="checkbox" 
+                                        checked={selectedHobbies.includes(h.hobbyId)} 
+                                        onChange={() => handleHobbyChange(h.hobbyId)} 
                                         />
-                                        {h.hobbyName}
-                                    </label>
+                                    </div>
                                 ))}
                             </div>
                         ))}
