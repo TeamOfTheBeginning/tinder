@@ -298,22 +298,24 @@ function ChatPage() {
       {!selectedRoom ? (
         <div className="chat-room-list">
           <h2>
-            📢 채팅방 목록
-            <FaHome 
-              className="home-icon"
-              onClick={() => navigate("/main")}
-              title="메인으로 이동"
-            />
+            💬 채팅방 목록
+            {
+            // <FaHome 
+            //  className="home-icon"
+            //  onClick={() => navigate("/main")}
+            //  title="메인으로 이동"
+            // />
+            }
           </h2>
           <ul>
             {chatRooms.map((room) => (
               <li key={room.id}>
                 <button onClick={() => joinChatRoom(room)}>
-                  {room.name} {room.isPrivate ? "(🔒 비공개)" : "(🌍 공개)"}
+                  {room.name} {room.isPrivate ? "(🌑 비공개)" : "(🌕 공개)"}
                 </button>
 
                 {room.creatorNickname && room.creatorNickname === nickname && (
-                  <button onClick={() => deleteChatRoom(room.id)}>🗑 삭제</button>
+                  <button onClick={() => deleteChatRoom(room.id)}>❌ 삭제</button>
                 )}
               </li>
             ))}
@@ -337,7 +339,7 @@ function ChatPage() {
         <div className="chat-room">
           <div className="chat-room-header">
             <h1>{selectedRoom.name}</h1>
-            <span>👥 접속자: {userList.length}명</span>
+            <span>ദ്ദി◍•ᴗ•◍ 접속자: {userList.length}명</span>
             <div className="user-list">
               {userList.length > 0 ? userList.map((user, index) => (
                 <span key={index} className="user-nickname">{user}</span>

@@ -33,9 +33,9 @@ const Post = (props) => {
     const [viewVal, setViewVal] = useState(false)
     const [replyContent, setReplyContent] = useState('')
     const [replyList, setReplyList] = useState([])
-
+    
     const dispatch = useDispatch()
-    const cookies = new Cookies();
+    const cookies = new Cookies();    
 
     // redux에 저장된 로그인 유저 로딩
     let loginUser = useSelector( state=>state.user ); 
@@ -174,7 +174,7 @@ const Post = (props) => {
                         ( props.post.member.memberId != loginUser.memberId) &&
                         ( !props.follower?.some( (follower)=>(props.post.member.memberId==follower.followed)) )
                     )?
-                    (<button id='blueBtn' onClick={()=>{ onFollow(props.post.member.memberId) }} >FOLLOW</button>):
+                    (<div id='followBtn'><button onClick={()=>{ onFollow(props.post.member.memberId) }} >FOLLOW</button></div>):
                     (null)
                 }
                 
@@ -194,7 +194,6 @@ const Post = (props) => {
                 </Slider>
             }    
             </div>
-            <div className='content' style={{fontWeight:"bold"}}><pre>{props.post.content}</pre></div>
 
             <div className='like'>
                 {
@@ -223,6 +222,9 @@ const Post = (props) => {
                     )
                 }
             </div>
+
+            
+            <div className='content' style={{fontWeight:"bold"}}><pre>{props.post.content}</pre></div>
 
             <div className='reply'  style={replyView}>
                 <div style={{ display:'flex', flexDirection:'column' }} >

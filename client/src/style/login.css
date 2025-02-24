@@ -128,6 +128,7 @@
     display: flex;
     justify-content: space-between;
     width: 90%;
+    margin: 10px 0;
 }
 
 .field {
@@ -192,6 +193,7 @@
 
 .login-btn:hover {
     background-position: 100% 0;
+    cursor: pointer;
 }
 
 /* 카카오 로그인 버튼 */
@@ -268,11 +270,18 @@
         flex: 1 1 100%; /* 한 줄에 하나씩 표시 */
         max-width: 100%;
     }
-    .joinform .login-btns{
+    .joinform .login-btns {
         width: 100%;
     }
     .loginform #login-field input, 
-    .loginform .login-btns button{
+    .loginform .login-btns button {
         padding:8px;
+    }
+    .signin .field, .signup .field {
+        margin: 0;
+    }
+    .loginform .field.flex-row {
+        gap: 0; /* 요소 간격 조정 */
+        margin:0;
     }
 }
