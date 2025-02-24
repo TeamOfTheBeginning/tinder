@@ -190,7 +190,7 @@ const JoinForm = () => {
     return (
         <div className='join-container'>
             <div className='joinform'>
-                <div className='btns'>
+                <div className='login-btns'>
                     <div className="login-btn" onClick={ ()=>{   handleIdentityVerification()    }  }>성인인증</div>
                 </div>
                 <div className='field' id="login-field">
@@ -274,7 +274,7 @@ const JoinForm = () => {
                     <div><img src={imgSrc} style={imgStyle} /></div>
                 </div>
 
-                <div className='btns'>
+                <div className='login-btns'>
                     <div className="login-btn" onClick={ ()=>{   onSubmit()    }  }><IoCreateOutline />JOIN</div>
                 </div>
                 <AddressModal
