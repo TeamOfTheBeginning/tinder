@@ -99,7 +99,7 @@ const MatchingMember = (props) => {
 
     percentage = (ei+ns+tf+jp)/4
     
-    return percentage;
+    return percentage*100;
 
   }
 
@@ -175,8 +175,7 @@ const calculateSimilarity = () => {
   if (!props.oppositeGender) return <p>Loading...</p>;
     
   return (
-    <div className='matchingMemberContainer'>      
-      
+    <div className='matchingMemberContainer'>          
       <div className='matchingMemberImg'>
         <div className='matchingMemberImgImg'>
           <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${props.oppositeGender.profileImg}`} />
@@ -197,19 +196,14 @@ const calculateSimilarity = () => {
         {jp(props.oppositeGender.memberInfo.jp)}
       </div>
 
-      <div>
-        <div>MBTI 매칭률 {calculateMbtiMatchPercentage()} </div>
+      <div className='matchingMemberInfo'>
+        <div>MBTI매칭률 {calculateMbtiMatchPercentage()}% </div>
         <div>매칭률 : {calculateSimilarity()}%</div>
         <div>거리 : {haversine(props.oppositeGender.latitude,props.oppositeGender.longitude)} km</div>
-
       </div>
 
       <div className='matchingMemberMsg'>
         &nbsp;&nbsp;{props.oppositeGender.profileMsg}
-      </div>
-
-      <div className='matchingMemberInfo'>
-        
       </div>
 
       <div className='matchingMemberBtns'>

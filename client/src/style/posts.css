@@ -202,7 +202,7 @@ button{
     z-index: 9999; /* 다른 요소보다 위에 표시 */
     opacity: 0; /* 초기 opacity 1 */
     animation: fadeInOut 4.5s ease-in-out; /* 애니메이션 추가 */
-    background-color: rgba(0, 0, 0, .8);
+    background-color: rgba(247, 24, 106, 0.9);
 }
 
 .toastPopup1Title{

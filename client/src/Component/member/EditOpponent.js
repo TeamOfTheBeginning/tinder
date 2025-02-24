@@ -244,7 +244,7 @@ const handleChange = (event) => {
 
 
 
-                <div className="field">
+                {/* <div className="field">
                     <label>HOBBY</label>
                     <div id="hobby-container">
                         {hobbyCategories.map((category) => (
@@ -265,7 +265,7 @@ const handleChange = (event) => {
                             </div>
                         ))}
                     </div>
-                </div>
+                </div> */}
 
                 {/* <div className='field'>
                     <label>PROFILE IMG</label>
