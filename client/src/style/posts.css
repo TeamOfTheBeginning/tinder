@@ -6,7 +6,7 @@
 }
 
 
-/* 웰컴존 */
+/* 웰컴존 토스트 팝업 */
 .toastPopup0 {
     position: fixed;
     top: 10%; /* 화면 상단에서 위치 */
@@ -79,17 +79,29 @@
 .post {
     position: relative; /* 내부 요소들의 위치 조정을 위한 relative 설정 */
     min-width: 320px;
-    width: 55%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     margin: 30px 0 20px 0;
     font-size: 12px;
-    background: #fff;
-    /* border-radius: 20px 20px 0 0; */
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    
+    /* 배경과 블러 효과 추가 */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4.5px);
+    -webkit-backdrop-filter: blur(4.5px);
+    
+    /* 테두리 및 보더 스타일 적용 */
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    /* 새로운 그림자 스타일 적용 */
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    
+    /* 기존 스타일 유지 */
     overflow: hidden; /* 내부 요소가 넘칠 경우 가리기 */
     padding-bottom: 0; /* 아래 여백 제거 */
 }
+
 
 #imgbox {
     position: relative; /* writer의 배경 기준이 되도록 설정 */
@@ -112,10 +124,10 @@
     height: 10px; /* writer 높이를 조절하여 원하는 영역 덮기 */
     display: flex;
     align-items: center;
-    padding: 12px;
+    padding: 15px;
     font-weight: bold;
     font-size: 14px;
-    color: rgba(0, 0, 0, 0.3);
+    color: rgba(0, 0, 0, 0.5);
     background-color: rgba(0, 0, 0, 0.1);
     z-index: 2; /* imgbox보다 위에 배치 */
 }
@@ -196,21 +208,24 @@ button{
 #followBtn button {
     margin: 0 auto;
     background-color: transparent;
+    color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
 }
 #followBtn {
     border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 50px;
 }
-#followBtn:hover {
+#followBtn button:hover {
+    color: rgba(255, 255, 255, 0.9);
     border: 1px solid rgba(255, 255, 255, 0.8);
     background-color: rgba(255, 255, 255, 0.5);
 }
 
 #pinkBtn {
-    background-color: #ed6ea0;
+    background-color: #fff;
     border-radius: 0 50px 50px 0;
     margin-left: 0;
+    color:#3c3c3c;
 }
 
 
