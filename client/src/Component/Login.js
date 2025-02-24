@@ -141,7 +141,7 @@ const Login = () => {
                     </button>
                     <button id="kakao" onClick={()=>{
                         window.location.href='http://localhost:8070/member/kakaoStart';
-                    }}>카카오로 시작</button>
+                    }}>KAKAO LOGIN</button>
                 </div>
 
                 <div className="loginContent">
@@ -167,7 +167,7 @@ const Login = () => {
                                         placeholder="PASSWORD"
                                     />
                                 </div>
-                                <div className="btns">
+                                <div className="login-btns">
                                     <div className="login-btn" onClick={onLoginLocal}>
                                         <IoLogIn />
                                         &nbsp;LOGIN

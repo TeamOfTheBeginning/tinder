@@ -1,174 +1,3 @@
-// import React, { useState, useEffect, useRef } from 'react';
-// import { useSelector } from 'react-redux';
-// import axios from 'axios';
-
-// 
-
-// // import { CgProfile } from "react-icons/cg";
-// import { IoHomeSharp, IoSparkles, IoSearch, IoLogOut } from "react-icons/io5";
-// import { MdOutlineAddPhotoAlternate } from "react-icons/md";
-// import { TbMailHeart } from "react-icons/tb";
-// import { IoClose } from "react-icons/io5";
-// import { FaRandom } from "react-icons/fa";
-// import { HiOutlineChatAlt2 } from "react-icons/hi";
-// import { FaMapMarkerAlt } from "react-icons/fa";
-
-// import WritePost from "./post/WritePost";
-// import Match from "./match/Match";
-// import FindChatGroupRandom from './chat/FindChatGroupRandom';
-// import FindChatGroup from "./chat/FindChatGroup";
-// import RealTimeChat from "./realtimechat/RealTimeChat"
-// import MyPage from "./member/MyPage";
-// import Search from "./search/Search";
-// import EditProfile from './member/EditProfile';
-
-// import RealtimeConnectInfo from './realtimeconnectinfo/RealtimeConnectInfo';
-
-// import '../style/sidebar.css';
-
-// const SideBar = () => {
-  
-//   const loginUser = useSelector(state => state.user);
-//   const [profileImg, setProfileImg] = useState('');
-
-//   const navigate = useNavigate();
-//   const sideViewerRef = useRef(null); // SideViewer 영역을 참조
-//   const [selectedMenu, setSelectedMenu] = useState(null);
-//   const [subMenu, setSubMenu] = useState(null); // MyPage 내 서브 메뉴 관리
-
-//   useEffect(() => {
-//     if (loginUser.profileImg) {
-//       setProfileImg(`http://localhost:8070/userimg/${loginUser.profileImg}`);
-//     }
-//   }, [loginUser]);
-
-//   //////////////////////// SideViewer 관련
-//   // 메뉴 클릭 시 SideViewer 제어
-//   const handleMenuClick = (menu) => {
-//     setSelectedMenu(menu);
-//     setSubMenu(null); // 서브 메뉴 초기화
-//   };
-
-//   // 서브 메뉴 클릭 핸들러
-//   const handleSubMenuClick = (menu) => {
-//     setSubMenu(menu); // 서브 메뉴 상태 업데이트
-//   };
-
-//   const openSubMenu = (menu) => {
-//     setSubMenu(menu);  // 'editProfile'을 설정하여 EditProfile을 SideViewer 내에서 열 수 있게 함
-//   };
-
-//   // SideViewer 닫기
-//   const closeSideViewer = () => {
-//     setSelectedMenu(null);
-//     setSubMenu(null); // 서브 메뉴 초기화
-//   };
-
-//   // SideViewer 외부 클릭 시 닫기
-//     useEffect(() => {
-//       const handleOutsideClick = (e) => {
-//         if (
-//           sideViewerRef.current &&
-//           !sideViewerRef.current.contains(e.target) &&
-//           selectedMenu &&
-//           selectedMenu !== 'realtimechat' // realTimeChat이 열려 있을 때는 닫히지 않도록 예외처리
-//         ) {
-//           setSelectedMenu(null);
-//         }
-//     };
-
-//     // document에 클릭 이벤트 리스너 추가
-//     document.addEventListener('click', handleOutsideClick);
-
-//     // clean up
-//     return () => {
-//       document.removeEventListener('click', handleOutsideClick);
-//     };
-//     }, [selectedMenu]);
-
-  
-
-
-
-
-
-//   return (
-    // <div className='MenuBar'>
-    //   <RealtimeConnectInfo />
-    //   {/* 사이드 메뉴 버튼 */}
-    //   <div className='MenubarBtns'>
-    //     <div className='profileImg' id='btn' onClick={() => handleMenuClick('mypage')}>
-    //       <img src={profileImg} alt="Profile" />
-    //     </div>
-
-    //     <div className='btn' onClick={() => navigate('/main')}>
-    //       <IoHomeSharp />
-    //     </div>
-
-    //     <div className='btn' onClick={() => handleMenuClick('writePost')}>
-    //       <MdOutlineAddPhotoAlternate />
-    //     </div>
-
-    //     <div className='btn' onClick={() => handleMenuClick('match')}>
-    //       <IoSparkles />
-    //     </div>
-
-    //     <div className='btn' onClick={() => handleMenuClick('nearMember')}>
-    //       <FaMapMarkerAlt />
-    //     </div>
-
-    //     <div className='btn' onClick={() => handleMenuClick('findChatGroupRandom')}>
-    //       <FaRandom />
-    //     </div>
-
-    //     <div className='btn' onClick={() => handleMenuClick('findChatGroup')}>
-    //       <TbMailHeart />
-    //     </div>
-
-    //     <div className='btn' onClick={() => handleMenuClick('realtimechat')}>
-    //       <HiOutlineChatAlt2 />
-    //     </div>
-
-    //     <div className='btn' onClick={() => handleMenuClick('search')}>
-    //       <IoSearch />
-    //     </div>
-
-    //     <div className='btn' onClick={() => { navigate('/'); handleLeave(loginUser.memberId); }}>
-    //       <IoLogOut />
-    //     </div>
-    //   </div>
-
-//       {/* SideViewer */}
-//       <div className={`SideViewer ${selectedMenu ? 'show' : ''}`} ref={sideViewerRef}>
-
-//         <div className='sideViewerHeader'>
-//           <div className='closeBtn' onClick={closeSideViewer}>
-//             <IoClose />
-//           </div>
-//         </div>
-
-//         <div className='sideViewerContent'>
-//         {selectedMenu === 'writePost' && <WritePost closeSideViewer={closeSideViewer} />}
-//           {selectedMenu === 'match' && <Match />}
-//           {selectedMenu === 'findChatGroupRandom' && <FindChatGroupRandom />}
-//           {selectedMenu === 'nearMember' && <NearMember loginUser={loginUser}/>}
-//           {selectedMenu === 'findChatGroup' && <FindChatGroup />}
-//           {selectedMenu === 'realtimechat' && <RealTimeChat />}
-//           {selectedMenu === 'mypage' && (
-//             subMenu === 'editProfile'
-//               ? <EditProfile />
-//               : <MyPage openSubMenu={openSubMenu} />
-//           )}
-//           {selectedMenu === 'search' && <Search />}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default SideBar;
-
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -189,8 +18,8 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 // page import
 import WritePost from "./post/WritePost";
 import Match from "./match/Match";
-import MatchedMember from "./match/MatchedMember";
-import FindLiker from "./match/FindLiker";
+import FindLiker from './match/FindLiker';
+import MatchedMember from './match/MatchedMember';
 import FindChatGroupRandom from './chat/FindChatGroupRandom';
 import FindChatGroup from "./chat/FindChatGroup";
 import RealTimeChat from "./realtimechat/RealTimeChat";
@@ -233,7 +62,22 @@ const SideBar = () => {
   const closeSideViewer = () => {
     setSelectedMenu(null);
     setSubMenu(null);
+    
   };
+  
+  // 바깥 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sideViewerRef.current && !sideViewerRef.current.contains(event.target)) {
+        closeSideViewer(); // SideViewer 외부 클릭 시 닫기
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside); // 전역 클릭 이벤트 추가
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside); // 컴포넌트 언마운트 시 이벤트 제거
+    };
+  }, []);
 
     useEffect(() => {
       // WebSocket 클라이언트 설정
@@ -322,43 +166,43 @@ const SideBar = () => {
     <div className='MenuBar'>
       <RealtimeConnectInfo />
       <div className='MenubarBtns'>
-      <div className='profileImg' id='btn' onClick={() => handleMenuClick('mypage')}>
+      <div className='profileImg' onClick={() => handleMenuClick('mypage')}>
           <img src={profileImg} alt="Profile" />
         </div>
 
-        <div className='btn' onClick={() => navigate('/main')}>
+        <div className='sidebar-btn' onClick={() => navigate('/main')}>
           <IoHomeSharp />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('writePost')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('writePost')}>
           <MdOutlineAddPhotoAlternate />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('match')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('match')}>
           <IoSparkles />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('nearMember')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('nearMember')}>
           <FaMapMarkerAlt />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('findChatGroupRandom')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('findChatGroupRandom')}>
           <FaRandom />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('findChatGroup')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('findChatGroup')}>
           <TbMailHeart />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('realtimechat')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('realtimechat')}>
           <HiOutlineChatAlt2 />
         </div>
 
-        <div className='btn' onClick={() => handleMenuClick('search')}>
+        <div className='sidebar-btn' onClick={() => handleMenuClick('search')}>
           <IoSearch />
         </div>
 
-        <div className='btn' onClick={() => { navigate('/'); handleLeave(loginUser.memberId); }}>
+        <div className='sidebar-btn' onClick={() => { navigate('/'); handleLeave(loginUser.memberId); }}>
           <IoLogOut />
         </div>
 
@@ -374,11 +218,12 @@ const SideBar = () => {
 
         <div className='sideViewerContent'>
           {selectedMenu === 'writePost' && <WritePost closeSideViewer={closeSideViewer} />}
-          {/* {selectedMenu === 'match' && <Match />} */}
           {selectedMenu === 'match' && (
-            subMenu === 'matchedMember' ? <MatchedMember />
-            : subMenu === 'findLiker' ? <FindLiker />
-            : <Match openSubMenu={handleSubMenuClick} />
+            subMenu === 'findLiker'
+              ? <FindLiker />
+              : subMenu === 'matchedMember'
+              ? <MatchedMember />
+              : <Match onSubMenuSelect={handleSubMenuClick} />
           )}
           {selectedMenu === 'nearMember' && <NearMember loginUser={loginUser}/>}
           {selectedMenu === 'findChatGroupRandom' && <FindChatGroupRandom />}
