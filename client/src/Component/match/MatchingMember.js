@@ -15,20 +15,34 @@ const MatchingMember = (props) => {
   const date = loginUser.memberInfo.date
   const workout = loginUser.memberInfo.workout
 
-  const [person, setPerson] = useState([smoke, alcohol, speed, date, workout]);
+  const hobbies = [...loginUser.memberInfo.hobbies] ;
+  
+  console.log("hobbies")
+  console.log ((hobbies)?(hobbies):(null))
 
-  const [person2, setPerson2] = useState([0,0,0,0,0]);
+
+  const [person, setPerson] = useState([smoke, alcohol, speed, date, workout, hobbies]);
+
+  const [person2, setPerson2] = useState([0,0,0,0,0,[]]);
 
   useEffect(() => {
     if (props.oppositeGender?.memberInfo) {
+      const hobbies2 = [...props.oppositeGender.memberInfo.hobbies] ; 
+
+      console.log("hobbies2")
+      console.log ((hobbies2)?(hobbies2):(null))
+
+
       setPerson2([
         props.oppositeGender.memberInfo.smoke ?? 0,
         props.oppositeGender.memberInfo.alcohol ?? 0,
         props.oppositeGender.memberInfo.speed ?? 0,
         props.oppositeGender.memberInfo.date ?? 0,
-        props.oppositeGender.memberInfo.workout ?? 0
+        props.oppositeGender.memberInfo.workout ?? 0,
+        hobbies2
       ]);
     }
+
   }, [props.oppositeGender]);
 
   async function like(){
@@ -113,24 +127,44 @@ const MatchingMember = (props) => {
 
 // const [similarity, setSimilarity] = useState(null);
 
+const calculateHobbySimilarity = (hobbies1, hobbies2) => {
+  if (!hobbies1 || !hobbies2) return 0; // 유효하지 않은 취미 배열 확인
+
+  const hobbyIds1 = hobbies1.map(hobby => hobby.hobbyId);
+  const hobbyIds2 = hobbies2.map(hobby => hobby.hobbyId);
+  
+  const commonHobbies = hobbyIds1.filter(hobbyId => hobbyIds2.includes(hobbyId));
+  const similarityScore = (commonHobbies.length / 34) * 100; // 공통 취미 비율을 백분율로 변환
+  
+  return similarityScore;
+};
+
 const calculateSimilarity = () => {
-  if (!person || !person2 || person.length !== person2.length) {
+  if (!person || !person2 || person.length < 6 || person2.length < 6) {
     return 0; // 비교 불가능하면 0% 반환
   }
 
   const maxDiffs = [1, 5, 5, 5, 5]; // 각 항목별 최대 차이
-  const weightedDiffs = person.map((value, index) => {
+  const weightedDiffs = person.slice(0, 5).map((value, index) => { // 5개의 항목만 비교
     const diff = Math.abs(value - (person2[index] ?? 0));
     return diff / maxDiffs[index]; // 정규화된 차이값
   });
 
-  const averageDiff = weightedDiffs.reduce((sum, diff) => sum + diff, 0) / person.length; // 평균 차이
+  const averageDiff = weightedDiffs.reduce((sum, diff) => sum + diff, 0) / weightedDiffs.length; // 평균 차이
 
-  console.log("weightedDiffs:", weightedDiffs, "averageDiff:", averageDiff);
+  // 취미 유사성 계산
+  const hobbySimilarity = calculateHobbySimilarity(person[5], person2[5]); // 6번째 인덱스에서 취미 비교
 
-  const similarityScore = (1 - averageDiff) * 100; // 유사도 계산
-  return similarityScore.toFixed(0);
+  console.log("weightedDiffs:", weightedDiffs, "averageDiff:", averageDiff, "hobbySimilarity:", hobbySimilarity);
+
+  // 유사도 점수 조정
+  const totalSimilarityScore = ((1 - averageDiff) * 100 * 0.7 + hobbySimilarity * 0.3); // 가중치 조정
+  return totalSimilarityScore.toFixed(0);
 };
+
+
+
+
 
 
 
