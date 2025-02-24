@@ -1,5 +1,5 @@
 .matchedMemberContainer{
-    width: 100vw;
+    /* width: 100vw; */
     height: 100vh;
 
     display: flex;
@@ -7,7 +7,7 @@
     justify-content: center;
     align-items: center;
 
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .matchedMemberContainer button{
@@ -28,7 +28,7 @@
     /* justify-content: center;
     align-items: center; */
 
-    width: 60vh;
+    width: 400px;
     height: 20vh;
     border: 1px solid black;
 

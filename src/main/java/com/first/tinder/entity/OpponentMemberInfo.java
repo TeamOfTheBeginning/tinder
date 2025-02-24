@@ -35,8 +35,8 @@ public class OpponentMemberInfo {
     @Column(columnDefinition = "TINYINT")
     private int jp=0;
 
-    @Column(columnDefinition = "TINYINT")
-    private int smoke=0;
+//    @Column(columnDefinition = "TINYINT")
+//    private int smoke=0;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

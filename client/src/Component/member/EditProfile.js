@@ -34,7 +34,13 @@ const EditProfile = () => {
     const navigateWithinSideViewer = (path) => {
         navigate(path); // 경로 이동만 수행하고 SideViewer 상태는 유지
     };
+    const smoke = loginUser.memberInfo.smoke
+    const alcohol = loginUser.memberInfo.alcohol
+    const speed = loginUser.memberInfo.speed
+    const date = loginUser.memberInfo.date
+    const workout = loginUser.memberInfo.workout
 
+    const [person, setPerson] = useState([smoke, alcohol, speed, date, workout]);
     
     const handleBirthDateChange = (e) => {
         const selectedDate = new Date(e.target.value);
@@ -64,9 +70,13 @@ const EditProfile = () => {
                 setHobbyCategories(response.data.categories); // 카테고리 설정
                 setHobbies(response.data.hobbies); // 취미 설정
                 
+                console.log("loginUser.memberInfo"+JSON.stringify(loginUser.memberInfo))
+
+                console.log("loginUser.memberInfo.hobbies"+loginUser.memberInfo.hobbies)
+
                 // 기존 선택된 취미 초기화 (로그인 유저의 데이터에서 가져옴)
-                if (loginUser.hobbies) {
-                    const initialSelectedHobbies = loginUser.hobbies.map((h) => h.hobbyId);
+                if (loginUser.memberInfo.hobbies) {
+                    const initialSelectedHobbies = loginUser.memberInfo.hobbies.map((h) => h.hobbyId);
                     setSelectedHobbies(initialSelectedHobbies);
                 }
             });
@@ -147,7 +157,13 @@ const EditProfile = () => {
             console.error('Error sending data:', error);
             }
 
-            let result2 = await axios.post('/api/member/updateHobbies',{
+            let result2 = await axios.post('/api/member/updateCharacteristics',{
+                memberId:loginUser.memberId,
+                // ✅ 선택한 취미 전송
+                characteristics: person,
+            });
+
+            let result3 = await axios.post('/api/member/updateHobbies',{
                 memberId:loginUser.memberId,
                 // ✅ 선택한 취미 전송
                 hobbies: selectedHobbies,
@@ -187,30 +203,6 @@ const EditProfile = () => {
     }
   };  
 
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-
-//     // 숫자 값으로 변환
-//     const mbtiToNumber = {
-//       "E": "0", "I": "1",
-//       "N": "0", "S": "1",
-//       "T": "0", "F": "1",
-//       "J": "0", "P": "1"
-//     };    
-
-//     const numberValue = inputValue.split('').map(char => mbtiToNumber[char]).join('');
-
-//     console.log("numberValue"+numberValue)
-
-//     try {
-//       // 서버에 데이터 전송
-//       const response = await axios.get('/api/member2/getMembersWithMBTI', { params:{numberValue,memberId:loginUser.memberId} });
-//       console.log(response.data); // 응답 처리
-      
-//     } catch (error) {
-//       console.error('Error sending data:', error);
-//     }
-//   };
     function calMBTI(ei,ns,tf,jp){
         var m
         var b
@@ -232,7 +224,7 @@ const EditProfile = () => {
     return m+b+t+i;
     }
 
-    const [person1, setPerson1] = useState([0, 0, 0, 0, 0]);
+    
 
     return (
         <div className='Container'>
@@ -312,13 +304,13 @@ const EditProfile = () => {
 
                 </div>
 
-                {['흡연여부', '음주여부(주5회)' , '연애속도(빠름5)', '선호데이트방식(외부5)', '운동횟수(주5회)'].map((label, index) => (
+                {['흡연여부(흡연:1)', '음주여부(주5회)' , '연애속도(빠름5)', '선호데이트방식(외부5)', '운동횟수(주5회)'].map((label, index) => (
                     <div key={index} className='field' >
-                        <label>{label}: {person1[index]}</label>
+                        <label>{label}: {person[index]}</label>
                         <input className='input'
                             type="range"
-                            value={person1[index]}
-                            onChange={(e) => setPerson1((prev) => {
+                            value={person[index]}
+                            onChange={(e) => setPerson((prev) => {
                             const newArray = [...prev];
                             newArray[index] = +e.target.value;
                             return newArray;
@@ -353,12 +345,12 @@ const EditProfile = () => {
                 </div>
 
                 <div className='field'>
-                    <label>PROFILE IMG</label>
+                    <label>프로필 선택</label>
                     <input type="file" onChange={(e)=>{fileUpload(e)}}/>
                 </div>
                 <div className='field'>
-                    <label>Profile img preview</label>
-                    <div><img src={imgSrc} style={imgStyle} /></div>
+                    <label>미리보기</label>
+                    <div className='ProfileImg'><img src={imgSrc} style={imgStyle} /></div>
                 </div>
 
                 <div className='btns'>
