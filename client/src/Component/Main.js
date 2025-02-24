@@ -79,23 +79,29 @@ const Main = () => {
         }, [word]
     )
 
-
+    const [showToast0, setShowToast0] = useState(false);
     const [showToast1, setShowToast1] = useState(false);
     const [showToast2, setShowToast2] = useState(false);
     const [remainingTime, setRemainingTime] = useState(5000); // 초기 5초
     const [timerId, setTimerId] = useState(null);
 
     useEffect(() => {
+        setShowToast0(true);
+        startTimer(5000); // 처음 5초 설정
+    
         if (postOne) {
-            setShowToast1(true);
-            startTimer(5000); // 처음 5초 설정
+            setTimeout(() => {
+                setShowToast1(true);
+                startTimer(7000); // 7초 후에 표시
+            }, 5000); // showToast0이 뜬 후에 5초 뒤에 showToast1 표시
         }
-
-        const timer = setTimeout(() => {
+    
+        setTimeout(() => {
             setShowToast2(true);
-        }, 6000);
-
+        }, 12000); // showToast1이 사라진 후에 12초 뒤에 showToast2 표시
+    
     }, [postOne]);
+    
 
     const startTimer = (time) => {
         if (timerId) clearTimeout(timerId); // 기존 타이머 제거
@@ -132,6 +138,16 @@ const Main = () => {
 
             <Notification setNotificationList={setNotificationList} notificationList={notificationList}/>
 
+            {showToast0 && (
+                <div
+                    className="toastPopup0"                    
+                    // onAnimationEnd={handleAnimationEnd} // 애니메이션 종료 후 처리
+                    // style={{ pointerEvents: isAnimationEnded ? 'none' : 'auto' }} 
+                >
+                    <div className='toastPopup0Title'>웰컴존</div>
+                    
+                </div>
+            )}
             
             
             {showToast1 && (

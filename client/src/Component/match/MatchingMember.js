@@ -17,20 +17,7 @@ const MatchingMember = (props) => {
 
   const [person, setPerson] = useState([smoke, alcohol, speed, date, workout]);
 
-  const smoke2 = props.oppositeGender?.memberInfo?.smoke
-  const alcohol2 = props.oppositeGender?.memberInfo?.alcohol
-  const speed2 = props.oppositeGender?.memberInfo?.speed
-  const date2 = props.oppositeGender?.memberInfo?.date
-  const workout2 = props.oppositeGender?.memberInfo?.workout
-
-  // console.log("props.oppositeGender?.memberInfo?.alcohol"+props.oppositeGender?.memberInfo?.alcohol)
-  // console.log("props.oppositeGender?.memberInfo?.speed"+props.oppositeGender?.memberInfo?.speed)
-  // console.log("props.oppositeGender?.memberInfo?.date"+props.oppositeGender?.memberInfo?.date)
-  // console.log("props.oppositeGender?.memberInfo?.workout"+props.oppositeGender?.memberInfo?.workout)
-
   const [person2, setPerson2] = useState([0,0,0,0,0]);
-
-  // setPerson2([props.oppositeGender?.memberInfo?.smoke,props.oppositeGender?.memberInfo?.alcohol,props.oppositeGender?.memberInfo?.speed,props.oppositeGender?.memberInfo?.date,props.oppositeGender?.memberInfo?.workout])
 
   useEffect(() => {
     if (props.oppositeGender?.memberInfo) {
@@ -131,9 +118,6 @@ const calculateSimilarity = () => {
     return 0; // 비교 불가능하면 0% 반환
   }
 
-  console.log("person"+person)
-  console.log("person2"+person2)
-
   const maxDiffs = [1, 5, 5, 5, 5]; // 각 항목별 최대 차이
   const weightedDiffs = person.map((value, index) => {
     const diff = Math.abs(value - (person2[index] ?? 0));
@@ -147,6 +131,7 @@ const calculateSimilarity = () => {
   const similarityScore = (1 - averageDiff) * 100; // 유사도 계산
   return similarityScore.toFixed(0);
 };
+
 
 
 
