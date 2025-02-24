@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +33,14 @@ public class CustomUserDetailsService  implements UserDetailsService {
         if ( member.isEmpty() ) {
             throw new UsernameNotFoundException(username + " - User Not found");
         }
-        List<String> list = new ArrayList<>();
-        list.add("USER");
+//        List<String> list = new ArrayList<>();
+//        list.add("USER");
+
+        // 멤버의 역할을 가져오기
+        List<String> roleList = member.get().getMemberRoleList().stream()
+                .map(Enum::name) // Enum의 이름을 가져옵니다.
+                .collect(Collectors.toList());
+
         MemberDTO memberdto = new MemberDTO(
                 member.get().getEmail() ,
                 member.get().getPwd(),
@@ -54,7 +61,7 @@ public class CustomUserDetailsService  implements UserDetailsService {
                 member.get().getSnsId(),
                 member.get().getProvider(),
                 member.get().getTemp(),
-                list,
+                roleList,
                 member.get().getMemberInfo(),
                 member.get().getOpponentMemberInfo()
         );
