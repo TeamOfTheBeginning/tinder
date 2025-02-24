@@ -10,7 +10,7 @@ const ChatBot = () => {
   const [userId] = useState(() => {
     let storedUserId = localStorage.getItem("chatbotUserId");
     if (!storedUserId) {
-      storedUserId = `user-${Math.random().toString(36).substr(2, 9)}`;
+      storedUserId = `user-${Math.random().toString(36).substring(2, 9)}`;
       localStorage.setItem("chatbotUserId", storedUserId);
     }
     return storedUserId;
@@ -48,7 +48,7 @@ const ChatBot = () => {
     if (!input.trim()) return;
 
     const newMessages = [...messages, { role: "user", content: input }];
-    setMessages(newMessages);
+    setMessages([...newMessages, { role: "assistant", content: "답변을 작성 중..." }]);
     setInput("");
 
     try {
