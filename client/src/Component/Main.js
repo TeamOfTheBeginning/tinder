@@ -12,6 +12,8 @@ import ToastPopupPost from './post/ToastPopupPost';
 import MatchingMember from './match/MatchingMember';
 import ChatBot from './chatbot/ChatBot';
 
+import { XyzTransition } from '@animxyz/react';
+import '@animxyz/core';
 import jaxios from '../util/jwtUtil'
 
 import '../style/mystargram.css';
@@ -84,26 +86,49 @@ const Main = () => {
     const [timerId, setTimerId] = useState(null);
 
     useEffect(() => {
+        const timers = [];
+
+        // showToast0 표시
         setShowToast0(true);
-        startTimer(5000); // 처음 5초 설정
+        const timer0 = setTimeout(() => {
+            setShowToast0(false); // 5초 뒤 showToast0 종료
+        }, 5000);
+        timers.push(timer0);
     
+        // showToast0이 끝난 후 showToast1을 표시
         if (postOne) {
-            setTimeout(() => {
-                setShowToast1(true);
-                startTimer(7000); // 7초 후에 표시
-            }, 5000); // showToast0이 뜬 후에 5초 뒤에 showToast1 표시
+            const timer1 = setTimeout(() => {
+                setShowToast1(true); // showToast1 표시
+                const timer1End = setTimeout(() => {
+                    setShowToast1(false); // 7초 뒤 showToast1 종료
+                }, 7000);
+                timers.push(timer1End);
+            }, 5000); // showToast0 종료 후 5초 뒤에 showToast1 표시
+            timers.push(timer1);
         }
     
-        setTimeout(() => {
-            setShowToast2(true);
-        }, 12000); // showToast1이 사라진 후에 12초 뒤에 showToast2 표시
-    
-    }, [postOne]);
+        // showToast1이 끝난 후 12초 뒤에 showToast2 표시
+        const timer2 = setTimeout(() => {
+            setShowToast2(true); // showToast2 표시
+            const timer2End = setTimeout(() => {
+                setShowToast2(false); // 7초 뒤 showToast2 종료
+            }, 7000);
+            timers.push(timer2End);
+        }, 12000); // showToast1 종료 후 12초 뒤에 showToast2 표시
+        timers.push(timer2);
+
+        return () => {
+            // 모든 타이머 제거
+            timers.forEach((timer) => clearTimeout(timer));
+        };
+    }, [postOne])
+
     
 
-    const startTimer = (time) => {
+    // 타이머 시작 함수
+    const startTimer = (time, callback) => {
         if (timerId) clearTimeout(timerId); // 기존 타이머 제거
-        const id = setTimeout(() => setShowToast1(false), time);
+        const id = setTimeout(callback, time);
         setTimerId(id);
         setRemainingTime(time);
     };
@@ -127,26 +152,36 @@ const Main = () => {
 
 
 
-
-
-
-
     return (
         <div className='Container'>
 
             <Notification setNotificationList={setNotificationList} notificationList={notificationList}/>
 
+            {/* 웰컴존 토스트 팝업 */}
             {showToast0 && (
                 <div
-                    className="toastPopup0"                    
-                    // onAnimationEnd={handleAnimationEnd} // 애니메이션 종료 후 처리
-                    // style={{ pointerEvents: isAnimationEnded ? 'none' : 'auto' }} 
+                    className={`toastPopup0 ${showToast0}`}
+                    onAnimationEnd={() => setShowToast0(false)}
                 >
-                    <div className='toastPopup0Title'>웰컴존</div>
-                    
+                    <div className="toastPopup0Header">
+                        <div>
+                        <h1>{loginUser.nickname}님<br />
+                            🎉 환영합니다! 🎉</h1>
+                        </div>
+                        <div className="heart"></div>
+                    </div>
+                    <div className="toastPopup0Content">
+                        오늘도 좋은 하루 보내세요! 😊
+                    </div>
+                    <button
+                        className="toastPopup0Close"
+                        onClick={() => setShowToast0(false)}
+                    >
+                        ✖
+                    </button>
                 </div>
             )}
-            
+
             
             {showToast1 && (
                 <div
