@@ -9,6 +9,8 @@ import { useDispatch } from 'react-redux';
 import { loginAction, setFollower, setFollowed } from '../../store/userSlice';
 import {Cookies} from 'react-cookie'
 
+import jaxios from '../../util/jwtUtil';
+
 
 const MyPage = ({openSubMenu}) => {
 
@@ -109,7 +111,7 @@ const MyPage = ({openSubMenu}) => {
         });
         alert("결제완료")
 
-        const res = await axios.get('/api/member/getLoginUser');
+        const res = await jaxios.get('/api/member/getLoginUser');
         const lUser = res.data.loginUser;
         cookies.set('user', JSON.stringify( lUser ) , {path:'/', })
         dispatch( loginAction( res.data.loginUser ) )

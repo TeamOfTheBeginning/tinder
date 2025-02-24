@@ -7,6 +7,8 @@ import { FaHome } from "react-icons/fa";
 
 import "../../style/realtimechat/realtimechat.css";
 
+import jaxios from '../../util/jwtUtil';
+
 const isLocalhost = window.location.hostname === "localhost" ;
 // || window.location.hostname === "127.0.0.1";
 
@@ -55,7 +57,7 @@ function ChatPage() {
 
   const fetchChatRooms = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/realtime-chatrooms/list`);
+      const response = await jaxios.get(`${API_BASE_URL}/api/realtime-chatrooms/list`);
       // console.log("채팅방 목록 응답:", response.data);
       setChatRooms([...response.data]);
     } catch (error) {
@@ -79,7 +81,7 @@ function ChatPage() {
     }
 
     try {
-      await axios.post(`${API_BASE_URL}/api/realtime-chatrooms/create`, null, {
+      await jaxios.post(`${API_BASE_URL}/api/realtime-chatrooms/create`, null, {
         params: { name: newRoomName, isPrivate: Boolean(isPrivate), password, nickname },
       });          
 
@@ -104,7 +106,7 @@ function ChatPage() {
       }
   
       try {
-        const response = await axios.post(`${API_BASE_URL}/api/realtime-chatrooms/validate`, null, {
+        const response = await jaxios.post(`${API_BASE_URL}/api/realtime-chatrooms/validate`, null, {
           params: { roomId: room.id, password: enteredPassword },
         });
   
@@ -187,7 +189,7 @@ function ChatPage() {
   
         // ✅ 서버에 기존 사용자 목록 요청
         try {
-          const response = await axios.get(`${API_BASE_URL}/api/member/${room.id}/users`);
+          const response = await jaxios.get(`${API_BASE_URL}/api/member/${room.id}/users`);
           // console.log("🔄 서버에서 받은 기존 사용자 목록:", response.data);
           setUserList(response.data);
         } catch (error) {
@@ -282,7 +284,7 @@ function ChatPage() {
     if (!window.confirm("정말 이 채팅방을 삭제하시겠습니까?")) return;
   
     try {
-      const response = await axios.delete(`${API_BASE_URL}/api/realtime-chatrooms/delete/${roomId}`, {
+      const response = await jaxios.delete(`${API_BASE_URL}/api/realtime-chatrooms/delete/${roomId}`, {
         params: { nickname }
       });
   

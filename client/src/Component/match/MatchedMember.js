@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 import '../../style/match/matchedmember.css';
 
+import jaxios from '../../util/jwtUtil';
+
 const MatchedMember = () => {
 
 
@@ -14,7 +16,7 @@ const MatchedMember = () => {
 
     useEffect(() => {
         console.log(loginUser)
-        axios.get(`/api/member2/getMatchedMember`, { params: { memberId:loginUser.memberId } })
+        jaxios.get(`/api/member2/getMatchedMember`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
                 // console.log("result.data.likerList: " + JSON.stringify(result.data.likerList));
                 serMatchedMemberList(result.data.matchedMemberList);

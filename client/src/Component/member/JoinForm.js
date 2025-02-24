@@ -7,6 +7,8 @@ import '../../style/login.css';
 import { IoCreateOutline } from "react-icons/io5";
 import AddressModal from './AddressModal';
 
+import jaxios from '../../util/jwtUtil';
+
 const JoinForm = () => {
 
     const [email, setEmail] = useState('')
@@ -87,15 +89,15 @@ const JoinForm = () => {
         if(nickname==''){ return alert('닉네임을 입력하세요');}
         // if(age<18){return alert('만 18세 이상만 가입 가능합니다');}
         try{
-            let result = await axios.post('/api/member/emailcheck', null, {params:{email}} );
+            let result = await jaxios.post('/api/member/emailcheck', null, {params:{email}} );
             if(result.data.msg == 'no' ){
                 return alert('이메일이 중복됩니다');
             }
-            result = await axios.post('/api/member/nicknamecheck', null, {params:{nickname}} );
+            result = await jaxios.post('/api/member/nicknamecheck', null, {params:{nickname}} );
             if(result.data.msg == 'no' ){
                 return alert('닉네임이 중복됩니다');
             }
-            result = await axios.post('/api/member/join', {email, pwd, age, gender, nickname, memberName, phone, birthDate , address, latitude, longitude, profileMsg : intro, profileImg :profileimg, zipnum});
+            result = await jaxios.post('/api/member/join', {email, pwd, age, gender, nickname, memberName, phone, birthDate , address, latitude, longitude, profileMsg : intro, profileImg :profileimg, zipnum});
             if(result.data.msg =='ok'){
                 alert('회원 가입이 완료되었습니다. 로그인하세요');
                 window.location.reload();
@@ -106,7 +108,7 @@ const JoinForm = () => {
     async function fileUpload(e){
         const formData = new FormData();
         formData.append('image',  e.target.files[0]);
-        const result = await axios.post('/api/member/fileupload', formData);
+        const result = await jaxios.post('/api/member/fileupload', formData);
         console.log(result);
         setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
         setImgStyle({display:"block", width:"200px"});

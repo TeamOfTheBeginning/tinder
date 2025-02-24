@@ -7,6 +7,8 @@ import ChatGroup from './ChatGroup';
 
 import '../../style/message/findchatgroup.css';
 
+import jaxios from '../../util/jwtUtil';
+
 const FindChatGroup = () => {
 
     const navigate = useNavigate();
@@ -16,7 +18,7 @@ const FindChatGroup = () => {
 
     useEffect(() => {
       console.log(loginUser)
-      axios.get(`/api/chat/findChatGroup`, { params: { memberId:loginUser.memberId } })
+      jaxios.get(`/api/chat/findChatGroup`, { params: { memberId:loginUser.memberId } })
           .then((result) => {
               console.log("result.data.chatGroupList: " + JSON.stringify(result.data.chatGroupList));
               serChatGroupList(result.data.chatGroupList);

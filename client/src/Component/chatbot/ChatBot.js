@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "../../style/chatbot/chatbot.css";
 
+import jaxios from '../../util/jwtUtil';
+
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -19,7 +21,7 @@ const ChatBot = () => {
   useEffect(() => {
     const fetchChatHistory = async () => {
       try {
-        const response = await axios.get(`http://localhost:8070/api/chatbot/history/${userId}`);
+        const response = await jaxios.get(`http://localhost:8070/api/chatbot/history/${userId}`);
         if (response.data && response.data.history) {
           setMessages(response.data.history);
         } else {
@@ -52,7 +54,7 @@ const ChatBot = () => {
     setInput("");
 
     try {
-      const response = await axios.post(`http://localhost:8070/api/chatbot/ask/${userId}`, {
+      const response = await jaxios.post(`http://localhost:8070/api/chatbot/ask/${userId}`, {
         message: input,
       });
 

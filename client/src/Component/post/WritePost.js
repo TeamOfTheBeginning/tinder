@@ -8,6 +8,8 @@ import "../../style/posts.css";
 import "../../style/writePost.css";
 import { useSelector } from "react-redux";
 
+import jaxios from '../../util/jwtUtil'
+
 const WritePost = ({ closeSideViewer }) => {
   const loginUser = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ const WritePost = ({ closeSideViewer }) => {
     try {
       const formData = new FormData();
       formData.append("image", e.target.files[0]);
-      const result = await axios.post("/api/post/fileupload", formData);
+      const result = await jaxios.post("/api/post/fileupload", formData);
 
       setImgSrcs((prevImgSrcs) => {
         const newImgSrcs = [...prevImgSrcs];
@@ -52,7 +54,7 @@ const WritePost = ({ closeSideViewer }) => {
     }
 
     try {
-      const result = await axios.post("/api/post/writePost", {
+      const result = await jaxios.post("/api/post/writePost", {
         content,
         member: { memberId: loginUser.memberId },
       });
@@ -61,7 +63,7 @@ const WritePost = ({ closeSideViewer }) => {
 
       await Promise.all(
         imgList.map((filename) =>
-          axios.post("/api/post/writeImages", {
+          jaxios.post("/api/post/writeImages", {
             postId: post_id,
             savefileName: filename,
           })

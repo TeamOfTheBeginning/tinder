@@ -1,6 +1,8 @@
 
 import '../../style/followmodal.css';
 
+
+
 import ReactDOM from 'react-dom';
 
 const Modal = ({ isOpen, onClose, children }) => {

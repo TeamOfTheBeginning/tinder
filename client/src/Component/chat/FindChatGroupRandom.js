@@ -7,6 +7,8 @@ import ChatGroupRandom from './ChatGroupRandom';
 
 import '../../style/message/findchatgrouprandom.css';
 
+import jaxios from '../../util/jwtUtil';
+
 const FindChatGroupRandom = () => {
 
     const navigate = useNavigate();
@@ -16,7 +18,7 @@ const FindChatGroupRandom = () => {
 
     useEffect(() => {
         console.log(loginUser)
-        axios.get(`/api/chat/findChatGroupRandom`, { params: { memberId:loginUser.memberId } })
+        jaxios.get(`/api/chat/findChatGroupRandom`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
                 console.log("result.data.chatGroupList: " + JSON.stringify(result.data.chatGroupList));
                 serChatGroupList(result.data.chatGroupList);
@@ -33,7 +35,7 @@ const FindChatGroupRandom = () => {
         console.log("setAnonymousMessageRoom")
         
 
-        axios.post(`/api/chat/setAnonymousMessageRoom`,null ,{ params: { 
+        jaxios.post(`/api/chat/setAnonymousMessageRoom`,null ,{ params: { 
             memberId:loginUser.memberId
           } } )
           .then((result)=>{
