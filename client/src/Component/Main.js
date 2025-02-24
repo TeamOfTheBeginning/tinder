@@ -12,7 +12,7 @@ import ToastPopupPost from './post/ToastPopupPost';
 import MatchingMember from './match/MatchingMember';
 import ChatBot from './chatbot/ChatBot';
 
-
+import jaxios from '../util/jwtUtil'
 
 import '../style/mystargram.css';
 import '../style/posts.css';
@@ -43,37 +43,35 @@ const Main = () => {
 
     useEffect(
         ()=>{
+            console.log("loginUser"+JSON.stringify(loginUser))
             // setFollower( [...loginUser.follower] )
 
-            axios.get(`/api/post/getPostList`, {params:{word,page:1}})
+            jaxios.get(`/api/post/getPostList`, {params:{word,page:1}})
             .then((result)=>{
-                // console.log("result"+JSON.stringify(result));
+                console.log("result"+JSON.stringify(result.data.postList2));
                 setPostList( result.data.postList2 );
             }).catch((err)=>{console.error(err)})
 
-            axios.get(`/api/post/getPostOneWithin3daysOrderByRand`)
+            jaxios.get(`/api/post/getPostOneWithin3daysOrderByRand`)
             .then((result)=>{  
                 // console.log( JSON.stringify(result.data.postOne) )          
                 setPostOne( result.data.postOne );
                 
             }).catch((err)=>{console.error(err)})
 
-            axios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
+            jaxios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
                 console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
                 setOppositeGender(result.data.oppositeGender);
             })
             .catch((err) => { console.error(err); });
 
-            axios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
+            jaxios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
             .then((result)=>{
             // console.log("getNotificationTop4"+result.data.notificationList)
             setNotificationList(result.data.notificationList)
             }
             ).catch((err)=>{console.error(err)}) 
-
-
-            
 
 
         }, [word]

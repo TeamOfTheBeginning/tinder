@@ -29,51 +29,51 @@ const Notification = (props) => {
   //     console.log("SSE 연결 종료됨");
   // };
 
-  useEffect(() => {
-    // EventSource 연결 및 재연결 처리
-    let eventSource;
+  // useEffect(() => {
+  //   // EventSource 연결 및 재연결 처리
+  //   let eventSource;
 
-    const createEventSource = () => {
-      eventSource = new EventSource(`/api/sse/subscribe/${memberId}`);
+  //   const createEventSource = () => {
+  //     eventSource = new EventSource(`/api/sse/subscribe/${memberId}`);
 
-      eventSource.onopen = () => {
-        console.log("SSE 연결됨");
-      };
+  //     eventSource.onopen = () => {
+  //       console.log("SSE 연결됨");
+  //     };
 
-      eventSource.addEventListener("notification", (event) => {
-        console.log("SSE 구독됨");
-        const data = JSON.parse(event.data);
-        // console.log("📢 새로운 알림:", data.notification.message);        
+  //     eventSource.addEventListener("notification", (event) => {
+  //       console.log("SSE 구독됨");
+  //       const data = JSON.parse(event.data);
+  //       // console.log("📢 새로운 알림:", data.notification.message);        
 
-        axios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
-        .then((result)=>{
-          console.log("getNotificationTop4"+result.data.notificationList)
-          props.setNotificationList(result.data.notificationList)
-        }
-        ).catch((err)=>{console.error(err)})
+  //       axios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
+  //       .then((result)=>{
+  //         console.log("getNotificationTop4"+result.data.notificationList)
+  //         props.setNotificationList(result.data.notificationList)
+  //       }
+  //       ).catch((err)=>{console.error(err)})
 
-        setTimeout(() => alert(data.notification.message), 2000);        
+  //       setTimeout(() => alert(data.notification.message), 2000);        
 
-      });
+  //     });
 
-      eventSource.onerror = () => {
-        console.log("SSE 연결 종료됨, 10초 후 재연결 시도");
-        eventSource.close();  // 연결 종료
-        setTimeout(createEventSource, 10000);  // 10초 후 재연결 시도
-      };
-    };
+  //     eventSource.onerror = () => {
+  //       console.log("SSE 연결 종료됨, 10초 후 재연결 시도");
+  //       eventSource.close();  // 연결 종료
+  //       setTimeout(createEventSource, 10000);  // 10초 후 재연결 시도
+  //     };
+  //   };
 
-    // 최초 연결
-    createEventSource();
+  //   // 최초 연결
+  //   createEventSource();
 
-    // 컴포넌트 언마운트 시 연결 종료
-    return () => {
-      if (eventSource) {
-        eventSource.close();
-        console.log("SSE 연결 종료됨 (언마운트)");
-      }
-    };
-  }, []);
+  //   // 컴포넌트 언마운트 시 연결 종료
+  //   return () => {
+  //     if (eventSource) {
+  //       eventSource.close();
+  //       console.log("SSE 연결 종료됨 (언마운트)");
+  //     }
+  //   };
+  // }, []);
 
 
 

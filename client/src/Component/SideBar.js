@@ -79,59 +79,59 @@ const SideBar = () => {
     };
   }, []);
 
-    useEffect(() => {
-      // WebSocket 클라이언트 설정
-      const stompClient = new Client({
-        brokerURL: `ws://${process.env.REACT_APP_ADDRESS2}/ws_real_chat`,  // 서버의 WebSocket 엔드포인트
-        connectHeaders: {
-          // 필요한 경우 인증 정보 추가
-        },
-        // debug: function (str) {
-        //   console.log(str);
-        // },
-        onConnect: () => {
-          console.log('WebSocket connected');
+    // useEffect(() => {
+    //   // WebSocket 클라이언트 설정
+    //   const stompClient = new Client({
+    //     brokerURL: `ws://${process.env.REACT_APP_ADDRESS2}/ws_real_chat`,  // 서버의 WebSocket 엔드포인트
+    //     connectHeaders: {
+    //       // 필요한 경우 인증 정보 추가
+    //     },
+    //     // debug: function (str) {
+    //     //   console.log(str);
+    //     // },
+    //     onConnect: () => {
+    //       console.log('WebSocket connected');
         
-          // 서버에 접속자 수를 요청하는 메시지 발송
-          stompClient.publish({
-            destination: '/app/getUserCount',
-          });
+    //       // 서버에 접속자 수를 요청하는 메시지 발송
+    //       stompClient.publish({
+    //         destination: '/app/getUserCount',
+    //       });
 
-          // 서버로부터 접속자 수 업데이트를 실시간으로 받기 위해 구독
-          stompClient.subscribe('/topic/real_chat/userCount', (message) => {
-            // console.log("Received message:", message.body);
+    //       // 서버로부터 접속자 수 업데이트를 실시간으로 받기 위해 구독
+    //       stompClient.subscribe('/topic/real_chat/userCount', (message) => {
+    //         // console.log("Received message:", message.body);
 
-            const parsedMessage = JSON.parse(message.body);
+    //         const parsedMessage = JSON.parse(message.body);
 
-            // console.log("parsedMessage"+parsedMessage)
+    //         // console.log("parsedMessage"+parsedMessage)
 
-            // console.log("parsedMessage.userCount"+parsedMessage.userCount)
+    //         // console.log("parsedMessage.userCount"+parsedMessage.userCount)
 
-            const userCount = Number(parsedMessage.userCount);
+    //         const userCount = Number(parsedMessage.userCount);
 
-            setUserCount(userCount);
+    //         setUserCount(userCount);
 
-            // setUserCount(parseInt(message.body.userCount));  // 서버에서 받은 접속자 수 업데이트
-          });
-        },
-        onDisconnect: () => {
-          console.log('WebSocket disconnected');
-        },
-        onStompError: (frame) => {
-          console.error('STOMP error: ', frame);
-        },
-        webSocketFactory: () => new SockJS(`${process.env.REACT_APP_ADDRESS2}/ws_real_chat`),
-      });
+    //         // setUserCount(parseInt(message.body.userCount));  // 서버에서 받은 접속자 수 업데이트
+    //       });
+    //     },
+    //     onDisconnect: () => {
+    //       console.log('WebSocket disconnected');
+    //     },
+    //     onStompError: (frame) => {
+    //       console.error('STOMP error: ', frame);
+    //     },
+    //     webSocketFactory: () => new SockJS(`${process.env.REACT_APP_ADDRESS2}/ws_real_chat`),
+    //   });
   
-      stompClient.activate();
-      setClient(stompClient);
+    //   stompClient.activate();
+    //   setClient(stompClient);
   
-      return () => {
-        if (stompClient) {
-          stompClient.deactivate();  // 클린업: 컴포넌트가 언마운트될 때 WebSocket 연결 종료
-        }
-      };
-    }, []);
+    //   return () => {
+    //     if (stompClient) {
+    //       stompClient.deactivate();  // 클린업: 컴포넌트가 언마운트될 때 WebSocket 연결 종료
+    //     }
+    //   };
+    // }, []);
   
     // // 사용자가 접속하거나 퇴장하는 메서드
     // const handleJoin = (username) => {

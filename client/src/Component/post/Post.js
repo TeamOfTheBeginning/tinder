@@ -14,6 +14,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setFollower } from '../../store/userSlice';
 import { Cookies } from 'react-cookie';
 
+import jaxios from '../../util/jwtUtil'
+
 const settings = {
     dot:false,
     arrows:false,
@@ -49,19 +51,19 @@ const Post = (props) => {
 
             // setPostWriter( getNickname( props.post.member.nickname ) )
 
-            axios.get(`/api/post/getImages/${props.post.postId}` )
+            jaxios.get(`/api/post/getImages/${props.post.postId}` )
             .then((result)=>{ 
                 // console.log("result.data.imgList"+JSON.stringify(result.data.imgList))
                 setImgList( result.data.imgList );
             }).catch((err)=>{console.error(err)})
 
-            axios.get(`/api/post/getLikeList/${props.post.postId}`)
+            jaxios.get(`/api/post/getLikeList/${props.post.postId}`)
             .then((result)=>{
                 // console.log("result.data.likeList"+JSON.stringify(result.data.likeList))
                  setLikeList( [...result.data.likeList ] );
             }).catch((err)=>{console.error(err)})
 
-            axios.get(`/api/post/getReplyList/${props.post.postId}`)
+            jaxios.get(`/api/post/getReplyList/${props.post.postId}`)
             .then((result)=>{
                 // console.log(result.data.replyList2)
                 let temp = [...result.data.replyList2];
