@@ -5,6 +5,7 @@ import com.first.tinder.entity.MemberInfo;
 import com.first.tinder.entity.OpponentMemberInfo;
 import com.first.tinder.security.util.JWTUtil;
 import com.first.tinder.security.util.CustomJWTException;
+import com.google.gson.Gson;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,7 +40,12 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             String phone = (String) claims.get("phone");
             int gender = (int) claims.get("gender");
             int age = (int) claims.get("age");
-            Date birthDate = (Date) claims.get("birthDate");
+
+            // birthDate 값을 Long으로 가져온 후, Date 객체로 변환
+            Long birthDateMillis = (Long) claims.get("birthDate");
+            Date birthDate = new Date(birthDateMillis);
+
+
             int account = (int) claims.get("account");
             String zipnum = (String) claims.get("zipnum");
             String address = (String) claims.get("address");
@@ -56,8 +62,12 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             List<String> list = new ArrayList<>();
             list.add("USER");
 
-            MemberInfo memberInfo = (MemberInfo) claims.get("memberInfo");
-            OpponentMemberInfo opponentMemberInfo = (OpponentMemberInfo) claims.get("opponentMemberInfo");
+            Gson gson = new Gson();
+            MemberInfo memberInfo = gson.fromJson(gson.toJson(claims.get("memberInfo")), MemberInfo.class);
+
+            OpponentMemberInfo opponentMemberInfo = gson.fromJson(
+                    gson.toJson(claims.get("opponentMemberInfo")), OpponentMemberInfo.class
+            );
 
             MemberDTO memberDTO = new MemberDTO(email, pwd, memberId, nickname, memberName, phone, gender,age, birthDate ,account,zipnum,address,latitude,longitude, profileImg, profileMsg, snsId ,provider,temp, list
                     ,memberInfo,opponentMemberInfo);

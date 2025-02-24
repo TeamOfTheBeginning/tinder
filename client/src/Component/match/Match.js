@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 import '../../style/match/match.css';
 
+import jaxios from '../../util/jwtUtil';
+
 const Match = ({openSubMenu}) => {
 
   const [oppositeGender, setOppositeGender] = useState();
@@ -16,7 +18,7 @@ const Match = ({openSubMenu}) => {
 
   useEffect(() => {
     console.log(loginUser)
-    axios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
+    jaxios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
         .then((result) => {
             console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
             setOppositeGender(result.data.oppositeGender);
@@ -27,7 +29,7 @@ const Match = ({openSubMenu}) => {
 
   async function rematch(){
 
-    axios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
+    jaxios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
     .then((result)=>{
         // console.log("result.data.oppositeGender"+JSON.stringify(result.data.oppositeGender))
         setOppositeGender(result.data.oppositeGender)
@@ -37,7 +39,7 @@ const Match = ({openSubMenu}) => {
   
   // async function like(){
 
-  //   await axios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:oppositeGender.memberId })
+  //   await jaxios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:oppositeGender.memberId })
   //   .then((result)=>{
   //       console.log("result.data.msg"+result.data.msg)
 

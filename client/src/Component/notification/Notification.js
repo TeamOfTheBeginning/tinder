@@ -5,6 +5,8 @@ import axios from 'axios';
 
 import '../../style/notification.css';
 
+import jaxios from '../../util/jwtUtil';
+
 const Notification = (props) => {
 
   const loginUser = useSelector(state=>state.user);
@@ -45,7 +47,7 @@ const Notification = (props) => {
   //       const data = JSON.parse(event.data);
   //       // console.log("📢 새로운 알림:", data.notification.message);        
 
-  //       axios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
+  //       jaxios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
   //       .then((result)=>{
   //         console.log("getNotificationTop4"+result.data.notificationList)
   //         props.setNotificationList(result.data.notificationList)
@@ -82,7 +84,7 @@ const Notification = (props) => {
 
     console.log("getNotification")
 
-    axios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
+    jaxios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
     .then((result)=>{
       console.log("getNotificationTop4"+result.data.notificationList)
       props.setNotificationList(result.data.notificationList)
@@ -95,7 +97,7 @@ const Notification = (props) => {
 
   async function updateNotificationRead(notificationId){
     console.log("updateNotificationRead")
-    axios.post(`/api/notification/updateNotificationRead`, null ,{ params: { notificationId , memberId:loginUser.memberId } })
+    jaxios.post(`/api/notification/updateNotificationRead`, null ,{ params: { notificationId , memberId:loginUser.memberId } })
     .then((result)=>{
       console.log("updateNotificationRead"+result.data.notificationList)
       props.setNotificationList(result.data.notificationList)      

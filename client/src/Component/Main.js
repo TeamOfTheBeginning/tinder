@@ -45,12 +45,12 @@ const Main = () => {
 
     useEffect(
         ()=>{
-            console.log("loginUser"+JSON.stringify(loginUser))
+            // console.log("loginUser"+JSON.stringify(loginUser))
             // setFollower( [...loginUser.follower] )
 
             jaxios.get(`/api/post/getPostList`, {params:{word,page:1}})
             .then((result)=>{
-                console.log("result"+JSON.stringify(result.data.postList2));
+                // console.log("result"+JSON.stringify(result.data.postList2));
                 setPostList( result.data.postList2 );
             }).catch((err)=>{console.error(err)})
 
@@ -63,7 +63,7 @@ const Main = () => {
 
             jaxios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
-                console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
+                // console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
                 setOppositeGender(result.data.oppositeGender);
             })
             .catch((err) => { console.error(err); });

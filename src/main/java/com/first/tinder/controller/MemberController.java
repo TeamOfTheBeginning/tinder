@@ -68,15 +68,16 @@ public class MemberController {
 //    }
 
     @GetMapping("/getLoginUser")
-    public HashMap<String , Object> getLoginUser(HttpSession session) {
+    public HashMap<String , Object> getLoginUser(@RequestParam("memberId") int memberId) {
         HashMap<String, Object> result = new HashMap<>();
-        int id = (Integer) session.getAttribute("loginUser");
+        System.out.println("memberId"+memberId);
+//        int id = (Integer) session.getAttribute("loginUser");
 
-        Member member = ms.getMemberById(id);
+        Member member = ms.getMemberById(memberId);
         List<Follow> follower = ms.getFollower(member);
         List<Follow> followed = ms.getFollowed(member);
 
-        result.put("loginUser", member);
+//        result.put("loginUser", member);
         result.put("follower", follower);
         result.put("followed", followed);
 

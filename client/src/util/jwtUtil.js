@@ -1,38 +1,56 @@
 import axios from "axios";
 import { Cookies } from 'react-cookie'
 import { setCookie , getCookie } from "./cookieUtil";
+import { setCookie1 , getCookie1 } from "./cookieUtil2";
+import { SiOutline } from "react-icons/si";
 const jaxios = axios.create();
 const cookies = new Cookies();
 
 const beforeReq=async (config)=>{   
-    console.log("jaxios1")
+    // console.log("jaxios1")
     
-    let currentUser = getCookie('user');
-
-    console.log("jaxios2")
-
-    console.log("currentUser"+currentUser)
+    let currentUser = getCookie1('user');
     
-    console.log("currentUser.accessToken1 :"+currentUser.accessToken)
 
-    console.log("jaxios3")
+    // console.log("jaxios2")
 
-    console.log("currentUser.refreshToken1 :"+currentUser.refreshToken)
+    // console.log("currentUser"+currentUser)
 
-    const Header = { headers:{'Authorization' : `Bearer ${currentUser.accessToken}` } }
+    let currentUser2 = JSON.parse(currentUser)
 
-    const res = await axios.get(`/api/member/refresh/${currentUser.refreshToken}`, Header )
+    // console.log(currentUser);  // 객체 전체 출력
+    
+    // console.log("currentUser.accessToken :"+currentUser2.accessToken)
+
+    // console.log("jaxios3")
+
+    // console.log("currentUser.refreshToken :"+currentUser2.refreshToken)
+
+    const Header = { headers:{'Authorization' : `Bearer ${currentUser2.accessToken}` } }
+
+    const res = await axios.get(`/api/member/refresh/${currentUser2.refreshToken}`, Header )
 
     // console.log("currentUser.accessToken2 :"+currentUser.accessToken)
     // console.log("currentUser.refreshToken2 :"+currentUser.refreshToken)
+
+    // console.log("res.date"+res.data)
+    // console.log("res.date"+JSON.stringify(res.data))
+    // console.log("res.data.accessToken"+JSON.stringify(res.data.accessToken))
     
-    currentUser.accessToken = res.data.accessToken;
+    currentUser2.accessToken = res.data.accessToken;
 
-    currentUser.refreshToken = res.data.refreshToken;
+    // console.log("currentUser.accessToken3"+currentUser2.accessToken)    
 
-    setCookie('user', JSON.stringify(currentUser))
+    currentUser2.refreshToken = res.data.refreshToken;
 
-    const { accessToken } = currentUser;
+    // console.log("currentUser.refreshToken3"+currentUser2.refreshToken)
+
+    // setCookie1('user', JSON.stringify(currentUser))
+    setCookie1('user', JSON.stringify(currentUser2) , 1)
+
+    const { accessToken } = currentUser2;
+
+    // console.log("accessToken"+accessToken)
 
     config.headers.Authorization = `Bearer ${accessToken}`
 

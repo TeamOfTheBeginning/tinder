@@ -8,12 +8,15 @@ import { useDispatch } from 'react-redux';
 import { loginAction, setFollower, setFollowed } from '../store/userSlice';
 import { Cookies } from 'react-cookie';
 import { setCookie, getCookie } from '../util/cookieUtil';
+import { setCookie1, getCookie1 } from '../util/cookieUtil2';
 
 import '../style/login.css';
 import { IoLogIn, IoCreateOutline } from 'react-icons/io5';
 import RealtimeConnectInfo from './realtimeconnectinfo/RealtimeConnectInfo';
 import JoinForm from "./member/JoinForm";
 import { SiOutline } from 'react-icons/si';
+
+import jaxios from '../util/jwtUtil'
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -35,41 +38,44 @@ const Login = () => {
                 setPwd("");
                 return alert('이메일과 패스워드를 확인하세요')
             }else{              
-                console.log("result.data"+JSON.stringify( result.data ))
+                // console.log("result.data"+JSON.stringify( result.data ))
 
                 // cookies.set('user', JSON.stringify( result.data ) , {path:'/', })
 
-                setCookie( 'user', JSON.stringify(result.data) , 1)
+                // setCookie( 'user', JSON.stringify(result.data) , 1)
+
+                setCookie1('user', JSON.stringify(result.data) , 1)
 
                 // setCookie( 'accessToken', JSON.stringify(result.data.accessToken) , 1)
 
                 // setCookie( 'refreshToken', JSON.stringify(result.data.refreshToken) , 1)
 
-                const loginUserStr = JSON.stringify(result.data);
-                // 문자열 길이 계산
-                const sizeInBytes = new TextEncoder().encode(loginUserStr).length;
+                // const loginUserStr = JSON.stringify(result.data);
+                // // 문자열 길이 계산
+                // const sizeInBytes = new TextEncoder().encode(loginUserStr).length;
 
-                console.log(sizeInBytes); // 바이트 단위로 크기 출력
-                console.log(sizeInBytes / 1024 / 1024); // MB 단위로 크기 출력
+                // console.log(sizeInBytes); // 바이트 단위로 크기 출력
+                // console.log(sizeInBytes / 1024 / 1024); // MB 단위로 크기 출력
                 
                 
 
                 dispatch( loginAction( result.data ) )
                 // navigate('/main');
 
-                // const res = await axios.get('/api/member/getLoginUser');
+                const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:result.data.memberId}});
                 // const lUser = result.data.loginUser;
 
                 // lUser['follower'] = result.data.follower;
                 // lUser['followed'] = result.data.followed;
                 // cookies.set('user', JSON.stringify( lUser ) , {path:'/', })
-
-                // cookies.set('follower', JSON.stringify( result.data.follower ) , {path:'/', })
-                // cookies.set('followed', JSON.stringify( result.data.followed ) , {path:'/', })
-
                 // dispatch( loginAction( result.data.loginUser ) )
-                // dispatch( setFollower( result.data.follower ) )
-                // dispatch( setFollowed( result.data.followed ) )
+
+                cookies.set('follower', JSON.stringify( res.data.follower ) , {path:'/', })
+                cookies.set('followed', JSON.stringify( res.data.followed ) , {path:'/', })
+
+                
+                dispatch( setFollower( res.data.follower ) )
+                dispatch( setFollowed( res.data.followed ) )
 
                 handleJoin(result.data.memberId)
 

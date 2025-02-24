@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 import '../../style/match/matchingmember.css';
 
+import jaxios from '../../util/jwtUtil';
 
 const MatchingMember = (props) => {
 
@@ -47,7 +48,7 @@ const MatchingMember = (props) => {
 
   async function like(){
 
-    await axios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:props.oppositeGender.memberId })
+    await jaxios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:props.oppositeGender.memberId })
     .then((result)=>{
         console.log("result.data.msg"+result.data.msg)
 

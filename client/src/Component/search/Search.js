@@ -6,6 +6,8 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import '../../style/search.css';
 
+import jaxios from '../../util/jwtUtil';
+
 const Search = () => {
   const [memberList, setMemberList] = useState();
   const [word, setWord] = useState();
@@ -17,7 +19,7 @@ const Search = () => {
 
   async function findMemberWithNickname(){
 
-    axios.get(`/api/member2/getMembersWithNickname`, { params: { word, memberId:loginUser.memberId } })
+    jaxios.get(`/api/member2/getMembersWithNickname`, { params: { word, memberId:loginUser.memberId } })
     .then((result)=>{
       console.log(result.data.memberList)
       setMemberList(result.data.memberList)
@@ -60,7 +62,7 @@ const Search = () => {
 
   async function block(memberId){
 
-    axios.post(`/api/member2/addBlockedFromSearch`, null ,{ params: { blockedId : memberId , blockerId : loginUser.memberId } })
+    jaxios.post(`/api/member2/addBlockedFromSearch`, null ,{ params: { blockedId : memberId , blockerId : loginUser.memberId } })
     .then((result) => {
         if(result.data.msg=='yes'){alert("상대가 차단 되었습니다.")}
         else if(result.data.msg=='no')    {alert("차단 해제 되었습니다.")}        
@@ -79,7 +81,7 @@ const Search = () => {
 
     const inviteMemberListStr = inviteMemberIdList.join(",");
 
-    axios.post(`/api/chat/setMessageRoom`,null ,{ params: { 
+    jaxios.post(`/api/chat/setMessageRoom`,null ,{ params: { 
       inviteMemberIdList: inviteMemberListStr , memberId:loginUser.memberId
     } } )
     .then((result)=>{
@@ -130,7 +132,7 @@ const Search = () => {
 
     try {
       // 서버에 데이터 전송
-      const response = await axios.get('/api/member2/getMembersWithMBTI', { params:{numberValue,memberId:loginUser.memberId} });
+      const response = await jaxios.get('/api/member2/getMembersWithMBTI', { params:{numberValue,memberId:loginUser.memberId} });
       console.log(response.data); // 응답 처리
       setMemberList(response.data.memberList)
     } catch (error) {

@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loginAction, } from '../../store/userSlice';
 import {Cookies} from 'react-cookie'
 
+import jaxios from '../../util/jwtUtil';
+
 const EditProfile = () => {
     const loginUser = useSelector( state=>state.user );
     const [email, setEmail] = useState('')
@@ -65,7 +67,7 @@ const EditProfile = () => {
     
 
     useEffect(() => {
-        axios.get("/api/member/hobbies")
+        jaxios.get("/api/member/hobbies")
             .then((response) => {
                 setHobbyCategories(response.data.categories); // 카테고리 설정
                 setHobbies(response.data.hobbies); // 취미 설정
@@ -113,7 +115,7 @@ const EditProfile = () => {
     async function fileUpload(e){
         const formData = new FormData();
         formData.append('image',  e.target.files[0]);
-        const result = await axios.post('/api/member/fileupload', formData);
+        const result = await jaxios.post('/api/member/fileupload', formData);
         setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
         setImgStyle({display:"block", width:"200px"});
         setProfileImg(result.data.filename)
@@ -126,15 +128,15 @@ const EditProfile = () => {
         if(loginUser.provider != 'kakao' && pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
         if(nickname==''){ return alert('닉네임을 입력하세요');}
         try{
-            let result = await axios.post('/api/member/emailcheckUpdate', null, {params:{email}} );
+            let result = await jaxios.post('/api/member/emailcheckUpdate', null, {params:{email}} );
             if(result.data.msg == 'no' ){
                 return alert('이메일이 중복됩니다');
             }
-            result = await axios.post('/api/member/nicknamecheckUpdate', null, {params:{nickname}} );
+            result = await jaxios.post('/api/member/nicknamecheckUpdate', null, {params:{nickname}} );
             if(result.data.msg == 'no' ){
                 return alert('닉네임이 중복됩니다');
             }
-            result = await axios.post('/api/member/update', {
+            result = await jaxios.post('/api/member/update', {
                 memberId:loginUser.memberId, email, pwd, age, birthDate, gender, nickname, phone, zipnum, profileMsg:intro, profileImg,                 
             });
 
@@ -150,20 +152,20 @@ const EditProfile = () => {
 
             try {
                 // 서버에 데이터 전송
-                const response = await axios.post('/api/member2/updateMBTI',null ,{ params:{numberValue,memberId:loginUser.memberId} });
+                const response = await jaxios.post('/api/member2/updateMBTI',null ,{ params:{numberValue,memberId:loginUser.memberId} });
                 console.log(response.data); // 응답 처리
                 
             } catch (error) {
             console.error('Error sending data:', error);
             }
 
-            let result2 = await axios.post('/api/member/updateCharacteristics',{
+            let result2 = await jaxios.post('/api/member/updateCharacteristics',{
                 memberId:loginUser.memberId,
                 // ✅ 선택한 취미 전송
                 characteristics: person,
             });
 
-            let result3 = await axios.post('/api/member/updateHobbies',{
+            let result3 = await jaxios.post('/api/member/updateHobbies',{
                 memberId:loginUser.memberId,
                 // ✅ 선택한 취미 전송
                 hobbies: selectedHobbies,
@@ -171,7 +173,7 @@ const EditProfile = () => {
 
             if(result.data.msg =='ok'){
                 alert('회원 정보 수정이 완료되었습니다.')
-                const res = await axios.get('/api/member/getLoginUser');
+                const res = await jaxios.get('/api/member/getLoginUser');
                 cookies.set('user', JSON.stringify( res.data.loginUser ) , {path:'/', })
                 dispatch( loginAction( res.data.loginUser ) )
                 // navigate('/myPage');
