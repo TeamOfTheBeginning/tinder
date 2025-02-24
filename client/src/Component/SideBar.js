@@ -189,6 +189,8 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 // page import
 import WritePost from "./post/WritePost";
 import Match from "./match/Match";
+import MatchedMember from "./match/MatchedMember";
+import FindLiker from "./match/FindLiker";
 import FindChatGroupRandom from './chat/FindChatGroupRandom';
 import FindChatGroup from "./chat/FindChatGroup";
 import RealTimeChat from "./realtimechat/RealTimeChat";
@@ -372,7 +374,12 @@ const SideBar = () => {
 
         <div className='sideViewerContent'>
           {selectedMenu === 'writePost' && <WritePost closeSideViewer={closeSideViewer} />}
-          {selectedMenu === 'match' && <Match />}
+          {/* {selectedMenu === 'match' && <Match />} */}
+          {selectedMenu === 'match' && (
+            subMenu === 'matchedMember' ? <MatchedMember />
+            : subMenu === 'findLiker' ? <FindLiker />
+            : <Match openSubMenu={handleSubMenuClick} />
+          )}
           {selectedMenu === 'nearMember' && <NearMember loginUser={loginUser}/>}
           {selectedMenu === 'findChatGroupRandom' && <FindChatGroupRandom />}
           {selectedMenu === 'findChatGroup' && (

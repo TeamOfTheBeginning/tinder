@@ -118,3 +118,14 @@
     cursor: pointer;
     transition: all 0.4s ease-in-out;
 }
+
+.editForm .field .ProfileImg{
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editForm .field img{
+    height: 400px;
+}

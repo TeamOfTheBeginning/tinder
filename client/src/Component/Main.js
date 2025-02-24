@@ -60,7 +60,7 @@ const Main = () => {
 
             axios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
-                // console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
+                console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
                 setOppositeGender(result.data.oppositeGender);
             })
             .catch((err) => { console.error(err); });

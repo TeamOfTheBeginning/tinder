@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import '../../style/match/match.css';
 
-const Match = () => {
+const Match = ({openSubMenu}) => {
 
   const [oppositeGender, setOppositeGender] = useState();
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Match = () => {
     console.log(loginUser)
     axios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
         .then((result) => {
-            // console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
+            console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
             setOppositeGender(result.data.oppositeGender);
         })
         .catch((err) => { console.error(err); });
@@ -29,7 +29,7 @@ const Match = () => {
 
     axios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
     .then((result)=>{
-        console.log("result.data.oppositeGender"+JSON.stringify(result.data.oppositeGender))
+        // console.log("result.data.oppositeGender"+JSON.stringify(result.data.oppositeGender))
         setOppositeGender(result.data.oppositeGender)
     }
     ).catch((err)=>{console.error(err)}) 
@@ -52,9 +52,8 @@ const Match = () => {
     <div className='matchContainer'>
       <div className='matchBtns'>
         <button className='matchBtn' onClick={()=>rematch()}>재매칭</button>        
-        <button className='matchBtn' onClick={()=>navigate('/findLiker')}>Liker조회</button>
-        <button className='matchBtn' onClick={()=>navigate('/matchedMember')}>매칭조회</button>
-        {/* <button className='matchBtn' onClick={()=>navigate('/main')}>돌아가기</button> */}
+        <button className='matchBtn' onClick={()=> openSubMenu('findLiker')}>Liker조회</button>&nbsp;
+        <button className='matchBtn' onClick={()=> openSubMenu('matchedMember')}>매칭조회</button>&nbsp;        
       </div>
 
       <div className='matchMemberContainer'>
