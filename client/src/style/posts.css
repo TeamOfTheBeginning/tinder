@@ -184,6 +184,22 @@ button{
     }
 }
 
+.toastPopup0 {
+    position: fixed;
+    top: 2%;  /* 화면 상단에서 20px 간격 */
+    left: 50%; /* 화면 오른쪽에서 20px 간격 */
+    width: 20vw;
+    z-index: 9999; /* 다른 요소보다 위에 표시 */
+    opacity: 0; /* 초기 opacity 1 */
+    animation: fadeInOut 4.5s ease-in-out; /* 애니메이션 추가 */
+    background-color: #f7186a;
+    transform: translateX(-50%)
+}
+
+.toastPopup0Title{
+    color: white;
+}
+
 
 .toastPopup1 {
     position: fixed;

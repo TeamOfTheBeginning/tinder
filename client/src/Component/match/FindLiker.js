@@ -71,7 +71,7 @@ const FindLiker = () => {
                             })
                         ):(null)
             }
-            <button onClick={()=>navigate(-1)}>돌아가기</button>
+            {/* <button onClick={()=>navigate(-1)}>돌아가기</button> */}
         </div>
     )
 }

@@ -38,6 +38,14 @@ public class MemberInfo {
     @Column(columnDefinition = "TINYINT")
     private int smoke=0;
 
+    private int alcohol;
+
+    private int speed;
+
+    private int date;
+
+    private int workout;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "member_hobby",

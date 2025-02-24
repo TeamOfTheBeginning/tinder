@@ -357,6 +357,37 @@ public class MemberController {
         return result;
     }
 
+    @PostMapping("/updateCharacteristics")
+    public HashMap<String, Object> updateCharacteristics(@RequestBody HashMap<String, Object> payload) {
+        int memberId = (int) payload.get("memberId");
+
+        List<Integer> characteristics = (List<Integer>) payload.get("characteristics");
+        System.out.println("memberId"+memberId+"characteristics"+characteristics);
+
+        Member member = ms.getMemberById(memberId);
+        MemberInfo memberInfo = member.getMemberInfo();
+//        List<Hobby> hobbies = ms.getHobbiesByIds(characteristics);
+        System.out.println("characteristics[0]"+ characteristics.get(0));
+        System.out.println("characteristics[1]"+ characteristics.get(1));
+        System.out.println("characteristics[2]"+ characteristics.get(2));
+        System.out.println("characteristics[3]"+ characteristics.get(3));
+        System.out.println("characteristics[4]"+ characteristics.get(4));
+        memberInfo.setAlcohol(characteristics.get(0));
+        memberInfo.setAlcohol(characteristics.get(1));
+        memberInfo.setSpeed(characteristics.get(2));
+        memberInfo.setDate(characteristics.get(3));
+        memberInfo.setWorkout(characteristics.get(4));
+
+
+        System.out.println("memberInfo@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+memberInfo);
+
+        mis.updateMemberInfo(memberInfo);
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("msg", "ok");
+        return result;
+    }
+
     // 선택된 취미 업데이트 API
     @PostMapping("/updateHobbies")
     public HashMap<String, Object> updateHobbies(@RequestBody HashMap<String, Object> payload) {
