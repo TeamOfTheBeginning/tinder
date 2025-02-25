@@ -16,7 +16,6 @@ import { XyzTransition } from '@animxyz/react';
 import '@animxyz/core';
 import jaxios from '../util/jwtUtil'
 
-import '../style/mystargram.css';
 import '../style/posts.css';
 import '../style/chatbot/chatbot.css';
 
