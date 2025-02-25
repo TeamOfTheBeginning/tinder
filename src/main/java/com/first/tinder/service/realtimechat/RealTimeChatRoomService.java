@@ -71,7 +71,7 @@ public class RealTimeChatRoomService {
 
         chatRoom.getMembers().add(user);
         chatRoomRepository.save(chatRoom);
-        log.info("✅ 사용자({})가 채팅방({})에 추가됨", user.getNickname(), roomId);
+//        log.info("✅ 사용자({})가 채팅방({})에 추가됨", user.getNickname(), roomId);
         return true;
     }
 

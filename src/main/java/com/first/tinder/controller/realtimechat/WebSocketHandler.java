@@ -62,7 +62,7 @@ public class WebSocketHandler {
         roomUsers.computeIfAbsent(roomId, k -> new CopyOnWriteArraySet<>()).add(nickname);
         Set<String> users = roomUsers.get(roomId);
 
-        log.info("✅ [{}] {}님이 입장! 현재 접속 인원: {}", roomId, nickname, users.size());
+//        log.info("✅ [{}] {}님이 입장! 현재 접속 인원: {}", roomId, nickname, users.size());
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -107,12 +107,12 @@ public class WebSocketHandler {
             }
         }
 
-        log.info("❌ [{}] {}님이 퇴장! 현재 접속 인원: {}", roomId, nickname, users != null ? users.size() : 0);
+//        log.info("❌ [{}] {}님이 퇴장! 현재 접속 인원: {}", roomId, nickname, users != null ? users.size() : 0);
 
         // ✅ 현재 채팅방 사용자 목록 JSON 변환 후 전송 (추가된 코드)
         try {
             String jsonUserList = new ObjectMapper().writeValueAsString(users);
-            log.info("🚀 JSON 변환된 사용자 목록 (퇴장): {}", jsonUserList);
+//            log.info("🚀 JSON 변환된 사용자 목록 (퇴장): {}", jsonUserList);
             messagingTemplate.convertAndSend("/topic/chatroom/" + roomId + "/users", jsonUserList);
         } catch (JsonProcessingException e) {
 //            log.error("🚨 사용자 목록 JSON 변환 오류 (퇴장): ", e);
@@ -151,12 +151,12 @@ public class WebSocketHandler {
 
                 // 🔥 변경된 경우에만 전송 (기존 상태와 비교)
                 if (!jsonUserList.equals(lastUserList.get(roomId))) {
-                    log.info("🚀 [주기적 업데이트] 채팅방 [{}] 사용자 목록 변경 감지: {}", roomId, jsonUserList);
+//                    log.info("🚀 [주기적 업데이트] 채팅방 [{}] 사용자 목록 변경 감지: {}", roomId, jsonUserList);
                     messagingTemplate.convertAndSend("/topic/chatroom/" + roomId + "/users", jsonUserList);
                     lastUserList.put(roomId, jsonUserList); // 최신 상태 저장
                 }
             } catch (JsonProcessingException e) {
-                log.error("🚨 사용자 목록 JSON 변환 오류 (주기적 업데이트): ", e);
+//                log.error("🚨 사용자 목록 JSON 변환 오류 (주기적 업데이트): ", e);
             }
         }
     }

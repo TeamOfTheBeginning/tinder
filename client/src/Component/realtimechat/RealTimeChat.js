@@ -182,7 +182,7 @@ function ChatPage() {
         // ✅ 기존 접속자 목록 요청 (서버에서 수신)
         subscriptionRef.current.push(
           stompClient.subscribe(`/user/queue/chatroom/users`, (message) => {
-            console.log("🔄 기존 접속자 목록 수신:", message.body);
+            // console.log("🔄 기존 접속자 목록 수신:", message.body);
             updateUserList(message.body);
           })
         );
@@ -313,7 +313,7 @@ function ChatPage() {
             {chatRooms.map((room) => (
               <li key={room.id}>
                 <button onClick={() => joinChatRoom(room)}>
-                  {room.name} {room.isPrivate ? "(🌑 비공개)" : "(🌕 공개)"}
+                  {room.name} {room.isPrivate ? "(🌑 비공개)" : "(🌕 공개)"} - by ✏️ {room.creatorNickname}
                 </button>
 
                 {room.creatorNickname && room.creatorNickname === nickname && (
@@ -341,7 +341,7 @@ function ChatPage() {
         <div className="chat-room">
           <div className="chat-room-header">
             <h1>{selectedRoom.name}</h1>
-            <span>ദ്ദി◍•ᴗ•◍ 접속자: {userList.length}명</span>
+            <span>😊 접속자: {userList.length}명</span>
             <div className="user-list">
               {userList.length > 0 ? userList.map((user, index) => (
                 <span key={index} className="user-nickname">{user}</span>
