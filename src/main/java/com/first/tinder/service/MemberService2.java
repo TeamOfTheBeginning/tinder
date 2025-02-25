@@ -317,7 +317,7 @@ public Member getOppsiteGender2(int memberId) {
             .collect(Collectors.toList());
 
     int gender = (m.getGender() == 0) ? 1 : 0;
-    int ageRange = 3;
+    int ageRange = 4;
     int age = m.getAge();
 
     // 나이의 최솟값과 최댓값 계산
@@ -332,11 +332,11 @@ public Member getOppsiteGender2(int memberId) {
     Collections.shuffle(filteredMembers);
 
     for (Member candidate : filteredMembers) {
-        System.out.println("Candidate: " + candidate);
+//        System.out.println("Candidate: " + candidate);
 
         // 내가 차단한 사람인지 확인
         if (myBlockedMembers.contains(candidate)) {
-            System.out.println("이 후보자는 내가 차단한 사람 -> 제외");
+//            System.out.println("이 후보자는 내가 차단한 사람 -> 제외");
             continue;
         }
 
@@ -347,11 +347,11 @@ public Member getOppsiteGender2(int memberId) {
                 .collect(Collectors.toList());
 
         if (theirBlockedMembers.contains(m)) {
-            System.out.println("이 후보자는 나를 차단함 -> 제외");
+//            System.out.println("이 후보자는 나를 차단함 -> 제외");
             continue;
         }
 
-        System.out.println("Matching Success! Opposite Gender: " + candidate);
+//        System.out.println("Matching Success! Opposite Gender: " + candidate);
         oppositeGender = candidate;
         break;
     }
@@ -375,11 +375,11 @@ public Member getOppsiteGender2(int memberId) {
 
     Optional<Block> block = br.findByBlockedAndBlocker(blocked, blocker);
     if (block.isPresent()) {
-        System.out.println("차단 해제합니다.");
+//        System.out.println("차단 해제합니다.");
         br.delete(block.get());
         return "no";
     }else{
-        System.out.println("차단합니다.");
+//        System.out.println("차단합니다.");
         Block block1 = new Block();
         block1.setBlocker(blocker);
         block1.setBlocked(blocked);

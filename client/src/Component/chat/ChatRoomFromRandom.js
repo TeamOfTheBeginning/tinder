@@ -15,9 +15,7 @@ const ChatRoomFromRandom = (props) => {
 
     // console.log("props.chatGroupId"+props.chatGroupId)
 
-    const  chatGroupId  = props.chatGroupId;
-
-    
+    const  chatGroupId  = props.chatGroupId;   
     
     const navigate = useNavigate();
     const loginUser = useSelector(state=>state.user);
@@ -208,27 +206,16 @@ const ChatRoomFromRandom = (props) => {
                             }
                         })
                         .catch((err) => console.error(err));
-
-
-
-
                     }
                 })
                 .catch((err) => console.error(err));
             }, 10000); // 10초(10000ms) 대기 후 실행
 
-
-
-
-
-
-
             }else{
                 alert("이미 선택했습니다.")
             }            
         })
-        .catch((err) => console.error(err));       
-
+        .catch((err) => console.error(err));
     };
 
     function ei(ei){
@@ -258,7 +245,6 @@ const ChatRoomFromRandom = (props) => {
         {
             (chatList)?(
                 chatList.map((chat, idx)=>{
-
                     const isOwnMessage = String(chat.sender.memberId) === String(loginUser.memberId);
                     // console.log("chat.sender.memberId"+chat.sender.memberId+"loginUser.memberId"+loginUser.memberId)
                     // console.log("isOwnMessage"+isOwnMessage)

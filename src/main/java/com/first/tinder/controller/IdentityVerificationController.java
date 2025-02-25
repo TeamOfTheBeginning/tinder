@@ -27,6 +27,7 @@ public class IdentityVerificationController {
         this.restTemplate = restTemplate;
     }
 
+    //포트원 성인인증 매서드입니다.
     @PostMapping("/verifyIdentity1")
     public ResponseEntity<HashMap<String, String>> verifyIdentity1(@RequestBody IdentityVerificationRequest request) {
         HashMap<String, String> responseMap = new HashMap<>();

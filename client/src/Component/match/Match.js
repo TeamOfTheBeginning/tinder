@@ -19,13 +19,12 @@ const Match = (props) => {
   useEffect(() => {
     console.log(loginUser)
     jaxios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
-        .then((result) => {
-            console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
-            setOppositeGender(result.data.oppositeGender);
-        })
-        .catch((err) => { console.error(err); });
+    .then((result) => {
+        console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
+        setOppositeGender(result.data.oppositeGender);
+    })
+    .catch((err) => { console.error(err); });
   }, []);
-
 
   async function rematch(){
 
@@ -35,20 +34,7 @@ const Match = (props) => {
         setOppositeGender(result.data.oppositeGender)
     }
     ).catch((err)=>{console.error(err)}) 
-  }
-  
-  // async function like(){
-
-  //   await jaxios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:oppositeGender.memberId })
-  //   .then((result)=>{
-  //       console.log("result.data.msg"+result.data.msg)
-
-  //       if(result.data.msg=='yes') {alert("좋아요가 완료되었습니다!")}
-  //       else if(result.data.msg=='no') {alert("좋아요가 취소되었습니다!")}
-  //       else {alert("시스템 오류!")}
-  //   }
-  //   ).catch((err)=>{console.error(err)})    
-  // }
+  } 
 
   return (
     <div className='matchContainer'>
@@ -59,7 +45,7 @@ const Match = (props) => {
       </div>
 
       <div className='matchMemberContainer'>
-      <MatchingMember oppositeGender={oppositeGender}/>
+        <MatchingMember oppositeGender={oppositeGender}/>
       </div>
     </div>
   )

@@ -87,36 +87,36 @@ const RealtimeConnectInfo = () => {
       >
       <FaUser id='FaUser'/>
       
-        {showTooltip && (
-          <div 
-            style={{
-              position: 'absolute',
-              bottom: '70%',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              background: 'black',
-              color: 'white',
-              padding: '5px 10px',
-              borderRadius: '5px',
-              fontSize: '12px',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {userCount}
-          </div>
-        )}
-
-        {isOpen && (<div className='realTimeAccessUserList'>
-          {(userNames)?(userNames.map((userName, idx)=>{
-                      return (
-                          <div key={idx}>
-                              {userName.member.nickname}&nbsp;
-                          </div>
-                      )
-                  })):("접속한유저가 없습니다.")}
-                </div>
-        )}
+      {showTooltip && (
+        <div 
+          style={{
+            position: 'absolute',
+            bottom: '70%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: 'black',
+            color: 'white',
+            padding: '5px 10px',
+            borderRadius: '5px',
+            fontSize: '12px',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {userCount}
         </div>
+      )}
+
+      {isOpen && (<div className='realTimeAccessUserList'>
+        {(userNames)?(userNames.map((userName, idx)=>{
+          return (
+            <div key={idx}>
+              {userName.member.nickname}&nbsp;
+            </div>
+          )
+        })):("접속한유저가 없습니다.")}
+        </div>
+      )}
+      </div>
       
     </div>
   )

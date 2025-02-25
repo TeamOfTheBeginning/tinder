@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-
 import { useNavigate, useParams } from "react-router-dom";
 
 import '../../style/search.css';
@@ -18,20 +17,16 @@ const Search = () => {
   const loginUser = useSelector(state=>state.user);
 
   async function findMemberWithNickname(){
-
     jaxios.get(`/api/member2/getMembersWithNickname`, { params: { word, memberId:loginUser.memberId } })
     .then((result)=>{
       console.log(result.data.memberList)
       setMemberList(result.data.memberList)
     }
     ).catch((err)=>{console.error(err)}) 
-
   }  
 
   function enterChatRoomFromSearchedMember(memberId){
-
     navigate(`/chatRoomFromMatch/${memberId}`);
-
   }
 
   function inviteMemberForMessage(member){
@@ -128,7 +123,7 @@ const Search = () => {
 
     const numberValue = inputValue.split('').map(char => mbtiToNumber[char]).join('');
 
-    console.log("numberValue"+numberValue)
+    // console.log("numberValue"+numberValue)
 
     try {
       // 서버에 데이터 전송
@@ -143,66 +138,58 @@ const Search = () => {
 
   return (
     <div className='searchContainer'>
-        <h3>맴버를 검색합니다. <br/> 나를 차단한 사용자는 검색되지 않습니다.</h3>
-        <div className='searchContainerInput'>
-            
-            <div className='searchContainerNickname'>
-            <input onChange={(e) => { setWord(e.target.value) }}placeholder="닉네임 입력"></input><button onClick={()=>findMemberWithNickname()}>맴버</button>
-            </div>
-
-            <div className='searchContainerMBTI'>   
-              <div>
-                <form onSubmit={handleSubmit}>
-                  <input 
-                    type="text" 
-                    value={inputValue} 
-                    onChange={handleChange} 
-                    placeholder="MBTI 입력"                    
-                  />
-                  <button type="submit">MBTI</button>
-                </form>
-                {suggestions.length > 0 && (
-                  <ul>
-                    {suggestions.map((suggestion, index) => (
-                      <li 
-                        key={index}
-                      >
-                        {suggestion}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>           
-            </div>
+      <h3>맴버를 검색합니다.</h3>
+      나를 차단한 사용자는 검색되지 않습니다.<br/><br/><br/>
+        <div className='searchContainerNickname'>
+          <input onChange={(e) => { setWord(e.target.value) }}placeholder="닉네임 입력"></input><button onClick={()=>findMemberWithNickname()}>맴버</button>
         </div>
+        
+        <div className='searchContainerMBTI'>   
+          <div>
+            <form onSubmit={handleSubmit}>
+              <input 
+                type="text"
+                value={inputValue} 
+                onChange={handleChange} 
+                placeholder="MBTI 입력"                    
+              />
+              <button type="submit">MBTI</button>
+            </form>
+            {suggestions.length > 0 && (
+              <ul>
+                {suggestions.map((suggestion, index) => (
+                  <li key={index}>
+                    {suggestion}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>           
+        </div>
+        
         <div className='searchResult'>
         {
-            (memberList)?(
-              memberList.map((member, idx)=>{
-                    return (
-                        <div key={idx} className='searchMemberContainer'>
-                            
-                            
-                            <div className='searchMemberImg'>
-                              <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${member.profileImg}`}/>
-                              {member.nickname}&nbsp; 
-                            </div>
-                            <div className='searchMemberContent'>
-                              
-                              
-                              <div onClick={()=>enterChatRoomFromSearchedMember(member.memberId)}><button>쪽지</button></div>
-                              
-                              <div onClick={()=>inviteMemberForMessage(member)}><button>대화초대</button></div>
+          (memberList)?(
+            memberList.map((member, idx)=>{
+              return (
+                <div key={idx} className='searchMemberContainer'> 
+                  <div className='searchMemberImg'>
+                    <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${member.profileImg}`}/>
+                    {member.nickname}&nbsp; 
+                  </div>
 
-                              <div onClick={()=>block(member.memberId)}><button>차단/해제</button></div>
-                              
-                            </div>                            
-                        </div>
-                    )
-                })
-            ):("Loading...")
+                  <div className='searchMemberContent'>           
+                    <div onClick={()=>enterChatRoomFromSearchedMember(member.memberId)}><button>쪽지</button></div>
+                    
+                    <div onClick={()=>inviteMemberForMessage(member)}><button>대화초대</button></div>
+
+                    <div onClick={()=>block(member.memberId)}><button>차단/해제</button></div>            
+                  </div>                            
+                </div>)})
+          ):("Loading...")
         }
         </div>
+
         <div>
           <h3>초대 목록</h3>
             <ul>
@@ -212,9 +199,8 @@ const Search = () => {
                 <li key={index}>{member}</li>
               ))):("")}
             </ul>
-            <button onClick={()=>setMessageRoom()}>초대</button>
-        </div>
-      
+          <button onClick={()=>setMessageRoom()}>초대</button>
+        </div>      
     </div>
   )
 }

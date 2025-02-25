@@ -351,7 +351,7 @@ const EditProfile = () => {
                             </div>
                         </div>
                     </div>
-                    
+
                     <div className='Essential-info'>
                         <div className='field'>
                             <label>프로필 이미지 선택</label>

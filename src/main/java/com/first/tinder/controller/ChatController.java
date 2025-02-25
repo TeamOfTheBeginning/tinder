@@ -34,6 +34,7 @@ public class ChatController {
     @Autowired
     BlockService bs;
 
+    //일반 채팅 방을 조회합니다.
     @GetMapping("/findChatGroup")
     public HashMap<String,Object> findChatGroup(@RequestParam("memberId") int memberId) {
         HashMap<String,Object> result = new HashMap<>();
@@ -44,6 +45,7 @@ public class ChatController {
         return result;
     }
 
+    //익명 랜덤 채팅 방을 조회합니다.
     @GetMapping("/findChatGroupRandom")
     public HashMap<String,Object> findChatGroupRandom(@RequestParam("memberId") int memberId) {
         HashMap<String,Object> result = new HashMap<>();
@@ -54,16 +56,18 @@ public class ChatController {
         return result;
     }
 
+    //일반 채팅 방의 맴버를 조회합니다.
     @GetMapping("/findChatGroupMember")
     public HashMap<String,Object> findChatGroupMember(@RequestParam("chatGroupId") int chatGroupId) {
         HashMap<String,Object> result = new HashMap<>();
-        System.out.println("chatGroupId"+chatGroupId);
+//        System.out.println("chatGroupId"+chatGroupId);
         List<Member> chatMemberList = cs.findChatMember(chatGroupId);
-        System.out.println("chatMemberList"+chatMemberList);
+//        System.out.println("chatMemberList"+chatMemberList);
         result.put("chatMemberList",chatMemberList);
         return result;
     }
 
+    //채팅 리스트를 조회합니다.
     @GetMapping("/getChatList1")
     public HashMap<String,Object> getChatList1(@RequestParam("chatGroupId") int chatGroupId) {
         HashMap<String,Object> result = new HashMap<>();
@@ -72,6 +76,7 @@ public class ChatController {
         return result;
     }
 
+    //매칭방에서 채팅 리스트를 조회합니다.
     @GetMapping("/getChatList2")
     public HashMap<String,Object> getChatList2(@RequestParam("myMemberId") int myMemberId, @RequestParam("matchedMemberId") int matchedMemberId) {
         HashMap<String,Object> result = new HashMap<>();
@@ -83,6 +88,7 @@ public class ChatController {
         return result;
     }
 
+    //쪽지를 보냅니다.
     @PostMapping("/sendMessage")
     public HashMap<String, Object> sendMessage(
             @RequestParam("content") String content,
@@ -123,10 +129,6 @@ public class ChatController {
 //            result.put("message", "You cannot send messages. Either you blocked someone or you are blocked.");
 //            return result;
 //        }
-
-        
-        
-        
         
         // 4 메시지 전송
         cs.sendMessage(chatGroupId, sender, content);
@@ -138,8 +140,7 @@ public class ChatController {
         return result;
     }
 
-
-
+    //랜덤 쪽지방에서 쪽지를 보냅니다.
     @PostMapping("/sendMessageInAnonymityRoom")
     public HashMap<String, Object> sendMessageInAnonymityRoom(
             @RequestParam("content") String content,
@@ -181,10 +182,6 @@ public class ChatController {
             return result;
         }
 
-
-
-
-
         // 4 메시지 전송
         cs.sendMessageInAnonymityRoom(chatGroupId, sender, content);
         List<Chat> chatList = cs.findChatList(chatGroupId);
@@ -195,7 +192,7 @@ public class ChatController {
         return result;
     }
 
-
+    //쪽지방을 만듭니다.
     @PostMapping("/setMessageRoom")
     public HashMap<String,Object> setMessageRoom(@RequestParam("inviteMemberIdList") String inviteMemberIdList,@RequestParam("memberId") int memberId){
         HashMap<String,Object> result = new HashMap<>();
@@ -209,6 +206,7 @@ public class ChatController {
         return result;
     }
 
+    //익명 쪽지방을 만듭니다.
     @PostMapping("/setAnonymousMessageRoom")
     public HashMap<String,Object> setAnonymousMessageRoom(@RequestParam("memberId") int memberId){
         HashMap<String,Object> result = new HashMap<>();
@@ -217,6 +215,7 @@ public class ChatController {
         return result;
     }
 
+    //쪽지방을 비활성화 시킵니다.
     @PostMapping("/setChatRoomDeactivated")
     public HashMap<String,Object> setChatRoomDeactivated(@RequestParam("chatGroupId") int chatGroupId){
         HashMap<String,Object> result = new HashMap<>();

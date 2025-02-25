@@ -67,6 +67,7 @@ public class MemberController {
 //        return result;
 //    }
 
+    //로그인된 사람의 정보를 수신합니다.
     @GetMapping("/getLoginUser")
     public HashMap<String , Object> getLoginUser(@RequestParam("memberId") int memberId) {
         HashMap<String, Object> result = new HashMap<>();
@@ -84,6 +85,7 @@ public class MemberController {
         return result;
     }
 
+    //이메일 중복 여부 검사합니다.
     @PostMapping("/emailcheck")
     public HashMap<String, Object> emailcheck( @RequestParam("email") String email ) {
         HashMap<String, Object> result = new HashMap<>();
@@ -95,6 +97,7 @@ public class MemberController {
         return result;
     }
 
+    //카카오 로그인을 위한 매서드들 입니다.
     @Value("${kakao.client_id}")
     private String client_id;
 
@@ -103,7 +106,7 @@ public class MemberController {
 
     @RequestMapping("/kakaoStart")
     public @ResponseBody String kakaoStart() {
-        System.out.println("kakaoStart");
+//        System.out.println("kakaoStart");
         String a = "<script type='text/javascript'>"
                 + "location.href='https://kauth.kakao.com/oauth/authorize?"
                 + "client_id=" + client_id + "&"
@@ -149,23 +152,23 @@ public class MemberController {
         StringBuilder sb2 = new StringBuilder();
         while ((input2 = br2.readLine()) != null) {
             sb2.append(input2);
-            System.out.println(input2);
+//            System.out.println(input2);
         }
-        System.out.println("Gson");
+//        System.out.println("Gson");
 
-        System.out.println("Kakao Response: " + sb2.toString());
+//        System.out.println("Kakao Response: " + sb2.toString());
         Gson gson2 = new Gson();
 
-        System.out.println("gson2.fromJson(sb2.toString(), KakaoProfile.class)"+gson2.fromJson(sb2.toString(), KakaoProfile.class));
+//        System.out.println("gson2.fromJson(sb2.toString(), KakaoProfile.class)"+gson2.fromJson(sb2.toString(), KakaoProfile.class));
 
 
         KakaoProfile kakaoProfile = gson2.fromJson(sb2.toString(), KakaoProfile.class);
         KakaoProfile.KakaoAccount ac = kakaoProfile.getAccount();
         KakaoProfile.KakaoAccount.Profile pf = ac.getProfile();
-        System.out.println("id : " + kakaoProfile.getId());
-        System.out.println("KakaoAccount-Email : ");
-        System.out.println("KakaoAccount-Email : " + ac.getEmail());
-        System.out.println("Profile-Nickname : " + pf.getNickname());
+//        System.out.println("id : " + kakaoProfile.getId());
+//        System.out.println("KakaoAccount-Email : ");
+//        System.out.println("KakaoAccount-Email : " + ac.getEmail());
+//        System.out.println("Profile-Nickname : " + pf.getNickname());
 
         Member member = ms.getMemberBySnsId( kakaoProfile.getId() );
         if( member == null) {
@@ -187,14 +190,13 @@ public class MemberController {
             member.setMemberInfo( returnMemberInfo );
             member.setOpponentMemberInfo( returnOpponentMemberInfo );
             ms.insertMember(member);
-
-
         }
 //        HttpSession session = request.getSession();
 //        session.setAttribute("loginUser", member.getMemberId() );
         response.sendRedirect("http://localhost:3000/savekakaoinfo");
     }
 
+    //거리를 기준 맴버를 조회하는 매서드입니다.
     @GetMapping("/nearby")
     public List<Member> getNearbyMembers(
             @RequestParam double latitude,
@@ -207,10 +209,10 @@ public class MemberController {
 
 
 
-
+    //닉네임 중복 체크합니다.
     @PostMapping("/nicknamecheck")
     public HashMap<String, Object> nicknamecheck( @RequestParam("nickname") String nickname ) {
-        System.out.println("nicknamecheck");
+//        System.out.println("nicknamecheck");
         HashMap<String, Object> result = new HashMap<>();
         Member member = ms.getMemberByNickname(nickname);
         if( member != null )
@@ -220,6 +222,7 @@ public class MemberController {
         return result;
     }
 
+    //파일 업로드
     @Autowired
     ServletContext context;
 
@@ -244,9 +247,10 @@ public class MemberController {
     }
 
 
+    //회원가입
     @PostMapping("/join")
     public HashMap<String, Object> join(@RequestBody Member member) {
-        System.out.println("join0!!");
+//        System.out.println("join!!");
         HashMap<String, Object> result = new HashMap<>();
 
         // Date를 LocalDate로 변환
@@ -275,10 +279,9 @@ public class MemberController {
         ms.insertMember(member);
         result.put("msg", "ok");
         return result;
-
-
     }
 
+    //회원정보 수정시 닉네임 체크합니다.
     @PostMapping("/nicknamecheckUpdate")
     public HashMap<String, Object> nicknamecheckUpdate(
             @RequestParam("memberId") int memberId, @RequestParam("nickname") String nickname ) {
@@ -296,19 +299,21 @@ public class MemberController {
         return result;
     }
 
+    //회원정보 수정합니다.
     @PostMapping("/update")
     public HashMap<String, Object> update( @RequestBody Member member) {
         HashMap<String, Object> result = new HashMap<>();
         ms.updateMember( member );
-        System.out.println("업데이트 완료");
+//        System.out.println("업데이트 완료");
         result.put("msg", "ok");
         return result;
     }
 
+    //맴버를 팔로우합니다.
     @PostMapping("/follow")
     public HashMap<String, Object> follow( @RequestParam("follower") int follower, @RequestParam("followed") int followed ) {
-        System.out.println("##################################### : " + follower);
-        System.out.println("##################################### : " +followed);
+//        System.out.println("##################################### : " + follower);
+//        System.out.println("##################################### : " +followed);
 
         HashMap<String, Object> result = new HashMap<>();
         ms.addFollow( follower, followed );
@@ -316,6 +321,7 @@ public class MemberController {
         return result;
     }
 
+    //닉네임을 조회합니다.
     @GetMapping("/getNickname/{memberId}")
     public HashMap<String, Object> getNickname( @PathVariable("memberId") int memberId ){
         HashMap<String, Object> result = new HashMap<>();
@@ -333,12 +339,13 @@ public class MemberController {
         return result;
     }
 
+    //회원의 특성을 수정합니다.
     @PostMapping("/updateCharacteristics")
     public HashMap<String, Object> updateCharacteristics(@RequestBody HashMap<String, Object> payload) {
         int memberId = (int) payload.get("memberId");
 
         List<Integer> characteristics = (List<Integer>) payload.get("characteristics");
-        System.out.println("memberId"+memberId+"characteristics"+characteristics);
+//        System.out.println("memberId"+memberId+"characteristics"+characteristics);
 
         Member member = ms.getMemberById(memberId);
         MemberInfo memberInfo = member.getMemberInfo();
@@ -391,10 +398,8 @@ public class MemberController {
             @PathVariable("refreshToken") String refreshToken,
             @RequestHeader("Authorization") String authHeader
     ) throws CustomJWTException {
-        System.out.println("refresh token");
-
-        System.out.println("refresh token : " + refreshToken);
-
+//        System.out.println("refresh token");
+//        System.out.println("refresh token : " + refreshToken);
 
         HashMap<String, Object> result = new HashMap<>();
 
@@ -411,13 +416,13 @@ public class MemberController {
         Boolean expAt = checkExpiredToken( accessToken );
 
         if( expAt ){
-            System.out.println("토큰 유효기간 아직 안지났습니다. 계속 사용합니다");
+//            System.out.println("토큰 유효기간 아직 안지났습니다. 계속 사용합니다");
             result.put("accessToken", accessToken);
             result.put("refreshToken", refreshToken);
         }else{
-            System.out.println("토큰이 갱신되었습니다");
-            System.out.println("accessToken : "+accessToken);
-            System.out.println("refreshToken : "+refreshToken);
+//            System.out.println("토큰이 갱신되었습니다");
+//            System.out.println("accessToken : "+accessToken);
+//            System.out.println("refreshToken : "+refreshToken);
             // accessToken 기간 만료시  refresh 토큰으로 재 검증하여 사용자 정보 추출
             Map<String, Object> claims = JWTUtil.validateToken(refreshToken);
 
@@ -430,9 +435,8 @@ public class MemberController {
             // 기존 리프레시토큰의 유효기간이 한시간도 안남았다면 교체 , 아직 쓸만하다면 그데로 사용
             if( expRt )   newRefreshToken = JWTUtil.generateToken(claims, 60*24);
             else newRefreshToken = refreshToken;
-            System.out.println("newAccessToken : "+newAccessToken);
-            System.out.println("newRefreshToken : "+newRefreshToken);
-
+//            System.out.println("newAccessToken : "+newAccessToken);
+//            System.out.println("newRefreshToken : "+newRefreshToken);
 
             result.put("accessToken", newAccessToken);
             result.put("refreshToken", newRefreshToken);
