@@ -267,17 +267,33 @@ button{
 
 .toastPopup1 {
     position: fixed;
-    top: 90px;  /* 화면 상단에서 20px 간격 */
-    right: 20px; /* 화면 오른쪽에서 20px 간격 */
+    top: 90px;
+    right: 20px;
     width: 20vw;
-    z-index: 9999; /* 다른 요소보다 위에 표시 */
-    opacity: 0; /* 초기 opacity 1 */
-    animation: fadeInOut 4.5s ease-in-out; /* 애니메이션 추가 */
-    background-color: rgba(247, 24, 106, 0.9);
+    z-index: 9999;
+    opacity: 0;
+    border-radius: 10px;
+    animation: fadeInOut 4.5s ease-in-out, colorChangeSidebar 3s ease infinite;
+    background-image: linear-gradient(-135deg, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 200% 200%; /* 그라데이션이 확장되어 움직일 수 있도록 설정 */
+
+    color: white;
 }
 
+@keyframes colorChangeSidebar {
+    0% { background-position: 0 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0 50%; }
+}
+
+
 .toastPopup1Title{
-    color: white;
+    display: flex;
+    justify-content: center;
+
+
+    font-size: 150%;
+    font-weight: bold;
 }
 
 .toastPopup2 {
@@ -286,12 +302,20 @@ button{
     right: 20px; /* 화면 오른쪽에서 20px 간격 */
     z-index: 9998; /* 다른 요소보다 위에 표시 */
     opacity: 0; /* 초기 opacity 1 */
+    border-radius: 10px;
     animation: fadeInOut 4.5s ease-in-out; /* 애니메이션 추가 */
     background-color: rgba(0, 0, 0, .8);
+
+    color: white;
 }
 
-.toastPopup2Title{
-    color: white;
+.toastPopup2Title{    
+    display: flex;
+    justify-content: center;
+
+
+    font-size: 150%;
+    font-weight: bold;
 }
 
 @keyframes fadeInOut {

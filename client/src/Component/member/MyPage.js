@@ -8,6 +8,7 @@ import * as PortOne from "@portone/browser-sdk/v2";
 import { useDispatch } from 'react-redux';
 import { loginAction, setFollower, setFollowed } from '../../store/userSlice';
 import {Cookies} from 'react-cookie'
+import { setCookie1, getCookie1 } from '../../util/cookieUtil2';
 
 import jaxios from '../../util/jwtUtil';
 
@@ -99,21 +100,20 @@ const MyPage = ({openSubMenu}) => {
         }
         
           // /payment/complete 엔드포인트를 구현해야 합니다. 다음 목차에서 설명합니다.
-        const notified = await fetch('/api/payment/complete', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            // paymentId와 주문 정보를 서버에 전달합니다
-            body: JSON.stringify({
-                paymentId: response.paymentId,
-                memberId: loginUser.memberId,
-                // 주문 정보...
-            }),
+        const notified = await jaxios.post('/api/payment/complete', {
+            paymentId: response.paymentId,
+            memberId: loginUser.memberId,
+            // 주문 정보...
+        }, {
+            headers: { "Content-Type": "application/json" }
         });
+
         alert("결제완료")
 
-        const res = await jaxios.get('/api/member/getLoginUser');
-        const lUser = res.data.loginUser;
-        cookies.set('user', JSON.stringify( lUser ) , {path:'/', })
+        const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:loginUser.memberId}});
+        
+        setCookie1('user', JSON.stringify(res.data.loginUser) , 1)
+
         dispatch( loginAction( res.data.loginUser ) )
 
     } catch (error) {

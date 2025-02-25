@@ -197,15 +197,15 @@ const calculateSimilarity = () => {
         {jp(props.oppositeGender.memberInfo.jp)}
       </div>
 
-      <div className='matchingMemberInfo'>
-        <div>MBTI매칭률 {calculateMbtiMatchPercentage()}% </div>
-        <div>매칭률 : {calculateSimilarity()}%</div>
-        <div>거리 : {haversine(props.oppositeGender.latitude,props.oppositeGender.longitude)} km</div>
-      </div>
-
       <div className='matchingMemberMsg'>
         &nbsp;&nbsp;{props.oppositeGender.profileMsg}
       </div>
+      <br/>
+      <div className='matchingMemberInfo'>
+        <div> &nbsp;&nbsp;MBTI매칭률 {calculateMbtiMatchPercentage()}% </div>
+        <div> &nbsp;&nbsp;매칭률 : {calculateSimilarity()}%</div>
+        <div> &nbsp;&nbsp;거리 : {haversine(props.oppositeGender.latitude,props.oppositeGender.longitude)} km</div>
+      </div>      
 
       <div className='matchingMemberBtns'>
         <button className='matchBtn' onClick={()=>like()}>좋아요</button>
