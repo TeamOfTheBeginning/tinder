@@ -282,8 +282,6 @@ const EditProfile = () => {
                             onChange={handleChange} 
                             placeholder="MBTI 입력"
                         />
-                        {/* <button type="submit">전송</button> */}
-                        {/* </form> */}
                         {suggestions.length > 0 && (
                         <ul>
                             {suggestions.map((suggestion, index) => (
@@ -351,7 +349,6 @@ const EditProfile = () => {
 
                 <div className='btns'>
                     <button onClick={ ()=>{   onSubmit()    }  }>EDIT</button>
-                    {/* <button onClick={ ()=>{ navigate('/myPage')   }  }>BACK</button> */}
                 </div>
             </div>
         </div>

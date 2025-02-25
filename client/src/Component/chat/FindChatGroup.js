@@ -19,23 +19,16 @@ const FindChatGroup = ({openSubMenu}) => {
     useEffect(() => {
       // console.log(loginUser)
       jaxios.get(`/api/chat/findChatGroup`, { params: { memberId:loginUser.memberId } })
-          .then((result) => {
-              // console.log("result.data.chatGroupList: " + JSON.stringify(result.data.chatGroupList));
-              serChatGroupList(result.data.chatGroupList);
+      .then((result) => {
+          // console.log("result.data.chatGroupList: " + JSON.stringify(result.data.chatGroupList));
+          serChatGroupList(result.data.chatGroupList);
 
-          })
-          .catch((err) => { console.error(err); });
+      })
+      .catch((err) => { console.error(err); });
   }, []);
-
-
   
-
-
   return (
     <div className='findChatGroupContainer'>
-      {/* <div className='findChatGroupBtns'>
-        <button>쪽지보내기</button>
-      </div> */}
       {
         (chatGroupList)?(
           chatGroupList.map((chatGroup, idx)=>{
@@ -47,9 +40,6 @@ const FindChatGroup = ({openSubMenu}) => {
           })
         ):("Loading...")
       }
-            
-      {/* <button onClick={()=>navigate(-1)}>돌아가기</button> */}
-
     </div>
   )
 }

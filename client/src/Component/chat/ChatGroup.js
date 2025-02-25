@@ -41,8 +41,6 @@ const ChatGroup = (props) => {
         return `${year}/${month}/${day} ${hours}:${minutes}`;
     }
 
-
-
 return (
     <div className='chatGroupContainer'>
         <div className='chatGroupProfile'>
@@ -67,13 +65,6 @@ return (
         </div>
 
         <div className='chatGroupBtns'>
-            {/* <button onClick={()=>enterChatRoomFromChatGroup(props.chatGroup.chatGroupId)}>입장</button> */}
-
-            {/* <div id ="btn" onClick={()=> props.openSubMenu(`/chatRoomFromChatGroup/${props.chatGroup.chatGroupId}`)}>
-                <button>입장</button>
-            </div> */}
-
-
             <div id ="btn" onClick={()=> props.openSubMenu('chatRoomFromChatGroup', props.chatGroup.chatGroupId)}><button>입장</button></div>&nbsp;
         </div>
     </div>

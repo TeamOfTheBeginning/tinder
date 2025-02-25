@@ -9,7 +9,6 @@ import jaxios from '../../util/jwtUtil';
 
 const MatchedMember = (props) => {
 
-
     const loginUser = useSelector(state=>state.user);
     const navigate = useNavigate();
     const [matchedMemberList, serMatchedMemberList] = useState();
@@ -17,11 +16,11 @@ const MatchedMember = (props) => {
     useEffect(() => {
         console.log(loginUser)
         jaxios.get(`/api/member2/getMatchedMember`, { params: { memberId:loginUser.memberId } })
-            .then((result) => {
-                // console.log("result.data.likerList: " + JSON.stringify(result.data.likerList));
-                serMatchedMemberList(result.data.matchedMemberList);
-            })
-            .catch((err) => { console.error(err); });
+        .then((result) => {
+            // console.log("result.data.likerList: " + JSON.stringify(result.data.likerList));
+            serMatchedMemberList(result.data.matchedMemberList);
+        })
+        .catch((err) => { console.error(err); });
     }, []);
 
     function enterChatRoomFromMatchedMember(memberId){
@@ -29,12 +28,6 @@ const MatchedMember = (props) => {
         props.openSubMenu('chatRoomFromMatch', memberId)
         // navigate(`/chatRoomFromMatch/${memberId}`);
     }
-
-
-
-
-
-
 
     return (
         <div className='matchedMemberContainer'>
@@ -62,9 +55,7 @@ const MatchedMember = (props) => {
                                 )
                             })
                         ):(null)
-            }
-            {/* <button onClick={()=>navigate(-1)}>돌아가기</button> */}
-        
+            }      
         </div>
     )
 }

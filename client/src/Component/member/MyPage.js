@@ -215,11 +215,6 @@ const buyItems = async () => {
                 </ul>
                 </Modal>
 
-
-
-                        
-            
-
                 {/* <div className='userpost' >
                     {
                         (imgList)?(

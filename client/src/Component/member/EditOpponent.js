@@ -62,17 +62,17 @@ const EditOpponent = () => {
 
     useEffect(() => {
         jaxios.get("/api/member/hobbies")
-            .then((response) => {
-                setHobbyCategories(response.data.categories); // 카테고리 설정
-                setHobbies(response.data.hobbies); // 취미 설정
-                
-                // 기존 선택된 취미 초기화 (로그인 유저의 데이터에서 가져옴)
-                if (loginUser.hobbies) {
-                    const initialSelectedHobbies = loginUser.hobbies.map((h) => h.hobbyId);
-                    setSelectedHobbies(initialSelectedHobbies);
-                }
-            });
-    
+        .then((response) => {
+            setHobbyCategories(response.data.categories); // 카테고리 설정
+            setHobbies(response.data.hobbies); // 취미 설정
+            
+            // 기존 선택된 취미 초기화 (로그인 유저의 데이터에서 가져옴)
+            if (loginUser.hobbies) {
+                const initialSelectedHobbies = loginUser.hobbies.map((h) => h.hobbyId);
+                setSelectedHobbies(initialSelectedHobbies);
+            }
+        });
+
         setAge(loginUser.age);
         setBirthDate(loginUser.birthDate);
         setZipnum(loginUser.zipnum);
@@ -113,24 +113,8 @@ const EditOpponent = () => {
 
     // ✅ 회원 정보 수정 요청
     async function onSubmit(){
-        // if(email==''){ return alert('이메일을 입력하세요');}
-        // if(loginUser.provider != 'kakao' && pwd==''){ return alert('패스워드를 입력하세요');}
-        // if(loginUser.provider != 'kakao' && pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
-        // if(nickname==''){ return alert('닉네임을 입력하세요');}
         try{
-            // let result = await jaxios.post('/api/member/emailcheckUpdate', null, {params:{email}} );
-            // if(result.data.msg == 'no' ){
-            //     return alert('이메일이 중복됩니다');
-            // }
-            // result = await jaxios.post('/api/member/nicknamecheckUpdate', null, {params:{nickname}} );
-            // if(result.data.msg == 'no' ){
-            //     return alert('닉네임이 중복됩니다');
-            // }
-            // result = await jaxios.post('/api/member/updateOpponent', {
-            //     memberId:loginUser.memberId, email, pwd, age, birthDate, gender, nickname, phone, zipnum, profileMsg:intro, profileImg,                 
-            // });
-
-            // 숫자 값으로 변환
+            // 숫자 값으로 변환s
             const mbtiToNumber = {
                 "E": "0", "I": "1",
                 "N": "0", "S": "1",
@@ -226,8 +210,6 @@ const handleChange = (event) => {
                             onChange={handleChange} 
                             placeholder="MBTI 입력"
                         />
-                        {/* <button type="submit">전송</button> */}
-                        {/* </form> */}
                         {suggestions.length > 0 && (
                         <ul>
                             {suggestions.map((suggestion, index) => (
@@ -280,7 +262,6 @@ const handleChange = (event) => {
 
                 <div className='btns'>
                     <button onClick={ ()=>{   onSubmit()    }  }>EDIT</button>
-                    {/* <button onClick={ ()=>{ navigate('/myPage')   }  }>BACK</button> */}
                 </div>
             </div>
         </div>

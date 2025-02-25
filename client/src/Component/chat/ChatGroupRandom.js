@@ -18,16 +18,6 @@ const ChatGroupRandom = (props) => {
         navigate(`/chatRoomFromRandom/${chatGroupId}`);
     }
 
-    // useEffect(() => {
-    //     // console.log(loginUser)
-    //     jaxios.get(`/api/chat/findChatGroupMember`, { params: { chatGroupId:props.chatGroup.chatGroupId } })
-    //         .then((result) => {
-    //             console.log("result.data.oppositeGender: " + JSON.stringify(result.data.chatMemberList));
-    //             setChatMemberList(result.data.chatMemberList);
-    //         })
-    //         .catch((err) => { console.error(err); });
-    // }, []);
-
     const formatDate = (dateString) => {
         const date = new Date(dateString); // ISO 8601 형식의 문자열을 Date 객체로 변환
 
@@ -43,29 +33,12 @@ const ChatGroupRandom = (props) => {
 
   return (
     <div className='chatGroupRandomContainer'>
-        <div className='chatGroupRandomProfile'>
-            
+        <div className='chatGroupRandomProfile'>            
         {props.chatGroup.chatGroupName}
         ({props.chatGroup.memberCount}인)<br/>{formatDate(props.chatGroup.createdDate)}
-
-        </div>
-        <div className='chatGroupRandomMember'>
-        {/* {
-            (chatMemberList)?(
-                chatMemberList.map((chatMember, idx)=>{
-                    return (
-                        <div key={idx}>
-                            {chatMember.nickname}&nbsp;
-                        </div>
-                    )
-                })
-            ):("Loading...")
-        } */}
-        </div>
+        </div>        
 
         <div className='chatGroupRandomBtns'>
-            {/* <button onClick={()=>enterChatRoomFromChatGroupRandom(props.chatGroup.chatGroupId)}>입장</button> */}
-
             <div id ="btn" onClick={()=> props.openSubMenu('chatRoomFromRandom', props.chatGroup.chatGroupId)}><button>입장</button></div>&nbsp;
         </div>
     </div>

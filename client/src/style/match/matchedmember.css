@@ -10,16 +10,25 @@
     /* border: 1px solid black; */
 }
 
+
+
 .matchedMemberContainer button{
-    margin-left: 5px;
-    padding: 3px;
-    width: 60px;
+    width: 80px;
     height: 30px;
-    border-radius: 50px;
-    box-sizing: border-box;
-    border: none;
-    font-size: 11px;
-    color: #F7186A;
+    background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 300% 100%;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}
+
+.matchedMemberContainer button:hover{
+    background-position: 100% 0;
+    color: #fff;
 }
 
 .matchedMemberListContainer{
@@ -30,19 +39,34 @@
 
     width: 400px;
     height: 20vh;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+
+}
+
+.matchedMemberListContainer:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .matchedMemberLeft{
     
-    border: 1px solid black;
+    /* border: 1px solid black; */
 
 
 }
 
 .matchedMemberLeft img{
-    height: 100%;
+    width: 150px;
+    border-radius: 10px;
 }
 
 .matchedMemberRight{

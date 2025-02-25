@@ -44,36 +44,31 @@ const FindLiker = () => {
     return (
         <div className='findLikerContainer'>
             {
-                        (likerList)?(
-                            likerList.map((liker, idx)=>{
-                                return (
-                                    <div key={idx} className='findLikerListContainer'>
-                                        <div className='findLikerLeft'>
-                                            <img src={`http://localhost:8070/userimg/${liker.profileImg}`} />
-                                            <br/>
-                                        </div>
+                (likerList)?(
+                    likerList.map((liker, idx)=>{
+                        return (
+                            <div key={idx} className='findLikerListContainer'>
+                                <div className='findLikerLeft'>
+                                    <img src={`http://localhost:8070/userimg/${liker.profileImg}`} />
+                                    <br/>
+                                </div>
 
-                                        <div className='findLikerRight'>
-                                            <div className='findLikerProfile'>  
-                                            {liker.nickname}
-                                            ({liker.age})<br/>
-                                            {liker.profileMsg}</div>
-                                            <div className='findLikerBtns'>
-                                            <button onClick={()=>like(liker.memberId)}>좋아요</button>
-                                            {/* <button>쪽지</button> */}
-                                            </div>
-
-                                        </div>
-                                        {/* {liker.memberId} */}
-                                        
-                                        
-                                        
+                                <div className='findLikerRight'>
+                                    <div className='findLikerProfile'>  
+                                        {liker.nickname}
+                                        ({liker.age})<br/>
+                                        {liker.profileMsg}
                                     </div>
-                                )
-                            })
-                        ):(null)
+
+                                    <div className='findLikerBtns'>
+                                        <button onClick={()=>like(liker.memberId)}>좋아요</button>
+                                    </div>
+                                </div>            
+                            </div>
+                        )
+                    })
+                ):(null)
             }
-            {/* <button onClick={()=>navigate(-1)}>돌아가기</button> */}
         </div>
     )
 }
