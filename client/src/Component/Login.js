@@ -19,6 +19,10 @@ import { SiOutline } from 'react-icons/si';
 import jaxios from '../util/jwtUtil'
 
 const Login = () => {
+    const [isLoginSuccess, setIsLoginSuccess] = useState(false);
+    const [showWelcomeMessage, setShowWelcomeMessage] = useState(false);
+    const [progress, setProgress] = useState(0);
+
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const [isSignUp, setIsSignUp] = useState(false); // Sign In / Sign Up 전환 상태
@@ -38,6 +42,7 @@ const Login = () => {
                 setPwd("");
                 return alert('이메일과 패스워드를 확인하세요')
             }else{              
+                // console.log(result.data)
                 // console.log("result.data"+JSON.stringify( result.data ))
 
                 // cookies.set('user', JSON.stringify( result.data ) , {path:'/', })
@@ -62,28 +67,55 @@ const Login = () => {
                 dispatch( loginAction( result.data ) )
                 // navigate('/main');
 
-                // const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:result.data.memberId}});
-                // const lUser = result.data.loginUser;
+                const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:result.data.memberId}});
+                const lUser = res.data.loginUser;
 
-                // lUser['follower'] = result.data.follower;
-                // lUser['followed'] = result.data.followed;
+                lUser['follower'] = res.data.follower;
+                lUser['followed'] = res.data.followed;
                 // cookies.set('user', JSON.stringify( lUser ) , {path:'/', })
-                // dispatch( loginAction( result.data.loginUser ) )
+                // dispatch( loginAction( res.data.loginUser ) )
+                dispatch( setFollower( res.data.follower ) )
+                dispatch( setFollowed( res.data.followed ) )
 
-                // cookies.set('follower', JSON.stringify( res.data.follower ) , {path:'/', })
-                // cookies.set('followed', JSON.stringify( res.data.followed ) , {path:'/', })
+                // setCookie1('user', JSON.stringify(res.data.loginUser) , 1)
+                cookies.set('follower', JSON.stringify( res.data.follower ) , {path:'/', })
+                cookies.set('followed', JSON.stringify( res.data.followed ) , {path:'/', })
 
                 
-                // dispatch( setFollower( res.data.follower ) )
-                // dispatch( setFollowed( res.data.followed ) )
+                
                 // console.log("result.data.memberId"+result.data.memberId)
                 // console.log("result.data.nickname"+result.data.nickname)
 
 
                 handleJoin(result.data.memberId)
-
                 localStorage.setItem("nickname", result.data.nickname);
-                navigate('/main');
+                
+                 // 로그인 성공 상태 활성화
+            setIsLoginSuccess(true);
+
+                        // // 2초 후에 /main으로 이동
+                        // setTimeout(() => {
+                        //     navigate('/main');
+                        // }, 2000);
+
+            // 충전 애니메이션 시작
+            let percent = 0;
+            const interval = setInterval(() => {
+                percent += 10;
+                setProgress(percent);
+                if (percent >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        navigate('/main');
+                    }, 1000); // 충전 완료 후 0.5초 후 이동
+                }
+            }, 200);
+
+            
+
+
+
+
             }
 
         }catch(err){ console.error(err)}
@@ -157,6 +189,17 @@ const Login = () => {
 
     return (
         <div className="container">
+        {isLoginSuccess ? ( // 로그인 성공 시 화면 변경
+            <div className="success-message">
+                <h1>오늘 하루 설렘의 시작</h1>
+                {/* <h2>{progress}%</h2> */}
+                <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/White Square Tinder App Logo Symbol.png`} />
+                {/* <h2>설렘 충전 중... {progress}%</h2>
+                <div className="progress-bar">
+                    <div className="progress" style={{ width: `${progress}%` }}></div>
+                </div> */}
+            </div>
+        ) : (
             <div className="loginform-header">
                 <RealtimeConnectInfo />
                 <div className="toggle-btns">
@@ -172,17 +215,16 @@ const Login = () => {
                     >
                         JOIN
                     </button>
-                    <button id="kakao" onClick={()=>{
-                        window.location.href='http://localhost:8070/member/kakaoStart';
+                    <button id="kakao" onClick={() => {
+                        window.location.href = 'http://localhost:8070/member/kakaoStart';
                     }}>KAKAO LOGIN</button>
                 </div>
 
                 <div className="loginContent">
                     <div className="loginform">
-                        {/* 조건부 렌더링 */}
                         {!isSignUp ? (
                             <div className="signin">
-                                <div className="field" id="login-field">
+                                <div className="field">
                                     <label>E-MAIL</label>
                                     <input
                                         type="text"
@@ -191,7 +233,7 @@ const Login = () => {
                                         placeholder="E-MAIL"
                                     />
                                 </div>
-                                <div className="field" id="login-field">
+                                <div className="field">
                                     <label>PASSWORD</label>
                                     <input
                                         type="password"
@@ -215,8 +257,9 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-        </div>
-    );
+        )}
+    </div>
+);
 };
 
 export default Login;

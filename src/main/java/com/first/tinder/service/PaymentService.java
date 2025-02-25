@@ -11,6 +11,7 @@ import com.first.tinder.entity.Member;
 import com.first.tinder.entity.Ordering;
 import com.first.tinder.entity.Payment;
 import com.first.tinder.entity.Product;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -27,6 +28,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PaymentService {
 
     private final RestTemplate restTemplate;
@@ -43,7 +45,7 @@ public class PaymentService {
     public PaymentResponse verifyPayment(PaymentRequest request) {
         String paymentId = request.getPaymentId();
         int memberId = request.getMemberId();
-        Long orderId = request.getOrderId();
+        int orderingId = request.getOrderingId();
 
         // 1. PortOne 결제 내역 조회
         String url = "https://api.portone.io/payments/" + URLEncoder.encode(paymentId, StandardCharsets.UTF_8);
@@ -59,13 +61,29 @@ public class PaymentService {
 
         Payment payment = response.getBody();
 
-        // 2. 주문 데이터 조회 및 결제 금액 비교
-//        Order order = orderRepository.findById(orderId)
-//                .orElseThrow(() -> new RuntimeException("주문을 찾을 수 없음"));
+//        System.out.println("payment"+payment);
+//        System.out.println("payment.getAmount()"+payment.getAmount());
+//        System.out.println("payment.getAmount().getTotal())"+payment.getAmount().getTotal());
 
-//        if (!order.getAmount().equals(payment.getAmount().getTotal())) {
+        int fromprice =  payment.getAmount().getTotal();
+
+        // 2. 주문 데이터 조회 및 결제 금액 비교
+        Ordering ordering = or.findById(orderingId)
+                .orElseThrow(() -> new RuntimeException("주문을 찾을 수 없음"));
+
+        int price = ordering.getProduct().getProductPrice();
+
+//        System.out.println("ordering"+ordering);
+//
+//        System.out.println("price!=(payment.getAmount().getTotal())"+(price!=(payment.getAmount().getTotal())));
+//        if (!price.equals(payment.getAmount().getTotal())) {
 //            throw new RuntimeException("결제 금액 불일치 - 위변조 의심");
 //        }
+
+        if (price!=(payment.getAmount().getTotal())) {
+            System.out.println("위변조!!");
+            throw new RuntimeException("결제 금액 불일치 - 위변조 의심");
+        }
 
         // 3. 결제 상태 확인 후 처리
         switch (payment.getStatus()) {
