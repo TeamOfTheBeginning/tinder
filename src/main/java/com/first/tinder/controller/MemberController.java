@@ -77,7 +77,7 @@ public class MemberController {
         List<Follow> follower = ms.getFollower(member);
         List<Follow> followed = ms.getFollowed(member);
 
-//        result.put("loginUser", member);
+        result.put("loginUser", member);
         result.put("follower", follower);
         result.put("followed", followed);
 
@@ -190,8 +190,8 @@ public class MemberController {
 
 
         }
-        HttpSession session = request.getSession();
-        session.setAttribute("loginUser", member.getMemberId() );
+//        HttpSession session = request.getSession();
+//        session.setAttribute("loginUser", member.getMemberId() );
         response.sendRedirect("http://localhost:3000/savekakaoinfo");
     }
 
@@ -217,14 +217,6 @@ public class MemberController {
             result.put("msg", "no");
         else
             result.put("msg", "ok");
-        return result;
-    }
-
-    @GetMapping("/logout")
-    public HashMap<String, Object> logout(HttpSession session) {
-        HashMap<String, Object> result = new HashMap<>();
-        session.removeAttribute("loginUser");
-        result.put("msg", "ok");
         return result;
     }
 
@@ -287,30 +279,10 @@ public class MemberController {
 
     }
 
-
-
-    @PostMapping("/emailcheckUpdate")
-    public HashMap<String, Object> emailcheckUpdate( @RequestParam("email") String email, HttpSession session ) {
-        HashMap<String, Object> result = new HashMap<>();
-        int loginUserUserid = (Integer)session.getAttribute("loginUser");
-        Member member = ms.getMemberById(loginUserUserid);
-        String loginUserEmail = member.getEmail();
-        Member updateMember = ms.getMember(email);
-        if( loginUserEmail.equals(email) || updateMember == null ) {
-            result.put("msg", "ok");
-        }else{
-            result.put("msg", "no");
-        }
-        return result;
-    }
-
-
     @PostMapping("/nicknamecheckUpdate")
     public HashMap<String, Object> nicknamecheckUpdate(
-            @RequestParam("memberId") int memberId, @RequestParam("nickname") String nickname,
-            HttpSession session ) {
+            @RequestParam("memberId") int memberId, @RequestParam("nickname") String nickname ) {
         HashMap<String, Object> result = new HashMap<>();
-//        int loginUserUserid = (Integer)session.getAttribute("loginUser");  // 로그인 유저의  id 추출
         Member member = ms.getMemberById(memberId);  // id로 멤버정보 조회
         String loginUserNickname = member.getNickname();  // 조회된 정보에서 닉네임 추출
         Member updateMember = ms.getMemberByNickname(nickname);   // 수정하려면 닉네임으로 멤버조회
@@ -328,7 +300,7 @@ public class MemberController {
     public HashMap<String, Object> update( @RequestBody Member member) {
         HashMap<String, Object> result = new HashMap<>();
         ms.updateMember( member );
-        System.out.println("업데이트1 완료");
+        System.out.println("업데이트 완료");
         result.put("msg", "ok");
         return result;
     }
@@ -371,11 +343,11 @@ public class MemberController {
         Member member = ms.getMemberById(memberId);
         MemberInfo memberInfo = member.getMemberInfo();
 //        List<Hobby> hobbies = ms.getHobbiesByIds(characteristics);
-        System.out.println("characteristics[0]"+ characteristics.get(0));
-        System.out.println("characteristics[1]"+ characteristics.get(1));
-        System.out.println("characteristics[2]"+ characteristics.get(2));
-        System.out.println("characteristics[3]"+ characteristics.get(3));
-        System.out.println("characteristics[4]"+ characteristics.get(4));
+//        System.out.println("characteristics[0]"+ characteristics.get(0));
+//        System.out.println("characteristics[1]"+ characteristics.get(1));
+//        System.out.println("characteristics[2]"+ characteristics.get(2));
+//        System.out.println("characteristics[3]"+ characteristics.get(3));
+//        System.out.println("characteristics[4]"+ characteristics.get(4));
         memberInfo.setSmoke(characteristics.get(0));
         memberInfo.setAlcohol(characteristics.get(1));
         memberInfo.setSpeed(characteristics.get(2));
@@ -383,7 +355,7 @@ public class MemberController {
         memberInfo.setWorkout(characteristics.get(4));
 
 
-        System.out.println("memberInfo@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+memberInfo);
+//        System.out.println("memberInfo@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+memberInfo);
 
         mis.updateMemberInfo(memberInfo);
 
@@ -398,14 +370,14 @@ public class MemberController {
         int memberId = (int) payload.get("memberId");
 
         List<Integer> hobbyIds = (List<Integer>) payload.get("hobbies");
-        System.out.println("memberId"+memberId+"hobbyIds"+hobbyIds);
+//        System.out.println("memberId"+memberId+"hobbyIds"+hobbyIds);
 
         Member member = ms.getMemberById(memberId);
         MemberInfo memberInfo = member.getMemberInfo();
         List<Hobby> hobbies = ms.getHobbiesByIds(hobbyIds);
 
         memberInfo.setHobbies(hobbies);
-        System.out.println("memberInfo@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+memberInfo);
+//        System.out.println("memberInfo@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+memberInfo);
 //        ms.updateMember(member);
         mis.updateMemberInfo(memberInfo);
 

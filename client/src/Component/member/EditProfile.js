@@ -71,9 +71,9 @@ const EditProfile = () => {
                 setHobbyCategories(response.data.categories); // 카테고리 설정
                 setHobbies(response.data.hobbies); // 취미 설정
                 
-                console.log("loginUser.memberInfo"+JSON.stringify(loginUser.memberInfo))
+                // console.log("loginUser.memberInfo"+JSON.stringify(loginUser.memberInfo))
 
-                console.log("loginUser.memberInfo.hobbies"+loginUser.memberInfo.hobbies)
+                // console.log("loginUser.memberInfo.hobbies"+loginUser.memberInfo.hobbies)
 
                 // 기존 선택된 취미 초기화 (로그인 유저의 데이터에서 가져옴)
                 if (loginUser.memberInfo.hobbies) {
@@ -121,16 +121,11 @@ const EditProfile = () => {
     }
 
     // ✅ 회원 정보 수정 요청
-    async function onSubmit(){
-        // if(email==''){ return alert('이메일을 입력하세요');}
+    async function onSubmit(){  
         if(loginUser.provider != 'kakao' && pwd==''){ return alert('패스워드를 입력하세요');}
         if(loginUser.provider != 'kakao' && pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
         if(nickname==''){ return alert('닉네임을 입력하세요');}
         try{
-            // let result = await jaxios.post('/api/member/emailcheckUpdate', null, {params:{email}} );
-            // if(result.data.msg == 'no' ){
-            //     return alert('이메일이 중복됩니다');
-            // }
             let result = await jaxios.post('/api/member/nicknamecheckUpdate', null, {params:{memberId:loginUser.memberId, nickname}} );
             if(result.data.msg == 'no' ){
                 return alert('닉네임이 중복됩니다');
