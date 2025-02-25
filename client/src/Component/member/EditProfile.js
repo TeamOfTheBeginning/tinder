@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import SideBar from '../SideBar';
 import '../../style/mypage.css'
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -229,10 +228,9 @@ const EditProfile = () => {
     
 
     return (
-        <div className='Container'>
-            <SideBar  setWord={setWord}/>
+        <div className='SideContainer'>
             <div className='editForm'>
-                <div className="logo" style={{fontSize:"2.0rem"}}>MEMBER EDIT</div>
+                <div className="logo" style={{fontSize:"2.0rem"}}>회원정보수정</div>
                 <div className='field'>
                     <label>E-MAIL</label>
                     <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}} readOnly/>
@@ -348,7 +346,7 @@ const EditProfile = () => {
                 </div>
 
                 <div className='field'>
-                    <label>프로필 선택</label>
+                    <label>프로필 이미지 선택</label>
                     <input type="file" onChange={(e)=>{fileUpload(e)}}/>
                 </div>
                 <div className='field'>

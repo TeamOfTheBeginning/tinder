@@ -126,7 +126,7 @@ const buyItems = async () => {
 }
 
     return (
-        <div className='Container'>
+        <div className='SideContainer'>
             <div className='mypage'>
                 <div className='img'>
                     <img src={imgSrc} />
