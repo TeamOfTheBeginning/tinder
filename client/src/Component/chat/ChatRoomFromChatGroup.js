@@ -7,8 +7,12 @@ import '../../style/message/chatroomfromchatgroup.css';
 
 import jaxios from '../../util/jwtUtil';
 
-const ChatRoomFromChatGroup = () => {
-    const { chatGroupId } = useParams();
+const ChatRoomFromChatGroup = (props) => {
+    // console.log("props.chatGroupId"+props.chatGroupId)
+
+    const { chatGroupId } = props.chatGroupId;
+
+    // const { chatGroupId } = useParams();
     // console.log("chatGroupId"+chatGroupId);
 
     const navigate = useNavigate();
@@ -24,7 +28,7 @@ const ChatRoomFromChatGroup = () => {
 
     useEffect(() => {
     // console.log(loginUser)
-    jaxios.get(`/api/chat/getChatList1`, { params: { chatGroupId } })
+    jaxios.get(`/api/chat/getChatList1`, { params: { chatGroupId:props.chatGroupId } })
         .then((result) => {
             setChatList(result.data.chatList);
         })

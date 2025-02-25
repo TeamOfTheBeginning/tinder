@@ -7,7 +7,7 @@ import '../../style/match/matchedmember.css';
 
 import jaxios from '../../util/jwtUtil';
 
-const MatchedMember = () => {
+const MatchedMember = (props) => {
 
 
     const loginUser = useSelector(state=>state.user);
@@ -26,7 +26,8 @@ const MatchedMember = () => {
 
     function enterChatRoomFromMatchedMember(memberId){
         console.log(memberId);
-        navigate(`/chatRoomFromMatch/${memberId}`);
+        props.openSubMenu('chatRoomFromMatch', memberId)
+        // navigate(`/chatRoomFromMatch/${memberId}`);
     }
 
 

@@ -278,6 +278,7 @@ button{
     background-size: 200% 200%; /* 그라데이션이 확장되어 움직일 수 있도록 설정 */
 
     color: white;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
 @keyframes colorChangeSidebar {
@@ -307,6 +308,7 @@ button{
     background-color: rgba(0, 0, 0, .8);
 
     color: white;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
 .toastPopup2Title{    
