@@ -257,7 +257,7 @@ const Post = (props) => {
                     <input type="text" style={{flex:"5"}} value={replyContent} onChange={
                         (e)=>{setReplyContent(e.currentTarget.value)}
                     }/>
-                    <button id='pinkBtn' style={{flex:"1"}} onClick={
+                    <button id='replyBtn' style={{flex:"1"}} onClick={
                         ()=>{ addReply() }
                     }>작성</button>
                 </div>

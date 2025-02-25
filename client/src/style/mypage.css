@@ -62,6 +62,22 @@
     object-fit: cover; /* 이미지 크롭 효과 */
 }
 
+/* 하단부 공통 버튼 스타일 */
+.mypage .btns,
+.editForm .btns {
+    width: 100%;
+    margin: 10px 0;
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+}
+.mypage .btns #btn button,
+.editForm .btns button {
+    height: 40px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
 /* 회원정보수정 페이지 */
 .SideContainer .editForm {
     width: 100%;
@@ -115,19 +131,17 @@
 }
 
 .editForm .field .checkbox {
-    flex: 4;
     border-radius: 10px;
     background-color: #eee;
     border: none;
     margin: 10px;
-    /* width: 90%; */
 }
 
 .editForm .Essential-info,
 .editForm .optional-info{
     flex: 4;
 }
-.editForm .field .hobby-container {
+.editForm .field #hobby-container {
     width: 100%;
 }
 
@@ -138,26 +152,6 @@
     font-size: 18px;
 }
 
-.editForm .btns {
-    width: 100%;
-    margin-top: 10px;
-    display: flex;
-    box-sizing: border-box;
-    align-items: center;
-}
-
-.editForm .btns #btn {
-    flex: 1;
-    height: 40px;
-    margin-right: 5px;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.4s ease-in-out;
-}
-
 .editForm .field .ProfileImg {
     height: 400px;
     display: flex;
@@ -166,9 +160,10 @@
 }
 
 .editForm .field img {
-    height: 400px;
+    width: 100%; /* 가로 크기에 맞추기 */
+    height: auto; /* 세로 크기는 비율 유지 */
+    object-fit: contain; /* 원본 비율 유지하며 부모 요소에 맞춤 */
 }
-
 
 
 /* 반응형 스타일 */

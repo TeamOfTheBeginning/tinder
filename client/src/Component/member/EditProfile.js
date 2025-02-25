@@ -347,18 +347,19 @@ const EditProfile = () => {
                         </div>
                     </div>
                 </div>
-
-                <div className='field'>
-                    <label>프로필 이미지 선택</label>
-                    <input type="file" onChange={(e)=>{fileUpload(e)}}/>
+                
+                <div className='Essential-info'>
+                    <div className='field'>
+                        <label>프로필 이미지 선택</label>
+                        <input type="file" onChange={(e)=>{fileUpload(e)}}/>
+                    </div>
+                    <div className='field'>
+                        <label>미리보기</label>
+                        <div className='ProfileImg'><img src={imgSrc} style={imgStyle} /></div>
+                    </div>
                 </div>
-                <div className='field'>
-                    <label>미리보기</label>
-                    <div className='ProfileImg'><img src={imgSrc} style={imgStyle} /></div>
-                </div>
-
                 <div className='btns'>
-                    <button onClick={ ()=>{   onSubmit()    }  }>EDIT</button>
+                    <button onClick={ ()=>{   onSubmit()    }  }>수정완료</button>
                     {/* <button onClick={ ()=>{ navigate('/myPage')   }  }>BACK</button> */}
                 </div>
             </div>
