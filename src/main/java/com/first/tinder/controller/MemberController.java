@@ -307,11 +307,11 @@ public class MemberController {
 
     @PostMapping("/nicknamecheckUpdate")
     public HashMap<String, Object> nicknamecheckUpdate(
-            @RequestParam("nickname") String nickname,
+            @RequestParam("memberId") int memberId, @RequestParam("nickname") String nickname,
             HttpSession session ) {
         HashMap<String, Object> result = new HashMap<>();
-        int loginUserUserid = (Integer)session.getAttribute("loginUser");  // 로그인 유저의  id 추출
-        Member member = ms.getMemberById(loginUserUserid);  // id로 멤버정보 조회
+//        int loginUserUserid = (Integer)session.getAttribute("loginUser");  // 로그인 유저의  id 추출
+        Member member = ms.getMemberById(memberId);  // id로 멤버정보 조회
         String loginUserNickname = member.getNickname();  // 조회된 정보에서 닉네임 추출
         Member updateMember = ms.getMemberByNickname(nickname);   // 수정하려면 닉네임으로 멤버조회
         // 로그인유저의 닉네임과 수정하려는 닉네임 같거나
@@ -376,7 +376,7 @@ public class MemberController {
         System.out.println("characteristics[2]"+ characteristics.get(2));
         System.out.println("characteristics[3]"+ characteristics.get(3));
         System.out.println("characteristics[4]"+ characteristics.get(4));
-        memberInfo.setAlcohol(characteristics.get(0));
+        memberInfo.setSmoke(characteristics.get(0));
         memberInfo.setAlcohol(characteristics.get(1));
         memberInfo.setSpeed(characteristics.get(2));
         memberInfo.setDate(characteristics.get(3));

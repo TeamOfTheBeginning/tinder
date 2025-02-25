@@ -123,22 +123,23 @@ const EditProfile = () => {
 
     // ✅ 회원 정보 수정 요청
     async function onSubmit(){
-        if(email==''){ return alert('이메일을 입력하세요');}
+        // if(email==''){ return alert('이메일을 입력하세요');}
         if(loginUser.provider != 'kakao' && pwd==''){ return alert('패스워드를 입력하세요');}
         if(loginUser.provider != 'kakao' && pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
         if(nickname==''){ return alert('닉네임을 입력하세요');}
         try{
-            let result = await jaxios.post('/api/member/emailcheckUpdate', null, {params:{email}} );
-            if(result.data.msg == 'no' ){
-                return alert('이메일이 중복됩니다');
-            }
-            result = await jaxios.post('/api/member/nicknamecheckUpdate', null, {params:{nickname}} );
+            // let result = await jaxios.post('/api/member/emailcheckUpdate', null, {params:{email}} );
+            // if(result.data.msg == 'no' ){
+            //     return alert('이메일이 중복됩니다');
+            // }
+            let result = await jaxios.post('/api/member/nicknamecheckUpdate', null, {params:{memberId:loginUser.memberId, nickname}} );
             if(result.data.msg == 'no' ){
                 return alert('닉네임이 중복됩니다');
             }
             result = await jaxios.post('/api/member/update', {
-                memberId:loginUser.memberId, email, pwd, age, birthDate, gender, nickname, phone, zipnum, profileMsg:intro, profileImg,                 
+                memberId:loginUser.memberId, email, pwd, age,  gender, nickname, phone, zipnum, profileMsg:intro, profileImg,                 
             });
+            // birthDate,
 
             // 숫자 값으로 변환
             const mbtiToNumber = {
@@ -160,8 +161,7 @@ const EditProfile = () => {
             }
 
             let result2 = await jaxios.post('/api/member/updateCharacteristics',{
-                memberId:loginUser.memberId,
-                // ✅ 선택한 취미 전송
+                memberId:loginUser.memberId,                
                 characteristics: person,
             });
 
@@ -235,7 +235,7 @@ const EditProfile = () => {
                 <div className="logo" style={{fontSize:"2.0rem"}}>MEMBER EDIT</div>
                 <div className='field'>
                     <label>E-MAIL</label>
-                    <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
+                    <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}} readOnly/>
                 </div>
                 <div className='field'>
                     <label>PASSWORD</label>
@@ -258,10 +258,11 @@ const EditProfile = () => {
                     <label style={{flex:2}}>BIRTHDATE</label>
                     <input
                         style={{flex:3}}
-                        type="date"
+                        // type="date"
                         value={birthDate}
-                        onChange={handleBirthDateChange}
-                        required
+                        // onChange={handleBirthDateChange}
+                        // required
+                        readOnly
                     />
                 </div>
                 <div className='field'>
