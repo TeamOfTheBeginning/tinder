@@ -141,6 +141,11 @@ public class ChatBotService {
         chatbotHistoryRepository.save(chatHistory);
     }
 
+    public List<ChatBotHistory> getChatHistoryByUserId(String userId) {
+        List<ChatBotHistory> history = chatbotHistoryRepository.findByUserIdOrderByTimestampAsc(userId);
+        return history;
+    }
+
     private String extractCity(String message) {
         Map<String, String> cityMappings = Map.of(
                 "한국", "서울",
