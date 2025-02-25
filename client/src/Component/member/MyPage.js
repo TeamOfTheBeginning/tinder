@@ -8,8 +8,8 @@ import * as PortOne from "@portone/browser-sdk/v2";
 import { useDispatch } from 'react-redux';
 import { loginAction, setFollower, setFollowed } from '../../store/userSlice';
 import {Cookies} from 'react-cookie'
-
 import jaxios from '../../util/jwtUtil';
+import '../../style/mypage.css'
 
 
 const MyPage = ({openSubMenu}) => {

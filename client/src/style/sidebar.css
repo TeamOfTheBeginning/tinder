@@ -74,6 +74,7 @@
     visibility: hidden;
     pointer-events: none;
     z-index: 1002; /* MenuBar보다 아래, 로그인 폼보다 위 */
+    overflow: hidden;
 }
 
 /* SideViewer가 열릴 때 */
@@ -84,11 +85,11 @@
 }
 
 .sideViewerHeader{
-    position: relative;
+    position: absolute;
     z-index: 3;
 }
 /* SideViewer 닫기 버튼 조정 */
-.closeBtn{
+.SideViewer .sideViewerHeader .closeBtn{
     position: relative;
     width:20px; height:20px;
     top:20px; left:460px;
@@ -97,27 +98,27 @@
 	padding: 0;
 	border-radius: 50%;
 	background: transparent;
-	color: #ed6ea0;
+	color: rgba(99, 0, 33, 0.8);
 	text-indent: 100%;
 	cursor: pointer;
     z-index: 2000;  /* 다른 요소들보다 위로 배치 */
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.closeBtn:focus {
+.SideViewer .sideViewerHeader .closeBtn:focus {
     outline: solid 0 transparent;
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.23);
 }
 
-.closeBtn:hover {
+.SideViewer .sideViewerHeader .closeBtn:hover {
     transform: scale(1.5);
     box-sizing: border-box;
     color: #fff;
     background: rgba(247,24,106,0.5);
 }
 
-.closeBtn:before,
-.closeBtn::after{
+.SideViewer .sideViewerHeader .closeBtn:before,
+.SideViewer .sideViewerHeader .closeBtn::after{
     position: absolute;
     top: 15%;
     left: calc(50% - 0.0625em);
@@ -130,7 +131,7 @@
     transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.closeBtn::after{
+.SideViewer .sideViewerHeader .closeBtn::after{
     transform: rotate(-45deg);
 }
 
@@ -139,4 +140,27 @@
     overflow-y: auto;
     overflow-x: hidden; /* 가로 스크롤 없애기 */
     background-color: transparent;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .SideViewer {
+        min-width: auto;
+        max-width: 320px;
+        left: 55px; /* MenuBar 오른쪽에 위치 */
+    }
+
+    .SideViewer .sideViewerHeader .closeBtn {
+        left: calc(320px - 40px); /* 닫기 버튼 위치 조정 */
+    }
+}
+
+@media (max-width: 480px) {
+    .SideViewer {
+        min-width: 300px;
+    }
+
+    .SideViewer .sideViewerHeader .closeBtn {
+        left: calc(70% - 40px);
+    }
 }
