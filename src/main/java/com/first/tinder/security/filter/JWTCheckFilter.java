@@ -118,6 +118,9 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         if(path.startsWith("/member/refresh"))
             return true;
 
+        if(path.startsWith("/identityVerifications"))
+            return true;
+
         if(path.startsWith("/ws_real_chat"))
             return true;
 

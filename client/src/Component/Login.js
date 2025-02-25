@@ -76,6 +76,9 @@ const Login = () => {
                 
                 // dispatch( setFollower( res.data.follower ) )
                 // dispatch( setFollowed( res.data.followed ) )
+                // console.log("result.data.memberId"+result.data.memberId)
+                // console.log("result.data.nickname"+result.data.nickname)
+
 
                 handleJoin(result.data.memberId)
 
@@ -83,30 +86,6 @@ const Login = () => {
                 navigate('/main');
             }
 
-            // if( result.data.msg == 'ok'){
-
-            //     const res = await axios.get('/api/member/getLoginUser');
-            //     const lUser = res.data.loginUser;
-
-            //     lUser['follower'] = res.data.follower;
-            //     lUser['followed'] = res.data.followed;
-            //     cookies.set('user', JSON.stringify( lUser ) , {path:'/', })
-
-            //     cookies.set('follower', JSON.stringify( res.data.follower ) , {path:'/', })
-            //     cookies.set('followed', JSON.stringify( res.data.followed ) , {path:'/', })
-
-            //     dispatch( loginAction( res.data.loginUser ) )
-            //     dispatch( setFollower( res.data.follower ) )
-            //     dispatch( setFollowed( res.data.followed ) )
-
-            //     handleJoin(lUser.memberId)
-
-            //     localStorage.setItem("nickname", lUser.nickname);
-            //     navigate('/main');
-            // }else{
-            //   setPwd("");
-            //   return alert(result.data.msg);
-            // }
         }catch(err){ console.error(err)}
     }
 
@@ -121,7 +100,7 @@ const Login = () => {
             // 필요한 경우 인증 정보 추가
           },
           onConnect: () => {
-            console.log('WebSocket connected');
+            // console.log('WebSocket connected');
         
             // 서버에 접속자 수를 요청하는 메시지 발송
             stompClient.publish({
@@ -147,10 +126,10 @@ const Login = () => {
             });
           },
           onDisconnect: () => {
-            console.log('WebSocket disconnected');
+            // console.log('WebSocket disconnected');
           },
           onStompError: (frame) => {
-            console.error('STOMP error: ', frame);
+            // console.error('STOMP error: ', frame);
           },
           webSocketFactory: () => new SockJS(`${process.env.REACT_APP_ADDRESS2}/ws_real_chat`),
         });
