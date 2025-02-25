@@ -1,5 +1,5 @@
 .chatRoomFromRandomContainer{
-    width: 100vw;
+    width: 100%;
     height: 100vh;
 
     display: flex;
@@ -13,7 +13,7 @@
 .chatRoomFromRandomContents{
     /* border: 1px solid black; */
 
-    width: 40vw;
+    width: 90%;
 }
 
 .chatRoomFromRandomContents .chat {    
@@ -64,4 +64,50 @@
 .chatRoomFromRandomContents .chatContent{
     border: 1px solid black;
     width: 100%;
+}
+
+.findChatGroupRandomContainer button{
+    width: 80px;
+    height: 30px;
+    background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 300% 100%;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}
+
+.findChatGroupRandomContainer button:hover{
+    background-position: 100% 0;
+    color: #fff;
+}
+
+.findChatGroupRandomListContainer{
+    /* display: flex;
+    flex-direction: row; */
+    /* justify-content: center;
+    align-items: center; */
+
+    width: 80%;
+    /* height: 15vh;
+    border: 1px solid black; */
+
+
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 15px;
+    display: flex
+;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.findChatGroupRandomListContainer:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }

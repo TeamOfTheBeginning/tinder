@@ -7,8 +7,10 @@ import '../../style/message/chatroomfrommatch.css';
 
 import jaxios from '../../util/jwtUtil';
 
-const ChatRoomFromMatch = () => {
-    const { memberId } = useParams();
+const ChatRoomFromMatch = (props) => {
+    // const { memberId } = useParams();
+    const memberId = props.chatGroupId
+
     console.log("memberId"+memberId);
     const loginUser = useSelector(state=>state.user);
     console.log("loginUser.memberId"+loginUser.memberId);

@@ -8,7 +8,7 @@ import '../../style/match/match.css';
 
 import jaxios from '../../util/jwtUtil';
 
-const Match = ({openSubMenu}) => {
+const Match = (props) => {
 
   const [oppositeGender, setOppositeGender] = useState();
   const navigate = useNavigate();
@@ -54,8 +54,8 @@ const Match = ({openSubMenu}) => {
     <div className='matchContainer'>
       <div className='matchBtns'>
         <button className='matchBtn' onClick={()=>rematch()}>재매칭</button>        
-        <button className='matchBtn' onClick={()=> openSubMenu('findLiker')}>Liker조회</button>&nbsp;
-        <button className='matchBtn' onClick={()=> openSubMenu('matchedMember')}>매칭조회</button>&nbsp;        
+        <button className='matchBtn' onClick={()=> props.onSubMenuSelect('findLiker')}>Liker조회</button>&nbsp;
+        <button className='matchBtn' onClick={()=> props.onSubMenuSelect('matchedMember')}>매칭조회</button>&nbsp;        
       </div>
 
       <div className='matchMemberContainer'>

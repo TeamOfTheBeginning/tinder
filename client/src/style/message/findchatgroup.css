@@ -10,6 +10,13 @@
     /* border: 1px solid black; */
 
     overflow: auto;
+
+
+
+
+
+
+    
 }
 
 .findChatGroupContainer button{
@@ -45,16 +52,31 @@
 }
 
 .findChatGroupListContainer{
-    display: flex;
-    flex-direction: row;
+    /* display: flex;
+    flex-direction: row; */
     /* justify-content: center;
     align-items: center; */
 
-    width: 80%;
+    /* width: 80%;
     height: 15vh;
-    border: 1px solid black;
+    border: 1px solid black; */
 
+
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 15px;
+    display: flex
+;
+    align-items: center;
+    transition: transform 0.2s;
 }
+
+.findChatGroupListContainer:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
 
 .findChatGroupLeft{
     
