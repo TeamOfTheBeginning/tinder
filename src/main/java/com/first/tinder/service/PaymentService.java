@@ -1,12 +1,16 @@
 package com.first.tinder.service;
 
 import com.first.tinder.dao.MemberRepository;
+import com.first.tinder.dao.OrderingRepository;
+import com.first.tinder.dao.ProductRepository;
 import com.first.tinder.dto.PaymentRequest;
 import com.first.tinder.dto.PaymentResponse;
 
 
 import com.first.tinder.entity.Member;
+import com.first.tinder.entity.Ordering;
 import com.first.tinder.entity.Payment;
+import com.first.tinder.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -28,6 +32,10 @@ public class PaymentService {
     private final RestTemplate restTemplate;
 
     private final MemberRepository mr;
+
+    private final ProductRepository pr;
+
+    private final OrderingRepository or;
 
     @Value("${portone.secret.api}")
     private String portOneApiSecret;
@@ -78,5 +86,15 @@ public class PaymentService {
             default:
                 throw new RuntimeException("알 수 없는 결제 상태: " + payment.getStatus());
         }
+    }
+
+    public Ordering doOrder(int memberId, int productId) {
+        Member member = mr.findById(memberId).get();
+        Product product = pr.findById(productId).get();
+
+        Ordering ordering = new Ordering();
+        ordering.setMember(member);
+        ordering.setProduct(product);
+        return or.save(ordering);
     }
 }
