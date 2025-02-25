@@ -38,6 +38,7 @@ const Login = () => {
                 setPwd("");
                 return alert('이메일과 패스워드를 확인하세요')
             }else{              
+                // console.log(result.data)
                 // console.log("result.data"+JSON.stringify( result.data ))
 
                 // cookies.set('user', JSON.stringify( result.data ) , {path:'/', })
@@ -62,26 +63,27 @@ const Login = () => {
                 dispatch( loginAction( result.data ) )
                 // navigate('/main');
 
-                // const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:result.data.memberId}});
-                // const lUser = result.data.loginUser;
+                const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:result.data.memberId}});
+                const lUser = res.data.loginUser;
 
-                // lUser['follower'] = result.data.follower;
-                // lUser['followed'] = result.data.followed;
+                lUser['follower'] = res.data.follower;
+                lUser['followed'] = res.data.followed;
                 // cookies.set('user', JSON.stringify( lUser ) , {path:'/', })
-                // dispatch( loginAction( result.data.loginUser ) )
+                // dispatch( loginAction( res.data.loginUser ) )
+                dispatch( setFollower( res.data.follower ) )
+                dispatch( setFollowed( res.data.followed ) )
 
-                // cookies.set('follower', JSON.stringify( res.data.follower ) , {path:'/', })
-                // cookies.set('followed', JSON.stringify( res.data.followed ) , {path:'/', })
+                // setCookie1('user', JSON.stringify(res.data.loginUser) , 1)
+                cookies.set('follower', JSON.stringify( res.data.follower ) , {path:'/', })
+                cookies.set('followed', JSON.stringify( res.data.followed ) , {path:'/', })
 
                 
-                // dispatch( setFollower( res.data.follower ) )
-                // dispatch( setFollowed( res.data.followed ) )
+                
                 // console.log("result.data.memberId"+result.data.memberId)
                 // console.log("result.data.nickname"+result.data.nickname)
 
 
                 handleJoin(result.data.memberId)
-
                 localStorage.setItem("nickname", result.data.nickname);
                 navigate('/main');
             }
