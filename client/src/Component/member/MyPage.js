@@ -5,11 +5,13 @@ import { useSelector } from 'react-redux';
 import Modal from './FollowModal';
 import * as PortOne from "@portone/browser-sdk/v2";
 
-import '../../style/mypage.css';
-
 import { useDispatch } from 'react-redux';
 import { loginAction, setFollower, setFollowed } from '../../store/userSlice';
-import {Cookies} from 'react-cookie';
+import {Cookies} from 'react-cookie'
+import { setCookie1, getCookie1 } from '../../util/cookieUtil2';
+
+import jaxios from '../../util/jwtUtil';
+import '../../style/mypage.css'
 
 
 const MyPage = ({openSubMenu}) => {
@@ -99,21 +101,20 @@ const MyPage = ({openSubMenu}) => {
         }
         
           // /payment/complete 엔드포인트를 구현해야 합니다. 다음 목차에서 설명합니다.
-        const notified = await fetch('/api/payment/complete', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            // paymentId와 주문 정보를 서버에 전달합니다
-            body: JSON.stringify({
-                paymentId: response.paymentId,
-                memberId: loginUser.memberId,
-                // 주문 정보...
-            }),
+        const notified = await jaxios.post('/api/payment/complete', {
+            paymentId: response.paymentId,
+            memberId: loginUser.memberId,
+            // 주문 정보...
+        }, {
+            headers: { "Content-Type": "application/json" }
         });
+
         alert("결제완료")
 
-        const res = await axios.get('/api/member/getLoginUser');
-        const lUser = res.data.loginUser;
-        cookies.set('user', JSON.stringify( lUser ) , {path:'/', })
+        const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:loginUser.memberId}});
+
+        setCookie1('user', JSON.stringify(res.data.loginUser) , 1)
+
         dispatch( loginAction( res.data.loginUser ) )
 
     } catch (error) {
@@ -126,11 +127,13 @@ const buyItems = async () => {
 }
 
     return (
-        <div className='Container'>
+        <div className='SideContainer'>
             <div className='mypage'>
-                <div className='img'>
-                    <img src={imgSrc} />
-                    <div></div>
+                <div className='profileImage'>
+                    <div className='img'>
+                        <img src={imgSrc} />
+                    </div>
+                    <div className='imgBg'></div>
                 </div>
 
                 <div className='userinfo'>
@@ -184,9 +187,12 @@ const buyItems = async () => {
                 </div>
 
                 <div className='btns' >
-                    <div id ="btn" onClick={()=> openSubMenu('editProfile')}><button>정보수정</button></div>&nbsp;
-                    <div id ="btn" onClick={()=> openSubMenu('editOpponent')}><button>상대정보</button></div>&nbsp;
-                    <div id ="btn" onClick={()=>{requestPayment()}}><button>충전</button></div>&nbsp;
+                    <div id ="btn" onClick={()=> openSubMenu('editProfile')}><button>정보수정</button></div>
+                    
+                    <div id ="btn" onClick={()=> openSubMenu('editOpponent')}><button>상대정보</button></div>
+                    
+                    <div id ="btn" onClick={()=>{requestPayment()}}><button>충전</button></div>
+                    
                     <div id ="btn" onClick={()=>{buyItems()}}><button>결제</button></div>
                 </div>
 

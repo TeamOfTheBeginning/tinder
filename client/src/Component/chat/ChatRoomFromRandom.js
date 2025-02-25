@@ -5,12 +5,19 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import '../../style/message/chatroomfromrandom.css';
 
+import jaxios from '../../util/jwtUtil';
 
 
+const ChatRoomFromRandom = (props) => {
+    // props
 
-const ChatRoomFromRandom = () => {
+    // const { chatGroupId } = useParams();
 
-    const { chatGroupId } = useParams();
+    // console.log("props.chatGroupId"+props.chatGroupId)
+
+    const  chatGroupId  = props.chatGroupId;
+
+    
     
     const navigate = useNavigate();
     const loginUser = useSelector(state=>state.user);
@@ -35,7 +42,7 @@ const ChatRoomFromRandom = () => {
 
     useEffect(() => {
         const fetchChatList = () => {
-            axios.get(`/api/chat/getChatList1`, { params: { chatGroupId } })
+            jaxios.get(`/api/chat/getChatList1`, { params: { chatGroupId:props.chatGroupId } })
                 .then((result) => {
                     if (JSON.stringify(chatList) !== JSON.stringify(result.data.chatList)) {
                         setChatList(result.data.chatList);
@@ -52,9 +59,9 @@ const ChatRoomFromRandom = () => {
     
 
     useEffect(() => {
-        axios.get(`/api/quiz/getQuizList`, { params: { chatGroupId } })
+        jaxios.get(`/api/quiz/getQuizList`, { params: { chatGroupId:props.chatGroupId } })
             .then((result) => {
-                console.log("result.data" + result.data.chatGroupQuizList);
+                // console.log("result.data" + result.data.chatGroupQuizList);
                 setChatGroupQuizList(result.data.chatGroupQuizList);
                 scheduleQuizzes(result.data.chatGroupQuizList); // 여기에 추가
             })
@@ -71,6 +78,7 @@ const ChatRoomFromRandom = () => {
                 setTimeout(() => {
                     setVisibleQuizzes((prev) => [...prev, quiz]);
                     setChatWaiting(true);
+                    console.log("ChatWaiting"+chatWaiting)
                 }, delay);
             } else {
                 setVisibleQuizzes((prev) => [...prev, quiz]);
@@ -97,8 +105,8 @@ const ChatRoomFromRandom = () => {
         if (chatWaiting) return;
 
         try {
-            const response = await axios.post(`/api/chat/sendMessageInAnonymityRoom`, null, {
-                params: { content: message, chatGroupId, sender: loginUser.memberId }
+            const response = await jaxios.post(`/api/chat/sendMessageInAnonymityRoom`, null, {
+                params: { content: message, chatGroupId:props.chatGroupId, sender: loginUser.memberId }
             });
 
             
@@ -127,7 +135,7 @@ const ChatRoomFromRandom = () => {
     async function setTempUp(){
         if (tempWaiting) return;
 
-        axios.post(`/api/member2/setTempUp`, null ,{ params: { chatGroupId,memberId:loginUser.memberId } })
+        jaxios.post(`/api/member2/setTempUp`, null ,{ params: { chatGroupId:props.chatGroupId,memberId:loginUser.memberId } })
         .then((result) => {
             if(result.data.msg=='yes'){
                 alert("상대 온도가 상승되었습니다.")
@@ -142,7 +150,7 @@ const ChatRoomFromRandom = () => {
         if (tempWaiting) return;
 
         if(window.confirm("상대방을 차단합니다.")){
-            axios.post(`/api/member2/setTempDown`, null ,{ params: { chatGroupId,memberId:loginUser.memberId } })
+            jaxios.post(`/api/member2/setTempDown`, null ,{ params: { chatGroupId:props.chatGroupId,memberId:loginUser.memberId } })
             .then((result) => {
                 if(result.data.msg=='yes'){
                     alert("상대 온도가 하락 되었습니다.")
@@ -152,7 +160,7 @@ const ChatRoomFromRandom = () => {
             })
             .catch((err) => { console.error(err); });            
 
-            axios.post(`/api/member2/addBlockedFromRandomChat`, null ,{ params: { chatGroupId,memberId:loginUser.memberId } })
+            jaxios.post(`/api/member2/addBlockedFromRandomChat`, null ,{ params: { chatGroupId:props.chatGroupId,memberId:loginUser.memberId } })
             .then((result) => {
                 if(result.data.msg=='yes')
                     alert("상대가 차단 되었습니다.")
@@ -168,7 +176,7 @@ const ChatRoomFromRandom = () => {
         // setSelectedAnswer(answer);
         setWaiting(true);
 
-        axios.post(`/api/quiz/submitAnswer`,null ,{ params:{chatGroupQuizId, memberId:loginUser.memberId,answer}})
+        jaxios.post(`/api/quiz/submitAnswer`,null ,{ params:{chatGroupQuizId, memberId:loginUser.memberId,answer}})
         .then((res) => {
             if(res.data.result==="yes"){
                 alert("선택완료")
@@ -177,7 +185,7 @@ const ChatRoomFromRandom = () => {
 
                   // 10초 후 상대방 답변 확인
             setTimeout(() => {
-                axios.post(`/api/quiz/guessTheAnswer`, null, { 
+                jaxios.post(`/api/quiz/guessTheAnswer`, null, { 
                     params: { chatGroupQuizId, memberId: loginUser.memberId, answer } 
                 })
                 .then((res) => {
@@ -189,8 +197,8 @@ const ChatRoomFromRandom = () => {
                         alert("의견이 갈렸습니다! 대화방이 종료됩니다.");
                         
                         
-                        axios.post(`/api/chat/setChatRoomDeactivated`, null, { 
-                            params: { chatGroupId } 
+                        jaxios.post(`/api/chat/setChatRoomDeactivated`, null, { 
+                            params: { chatGroupId:props.chatGroupId } 
                         })
                         .then((res) => {
                             if (res.data.result === "yes") {
@@ -252,8 +260,8 @@ const ChatRoomFromRandom = () => {
                 chatList.map((chat, idx)=>{
 
                     const isOwnMessage = String(chat.sender.memberId) === String(loginUser.memberId);
-                    console.log("chat.sender.memberId"+chat.sender.memberId+"loginUser.memberId"+loginUser.memberId)
-                    console.log("isOwnMessage"+isOwnMessage)
+                    // console.log("chat.sender.memberId"+chat.sender.memberId+"loginUser.memberId"+loginUser.memberId)
+                    // console.log("isOwnMessage"+isOwnMessage)
 
                     return (
                         <div key={idx} className={`chat ${isOwnMessage ? 'myChat' : ''}`}>

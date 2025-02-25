@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 
 import '../../style/nearmember.css';
 
+import jaxios from '../../util/jwtUtil';
+
 const NearMember = () => {
     const loginUser = useSelector(state => state.user);
     const [nearbyMembers, setNearbyMembers] = useState([]);
@@ -22,7 +24,7 @@ const NearMember = () => {
         console.log('fetchNearbyMembers 실행');
         console.log('loginUser:', loginUser);
         try {
-            const response = await axios.get('/api/member/nearby', {
+            const response = await jaxios.get('/api/member/nearby', {
                 params: {
                     latitude: loginUser.latitude,
                     longitude: loginUser.longitude,
@@ -60,7 +62,7 @@ const NearMember = () => {
 
     async function like(memberId){
 
-        await axios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , memberId })
+        await jaxios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , memberId })
         .then((result)=>{
             console.log("result.data.msg"+result.data.msg)
     

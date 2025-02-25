@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 import '../../style/message/chatgroup.css';
 
+import jaxios from '../../util/jwtUtil';
+
 const ChatGroup = (props) => {
     
     const [chatMemberList, setChatMemberList] = useState();
@@ -12,15 +14,15 @@ const ChatGroup = (props) => {
     const loginUser = useSelector(state=>state.user);
 
     function enterChatRoomFromChatGroup(chatGroupId){
-        console.log(chatGroupId);
+        // console.log(chatGroupId);
         navigate(`/chatRoomFromChatGroup/${chatGroupId}`);
     }
 
     useEffect(() => {
         // console.log(loginUser)
-        axios.get(`/api/chat/findChatGroupMember`, { params: { chatGroupId:props.chatGroup.chatGroupId } })
+        jaxios.get(`/api/chat/findChatGroupMember`, { params: { chatGroupId:props.chatGroup.chatGroupId } })
             .then((result) => {
-                console.log("result.data.oppositeGender: " + JSON.stringify(result.data.chatMemberList));
+                // console.log("result.data.oppositeGender: " + JSON.stringify(result.data.chatMemberList));
                 setChatMemberList(result.data.chatMemberList);
             })
             .catch((err) => { console.error(err); });
@@ -65,7 +67,14 @@ return (
         </div>
 
         <div className='chatGroupBtns'>
-            <button onClick={()=>enterChatRoomFromChatGroup(props.chatGroup.chatGroupId)}>입장</button>
+            {/* <button onClick={()=>enterChatRoomFromChatGroup(props.chatGroup.chatGroupId)}>입장</button> */}
+
+            {/* <div id ="btn" onClick={()=> props.openSubMenu(`/chatRoomFromChatGroup/${props.chatGroup.chatGroupId}`)}>
+                <button>입장</button>
+            </div> */}
+
+
+            <div id ="btn" onClick={()=> props.openSubMenu('chatRoomFromChatGroup', props.chatGroup.chatGroupId)}><button>입장</button></div>&nbsp;
         </div>
     </div>
   )

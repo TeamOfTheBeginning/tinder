@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 import '../../style/match/findliker.css';
 
+import jaxios from '../../util/jwtUtil';
+
 const FindLiker = () => {
 
     const loginUser = useSelector(state=>state.user);
@@ -14,7 +16,7 @@ const FindLiker = () => {
 
     useEffect(() => {
         console.log(loginUser)
-        axios.get(`/api/member2/findLiker`, { params: { memberId:loginUser.memberId } })
+        jaxios.get(`/api/member2/findLiker`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
                 console.log("result.data.likerList: " + JSON.stringify(result.data.likerList));
                 serLikerList(result.data.likerList);
@@ -24,7 +26,7 @@ const FindLiker = () => {
 
     async function like(memberId){
 
-        await axios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:memberId })
+        await jaxios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:memberId })
         .then((result)=>{
             console.log("result.data.msg"+result.data.msg)
     
@@ -71,7 +73,7 @@ const FindLiker = () => {
                             })
                         ):(null)
             }
-            <button onClick={()=>navigate(-1)}>돌아가기</button>
+            {/* <button onClick={()=>navigate(-1)}>돌아가기</button> */}
         </div>
     )
 }

@@ -47,7 +47,8 @@
 .field img {
     flex: 1 1 auto; 
     border-radius: 20px;
-    height:50px;
+    height:200px;
+    width: 200px;
 }
 
 /* 버튼 */

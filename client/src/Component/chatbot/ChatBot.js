@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "../../style/chatbot/chatbot.css";
 
+import jaxios from '../../util/jwtUtil';
+
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -10,7 +12,7 @@ const ChatBot = () => {
   const [userId] = useState(() => {
     let storedUserId = localStorage.getItem("chatbotUserId");
     if (!storedUserId) {
-      storedUserId = `user-${Math.random().toString(36).substr(2, 9)}`;
+      storedUserId = `user-${Math.random().toString(36).substring(2, 9)}`;
       localStorage.setItem("chatbotUserId", storedUserId);
     }
     return storedUserId;
@@ -19,7 +21,7 @@ const ChatBot = () => {
   useEffect(() => {
     const fetchChatHistory = async () => {
       try {
-        const response = await axios.get(`http://localhost:8070/api/chatbot/history/${userId}`);
+        const response = await jaxios.get(`http://localhost:8070/api/chatbot/history/${userId}`);
         if (response.data && response.data.history) {
           setMessages(response.data.history);
         } else {
@@ -48,11 +50,11 @@ const ChatBot = () => {
     if (!input.trim()) return;
 
     const newMessages = [...messages, { role: "user", content: input }];
-    setMessages(newMessages);
+    setMessages([...newMessages, { role: "assistant", content: "답변을 작성 중..." }]);
     setInput("");
 
     try {
-      const response = await axios.post(`http://localhost:8070/api/chatbot/ask/${userId}`, {
+      const response = await jaxios.post(`http://localhost:8070/api/chatbot/ask/${userId}`, {
         message: input,
       });
 

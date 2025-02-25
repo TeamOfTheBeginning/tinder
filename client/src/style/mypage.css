@@ -1,239 +1,252 @@
-/* 전체 컨테이너 */
-.side-container {
-    position: fixed;
-    left: 55px; /* 사이드바(MenuBar)와 겹치지 않도록 조정 */
-    top: 0;
-    height: 100vh;
-    background-color: transparent; /* 배경 제거 */
+.SideContainer {
+    width: 100%;
+    overflow: hidden;
+}
+
+.editForm .info-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1001;
+    flex-direction: column;
+    gap: 20px; /* 요소 간격 추가 */
 }
 
-/* 프로필 수정 폼 */
-.edit-profile-form {
-    width: 450px;
-    max-height: calc(100vh - 50px);
-    overflow-y: auto; /* 내부 스크롤 */
-    padding: 20px;
-    border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.9); /* 배경을 약간 투명하게 */
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* 제목 */
-.edit-profile-form .logo {
-    font-size: 2rem;
-    text-align: center;
-    font-weight: bold;
-    color: #f7186a;
-    margin-bottom: 20px;
-}
-
-/* 입력 필드 */
-.field {
-    /*margin-bottom: 15px;*/
+.editForm .essential-info,
+.editForm .optional-info {
+    flex: 1; /* 동일한 비율로 크기 조정 */
     display: flex;
     flex-direction: column;
 }
 
-.field label {
-    font-size: 14px;
-    font-weight: bold;
-    color: #555;
-    margin-bottom: 5px;
-}
-
-.field select {
+/* 마이페이지 */
+.mypage {
     width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-}
-
-/* 버튼 그룹 */
-.btns {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
 }
-
-/* 수정 버튼 */
-.edit-btn {
-    width: calc(50% - 10px);
-    padding: 10px;
-    border-radius: 25px;
-    font-weight: bold;
-    transition: all 0.5s ease-in-out;
+.mypage .userinfo {
+    width: 100%;
     display: flex;
+    justify-content: space-around;
+}
+.mypage .userinfo .field {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
     align-items: center;
+}
+
+/* mypage 프로필 이미지 영역 */
+.mypage .profileImage {
+    position: relative;
+    display: flex;
     justify-content: center;
-    flex: 0.3;
-    font-size: 20px;
-    background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    align-items: center;
+    width: 100%;
+}
+
+/* 이미지 배경 효과 */
+.mypage .profileImage .imgBg {
+    position: absolute;
+    bottom: 0%;
+    width: calc(100% + 50px);
+    height: calc(100% + 50px);
+    border-radius: 0 0 50% 50%;
+    background-image: linear-gradient(-45deg, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
     background-size: 300% 100%;
-    color: #fff;
-    border-radius: 50px;
-    border: none;
-    cursor: pointer;
-}
-
-.edit-btn:hover {
-    background-position: 100% 0;
-}
-
-/* 프로필 이미지 미리보기 */
-.profile-img-preview {
-    text-align: center;
-    margin-top: 10px;
-}
-
-.profile-img-preview img {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #f7186a;
-}
-
-/* 취미 선택 */
-#hobby-container {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-#hobby-container label {
-    display: flex;
-    align-items: center;
-    padding: 5px 10px;
-    background: #f8f8f8;
-    border-radius: 10px;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-#hobby-container input[type="checkbox"] {
-    margin-right: 5px;
-}
-
-/* 반응형 스타일 */
-@media (max-width: 600px) {
-    .edit-profile-form {
-        width: 90%;
-        max-height: 85vh;
-        padding: 15px;
-    }
-
-    .field select {
-        font-size: 14px;
-    }
-
-    .btns {
-        flex-direction: column;
-    }
-
-    .edit-btn {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-}
-
-.container{
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 100vh;
-    background-image: linear-gradient(-35deg, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
-    background-size: 400% 100%;
     animation: colorChange 10s ease infinite;
+    z-index: 0;
+    filter: blur(20px);
 }
 
 @keyframes colorChange {
-    0% { background-position: 0 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0 50%; }
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
 }
 
-.editForm {
-    width: 500px;
-    /* height: 300px; */
-    padding: 20px;
-    margin-top: 50px;
-    min-width: 500px;
-    border-radius: 20px;
+/* 프로필 이미지 */
+.mypage .profileImage .img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+.mypage .profileImage .img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* 하단부 공통 버튼 스타일 */
+.mypage .btns,
+.editForm .btns {
+    width: 100%;
+    margin: 10px 0;
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+}
+.mypage .btns #btn button,
+.editForm .btns button {
+    height: 40px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+/* 회원정보수정 페이지 */
+.SideContainer .editForm {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgba(255,255,255,0.6);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.SideContainer .editForm .logo {
+    padding-top: 15px;
+    font-size: 2.0rem;
 }
 
 .editForm .field {
     width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin: 5px 0;
 }
+
+/* .editForm #hobby {
+    display: flex;
+    flex-direction: column;
+    background-color: #c3c3c3;
+} */
 
 .editForm .field label {
+    width: 80px;
+    display: flex;
+    align-items: center;
     color: #f7186a;
     font-weight: bold;
-    flex: 1;
-    margin: 5px 0;
+    font-size: 14px;
 }
 
-.editForm .field input, 
-.editForm .field div {
-    flex: 4;
-    border-radius: 10px;
-    background-color: #eee;
-    border: none;
-    padding: 12px 15px;
+.editForm .field input {
+    flex-grow: 10;
+    flex-basis: 0;
     margin: 8px 0;
     width: 70%;
 }
 
-.editForm .field select, 
+.editForm .field select,
 .editForm .field div {
-    flex: 4;
-    border-radius: 10px;
-    background-color: #eee;
-    border: none;
-    padding: 12px 15px;
+    flex-grow: 4;
+    flex-basis: 0;
     margin: 8px 0;
     width: 75%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    border: none;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.editForm .field .checkbox{
-    flex: 4;
+.editForm .field .checkbox {
     border-radius: 10px;
     background-color: #eee;
     border: none;
-    padding: 12px 15px;
-    margin: 8px 0;
-    /* width: 90%; */
+    box-shadow: none;
 }
 
+.editForm .essential-info,
+.editForm .optional-info {
+    flex-grow: 4;
+    flex-basis: 0;
+}
 
-.editForm .btns{
+/* 취미 영역 */
+.editForm .hobby .hobby-container {
     width: 100%;
-    margin-top: 10px;
     display: flex;
-    box-sizing: border-box;
+    flex-direction: column;
+}
+
+.editForm .hobby .hobby-form{
+    display: flex;
+    flex-direction: column;
+}
+
+#n1{
+    /* border: 1px solid red; */
+    margin-left: 10px; padding: 3px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+#n1 label{
+    width: 70%;
+    /* border: 1px solid blue; */
+}
+
+.editForm .title {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.editForm .field .ProfileImg {
+    height: 400px;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
-.editForm .btns #btn{
-    flex: 1;
-    height: 40px;
-    margin-right: 5px;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.4s ease-in-out;
+.editForm .field img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .editForm .field label {
+        justify-content: center;
+        width: fit-content;
+    }
+    .mypage .btns {
+        flex-direction: column;
+        align-items: center;
+    }
+    .mypage .btns #btn button,
+    .editForm .btns button {
+        margin: 10px;
+        width: 250px;
+    }
+    .editForm .field {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .mypage .btns {
+        flex-direction: column;
+        align-items: center;
+    }
+    .mypage .btns #btn {
+        margin: 5px;
+    }
+    .editForm .field {
+        flex-direction: column;
+        align-items: center;
+    }
 }

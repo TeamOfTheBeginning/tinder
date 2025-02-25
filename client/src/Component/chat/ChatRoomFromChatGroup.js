@@ -5,8 +5,14 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import '../../style/message/chatroomfromchatgroup.css';
 
-const ChatRoomFromChatGroup = () => {
-    const { chatGroupId } = useParams();
+import jaxios from '../../util/jwtUtil';
+
+const ChatRoomFromChatGroup = (props) => {
+    // console.log("props.chatGroupId"+props.chatGroupId)
+
+    const { chatGroupId } = props.chatGroupId;
+
+    // const { chatGroupId } = useParams();
     // console.log("chatGroupId"+chatGroupId);
 
     const navigate = useNavigate();
@@ -22,7 +28,7 @@ const ChatRoomFromChatGroup = () => {
 
     useEffect(() => {
     // console.log(loginUser)
-    axios.get(`/api/chat/getChatList1`, { params: { chatGroupId } })
+    jaxios.get(`/api/chat/getChatList1`, { params: { chatGroupId:props.chatGroupId } })
         .then((result) => {
             setChatList(result.data.chatList);
         })
@@ -45,7 +51,7 @@ const ChatRoomFromChatGroup = () => {
 
     async function sendMessage() {
         try {
-            const response = await axios.post(`/api/chat/sendMessage`, null, {
+            const response = await jaxios.post(`/api/chat/sendMessage`, null, {
                 params: { content: message, chatGroupId, sender: loginUser.memberId }
             });
     

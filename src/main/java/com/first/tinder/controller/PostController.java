@@ -86,7 +86,7 @@ public class PostController {
     @GetMapping("/getPostList")
     public HashMap<String,Object> getPostList(
             @RequestParam("word") String word, @RequestParam("page") int page ) {
-        System.out.println("getPostList");
+        System.out.println("getPostList@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         HashMap<String,Object> result = new HashMap<>();
         Paging paging = new Paging();
         paging.setPage( page );

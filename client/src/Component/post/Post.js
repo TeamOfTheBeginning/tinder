@@ -14,6 +14,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setFollower } from '../../store/userSlice';
 import { Cookies } from 'react-cookie';
 
+import jaxios from '../../util/jwtUtil'
+
 const settings = {
     dot:false,
     arrows:false,
@@ -31,9 +33,9 @@ const Post = (props) => {
     const [viewVal, setViewVal] = useState(false)
     const [replyContent, setReplyContent] = useState('')
     const [replyList, setReplyList] = useState([])
-
+    
     const dispatch = useDispatch()
-    const cookies = new Cookies();
+    const cookies = new Cookies();    
 
     // redux에 저장된 로그인 유저 로딩
     let loginUser = useSelector( state=>state.user ); 
@@ -49,19 +51,19 @@ const Post = (props) => {
 
             // setPostWriter( getNickname( props.post.member.nickname ) )
 
-            axios.get(`/api/post/getImages/${props.post.postId}` )
+            jaxios.get(`/api/post/getImages/${props.post.postId}` )
             .then((result)=>{ 
                 // console.log("result.data.imgList"+JSON.stringify(result.data.imgList))
                 setImgList( result.data.imgList );
             }).catch((err)=>{console.error(err)})
 
-            axios.get(`/api/post/getLikeList/${props.post.postId}`)
+            jaxios.get(`/api/post/getLikeList/${props.post.postId}`)
             .then((result)=>{
                 // console.log("result.data.likeList"+JSON.stringify(result.data.likeList))
                  setLikeList( [...result.data.likeList ] );
             }).catch((err)=>{console.error(err)})
 
-            axios.get(`/api/post/getReplyList/${props.post.postId}`)
+            jaxios.get(`/api/post/getReplyList/${props.post.postId}`)
             .then((result)=>{
                 // console.log(result.data.replyList2)
                 let temp = [...result.data.replyList2];
@@ -76,9 +78,9 @@ const Post = (props) => {
 
     async function onFollow(memberId){
         if( window.confirm(`${props.post.member.nickname} 님을 팔로우 하시겠습니까?`) ){
-            let result = await axios.post('/api/member/follow',null, {params:{ follower:loginUser.memberId,  followed:memberId }});
+            let result = await jaxios.post('/api/member/follow',null, {params:{ follower:loginUser.memberId,  followed:memberId }});
 
-            result = await axios.get('/api/member/getLoginUser')
+            result = await jaxios.get('/api/member/getLoginUser',{params:{memberId:loginUser.memberId}});
             // props.setFollower( [...result.data.follower] ) // 현재 운영중인  props.followings 변수 갱신
             // dispatch( setFollower(result.data.follower) )   // 리듀스 갱신
             // loginUser['followings'] = result.data.followings   // 현재 loginUser변수 갱신. 현재 화면에서는 갱신의 필요가 없음
@@ -92,9 +94,9 @@ const Post = (props) => {
         // 현재 로그인 유저의 닉네임과 현재 포스트의 id 로  like 작업
         // 현재 로그인 유저의 닉네임과 현재 포스트의 id 를 서버에 보내서 내역이 있으면 삭제 , 없으면 추가
         // likeList 재조회 & 갱신
-        let result = await axios.post('/api/post/addLike',null ,{params:{ postId:props.post.postId,  memberId:loginUser.memberId }})
+        let result = await jaxios.post('/api/post/addLike',null ,{params:{ postId:props.post.postId,  memberId:loginUser.memberId }})
 
-        result = await axios.get(`/api/post/getLikeList/${props.post.postId}` )
+        result = await jaxios.get(`/api/post/getLikeList/${props.post.postId}` )
         setLikeList( [...result.data.likeList] );
     }
 
@@ -115,11 +117,11 @@ const Post = (props) => {
     async function addReply(){
         try{
             // 현재포스트의 아이디와 로그인유저의 닉네임과 replyContent 변수값으로 reply 테이블에 레코드를 추가합니다
-            let result = await axios.post('/api/post/addReply', null ,{params :{postId:props.post.postId, memberId:loginUser.memberId , content:replyContent}})
+            let result = await jaxios.post('/api/post/addReply', null ,{params :{postId:props.post.postId, memberId:loginUser.memberId , content:replyContent}})
             setReplyContent('')
             // 댓글 추가후 댓글 입력란을 비웁니다
 
-            axios.get(`/api/post/getReplyList/${props.post.postId}`)
+            jaxios.get(`/api/post/getReplyList/${props.post.postId}`)
             .then((result)=>{
                 // console.log(result.data.replyList2)
                 let temp = [...result.data.replyList2];
@@ -134,9 +136,9 @@ const Post = (props) => {
 
     async function deleteReply(replyId){
         if( window.confirm('해당 댓글을 삭제하시겠습니까?') ){
-            let result = await axios.delete(`/api/post/deleteReply/${replyId}`)
+            let result = await jaxios.delete(`/api/post/deleteReply/${replyId}`)
 
-            axios.get(`/api/post/getReplyList/${props.post.postId}`)
+            jaxios.get(`/api/post/getReplyList/${props.post.postId}`)
             .then((result)=>{
                 // console.log(result.data.replyList2)
                 let temp = [...result.data.replyList2];
@@ -172,7 +174,7 @@ const Post = (props) => {
                         ( props.post.member.memberId != loginUser.memberId) &&
                         ( !props.follower?.some( (follower)=>(props.post.member.memberId==follower.followed)) )
                     )?
-                    (<button id='blueBtn' onClick={()=>{ onFollow(props.post.member.memberId) }} >FOLLOW</button>):
+                    (<div id='followBtn'><button onClick={()=>{ onFollow(props.post.member.memberId) }} >FOLLOW</button></div>):
                     (null)
                 }
                 
@@ -192,7 +194,6 @@ const Post = (props) => {
                 </Slider>
             }    
             </div>
-            <div className='content' style={{fontWeight:"bold"}}><pre>{props.post.content}</pre></div>
 
             <div className='like'>
                 {
@@ -222,6 +223,12 @@ const Post = (props) => {
                 }
             </div>
 
+            {/* post 본문 */}
+            <div className='content'>
+                <pre>{props.post.content}</pre>
+            </div>
+
+            {/* post 댓글 */}
             <div className='reply'  style={replyView}>
                 <div style={{ display:'flex', flexDirection:'column' }} >
                     {
@@ -250,9 +257,9 @@ const Post = (props) => {
                     <input type="text" style={{flex:"5"}} value={replyContent} onChange={
                         (e)=>{setReplyContent(e.currentTarget.value)}
                     }/>
-                    <button id='pinkBtn' style={{flex:"1"}} onClick={
+                    <button id='replyBtn' style={{flex:"1"}} onClick={
                         ()=>{ addReply() }
-                    }>댓글입력</button>
+                    }>작성</button>
                 </div>
             </div>
         </div>

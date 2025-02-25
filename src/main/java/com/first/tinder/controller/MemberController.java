@@ -4,6 +4,8 @@ import com.first.tinder.dao.MemberRepository;
 import com.first.tinder.dto.KakaoProfile;
 import com.first.tinder.dto.OAuthToken;
 import com.first.tinder.entity.*;
+import com.first.tinder.security.util.CustomJWTException;
+import com.first.tinder.security.util.JWTUtil;
 import com.first.tinder.service.MemberInfoService;
 import com.first.tinder.service.MemberService;
 import com.first.tinder.service.OpponentMemberInfoService;
@@ -27,6 +29,7 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/member")
@@ -42,34 +45,35 @@ public class MemberController {
     OpponentMemberInfoService omis;
 
 
-    @PostMapping("/loginlocal")
-    public HashMap<String, Object> loginlocal(
-            @RequestParam("email") String email,
-            @RequestParam("pwd") String pwd,
-            HttpSession session) {
-        HashMap<String, Object> result = new HashMap<>();
-        Member member = ms.getMember(email);
-        System.out.println(member);
-        if( member == null){
-            result.put("msg", "이메일을 확인하세요");
-        }else if( !member.getPwd().equals( pwd ) ) {
-            result.put("msg", "패스워드를 확인하세요");
-        }else if(member.getTemp() < 30){
-            result.put("msg", "온도가 낮아 서비스를 이용하실 수 없습니다.");
-        }else{
-            result.put("msg", "ok");
-            System.out.println("member id test :" + member.getMemberId());
-            session.setAttribute("loginUser", member.getMemberId() );
-        }
-        return result;
-    }
+//    @PostMapping("/loginlocal")
+//    public HashMap<String, Object> loginlocal(
+//            @RequestParam("email") String email,
+//            @RequestParam("pwd") String pwd,
+//            HttpSession session) {
+//        HashMap<String, Object> result = new HashMap<>();
+//        Member member = ms.getMember(email);
+//        System.out.println(member);
+//        if( member == null){
+//            result.put("msg", "이메일을 확인하세요");
+//        }else if( !member.getPwd().equals( pwd ) ) {
+//            result.put("msg", "패스워드를 확인하세요");
+//        }else if(member.getTemp() < 30){
+//            result.put("msg", "온도가 낮아 서비스를 이용하실 수 없습니다.");
+//        }else{
+//            result.put("msg", "ok");
+//            System.out.println("member id test :" + member.getMemberId());
+//            session.setAttribute("loginUser", member.getMemberId() );
+//        }
+//        return result;
+//    }
 
     @GetMapping("/getLoginUser")
-    public HashMap<String , Object> getLoginUser(HttpSession session) {
+    public HashMap<String , Object> getLoginUser(@RequestParam("memberId") int memberId) {
         HashMap<String, Object> result = new HashMap<>();
-        int id = (Integer) session.getAttribute("loginUser");
+        System.out.println("memberId"+memberId);
+//        int id = (Integer) session.getAttribute("loginUser");
 
-        Member member = ms.getMemberById(id);
+        Member member = ms.getMemberById(memberId);
         List<Follow> follower = ms.getFollower(member);
         List<Follow> followed = ms.getFollowed(member);
 
@@ -186,8 +190,8 @@ public class MemberController {
 
 
         }
-        HttpSession session = request.getSession();
-        session.setAttribute("loginUser", member.getMemberId() );
+//        HttpSession session = request.getSession();
+//        session.setAttribute("loginUser", member.getMemberId() );
         response.sendRedirect("http://localhost:3000/savekakaoinfo");
     }
 
@@ -213,14 +217,6 @@ public class MemberController {
             result.put("msg", "no");
         else
             result.put("msg", "ok");
-        return result;
-    }
-
-    @GetMapping("/logout")
-    public HashMap<String, Object> logout(HttpSession session) {
-        HashMap<String, Object> result = new HashMap<>();
-        session.removeAttribute("loginUser");
-        result.put("msg", "ok");
         return result;
     }
 
@@ -283,31 +279,11 @@ public class MemberController {
 
     }
 
-
-
-    @PostMapping("/emailcheckUpdate")
-    public HashMap<String, Object> emailcheckUpdate( @RequestParam("email") String email, HttpSession session ) {
-        HashMap<String, Object> result = new HashMap<>();
-        int loginUserUserid = (Integer)session.getAttribute("loginUser");
-        Member member = ms.getMemberById(loginUserUserid);
-        String loginUserEmail = member.getEmail();
-        Member updateMember = ms.getMember(email);
-        if( loginUserEmail.equals(email) || updateMember == null ) {
-            result.put("msg", "ok");
-        }else{
-            result.put("msg", "no");
-        }
-        return result;
-    }
-
-
     @PostMapping("/nicknamecheckUpdate")
     public HashMap<String, Object> nicknamecheckUpdate(
-            @RequestParam("nickname") String nickname,
-            HttpSession session ) {
+            @RequestParam("memberId") int memberId, @RequestParam("nickname") String nickname ) {
         HashMap<String, Object> result = new HashMap<>();
-        int loginUserUserid = (Integer)session.getAttribute("loginUser");  // 로그인 유저의  id 추출
-        Member member = ms.getMemberById(loginUserUserid);  // id로 멤버정보 조회
+        Member member = ms.getMemberById(memberId);  // id로 멤버정보 조회
         String loginUserNickname = member.getNickname();  // 조회된 정보에서 닉네임 추출
         Member updateMember = ms.getMemberByNickname(nickname);   // 수정하려면 닉네임으로 멤버조회
         // 로그인유저의 닉네임과 수정하려는 닉네임 같거나
@@ -324,7 +300,7 @@ public class MemberController {
     public HashMap<String, Object> update( @RequestBody Member member) {
         HashMap<String, Object> result = new HashMap<>();
         ms.updateMember( member );
-        System.out.println("업데이트1 완료");
+        System.out.println("업데이트 완료");
         result.put("msg", "ok");
         return result;
     }
@@ -357,20 +333,51 @@ public class MemberController {
         return result;
     }
 
+    @PostMapping("/updateCharacteristics")
+    public HashMap<String, Object> updateCharacteristics(@RequestBody HashMap<String, Object> payload) {
+        int memberId = (int) payload.get("memberId");
+
+        List<Integer> characteristics = (List<Integer>) payload.get("characteristics");
+        System.out.println("memberId"+memberId+"characteristics"+characteristics);
+
+        Member member = ms.getMemberById(memberId);
+        MemberInfo memberInfo = member.getMemberInfo();
+//        List<Hobby> hobbies = ms.getHobbiesByIds(characteristics);
+//        System.out.println("characteristics[0]"+ characteristics.get(0));
+//        System.out.println("characteristics[1]"+ characteristics.get(1));
+//        System.out.println("characteristics[2]"+ characteristics.get(2));
+//        System.out.println("characteristics[3]"+ characteristics.get(3));
+//        System.out.println("characteristics[4]"+ characteristics.get(4));
+        memberInfo.setSmoke(characteristics.get(0));
+        memberInfo.setAlcohol(characteristics.get(1));
+        memberInfo.setSpeed(characteristics.get(2));
+        memberInfo.setDate(characteristics.get(3));
+        memberInfo.setWorkout(characteristics.get(4));
+
+
+//        System.out.println("memberInfo@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+memberInfo);
+
+        mis.updateMemberInfo(memberInfo);
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("msg", "ok");
+        return result;
+    }
+
     // 선택된 취미 업데이트 API
     @PostMapping("/updateHobbies")
     public HashMap<String, Object> updateHobbies(@RequestBody HashMap<String, Object> payload) {
         int memberId = (int) payload.get("memberId");
 
         List<Integer> hobbyIds = (List<Integer>) payload.get("hobbies");
-        System.out.println("memberId"+memberId+"hobbyIds"+hobbyIds);
+//        System.out.println("memberId"+memberId+"hobbyIds"+hobbyIds);
 
         Member member = ms.getMemberById(memberId);
         MemberInfo memberInfo = member.getMemberInfo();
         List<Hobby> hobbies = ms.getHobbiesByIds(hobbyIds);
 
         memberInfo.setHobbies(hobbies);
-        System.out.println("memberInfo@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+memberInfo);
+//        System.out.println("memberInfo@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+memberInfo);
 //        ms.updateMember(member);
         mis.updateMemberInfo(memberInfo);
 
@@ -378,6 +385,83 @@ public class MemberController {
         result.put("msg", "ok");
         return result;
     }
+
+    @GetMapping("/refresh/{refreshToken}")
+    public HashMap<String, Object> refresh(
+            @PathVariable("refreshToken") String refreshToken,
+            @RequestHeader("Authorization") String authHeader
+    ) throws CustomJWTException {
+        System.out.println("refresh token");
+
+        System.out.println("refresh token : " + refreshToken);
+
+
+        HashMap<String, Object> result = new HashMap<>();
+
+        // 리프레시 토큰이 없다면
+        if( refreshToken == null ) throw new CustomJWTException("NULL_REFRESH");
+        // Authorization 을 담은 헤더가 없다면
+        if( authHeader == null || authHeader.length() < 7 )
+            throw new CustomJWTException("INVALID_HEADER");
+
+        //추출한 내용의 7번째 글자부터 끝까지 추출
+        String accessToken = authHeader.substring(7);
+
+        // 유효시간이 지났는지 검사
+        Boolean expAt = checkExpiredToken( accessToken );
+
+        if( expAt ){
+            System.out.println("토큰 유효기간 아직 안지났습니다. 계속 사용합니다");
+            result.put("accessToken", accessToken);
+            result.put("refreshToken", refreshToken);
+        }else{
+            System.out.println("토큰이 갱신되었습니다");
+            System.out.println("accessToken : "+accessToken);
+            System.out.println("refreshToken : "+refreshToken);
+            // accessToken 기간 만료시  refresh 토큰으로 재 검증하여 사용자 정보 추출
+            Map<String, Object> claims = JWTUtil.validateToken(refreshToken);
+
+            // 토큰 교체
+            String newAccessToken = JWTUtil.generateToken(claims, 1);
+
+            // 리프레시토큰의 exp 를 꺼내서 현재 시간과 비교
+            Boolean expRt = checkTime( (Integer)claims.get("exp") );
+            String newRefreshToken = "";
+            // 기존 리프레시토큰의 유효기간이 한시간도 안남았다면 교체 , 아직 쓸만하다면 그데로 사용
+            if( expRt )   newRefreshToken = JWTUtil.generateToken(claims, 60*24);
+            else newRefreshToken = refreshToken;
+            System.out.println("newAccessToken : "+newAccessToken);
+            System.out.println("newRefreshToken : "+newRefreshToken);
+
+
+            result.put("accessToken", newAccessToken);
+            result.put("refreshToken", newRefreshToken);
+        }
+        return result;
+    }
+
+    private Boolean checkTime(Integer exp) {
+        java.util.Date expDate = new java.util.Date( (long)exp * (1000 ));//밀리초로 변환
+        long gap = expDate.getTime() - System.currentTimeMillis();//현재 시간과의 차이 계산
+        long leftMin = gap / (1000 * 60); //분단위 변환
+        //1시간도 안남았는지..
+        return leftMin < 60;
+    }
+
+    private Boolean checkExpiredToken(String accessToken) {
+
+        try {
+            JWTUtil.validateToken(accessToken);
+        } catch (CustomJWTException e) {
+            // throw new RuntimeException(e);
+            if( e.getMessage().equals("Expired") ){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
 
 }

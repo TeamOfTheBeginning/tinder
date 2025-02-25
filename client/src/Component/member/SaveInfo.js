@@ -4,13 +4,15 @@ import axios from 'axios'
 import { useDispatch } from 'react-redux';
 import { loginAction, setFollowers, setFollowings } from '../../store/userSlice';
 
+import jaxios from '../../util/jwtUtil';
+
 const SaveInfo = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     useEffect(
         ()=>{
-            axios.get('/api/member/getLoginUser')
+            jaxios.get('/api/member/getLoginUser')
             .then((res)=>{
                 dispatch( loginAction( res.data.loginUser ) )
                 dispatch( setFollowers( res.data.followers ) )

@@ -7,7 +7,9 @@ import ChatGroupRandom from './ChatGroupRandom';
 
 import '../../style/message/findchatgrouprandom.css';
 
-const FindChatGroupRandom = (onSubMenuSelect) => {
+import jaxios from '../../util/jwtUtil';
+
+const FindChatGroupRandom = ({openSubMenu}) => {
 
     const navigate = useNavigate();
     const loginUser = useSelector(state=>state.user);
@@ -15,30 +17,34 @@ const FindChatGroupRandom = (onSubMenuSelect) => {
     const [chatGroupList, serChatGroupList] = useState();
 
     useEffect(() => {
-        console.log(loginUser)
-        axios.get(`/api/chat/findChatGroupRandom`, { params: { memberId:loginUser.memberId } })
+        // console.log(loginUser)
+        jaxios.get(`/api/chat/findChatGroupRandom`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
-                console.log("result.data.chatGroupList: " + JSON.stringify(result.data.chatGroupList));
+                // console.log("result.data.chatGroupList: " + JSON.stringify(result.data.chatGroupList));
                 serChatGroupList(result.data.chatGroupList);
             })
             .catch((err) => { console.error(err); });
     }, []);
 
     function enterChatRoomFromChatGroupRandom(chatGroupId){
-        console.log(chatGroupId);
-        onSubMenuSelect(`/chatRoomFromRandom/${chatGroupId}`);
+        // console.log(chatGroupId);
+        navigate(`/chatRoomFromRandom/${chatGroupId}`);
     }
 
     function setAnonymousMessageRoom(){
-        console.log("setAnonymousMessageRoom")
+        // console.log("setAnonymousMessageRoom")
         
 
-        axios.post(`/api/chat/setAnonymousMessageRoom`,null ,{ params: { 
+        jaxios.post(`/api/chat/setAnonymousMessageRoom`,null ,{ params: { 
             memberId:loginUser.memberId
           } } )
           .then((result)=>{
-            console.log("result.data.chatGroupId"+result.data.chatGroupId)
-            enterChatRoomFromChatGroupRandom(result.data.chatGroupId);
+            jaxios.get(`/api/chat/findChatGroupRandom`, { params: { memberId:loginUser.memberId } })
+            .then((result) => {
+                // console.log("result.data.chatGroupList: " + JSON.stringify(result.data.chatGroupList));
+                serChatGroupList(result.data.chatGroupList);
+            })
+            .catch((err) => { console.error(err); });
           }
           ).catch((err)=>{console.error(err)}) 
 
@@ -57,8 +63,8 @@ const FindChatGroupRandom = (onSubMenuSelect) => {
             (chatGroupList)?(
                 chatGroupList.map((chatGroup, idx)=>{
                 return (
-                    <div key={idx} className='findChatGroupListContainer'>
-                        <ChatGroupRandom chatGroup={chatGroup}/>
+                    <div key={idx} className='findChatGroupRandomListContainer'>
+                        <ChatGroupRandom chatGroup={chatGroup}  openSubMenu={openSubMenu}/>
                     </div>
                 )
                 })

@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 import '../../style/match/matchedmember.css';
 
-const MatchedMember = () => {
+import jaxios from '../../util/jwtUtil';
+
+const MatchedMember = (props) => {
 
 
     const loginUser = useSelector(state=>state.user);
@@ -14,7 +16,7 @@ const MatchedMember = () => {
 
     useEffect(() => {
         console.log(loginUser)
-        axios.get(`/api/member2/getMatchedMember`, { params: { memberId:loginUser.memberId } })
+        jaxios.get(`/api/member2/getMatchedMember`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
                 // console.log("result.data.likerList: " + JSON.stringify(result.data.likerList));
                 serMatchedMemberList(result.data.matchedMemberList);
@@ -24,7 +26,8 @@ const MatchedMember = () => {
 
     function enterChatRoomFromMatchedMember(memberId){
         console.log(memberId);
-        navigate(`/chatRoomFromMatch/${memberId}`);
+        props.openSubMenu('chatRoomFromMatch', memberId)
+        // navigate(`/chatRoomFromMatch/${memberId}`);
     }
 
 
@@ -60,7 +63,7 @@ const MatchedMember = () => {
                             })
                         ):(null)
             }
-            <button onClick={()=>navigate(-1)}>돌아가기</button>
+            {/* <button onClick={()=>navigate(-1)}>돌아가기</button> */}
         
         </div>
     )

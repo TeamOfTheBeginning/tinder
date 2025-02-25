@@ -6,7 +6,9 @@ import { useNavigate } from "react-router-dom";
 
 import '../../style/match/match.css';
 
-const Match = ({ onSubMenuSelect }) => {
+import jaxios from '../../util/jwtUtil';
+
+const Match = (props) => {
 
   const [oppositeGender, setOppositeGender] = useState();
   const navigate = useNavigate();
@@ -16,9 +18,9 @@ const Match = ({ onSubMenuSelect }) => {
 
   useEffect(() => {
     console.log(loginUser)
-    axios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
+    jaxios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
         .then((result) => {
-            // console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
+            console.log("result.data.oppositeGender: " + JSON.stringify(result.data.oppositeGender));
             setOppositeGender(result.data.oppositeGender);
         })
         .catch((err) => { console.error(err); });
@@ -27,9 +29,9 @@ const Match = ({ onSubMenuSelect }) => {
 
   async function rematch(){
 
-    axios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
+    jaxios.get(`/api/member2/getOppositeGender2`, { params: { memberId:loginUser.memberId } })
     .then((result)=>{
-        console.log("result.data.oppositeGender"+JSON.stringify(result.data.oppositeGender))
+        // console.log("result.data.oppositeGender"+JSON.stringify(result.data.oppositeGender))
         setOppositeGender(result.data.oppositeGender)
     }
     ).catch((err)=>{console.error(err)}) 
@@ -37,7 +39,7 @@ const Match = ({ onSubMenuSelect }) => {
   
   // async function like(){
 
-  //   await axios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:oppositeGender.memberId })
+  //   await jaxios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:oppositeGender.memberId })
   //   .then((result)=>{
   //       console.log("result.data.msg"+result.data.msg)
 
@@ -52,8 +54,8 @@ const Match = ({ onSubMenuSelect }) => {
     <div className='matchContainer'>
       <div className='matchBtns'>
         <button className='matchBtn' onClick={()=>rematch()}>재매칭</button>        
-        <button className='matchBtn' onClick={() => onSubMenuSelect('findLiker')}>Liker 조회</button>
-        <button className='matchBtn' onClick={() => onSubMenuSelect('matchedMember')}>매칭 조회</button>
+        <button className='matchBtn' onClick={()=> props.onSubMenuSelect('findLiker')}>Liker조회</button>&nbsp;
+        <button className='matchBtn' onClick={()=> props.onSubMenuSelect('matchedMember')}>매칭조회</button>&nbsp;        
       </div>
 
       <div className='matchMemberContainer'>

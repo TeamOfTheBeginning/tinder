@@ -47,17 +47,6 @@
     overflow-x: hidden;
 }
 
-.signin, .signup{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.signin .btns, .signup .btns{
-    width: 85%;
-}
 
 /* 회원가입 폼 */
 .join-container {
@@ -86,15 +75,27 @@
 }
 
 
-/* 전환 버튼 그룹 */
+/* 로그인, 회원가입 전환 tab */
+.signin, .signup{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+/* 전환 버튼 */
+.signin .login-btns, .signup .login-btns{
+    width: 85%;
+}
 .toggle-btns {
     display: flex;
     margin-left: 20px;
     padding: 0;
 }
 .toggle-btns button{
-    padding: 3px;
-    width: 60px;
+    margin:0;
+    padding: 10px;
+    min-width: 80px;
     height: 30px;
     border-radius: 20px 20px 0 0 ;
     box-sizing: border-box;
@@ -127,6 +128,7 @@
     display: flex;
     justify-content: space-between;
     width: 90%;
+    margin: 10px 0;
 }
 
 .field {
@@ -172,9 +174,8 @@
 }
 
 /* 버튼 그룹 */
-
 /* 로그인/회원가입 버튼 */
-.btns .login-btn {
+.login-btns .login-btn {
     padding: 5px;
     border-radius: 25px;
     font-weight: bold;
@@ -192,6 +193,7 @@
 
 .login-btn:hover {
     background-position: 100% 0;
+    cursor: pointer;
 }
 
 /* 카카오 로그인 버튼 */
@@ -263,18 +265,23 @@
         flex-direction: column;
         width: calc(95% - 40px);
         height: fit-content;
-        
     }
     .field.flex-row > * {
         flex: 1 1 100%; /* 한 줄에 하나씩 표시 */
         max-width: 100%;
     }
-    .joinform .btns{
+    .joinform .login-btns {
         width: 100%;
     }
-    .loginform .field input, 
-    .loginform .btns button, 
-    .loginform .snslogin button{
+    .loginform #login-field input, 
+    .loginform .login-btns button {
         padding:8px;
+    }
+    .signin .field, .signup .field {
+        margin: 0;
+    }
+    .loginform .field.flex-row {
+        gap: 0; /* 요소 간격 조정 */
+        margin:0;
     }
 }

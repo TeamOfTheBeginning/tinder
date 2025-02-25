@@ -5,6 +5,8 @@ import { FaUser } from "react-icons/fa";
 
 import "../../style/realtimeconnectinfo/realtimeconnectinfo.css";
 
+import jaxios from '../../util/jwtUtil';
+
 const RealtimeConnectInfo = () => {
 
 
@@ -27,7 +29,7 @@ const RealtimeConnectInfo = () => {
         // console.log(str);
       },
       onConnect: () => {
-        console.log('WebSocket connected');
+        // console.log('WebSocket connected');
     
         // 서버에 접속자 수를 요청하는 메시지 발송
         stompClient.publish({
@@ -47,16 +49,16 @@ const RealtimeConnectInfo = () => {
         // console.log("parsedMessage.usernames"+JSON.stringify(parsedMessage.usernames));
 
         // setUserCount(parseInt(message.body.userCount));  // 서버에서 받은 접속자 수 업데이트
-        console.log(parsedMessage.usernames)
+        // console.log(parsedMessage.usernames)
 
         setUserNames(parsedMessage.usernames);
         });
       },
       onDisconnect: () => {
-        console.log('WebSocket disconnected');
+        // console.log('WebSocket disconnected');
       },
       onStompError: (frame) => {
-        console.error('STOMP error: ', frame);
+        // console.error('STOMP error: ', frame);
       },
       webSocketFactory: () => new SockJS(`${process.env.REACT_APP_ADDRESS2}/ws_real_chat`),
     });

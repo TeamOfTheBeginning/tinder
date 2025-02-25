@@ -4,14 +4,51 @@ import { useSelector } from 'react-redux';
 
 import '../../style/match/matchingmember.css';
 
+import jaxios from '../../util/jwtUtil';
 
 const MatchingMember = (props) => {
 
   const loginUser = useSelector(state=>state.user);
 
+  const smoke = loginUser.memberInfo.smoke
+  const alcohol = loginUser.memberInfo.alcohol
+  const speed = loginUser.memberInfo.speed
+  const date = loginUser.memberInfo.date
+  const workout = loginUser.memberInfo.workout
+
+  const hobbies = [...loginUser.memberInfo.hobbies] ;
+  
+  console.log("hobbies")
+  console.log ((hobbies)?(hobbies):(null))
+
+
+  const [person, setPerson] = useState([smoke, alcohol, speed, date, workout, hobbies]);
+
+  const [person2, setPerson2] = useState([0,0,0,0,0,[]]);
+
+  useEffect(() => {
+    if (props.oppositeGender?.memberInfo) {
+      const hobbies2 = [...props.oppositeGender.memberInfo.hobbies] ; 
+
+      console.log("hobbies2")
+      console.log ((hobbies2)?(hobbies2):(null))
+
+
+      setPerson2([
+        props.oppositeGender.memberInfo.smoke ?? 0,
+        props.oppositeGender.memberInfo.alcohol ?? 0,
+        props.oppositeGender.memberInfo.speed ?? 0,
+        props.oppositeGender.memberInfo.date ?? 0,
+        props.oppositeGender.memberInfo.workout ?? 0,
+        hobbies2
+      ]);
+    }
+
+  }, [props.oppositeGender]);
+
   async function like(){
 
-    await axios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:props.oppositeGender.memberId })
+    await jaxios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:props.oppositeGender.memberId })
     .then((result)=>{
         console.log("result.data.msg"+result.data.msg)
 
@@ -63,7 +100,7 @@ const MatchingMember = (props) => {
 
     percentage = (ei+ns+tf+jp)/4
     
-    return percentage;
+    return percentage*100;
 
   }
 
@@ -89,14 +126,57 @@ const MatchingMember = (props) => {
     return (R * c).toFixed(1); // 거리 (단위: km)
 };
 
+// const [similarity, setSimilarity] = useState(null);
+
+const calculateHobbySimilarity = (hobbies1, hobbies2) => {
+  if (!hobbies1 || !hobbies2) return 0; // 유효하지 않은 취미 배열 확인
+
+  const hobbyIds1 = hobbies1.map(hobby => hobby.hobbyId);
+  const hobbyIds2 = hobbies2.map(hobby => hobby.hobbyId);
+  
+  const commonHobbies = hobbyIds1.filter(hobbyId => hobbyIds2.includes(hobbyId));
+  const similarityScore = (commonHobbies.length / 34) * 100; // 공통 취미 비율을 백분율로 변환
+  
+  return similarityScore;
+};
+
+const calculateSimilarity = () => {
+  if (!person || !person2 || person.length < 6 || person2.length < 6) {
+    return 0; // 비교 불가능하면 0% 반환
+  }
+
+  const maxDiffs = [1, 5, 5, 5, 5]; // 각 항목별 최대 차이
+  const weightedDiffs = person.slice(0, 5).map((value, index) => { // 5개의 항목만 비교
+    const diff = Math.abs(value - (person2[index] ?? 0));
+    return diff / maxDiffs[index]; // 정규화된 차이값
+  });
+
+  const averageDiff = weightedDiffs.reduce((sum, diff) => sum + diff, 0) / weightedDiffs.length; // 평균 차이
+
+  // 취미 유사성 계산
+  const hobbySimilarity = calculateHobbySimilarity(person[5], person2[5]); // 6번째 인덱스에서 취미 비교
+
+  console.log("weightedDiffs:", weightedDiffs, "averageDiff:", averageDiff, "hobbySimilarity:", hobbySimilarity);
+
+  // 유사도 점수 조정
+  const totalSimilarityScore = ((1 - averageDiff) * 100 * 0.7 + hobbySimilarity * 0.3); // 가중치 조정
+  return totalSimilarityScore.toFixed(0);
+};
+
+
+
+
+
+
+
+
 
 
 
   if (!props.oppositeGender) return <p>Loading...</p>;
     
   return (
-    <div className='matchingMemberContainer'>      
-      
+    <div className='matchingMemberContainer'>          
       <div className='matchingMemberImg'>
         <div className='matchingMemberImgImg'>
           <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${props.oppositeGender.profileImg}`} />
@@ -117,20 +197,15 @@ const MatchingMember = (props) => {
         {jp(props.oppositeGender.memberInfo.jp)}
       </div>
 
-      <div>
-        <div>MBTI 매칭률 {calculateMbtiMatchPercentage()} </div>
-        <div>취미 매칭률 </div>
-        <div>거리 : {haversine(props.oppositeGender.latitude,props.oppositeGender.longitude)} km</div>
-
-      </div>
-
       <div className='matchingMemberMsg'>
         &nbsp;&nbsp;{props.oppositeGender.profileMsg}
       </div>
-
+      <br/>
       <div className='matchingMemberInfo'>
-        
-      </div>
+        <div> &nbsp;&nbsp;MBTI매칭률 {calculateMbtiMatchPercentage()}% </div>
+        <div> &nbsp;&nbsp;매칭률 : {calculateSimilarity()}%</div>
+        <div> &nbsp;&nbsp;거리 : {haversine(props.oppositeGender.latitude,props.oppositeGender.longitude)} km</div>
+      </div>      
 
       <div className='matchingMemberBtns'>
         <button className='matchBtn' onClick={()=>like()}>좋아요</button>

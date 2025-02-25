@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loginAction, } from '../../store/userSlice';
 import {Cookies} from 'react-cookie'
 
+import jaxios from '../../util/jwtUtil';
+
 const EditOpponent = () => {
     const loginUser = useSelector( state=>state.user );
     const [email, setEmail] = useState('')
@@ -59,7 +61,7 @@ const EditOpponent = () => {
     
 
     useEffect(() => {
-        axios.get("/api/member/hobbies")
+        jaxios.get("/api/member/hobbies")
             .then((response) => {
                 setHobbyCategories(response.data.categories); // 카테고리 설정
                 setHobbies(response.data.hobbies); // 취미 설정
@@ -103,7 +105,7 @@ const EditOpponent = () => {
     async function fileUpload(e){
         const formData = new FormData();
         formData.append('image',  e.target.files[0]);
-        const result = await axios.post('/api/member/fileupload', formData);
+        const result = await jaxios.post('/api/member/fileupload', formData);
         setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
         setImgStyle({display:"block", width:"200px"});
         setProfileImg(result.data.filename)
@@ -116,15 +118,15 @@ const EditOpponent = () => {
         // if(loginUser.provider != 'kakao' && pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
         // if(nickname==''){ return alert('닉네임을 입력하세요');}
         try{
-            // let result = await axios.post('/api/member/emailcheckUpdate', null, {params:{email}} );
+            // let result = await jaxios.post('/api/member/emailcheckUpdate', null, {params:{email}} );
             // if(result.data.msg == 'no' ){
             //     return alert('이메일이 중복됩니다');
             // }
-            // result = await axios.post('/api/member/nicknamecheckUpdate', null, {params:{nickname}} );
+            // result = await jaxios.post('/api/member/nicknamecheckUpdate', null, {params:{nickname}} );
             // if(result.data.msg == 'no' ){
             //     return alert('닉네임이 중복됩니다');
             // }
-            // result = await axios.post('/api/member/updateOpponent', {
+            // result = await jaxios.post('/api/member/updateOpponent', {
             //     memberId:loginUser.memberId, email, pwd, age, birthDate, gender, nickname, phone, zipnum, profileMsg:intro, profileImg,                 
             // });
 
@@ -140,14 +142,14 @@ const EditOpponent = () => {
 
             try {
                 // 서버에 데이터 전송
-                const response = await axios.post('/api/member2/updateOpponentMBTI',null ,{ params:{numberValue,memberId:loginUser.memberId} });
+                const response = await jaxios.post('/api/member2/updateOpponentMBTI',null ,{ params:{numberValue,memberId:loginUser.memberId} });
                 console.log(response.data); // 응답 처리
                 
             } catch (error) {
             console.error('Error sending data:', error);
             }
 
-            let result = await axios.post('/api/member2/updateOpponentHobbies',{
+            let result = await jaxios.post('/api/member2/updateOpponentHobbies',{
                 memberId:loginUser.memberId,
                 // ✅ 선택한 취미 전송
                 hobbies: selectedHobbies,
@@ -155,7 +157,7 @@ const EditOpponent = () => {
 
             if(result.data.msg =='ok'){
                 alert('상대 정보 수정이 완료되었습니다.')
-                const res = await axios.get('/api/member/getLoginUser');
+                const res = await jaxios.get('/api/member/getLoginUser');
                 cookies.set('user', JSON.stringify( res.data.loginUser ) , {path:'/', })
                 dispatch( loginAction( res.data.loginUser ) )
                 // navigate('/myPage');
@@ -213,50 +215,6 @@ const handleChange = (event) => {
             <SideBar  setWord={setWord}/>
             <div className='editForm'>
                 <div className="logo" style={{fontSize:"2.0rem"}}>Opponent EDIT</div>
-                {/* <div className='field'>
-                    <label>E-MAIL</label>
-                    <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label>PASSWORD</label>
-                    <input type="password" onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label>RETYPE PW</label>
-                    <input type="password" onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label>NICKNAME</label>
-                    <input type="text"  value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label style={{flex:2}}>GENDER</label>
-                    <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}>
-                        <option value='0'>남성</option>    
-                        <option value='1'>여성</option>
-                    </select>
-                    <label style={{flex:2}}>BIRTHDATE</label>
-                    <input
-                        style={{flex:3}}
-                        type="date"
-                        value={birthDate}
-                        onChange={handleBirthDateChange}
-                        required
-                    />
-                </div>
-                <div className='field'>
-                    <label>PHONE</label>
-                    <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label>ADDRESS</label>
-                    <input type="text"  value={zipnum} onChange={(e)=>{setZipnum(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label>INTRO</label>
-                    <input type="text"  value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
-                </div> */}
-
 
                 <div className='field'>
                     <label>MBTI</label>
@@ -288,7 +246,7 @@ const handleChange = (event) => {
 
 
 
-                <div className="field">
+                {/* <div className="field">
                     <label>HOBBY</label>
                     <div id="hobby-container">
                         {hobbyCategories.map((category) => (
@@ -309,7 +267,7 @@ const handleChange = (event) => {
                             </div>
                         ))}
                     </div>
-                </div>
+                </div> */}
 
                 {/* <div className='field'>
                     <label>PROFILE IMG</label>
