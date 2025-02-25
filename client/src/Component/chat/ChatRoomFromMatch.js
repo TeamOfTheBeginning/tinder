@@ -5,6 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import '../../style/message/chatroomfrommatch.css';
 
+import jaxios from '../../util/jwtUtil';
+
 const ChatRoomFromMatch = () => {
     const { memberId } = useParams();
     console.log("memberId"+memberId);
@@ -21,7 +23,7 @@ const ChatRoomFromMatch = () => {
     };
 
     useEffect(() => {    
-        axios.get(`/api/chat/getChatList2`, { params: { myMemberId:loginUser.memberId,matchedMemberId:memberId } })
+        jaxios.get(`/api/chat/getChatList2`, { params: { myMemberId:loginUser.memberId,matchedMemberId:memberId } })
         .then((result) => {
             console.log("chatList"+JSON.stringify(result.data.chatList))
             setChatList(result.data.chatList);
@@ -47,7 +49,7 @@ const ChatRoomFromMatch = () => {
 
     async function sendMessage() {
         try {
-            const response = await axios.post(`/api/chat/sendMessage`, null, {
+            const response = await jaxios.post(`/api/chat/sendMessage`, null, {
                 params: { content: message, chatGroupId, sender: loginUser.memberId }
             });
     

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import axios from 'axios';
+// import axios from 'axios';
 
 import RealtimeConnectInfo from './realtimeconnectinfo/RealtimeConnectInfo';
 
@@ -30,6 +30,9 @@ import EditOpponent from './member/EditOpponent';
 import NearMember from './member/NearMember';
 // style
 import '../style/sidebar.css';
+
+// import jaxios from '../util/jwtUtil';
+import { setCookie1 , getCookie1 , removeCookie1} from "../util/cookieUtil2";
 
 const SideBar = () => {
   const loginUser = useSelector(state => state.user);
@@ -202,7 +205,7 @@ const SideBar = () => {
           <IoSearch />
         </div>
 
-        <div className='sidebar-btn' onClick={() => { navigate('/'); handleLeave(loginUser.memberId); }}>
+        <div className='sidebar-btn' onClick={() => { navigate('/'); handleLeave(loginUser.memberId); removeCookie1('user', '/');}}>
           <IoLogOut />
         </div>
 

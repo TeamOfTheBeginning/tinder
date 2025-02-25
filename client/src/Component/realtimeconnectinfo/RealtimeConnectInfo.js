@@ -5,6 +5,8 @@ import { FaUser } from "react-icons/fa";
 
 import "../../style/realtimeconnectinfo/realtimeconnectinfo.css";
 
+import jaxios from '../../util/jwtUtil';
+
 const RealtimeConnectInfo = () => {
 
 

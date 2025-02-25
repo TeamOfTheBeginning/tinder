@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 import '../../style/message/chatgrouprandom.css';
 
+import jaxios from '../../util/jwtUtil';
+
 const ChatGroupRandom = (props) => {
 
     const [chatMemberList, setChatMemberList] = useState();
@@ -18,7 +20,7 @@ const ChatGroupRandom = (props) => {
 
     // useEffect(() => {
     //     // console.log(loginUser)
-    //     axios.get(`/api/chat/findChatGroupMember`, { params: { chatGroupId:props.chatGroup.chatGroupId } })
+    //     jaxios.get(`/api/chat/findChatGroupMember`, { params: { chatGroupId:props.chatGroup.chatGroupId } })
     //         .then((result) => {
     //             console.log("result.data.oppositeGender: " + JSON.stringify(result.data.chatMemberList));
     //             setChatMemberList(result.data.chatMemberList);

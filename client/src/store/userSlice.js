@@ -28,6 +28,9 @@ const initialState={
     opponentMemberInfo:{},
     follower:[],
     followed:[], 
+
+    accessToken:'',
+    refreshToken:'',
 }
 
 
@@ -54,6 +57,9 @@ const getLoginUser=()=>{
         memberinfo.temp = decodeURIComponent( memberinfo.temp )
         memberinfo.memberInfo = decodeURIComponent( memberinfo.memberInfo )
         memberinfo.opponentMemberInfo = decodeURIComponent( memberinfo.opponentMemberInfo )
+
+        memberinfo.accessToken = decodeURIComponent( memberinfo.accessToken )
+        memberinfo.refreshToken = decodeURIComponent( memberinfo.refreshToken )
     }
     return memberinfo
 }
@@ -83,6 +89,8 @@ export const userSlice=createSlice(
                 state.temp = action.payload.temp;
                 state.memberInfo = action.payload.memberInfo;
                 state.opponentMemberInfo = action.payload.opponentMemberInfo;
+                state.accessToken = action.payload.accessToken;
+                state.refreshToken = action.payload.refreshToken;
             },
             logoutAction:(state)=>{
                 state.memberId = '';
@@ -106,6 +114,8 @@ export const userSlice=createSlice(
                 state.opponentMemberInfo ={};
                 state.follower = [];
                 state.followed = [];
+                state.accessToken = '';
+                state.refreshToken = '';
             },
             setFollower : (state, action)=>{
                 state.follower = action.payload;
