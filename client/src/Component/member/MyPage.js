@@ -11,6 +11,7 @@ import {Cookies} from 'react-cookie'
 import { setCookie1, getCookie1 } from '../../util/cookieUtil2';
 
 import jaxios from '../../util/jwtUtil';
+import '../../style/mypage.css'
 
 
 const MyPage = ({openSubMenu}) => {
@@ -111,7 +112,7 @@ const MyPage = ({openSubMenu}) => {
         alert("결제완료")
 
         const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:loginUser.memberId}});
-        
+
         setCookie1('user', JSON.stringify(res.data.loginUser) , 1)
 
         dispatch( loginAction( res.data.loginUser ) )
@@ -186,9 +187,12 @@ const buyItems = async () => {
                 </div>
 
                 <div className='btns' >
-                    <div id ="btn" onClick={()=> openSubMenu('editProfile')}><button>정보수정</button></div>&nbsp;
-                    <div id ="btn" onClick={()=> openSubMenu('editOpponent')}><button>상대정보</button></div>&nbsp;
-                    <div id ="btn" onClick={()=>{requestPayment()}}><button>충전</button></div>&nbsp;
+                    <div id ="btn" onClick={()=> openSubMenu('editProfile')}><button>정보수정</button></div>
+                    
+                    <div id ="btn" onClick={()=> openSubMenu('editOpponent')}><button>상대정보</button></div>
+                    
+                    <div id ="btn" onClick={()=>{requestPayment()}}><button>충전</button></div>
+                    
                     <div id ="btn" onClick={()=>{buyItems()}}><button>결제</button></div>
                 </div>
 

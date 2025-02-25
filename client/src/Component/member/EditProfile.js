@@ -121,7 +121,7 @@ const EditProfile = () => {
     }
 
     // ✅ 회원 정보 수정 요청
-    async function onSubmit(){  
+    async function onSubmit(){
         if(loginUser.provider != 'kakao' && pwd==''){ return alert('패스워드를 입력하세요');}
         if(loginUser.provider != 'kakao' && pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
         if(nickname==''){ return alert('닉네임을 입력하세요');}
@@ -131,7 +131,7 @@ const EditProfile = () => {
                 return alert('닉네임이 중복됩니다');
             }
             result = await jaxios.post('/api/member/update', {
-                memberId:loginUser.memberId, email, pwd, age,  gender, nickname, phone, zipnum, profileMsg:intro, profileImg,                 
+                memberId:loginUser.memberId, email, pwd, age,  gender, nickname, phone, zipnum, profileMsg:intro, profileImg,
             });
             // birthDate,
 
@@ -155,7 +155,7 @@ const EditProfile = () => {
             }
 
             let result2 = await jaxios.post('/api/member/updateCharacteristics',{
-                memberId:loginUser.memberId,                
+                memberId:loginUser.memberId,
                 characteristics: person,
             });
 
@@ -225,130 +225,142 @@ const EditProfile = () => {
     return (
         <div className='SideContainer'>
             <div className='editForm'>
-                <div className="logo" style={{fontSize:"2.0rem"}}>회원정보수정</div>
-                <div className='field'>
-                    <label>E-MAIL</label>
-                    <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}} readOnly/>
-                </div>
-                <div className='field'>
-                    <label>PASSWORD</label>
-                    <input type="password" onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label>RETYPE PW</label>
-                    <input type="password" onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label>NICKNAME</label>
-                    <input type="text"  value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label style={{flex:2}}>GENDER</label>
-                    <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}>
-                        <option value='0'>남성</option>
-                        <option value='1'>여성</option>
-                    </select>
-                    <label style={{flex:2}}>BIRTHDATE</label>
-                    <input
-                        style={{flex:3}}
-                        // type="date"
-                        value={birthDate}
-                        // onChange={handleBirthDateChange}
-                        // required
-                        readOnly
-                    />
-                </div>
-                <div className='field'>
-                    <label>PHONE</label>
-                    <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label>ADDRESS</label>
-                    <input type="text"  value={zipnum} onChange={(e)=>{setZipnum(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label>INTRO</label>
-                    <input type="text"  value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
-                </div>
+                <div className="logo" >회원정보수정</div>
 
-
-                <div className='field'>
-                    <label>MBTI</label>
-                    <div>
-                        내 MBTI : {calMBTI(loginUser.memberInfo.ei,loginUser.memberInfo.ns,loginUser.memberInfo.tf,loginUser.memberInfo.jp)}
-                        <input 
-                            type="text" 
-                            value={inputValue} 
-                            onChange={handleChange} 
-                            placeholder="MBTI 입력"
-                        />
-                        {suggestions.length > 0 && (
-                        <ul>
-                            {suggestions.map((suggestion, index) => (
-                            <li 
-                                key={index}
-                            >
-                                {suggestion}
-                            </li>
-                            ))}
-                        </ul>
-                        )}
-                    </div> 
-                    
-
-                </div>
-
-                {['흡연여부(흡연:1)', '음주여부(주5회)' , '연애속도(빠름5)', '선호데이트방식(외부5)', '운동횟수(주5회)'].map((label, index) => (
-                    <div key={index} className='field' >
-                        <label>{label}: {person[index]}</label>
-                        <input className='input'
-                            type="range"
-                            value={person[index]}
-                            onChange={(e) => setPerson((prev) => {
-                            const newArray = [...prev];
-                            newArray[index] = +e.target.value;
-                            return newArray;
-                            })}
-                            min={index === 0 ? 0 : 1}
-                            max={index === 0 ? 1 : 5}
+                {/* 필수정보 */}
+                <div className='title'>필수정보</div>
+                <div className='Essential-info'>
+                    <div className='field'>
+                        <label>E-MAIL</label>
+                        <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}} readOnly/>
+                    </div>
+                    <div className='field'>
+                        <label>PASSWORD</label>
+                        <input type="password" onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
+                    </div>
+                    <div className='field'>
+                        <label>RETYPE PW</label>
+                        <input type="password" onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
+                    </div>
+                    <div className='field'>
+                        <label>NICKNAME</label>
+                        <input type="text"  value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
+                    </div>
+                    <div className='field'>
+                        <label style={{flex:2}}>GENDER</label>
+                        <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}>
+                            <option value='0'>남성</option>
+                            <option value='1'>여성</option>
+                        </select>
+                        <label style={{flex:2}}>BIRTHDATE</label>
+                        <input
+                            style={{flex:3}}
+                            // type="date"
+                            value={birthDate}
+                            // onChange={handleBirthDateChange}
+                            // required
+                            readOnly
                         />
                     </div>
-                ))}
+                    <div className='field'>
+                        <label>PHONE</label>
+                        <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}}/>
+                    </div>
+                    <div className='field'>
+                        <label>ADDRESS</label>
+                        <input type="text"  value={zipnum} onChange={(e)=>{setZipnum(e.currentTarget.value)}}/>
+                    </div>
+                    <div className='field'>
+                        <label>INTRO</label>
+                        <input type="text"  value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
+                    </div>
+                </div>
 
-                <div className="field">
-                    <label>HOBBY</label>
-                    <div id="hobby-container">
-                        {hobbyCategories.map((category) => (
-                            <div key={category.categoryId}>
-                                <h4>{category.categoryName}</h4>
-                                {hobbies.filter((h) => h.category.categoryId === category.categoryId).map((h) => (
-                                    <div>
-                                        <label key={h.hobbyId}>
-                                            {h.hobbyName}                                        
-                                        </label><br></br>
-                                        <input className='checkbox'
-                                        type="checkbox" 
-                                        checked={selectedHobbies.includes(h.hobbyId)} 
-                                        onChange={() => handleHobbyChange(h.hobbyId)} 
-                                        />
-                                    </div>
+                {/* 추가선택정보 */}
+                <div className='title'>추가선택정보</div>
+                <div className='optional-info'>
+                    <div className='field'>
+                        <label>MBTI</label>
+                        <div>
+                            내 MBTI : {calMBTI(loginUser.memberInfo.ei,loginUser.memberInfo.ns,loginUser.memberInfo.tf,loginUser.memberInfo.jp)}
+                            <input
+                                type="text"
+                                value={inputValue}
+                                onChange={handleChange}
+                                placeholder="MBTI 입력"
+                            />
+                            {/* <button type="submit">전송</button> */}
+                            {/* </form> */}
+                            {suggestions.length > 0 && (
+                            <ul>
+                                {suggestions.map((suggestion, index) => (
+                                <li
+                                    key={index}
+                                >
+                                    {suggestion}
+                                </li>
                                 ))}
-                            </div>
-                        ))}
+                            </ul>
+                            )}
+                        </div>
+
+
+                    </div>
+
+                    {['흡연여부(흡연:1)', '음주여부(주5회)' , '연애속도(빠름5)', '선호데이트방식(외부5)', '운동횟수(주5회)'].map((label, index) => (
+                        <div key={index} className='field' >
+                            <label>{label}: {person[index]}</label>
+                            <input className='input'
+                                type="range"
+                                value={person[index]}
+                                onChange={(e) => setPerson((prev) => {
+                                const newArray = [...prev];
+                                newArray[index] = +e.target.value;
+                                return newArray;
+                                })}
+                                min={index === 0 ? 0 : 1}
+                                max={index === 0 ? 1 : 5}
+                            />
+                        </div>
+                    ))}
+
+                    <div className="field hobby">
+                        <label>HOBBY</label>
+                        <div id="hobby-container">
+                            {hobbyCategories.map((category) => (
+                                <div key={category.categoryId}>
+                                    <h4>{category.categoryName}</h4>
+                                    {hobbies.filter((h) => h.category.categoryId === category.categoryId).map((h) => (
+                                        <div>
+                                            <label key={h.hobbyId}>
+                                                {h.hobbyName}
+                                            </label><br></br>
+                                            <input className='checkbox'
+                                            type="checkbox"
+                                            checked={selectedHobbies.includes(h.hobbyId)}
+                                            onChange={() => handleHobbyChange(h.hobbyId)}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
-                <div className='field'>
-                    <label>프로필 이미지 선택</label>
-                    <input type="file" onChange={(e)=>{fileUpload(e)}}/>
+                <div className='Essential-info'>
+                    <div className='field'>
+                        <label>프로필 이미지 선택</label>
+                        <input type="file" onChange={(e)=>{fileUpload(e)}}/>
+                    </div>
+                    <div className='field'>
+                        <label>미리보기</label>
+                        <div className='ProfileImg'><img src={imgSrc} style={imgStyle} /></div>
+                    </div>
                 </div>
-                <div className='field'>
-                    <label>미리보기</label>
-                    <div className='ProfileImg'><img src={imgSrc} style={imgStyle} /></div>
-                </div>
-
                 <div className='btns'>
-                    <button onClick={ ()=>{   onSubmit()    }  }>EDIT</button>
+                    <button onClick={ ()=>{   onSubmit()    }  }>수정완료</button>
+                    {/* <button onClick={ ()=>{ navigate('/myPage')   }  }>BACK</button> */}
                 </div>
             </div>
         </div>
