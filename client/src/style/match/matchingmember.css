@@ -18,12 +18,12 @@
     width: 100%;
     
     
-    border: 1px solid black;
+    /* border: 1px solid black; */
     
 }
 
 .matchingMemberTitle{
-    border: 1px solid black;
+    /* border: 1px solid black; */
 
     font-family: "Gowun Dodum", serif;
     font-weight: 400;
@@ -33,7 +33,7 @@
 }
 
 .matchingMemberImg{
-    border: 1px solid black;
+    /* border: 1px solid black; */
 
     display: flex;
     justify-content: center;
@@ -61,7 +61,7 @@
 }
 
 .matchingMemberMsg{
-    border: 1px solid black;
+    /* border: 1px solid black; */
 
     font-family: "Gowun Dodum", serif;
     font-weight: 400;
@@ -70,10 +70,18 @@
 }
 
 .matchingMemberInfo{
+    /* border: 1px solid black; */
+
     font-family: "Gowun Dodum", serif;
     font-weight: 400;
     font-style: normal;
     font-size: 150%;
+}
+
+.matchingMemberBtns{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .matchingMemberBtns button{

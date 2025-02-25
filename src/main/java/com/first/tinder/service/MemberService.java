@@ -9,6 +9,7 @@ import com.first.tinder.entity.Hobby;
 import com.first.tinder.entity.HobbyCategory;
 import com.first.tinder.entity.Member;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +46,9 @@ public class MemberService {
     }
 
     public void insertMember(Member member) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        member.setPwd(encoder.encode(member.getPwd()));
+
         mr.save(member);
     }
 
@@ -61,12 +65,15 @@ public class MemberService {
 
     public void updateMember(Member member) {
 
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
         Optional<Member> memberOptional = mr.findById(member.getMemberId());
         if (memberOptional.isPresent()) {
             Member updateMember = memberOptional.get();
             updateMember.setEmail(member.getEmail());
             updateMember.setNickname(member.getNickname());
-            updateMember.setPwd(member.getPwd());
+            System.out.println("encoder.encode(member.getPwd())"+encoder.encode(member.getPwd()));
+            updateMember.setPwd(encoder.encode(member.getPwd()));
             updateMember.setPhone(member.getPhone());
             updateMember.setAddress(member.getAddress());
             updateMember.setProfileImg(member.getProfileImg());

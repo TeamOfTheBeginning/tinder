@@ -71,9 +71,9 @@ const EditProfile = () => {
                 setHobbyCategories(response.data.categories); // 카테고리 설정
                 setHobbies(response.data.hobbies); // 취미 설정
                 
-                console.log("loginUser.memberInfo"+JSON.stringify(loginUser.memberInfo))
+                // console.log("loginUser.memberInfo"+JSON.stringify(loginUser.memberInfo))
 
-                console.log("loginUser.memberInfo.hobbies"+loginUser.memberInfo.hobbies)
+                // console.log("loginUser.memberInfo.hobbies"+loginUser.memberInfo.hobbies)
 
                 // 기존 선택된 취미 초기화 (로그인 유저의 데이터에서 가져옴)
                 if (loginUser.memberInfo.hobbies) {
@@ -122,22 +122,18 @@ const EditProfile = () => {
 
     // ✅ 회원 정보 수정 요청
     async function onSubmit(){
-        if(email==''){ return alert('이메일을 입력하세요');}
         if(loginUser.provider != 'kakao' && pwd==''){ return alert('패스워드를 입력하세요');}
         if(loginUser.provider != 'kakao' && pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
         if(nickname==''){ return alert('닉네임을 입력하세요');}
         try{
-            let result = await jaxios.post('/api/member/emailcheckUpdate', null, {params:{email}} );
-            if(result.data.msg == 'no' ){
-                return alert('이메일이 중복됩니다');
-            }
-            result = await jaxios.post('/api/member/nicknamecheckUpdate', null, {params:{nickname}} );
+            let result = await jaxios.post('/api/member/nicknamecheckUpdate', null, {params:{memberId:loginUser.memberId, nickname}} );
             if(result.data.msg == 'no' ){
                 return alert('닉네임이 중복됩니다');
             }
             result = await jaxios.post('/api/member/update', {
-                memberId:loginUser.memberId, email, pwd, age, birthDate, gender, nickname, phone, zipnum, profileMsg:intro, profileImg,                 
+                memberId:loginUser.memberId, email, pwd, age,  gender, nickname, phone, zipnum, profileMsg:intro, profileImg,
             });
+            // birthDate,
 
             // 숫자 값으로 변환
             const mbtiToNumber = {
@@ -160,7 +156,6 @@ const EditProfile = () => {
 
             let result2 = await jaxios.post('/api/member/updateCharacteristics',{
                 memberId:loginUser.memberId,
-                // ✅ 선택한 취미 전송
                 characteristics: person,
             });
 
@@ -231,52 +226,49 @@ const EditProfile = () => {
         <div className='SideContainer'>
             <div className='editForm'>
                 <div className="logo" style={{fontSize:"2.0rem"}}>회원정보수정</div>
-
-                {/* 필수정보 */}
-                <div className='essential-info'>
-                    <div className='field'>
-                        <label>E-MAIL</label>
-                        <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
-                    </div>
-                    <div className='field'>
-                        <label>PASSWORD</label>
-                        <input type="password" onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
-                    </div>
-                    <div className='field'>
-                        <label>RETYPE PW</label>
-                        <input type="password" onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
-                    </div>
-                    <div className='field'>
-                        <label>NICKNAME</label>
-                        <input type="text"  value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
-                    </div>
-                    <div className='field'>
-                        <label style={{flex:2}}>GENDER</label>
-                        <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}>
-                            <option value='0'>남성</option>
-                            <option value='1'>여성</option>
-                        </select>
-                        <label style={{flex:2}}>BIRTHDATE</label>
-                        <input
-                            style={{flex:3}}
-                            type="date"
-                            value={birthDate}
-                            onChange={handleBirthDateChange}
-                            required
-                        />
-                    </div>
-                    <div className='field'>
-                        <label>PHONE</label>
-                        <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}}/>
-                    </div>
-                    <div className='field'>
-                        <label>ADDRESS</label>
-                        <input type="text"  value={zipnum} onChange={(e)=>{setZipnum(e.currentTarget.value)}}/>
-                    </div>
-                    <div className='field'>
-                        <label>INTRO</label>
-                        <input type="text"  value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
-                    </div>
+                <div className='field'>
+                    <label>E-MAIL</label>
+                    <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}} readOnly/>
+                </div>
+                <div className='field'>
+                    <label>PASSWORD</label>
+                    <input type="password" onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
+                </div>
+                <div className='field'>
+                    <label>RETYPE PW</label>
+                    <input type="password" onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
+                </div>
+                <div className='field'>
+                    <label>NICKNAME</label>
+                    <input type="text"  value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
+                </div>
+                <div className='field'>
+                    <label style={{flex:2}}>GENDER</label>
+                    <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}>
+                        <option value='0'>남성</option>
+                        <option value='1'>여성</option>
+                    </select>
+                    <label style={{flex:2}}>BIRTHDATE</label>
+                    <input
+                        style={{flex:3}}
+                        // type="date"
+                        value={birthDate}
+                        // onChange={handleBirthDateChange}
+                        // required
+                        readOnly
+                    />
+                </div>
+                <div className='field'>
+                    <label>PHONE</label>
+                    <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}}/>
+                </div>
+                <div className='field'>
+                    <label>ADDRESS</label>
+                    <input type="text"  value={zipnum} onChange={(e)=>{setZipnum(e.currentTarget.value)}}/>
+                </div>
+                <div className='field'>
+                    <label>INTRO</label>
+                    <input type="text"  value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
                 </div>
 
                 {/* 추가선택정보 */}
@@ -285,10 +277,10 @@ const EditProfile = () => {
                         <label>MBTI</label>
                         <div>
                             내 MBTI : {calMBTI(loginUser.memberInfo.ei,loginUser.memberInfo.ns,loginUser.memberInfo.tf,loginUser.memberInfo.jp)}
-                            <input 
-                                type="text" 
-                                value={inputValue} 
-                                onChange={handleChange} 
+                            <input
+                                type="text"
+                                value={inputValue}
+                                onChange={handleChange}
                                 placeholder="MBTI 입력"
                             />
                             {/* <button type="submit">전송</button> */}
@@ -296,7 +288,7 @@ const EditProfile = () => {
                             {suggestions.length > 0 && (
                             <ul>
                                 {suggestions.map((suggestion, index) => (
-                                <li 
+                                <li
                                     key={index}
                                 >
                                     {suggestion}
@@ -304,8 +296,8 @@ const EditProfile = () => {
                                 ))}
                             </ul>
                             )}
-                        </div> 
-                        
+                        </div>
+
 
                     </div>
 
@@ -335,12 +327,12 @@ const EditProfile = () => {
                                     {hobbies.filter((h) => h.category.categoryId === category.categoryId).map((h) => (
                                         <div>
                                             <label key={h.hobbyId}>
-                                                {h.hobbyName}                                        
+                                                {h.hobbyName}
                                             </label><br></br>
                                             <input className='checkbox'
-                                            type="checkbox" 
-                                            checked={selectedHobbies.includes(h.hobbyId)} 
-                                            onChange={() => handleHobbyChange(h.hobbyId)} 
+                                            type="checkbox"
+                                            checked={selectedHobbies.includes(h.hobbyId)}
+                                            onChange={() => handleHobbyChange(h.hobbyId)}
                                             />
                                         </div>
                                     ))}

@@ -20,18 +20,18 @@ const beforeReq=async (config)=>{
 
     // console.log(currentUser);  // 객체 전체 출력
     
-    console.log("currentUser.accessToken :"+currentUser2.accessToken)
+    // console.log("currentUser.accessToken :"+currentUser2.accessToken)
 
     // console.log("jaxios3")
 
-    console.log("currentUser.refreshToken :"+currentUser2.refreshToken)
+    // console.log("currentUser.refreshToken :"+currentUser2.refreshToken)
 
     const Header = { headers:{'Authorization' : `Bearer ${currentUser2.accessToken}` } }
 
     const res = await axios.get(`/api/member/refresh/${currentUser2.refreshToken}`, Header )
 
-    console.log("currentUser.accessToken2 :"+currentUser.accessToken)
-    console.log("currentUser.refreshToken2 :"+currentUser.refreshToken)
+    // console.log("currentUser.accessToken2 :"+currentUser.accessToken)
+    // console.log("currentUser.refreshToken2 :"+currentUser.refreshToken)
 
     // console.log("res.date"+res.data)
     // console.log("res.date"+JSON.stringify(res.data))
@@ -39,11 +39,11 @@ const beforeReq=async (config)=>{
     
     currentUser2.accessToken = res.data.accessToken;
 
-    console.log("currentUser.accessToken3"+currentUser2.accessToken)    
+    // console.log("currentUser.accessToken3"+currentUser2.accessToken)    
 
     currentUser2.refreshToken = res.data.refreshToken;
 
-    console.log("currentUser.refreshToken3"+currentUser2.refreshToken)
+    // console.log("currentUser.refreshToken3"+currentUser2.refreshToken)
 
     // setCookie1('user', JSON.stringify(currentUser))
     setCookie1('user', JSON.stringify(currentUser2) , 1)
