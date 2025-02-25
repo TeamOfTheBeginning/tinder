@@ -22,6 +22,9 @@ import FindLiker from './match/FindLiker';
 import MatchedMember from './match/MatchedMember';
 import FindChatGroupRandom from './chat/FindChatGroupRandom';
 import FindChatGroup from "./chat/FindChatGroup";
+import ChatRoomFromMatch from "./chat/ChatRoomFromMatch"
+import ChatRoomFromChatGroup from "./chat/ChatRoomFromChatGroup";
+import ChatRoomFromRandom from "./chat/ChatRoomFromRandom";
 import RealTimeChat from "./realtimechat/RealTimeChat";
 import MyPage from "./member/MyPage";
 import Search from "./search/Search";
@@ -56,10 +59,14 @@ const SideBar = () => {
     setSubMenu(null); // 서브 메뉴 초기화
   };
 
+  const [subMenuData, setSubMenuData] = useState(null);
+
   // 서브 메뉴 클릭 핸들러
-  const handleSubMenuClick = (menu) => {
-    setSubMenu(menu); // 서브 메뉴 상태 업데이트
-  };
+  const handleSubMenuClick = (menu, chatGroupId) => {
+    setSubMenu(menu);  // 서브메뉴 이름 변경
+    setSubMenuData(chatGroupId);  // chatGroupId 값 설정
+
+};
 
   // SideViewer 닫기
   const closeSideViewer = () => {
@@ -222,19 +229,26 @@ const SideBar = () => {
         <div className='sideViewerContent'>
           {selectedMenu === 'writePost' && <WritePost closeSideViewer={closeSideViewer} />}
           {selectedMenu === 'match' && (
-            subMenu === 'findLiker'
+              subMenu === 'chatRoomFromMatch'
+              ? <ChatRoomFromMatch chatGroupId={subMenuData} />
+              :subMenu === 'findLiker'
               ? <FindLiker />
               : subMenu === 'matchedMember'
-              ? <MatchedMember />
+              ? <MatchedMember openSubMenu={handleSubMenuClick}  />
               : <Match onSubMenuSelect={handleSubMenuClick} />
           )}
           {selectedMenu === 'nearMember' && <NearMember loginUser={loginUser}/>}
-          {selectedMenu === 'findChatGroupRandom' && <FindChatGroupRandom />}
-          {selectedMenu === 'findChatGroup' && (
-            subMenu === 'chatDetails'
-              ? <div>채팅 상세 화면</div> // 예시 컴포넌트
-              : <FindChatGroup onSubMenuSelect={handleSubMenuClick} />
+          {selectedMenu === 'findChatGroupRandom' && (
+            subMenu === 'chatRoomFromRandom' ? 
+              <ChatRoomFromRandom chatGroupId={subMenuData} />  // subMenuData는 'chatGroupId'로 설정한 값입니다.
+            : <FindChatGroupRandom openSubMenu={handleSubMenuClick} />
           )}
+
+          {selectedMenu === 'findChatGroup' && (
+            subMenu === 'chatRoomFromChatGroup' ? 
+              <ChatRoomFromChatGroup chatGroupId={subMenuData} />  // subMenuData는 'chatGroupId'로 설정한 값입니다.
+            : <FindChatGroup openSubMenu={handleSubMenuClick} />
+          )}          
           
           {selectedMenu === 'realtimechat' && <RealTimeChat />}
           {selectedMenu === 'mypage' && (

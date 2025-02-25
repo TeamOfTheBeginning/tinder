@@ -64,7 +64,9 @@ const ChatGroupRandom = (props) => {
         </div>
 
         <div className='chatGroupRandomBtns'>
-            <button onClick={()=>enterChatRoomFromChatGroupRandom(props.chatGroup.chatGroupId)}>입장</button>
+            {/* <button onClick={()=>enterChatRoomFromChatGroupRandom(props.chatGroup.chatGroupId)}>입장</button> */}
+
+            <div id ="btn" onClick={()=> props.openSubMenu('chatRoomFromRandom', props.chatGroup.chatGroupId)}><button>입장</button></div>&nbsp;
         </div>
     </div>
   )

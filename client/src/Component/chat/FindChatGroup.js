@@ -9,7 +9,7 @@ import '../../style/message/findchatgroup.css';
 
 import jaxios from '../../util/jwtUtil';
 
-const FindChatGroup = () => {
+const FindChatGroup = ({openSubMenu}) => {
 
     const navigate = useNavigate();
     const loginUser = useSelector(state=>state.user);
@@ -17,10 +17,10 @@ const FindChatGroup = () => {
     const [chatGroupList, serChatGroupList] = useState();
 
     useEffect(() => {
-      console.log(loginUser)
+      // console.log(loginUser)
       jaxios.get(`/api/chat/findChatGroup`, { params: { memberId:loginUser.memberId } })
           .then((result) => {
-              console.log("result.data.chatGroupList: " + JSON.stringify(result.data.chatGroupList));
+              // console.log("result.data.chatGroupList: " + JSON.stringify(result.data.chatGroupList));
               serChatGroupList(result.data.chatGroupList);
 
           })
@@ -41,7 +41,7 @@ const FindChatGroup = () => {
           chatGroupList.map((chatGroup, idx)=>{
             return (
               <div key={idx} className='findChatGroupListContainer'>
-                <ChatGroup chatGroup={chatGroup}/>            
+                <ChatGroup chatGroup={chatGroup} openSubMenu={openSubMenu}/>            
               </div>
             )
           })

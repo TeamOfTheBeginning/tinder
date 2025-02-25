@@ -1,5 +1,5 @@
 .chatRoomFromChatGroupContainer{
-    width: 100vw;
+    width: 100%;
     height: 100vh;
 
     display: flex;
@@ -13,7 +13,7 @@
 .chatRoomFromChatGroupContents{
     /* border: 1px solid black; */
 
-    width: 40vw;
+    width: 90%;
 }
 
 .chatRoomFromChatGroupContents .chat {    
