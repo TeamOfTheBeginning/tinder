@@ -209,6 +209,7 @@ const JoinForm = () => {
                     {/* 수정 불가능 하게 할 경우 */}
                     <input
                     type="text" // type을 date로 변경
+                    placeholder="생년월일"
                     value={birthDate}
                     required
                 />
