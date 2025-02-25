@@ -176,7 +176,7 @@
 /* 버튼 그룹 */
 /* 로그인/회원가입 버튼 */
 .login-btns .login-btn {
-    padding: 5px;
+    margin-top: 10px; padding: 5px;
     border-radius: 25px;
     font-weight: bold;
     transition: all 0.5s ease-in-out;
@@ -264,7 +264,8 @@
         align-items: center;
         flex-direction: column;
         width: calc(95% - 40px);
-        height: fit-content;
+        /*height: fit-content;*/
+        height: 80%;
     }
     .field.flex-row > * {
         flex: 1 1 100%; /* 한 줄에 하나씩 표시 */
