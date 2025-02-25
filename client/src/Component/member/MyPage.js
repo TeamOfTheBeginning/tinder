@@ -102,13 +102,16 @@ const MyPage = ({openSubMenu}) => {
         const result = await jaxios.post('/api/payment/order',null,{params:{
             memberId:loginUser.memberId, productId:1}
         })
+        console.log("result1"+result)
+        console.log("result2"+result.data)
+        console.log("result3"+result.orderingId)
 
         
           // /payment/complete 엔드포인트를 구현해야 합니다. 다음 목차에서 설명합니다.
         const notified = await jaxios.post('/api/payment/complete', {
             paymentId: response.paymentId,
             memberId: loginUser.memberId,
-            orderId:loginUser.memberId,
+            orderingId:result.data,
         }, {
             headers: { "Content-Type": "application/json" }
         });

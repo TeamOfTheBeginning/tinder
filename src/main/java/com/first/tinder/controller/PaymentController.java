@@ -32,8 +32,8 @@ public class PaymentController {
     public ResponseEntity<?> order(@RequestParam("memberId") int memberId, @RequestParam("productId") int productId) {
         System.out.println("memberId"+memberId+"productId"+productId);
         Ordering ordering = paymentService.doOrder(memberId,productId);
-        int orderId = ordering.getOrderingId();
-        return ResponseEntity.ok(orderId);
+        int orderingId = ordering.getOrderingId();
+        return ResponseEntity.ok(orderingId);
     }
 
 
@@ -41,8 +41,8 @@ public class PaymentController {
 
     @PostMapping("/complete")
     public ResponseEntity<?> complete(@RequestBody PaymentRequest request) {
-//        System.out.println("complete in");
-//        System.out.println(request);
+        System.out.println("complete in");
+        System.out.println(request);
         try {
             PaymentResponse response = paymentService.verifyPayment(request);
 //            System.out.println("complete success");

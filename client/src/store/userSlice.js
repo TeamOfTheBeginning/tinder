@@ -1,6 +1,7 @@
 // userSlice.js
 import { createSlice } from '@reduxjs/toolkit'
 import {Cookies} from 'react-cookie'
+import { setCookie1 , getCookie1 } from "../util/cookieUtil2";
 const cookies = new Cookies()
 
 const initialState={
@@ -27,7 +28,7 @@ const initialState={
     memberInfo:{},
     opponentMemberInfo:{},
     follower:[],
-    followed:[], 
+    followed:[],
 
     accessToken:'',
     refreshToken:'',
@@ -35,7 +36,7 @@ const initialState={
 
 
 const getLoginUser=()=>{
-    const memberinfo = cookies.get('user')
+    const memberinfo = getCookie1('user')
     
     if( memberinfo && memberinfo.email ){
         memberinfo.memberId = decodeURIComponent( memberinfo.memberId )
@@ -80,7 +81,7 @@ export const userSlice=createSlice(
                 state.address = action.payload.address;
                 state.provider = action.payload.provider;
                 state.profileImg = action.payload.profileImg;
-                state.profileMsg = action.payload.profileMsg;             
+                state.profileMsg = action.payload.profileMsg;
                 state.snsId = action.payload.snsId;
                 state.zipnum = action.payload.zipnum;
                 state.latitude = action.payload.latitude;
@@ -96,14 +97,14 @@ export const userSlice=createSlice(
                 state.memberId = '';
                 state.nickname = '';
                 state.age = '';
-                state.email = '';                
+                state.email = '';
                 state.phone = '';
                 state.gender = '';
                 state.address = '';
                 state.birthDate = '';
                 state.provider = '';
                 state.profileImg = '';
-                state.profileMsg = '';           
+                state.profileMsg = '';
                 state.snsId = '';
                 state.zipnum = '';
                 state.latitude = '';

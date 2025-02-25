@@ -6,5 +6,5 @@ import lombok.Data;
 public class PaymentRequest {
     private String paymentId;
     private int memberId;
-    private Long orderId;
+    private int orderingId;
 }

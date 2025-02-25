@@ -163,10 +163,14 @@ const Main = () => {
                     onAnimationEnd={() => setShowToast0(false)}
                 >
                     <div className="toastPopup0Header">
-                        <div>
-                        <h1>{loginUser.nickname}님<br />
-                            🎉 환영합니다! 🎉</h1>
+                        <div className="toastPopup0HeaderImg">
+                            <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${loginUser.profileImg}`}/>
                         </div>
+
+                        <h1>{loginUser.nickname}님<br />
+                            🎉 환영합니다! 🎉
+                            </h1>
+                        
                         <div className="heart"></div>
                     </div>
                     <div className="toastPopup0Content">

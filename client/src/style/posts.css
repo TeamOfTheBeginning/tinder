@@ -16,7 +16,7 @@
     padding: 20px 30px;
     border-radius: 10px;
     z-index: 9999; /* 다른 요소보다 위에 표시 */
-    min-width: 320px; /* 크기 조절 */
+    min-width: 400px; /* 크기 조절 */
     text-align: center;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     background-color: rgba(0, 0, 0, 0.8); /* 배경색 변경 */
@@ -28,6 +28,18 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    width: 500px;
+  }
+
+  .toastPopup0HeaderImg{
+    width: 150px;
+    
+  }
+
+  .toastPopup0HeaderImg img{
+    width: 100%;
+    border-radius: 10px;
   }
   
   /* 닫기 버튼 스타일 */
