@@ -24,6 +24,7 @@
 }
 .mypage .userinfo {
     width: 100%;
+    margin-top: 20px;
     display: flex;
     justify-content: space-around;
 }
@@ -89,15 +90,18 @@
 .mypage .btns,
 .editForm .btns {
     width: 100%;
-    margin: 10px 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
     display: flex;
+    flex-direction: row;
     box-sizing: border-box;
-    align-items: center;
+    justify-content: space-evenly;
+    gap: 5px;
 }
 .mypage .btns #btn button,
 .editForm .btns button {
+    width: 80px;
     height: 40px;
-    margin-right: 5px;
     cursor: pointer;
 }
 

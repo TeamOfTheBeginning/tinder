@@ -176,7 +176,8 @@ const SideBar = () => {
     <div className='MenuBar'>
       <RealtimeConnectInfo />
       <div className='MenubarBtns'>
-      <div className='profileImg' onClick={() => handleMenuClick('mypage')}>
+        <div className={`profileImg ${selectedMenu === 'mypage' ? 'active' : ''}`} 
+        onClick={() => handleMenuClick('mypage')}>
           <img src={profileImg} alt="Profile" />
         </div>
 
@@ -184,38 +185,61 @@ const SideBar = () => {
           <IoHomeSharp />
         </div>
 
-        <div className='sidebar-btn' onClick={() => handleMenuClick('writePost')}>
+        <div 
+          className={`sidebar-btn ${selectedMenu === 'writePost' ? 'active' : ''}`} 
+          onClick={() => handleMenuClick('writePost')}
+        >
           <MdOutlineAddPhotoAlternate />
         </div>
 
-        <div className='sidebar-btn' onClick={() => handleMenuClick('match')}>
+        <div 
+          className={`sidebar-btn ${selectedMenu === 'match' ? 'active' : ''}`} 
+          onClick={() => handleMenuClick('match')}
+        >
           <IoSparkles />
         </div>
 
-        <div className='sidebar-btn' onClick={() => handleMenuClick('nearMember')}>
+        <div 
+          className={`sidebar-btn ${selectedMenu === 'nearMember' ? 'active' : ''}`} 
+          onClick={() => handleMenuClick('nearMember')}
+        >
           <FaMapMarkerAlt />
         </div>
 
-        <div className='sidebar-btn' onClick={() => handleMenuClick('findChatGroupRandom')}>
+        <div 
+          className={`sidebar-btn ${selectedMenu === 'findChatGroupRandom' ? 'active' : ''}`} 
+          onClick={() => handleMenuClick('findChatGroupRandom')}
+        >
           <FaRandom />
         </div>
 
-        <div className='sidebar-btn' onClick={() => handleMenuClick('findChatGroup')}>
+        <div 
+          className={`sidebar-btn ${selectedMenu === 'findChatGroup' ? 'active' : ''}`} 
+          onClick={() => handleMenuClick('findChatGroup')}
+        >
           <TbMailHeart />
         </div>
 
-        <div className='sidebar-btn' onClick={() => handleMenuClick('realtimechat')}>
+        <div 
+          className={`sidebar-btn ${selectedMenu === 'realtimechat' ? 'active' : ''}`} 
+          onClick={() => handleMenuClick('realtimechat')}
+        >
           <HiOutlineChatAlt2 />
         </div>
 
-        <div className='sidebar-btn' onClick={() => handleMenuClick('search')}>
+        <div 
+          className={`sidebar-btn ${selectedMenu === 'search' ? 'active' : ''}`} 
+          onClick={() => handleMenuClick('search')}
+        >
           <IoSearch />
         </div>
 
-        <div className='sidebar-btn' onClick={() => { navigate('/'); handleLeave(loginUser.memberId); removeCookie1('user', '/');}}>
+        <div 
+          className='sidebar-btn logout-btn' 
+          onClick={() => { navigate('/'); handleLeave(loginUser.memberId); removeCookie1('user', '/'); }}
+        >
           <IoLogOut />
         </div>
-
       </div>
 
       {/* SideViewer */}

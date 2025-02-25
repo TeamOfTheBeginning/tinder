@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 
 import jaxios from '../../util/jwtUtil'
 
+
 const WritePost = ({ closeSideViewer }) => {
   const loginUser = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -17,27 +18,51 @@ const WritePost = ({ closeSideViewer }) => {
   const [imgList, setImgList] = useState([]);
   const [content, setContent] = useState("");
   const [imgSrcs, setImgSrcs] = useState(Array(10).fill(""));
+  const [imgStyle, setImgStyle] = useState(Array(10).fill({ display: 'none' }));
 
-  // 이미지 업로드 함수
+  // 이미지 업로드 함수 (파일 확장자 검사 + 이미지 스타일 조정 추가)
   async function imgUpload(e, index) {
     if (!e.target.files.length) return;
-
+  
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];  // 허용된 확장자 목록
+    const file = e.target.files[0];
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+  
+    // 파일 확장자 검사
+    if (!allowedExtensions.includes(fileExtension)) {
+      alert('이미지 파일만 업로드 가능합니다. (jpg, jpeg, png, gif)');
+      return;
+    }
+  
     try {
       const formData = new FormData();
-      formData.append("image", e.target.files[0]);
+      formData.append("image", file);
+  
       const result = await jaxios.post("/api/post/fileupload", formData);
-
+  
+      // 업로드된 이미지 URL을 상태에 추가 (특정 인덱스에 삽입)
       setImgSrcs((prevImgSrcs) => {
         const newImgSrcs = [...prevImgSrcs];
         newImgSrcs[index] = `http://localhost:8070/userimg/${result.data.filename}`;
         return newImgSrcs;
       });
-
+  
+      // 파일명 리스트 업데이트
       setImgList((prevImgList) => [...prevImgList, result.data.filename]);
+  
+      // 업로드된 이미지 스타일 조정
+      setImgStyle((prevStyles) => {
+        const newStyles = [...prevStyles];
+        newStyles[index] = { display: 'block', width: '200px' };  // 각 인덱스에 스타일 적용
+        return newStyles;
+      });
+  
     } catch (error) {
       console.error("Error uploading image:", error);
     }
   }
+  
+
 
   // 게시글 작성 함수
   async function onSubmit(event) {
@@ -85,36 +110,66 @@ const WritePost = ({ closeSideViewer }) => {
   }
 
   return (
-    <div className="Container">
+    <div className="SideContainer">
       <div className="Content">
         <div className="postWrite">
           <div className="title" style={{ fontSize: "150%" }}>
-            {loginUser.nickname} now . . .
+            {loginUser.nickname} 님 #today
           </div>
 
-          <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmit} id="write-form">
+            {/*
             <div className="field">
               <label style={{ display: "none" }}>content</label>
-              <textarea
-                rows="7"
+              <textarea className="bubble-textarea"
+                rows="7" placeholder="오늘의 이야기를 적어볼까요?"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
               ></textarea>
             </div>
+            */}
+
+            <div className="field">
+              <label style={{ display: "none" }}>content</label>
+
+              {/* 말풍선을 감싸는 div */}
+              <div className="bubble-wrapper">
+                <textarea
+                  className="bubble-textarea"
+                  rows="7"
+                  placeholder="오늘의 이야기를 적어볼까요?"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                ></textarea>
+              </div>
+            </div>
+
 
             {Array.from({ length: 10 }).map((_, index) => (
-              <div
-                key={index}
-                className="field"
-                style={{
-                  display:
-                    index === 0 || index < imgList.length + 1 ? "flex" : "none",
-                }}
-              >
-                <input type="file" onChange={(e) => imgUpload(e, index)} />
-                {imgSrcs[index] && <img src={imgSrcs[index]} height="50" />}
-              </div>
-            ))}
+            <div
+              key={index}
+              className="field"
+              style={{
+                display: index === 0 || index < imgList.length + 1 ? "flex" : "none",
+              }}
+            >
+              <label htmlFor={`file-${index}`}>
+                <div className="field">
+                  파일 첨부
+                  <input
+                    type="file"
+                    accept=".jpg,.jpeg,.png,.gif"
+                    id={`file-${index}`}
+                    onChange={(e) => imgUpload(e, index)}
+                  />
+                  {imgSrcs[index] && (
+                    <img src={imgSrcs[index]} style={imgStyle[index]} alt={`uploaded-${index}`} />
+                  )}
+                </div>
+              </label>
+            </div>
+          ))}
+
             <div className="btns">
               <button type="submit">작성완료</button>
             </div>
