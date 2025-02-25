@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class JWTUtil {
 
-    private static String key = "12345678901234567890123456789012";
+    private static String key = "1234567890123456789012345678901234567890";
 
 
     public static String generateToken(Map<String, Object> claims, int min) {

@@ -419,6 +419,7 @@ public class MemberController {
             @PathVariable("refreshToken") String refreshToken,
             @RequestHeader("Authorization") String authHeader
     ) throws CustomJWTException {
+        System.out.println("refresh token");
 
         System.out.println("refresh token : " + refreshToken);
 

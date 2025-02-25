@@ -62,7 +62,7 @@ const Login = () => {
                 dispatch( loginAction( result.data ) )
                 // navigate('/main');
 
-                const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:result.data.memberId}});
+                // const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:result.data.memberId}});
                 // const lUser = result.data.loginUser;
 
                 // lUser['follower'] = result.data.follower;
@@ -70,12 +70,12 @@ const Login = () => {
                 // cookies.set('user', JSON.stringify( lUser ) , {path:'/', })
                 // dispatch( loginAction( result.data.loginUser ) )
 
-                cookies.set('follower', JSON.stringify( res.data.follower ) , {path:'/', })
-                cookies.set('followed', JSON.stringify( res.data.followed ) , {path:'/', })
+                // cookies.set('follower', JSON.stringify( res.data.follower ) , {path:'/', })
+                // cookies.set('followed', JSON.stringify( res.data.followed ) , {path:'/', })
 
                 
-                dispatch( setFollower( res.data.follower ) )
-                dispatch( setFollowed( res.data.followed ) )
+                // dispatch( setFollower( res.data.follower ) )
+                // dispatch( setFollowed( res.data.followed ) )
 
                 handleJoin(result.data.memberId)
 
