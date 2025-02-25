@@ -17,20 +17,24 @@ const Notification = (props) => {
 
   const [notificationList,setNotificationList] = useState();
 
-  const eventSource = new EventSource(`/api/sse/subscribe/${memberId}`);
+  // const eventSource = new EventSource(`/api/sse/subscribe/${memberId}`);
   // console.log("구독완료!")
 
-  eventSource.addEventListener("notification", function (event) {
-    const data = JSON.parse(event.data); // 문자열을 JSON 객체로 변환
-    // console.log("📢 새로운 알림:", data.notification.message); // message만 출력
-    alert(data.notification.message);
+  // eventSource.addEventListener("notification", function (event) {
+  //   const data = JSON.parse(event.data); // 문자열을 JSON 객체로 변환
+  //   console.log("📢 새로운 알림:", data.notification.message); // message만 출력
+  //   alert(data.notification.message);
 
-  });
+  // });
   
-  eventSource.onerror = function () {
-      // console.log("SSE 연결 종료됨");
-  };
+  // eventSource.onerror = function () {
+  //     console.log("SSE 연결 종료됨");
+  // };
 
+
+
+
+  
   useEffect(() => {
     // EventSource 연결 및 재연결 처리
     let eventSource;
@@ -39,13 +43,13 @@ const Notification = (props) => {
       eventSource = new EventSource(`/api/sse/subscribe/${memberId}`);
 
       eventSource.onopen = () => {
-        // console.log("SSE 연결됨");
+        console.log("SSE 연결됨");
       };
 
       eventSource.addEventListener("notification", (event) => {
-        // console.log("SSE 구독됨");
+        console.log("SSE 구독됨");
         const data = JSON.parse(event.data);
-        // console.log("📢 새로운 알림:", data.notification.message);        
+        console.log("📢 새로운 알림:", data.notification.message);        
 
         jaxios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
         .then((result)=>{
@@ -59,7 +63,7 @@ const Notification = (props) => {
       });
 
       eventSource.onerror = () => {
-        // console.log("SSE 연결 종료됨, 10초 후 재연결 시도");
+        console.log("SSE 연결 종료됨, 10초 후 재연결 시도");
         eventSource.close();  // 연결 종료
         setTimeout(createEventSource, 10000);  // 10초 후 재연결 시도
       };
