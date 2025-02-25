@@ -128,9 +128,11 @@ const buyItems = async () => {
     return (
         <div className='SideContainer'>
             <div className='mypage'>
-                <div className='img'>
-                    <img src={imgSrc} />
-                    <div></div>
+                <div className='profileImage'>
+                    <div className='img'>
+                        <img src={imgSrc} />
+                    </div>
+                    <div className='imgBg'></div>
                 </div>
 
                 <div className='userinfo'>

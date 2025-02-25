@@ -10,31 +10,55 @@
 .mypage .userinfo{
     width: 100%;
     display: flex;
+    justify-content: space-around;
 }
 .mypage .userinfo .field{
     width: 100%;
     display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
-.mypage .img{
-    flex-basis: 250px;    
-    border: 1px solid orange;
+.mypage .profileImage {
+    position: relative; /* 부모 요소 기준으로 배치 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
-.mypage .img img{
+
+.mypage .profileImage .imgBg {
+    position: absolute; /* 절대 위치 */
+    bottom: 0; /* 이미지 아래쪽에 배치 */
+    width: 100%; height: 500px;
+    border-radius: 0 0 50% 50%;
+    background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 400% 100%;
+    animation: colorChangeSidebar 10s ease infinite;
+    z-index: 0; /* 이미지 아래 배치 */
+}
+@keyframes colorChangeSidebar {
+    0% { background-position: 0 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0 50%; }
+}
+
+.mypage .profileImage .img {
     width: 250px;
     height: 250px;
     border-radius: 50%;
+    overflow: hidden; /* 이미지 바깥 부분 숨기기 */
+    position: relative;
+    z-index: 1; /* 배경 위로 배치 */
 }
 
-/* .container{
-    display: flex;
-    justify-content: center;
+.mypage .profileImage .img img {
     width: 100%;
-    height: 100vh;
-    background-image: linear-gradient(-35deg, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
-    background-size: 400% 100%;
-    animation: colorChange 10s ease infinite;
-} */
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover; /* 이미지 크롭 효과 */
+}
+
 
 @keyframes colorChange {
     0% { background-position: 0 50%; }
