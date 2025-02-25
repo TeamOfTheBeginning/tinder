@@ -10,7 +10,9 @@ import jaxios from '../../util/jwtUtil';
 const ChatRoomFromChatGroup = (props) => {
     // console.log("props.chatGroupId"+props.chatGroupId)
 
-    const { chatGroupId } = props.chatGroupId;
+    // const { chatGroupId } = props.chatGroupId;
+
+    const chatGroupId=props.chatGroupId;
 
     // const { chatGroupId } = useParams();
     // console.log("chatGroupId"+chatGroupId);

@@ -145,11 +145,7 @@ const JoinForm = () => {
                 console.log("서버 응답:", data); // 디버깅용
 
                 // 응답 데이터 처리
-                if (data.message === "Age restriction satisfied") {
-                // console.log("성인 인증 성공!");
-                // console.log("Name:", data.name);
-                // console.log("Gender:", data.gender);
-                // console.log("BirthDate:", data.birthDate);
+                if (data.message === "Age restriction satisfied") {                
 
                 alert("성인 인증 성공!");
                 setAdultVerification(true)
@@ -201,12 +197,6 @@ const JoinForm = () => {
                 </div>
                 <div className='field flex-row' id="login-field">
                     <label>GENDER</label>
-                    {/* 직접 선택하게 할 경우 */}
-                    {/* <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}} readOnly>
-                        
-                        <option value='0'>남성</option>
-                        <option value='1'>여성</option>
-                    </select> */}
 
                     {/* 인증시 받아오는 경우 */}
                     <input type="text" placeholder="성별"
@@ -218,19 +208,11 @@ const JoinForm = () => {
                     
                     {/* 수정 불가능 하게 할 경우 */}
                     <input
-                    type="date" // type을 date로 변경
+                    type="text" // type을 date로 변경
+                    placeholder="생년월일"
                     value={birthDate}
                     required
                 />
-
-                    {/* 수정 가능하게 할 경우 */}
-                    {/* <input
-                        style={{flex:3}}
-                        type="date"
-                        value={birthDate}
-                        onChange={handleBirthDateChange}
-                        required
-                    /> */}
 
                 </div>
                 <div className='field' id="login-field">
@@ -280,9 +262,9 @@ const JoinForm = () => {
                     <div className="login-btn" onClick={ ()=>{   onSubmit()    }  }><IoCreateOutline />JOIN</div>
                 </div>
                 <AddressModal
-                        isOpen={isAddressModalOpen}
-                        onClose={() => setIsAddressModalOpen(false)}
-                        onComplete={handleComplete}
+                    isOpen={isAddressModalOpen}
+                    onClose={() => setIsAddressModalOpen(false)}
+                    onComplete={handleComplete}
                 />
             </div>
         </div>

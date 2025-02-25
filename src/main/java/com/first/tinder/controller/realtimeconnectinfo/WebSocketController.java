@@ -25,8 +25,9 @@ public class WebSocketController {
     // 웹소켓 연결 초기화 시, 클라이언트에게 접속자 수 전송
     @MessageMapping("/getUserCount")
     public void getUserCount() {
-        System.out.println("getUserCount");
+//        System.out.println("getUserCount");
 
+        //DB에 입력된 사용자 조회
         List<UserOnline> usernames = userOnlineRepository.findAll() ;
 //        usernames=userRepository.findAll();
 
@@ -42,10 +43,8 @@ public class WebSocketController {
     @SendTo("/topic/real_chat/userCount")
     public UserCountInfo handleJoin(UserOnline memberId) {
         // 사용자 접속 시 DB에 저장
-        System.out.println("user"+memberId);
+//        System.out.println("user"+memberId);
         userOnlineRepository.save(memberId);
-
-
 
         List<UserOnline> usernames = new ArrayList<>();
 
@@ -64,7 +63,6 @@ public class WebSocketController {
         System.out.println("user"+memberId);
         userOnlineRepository.delete(memberId);
         // 현재 접속 중인 사용자 수 반환
-
 
         List<UserOnline> usernames = new ArrayList<>();
         usernames= userOnlineRepository.findAll();

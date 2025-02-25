@@ -15,7 +15,7 @@ const Notification = (props) => {
   const memberId = loginUser.memberId;
   // console.log("memberId"+memberId);
 
-  // const [notificationList,setNotificationList] = useState();
+  const [notificationList,setNotificationList] = useState();
 
   // const eventSource = new EventSource(`/api/sse/subscribe/${memberId}`);
   // console.log("구독완료!")
@@ -31,83 +31,81 @@ const Notification = (props) => {
   //     console.log("SSE 연결 종료됨");
   // };
 
-  // useEffect(() => {
-  //   // EventSource 연결 및 재연결 처리
-  //   let eventSource;
 
-  //   const createEventSource = () => {
-  //     eventSource = new EventSource(`/api/sse/subscribe/${memberId}`);
 
-  //     eventSource.onopen = () => {
-  //       console.log("SSE 연결됨");
-  //     };
 
-  //     eventSource.addEventListener("notification", (event) => {
-  //       console.log("SSE 구독됨");
-  //       const data = JSON.parse(event.data);
-  //       // console.log("📢 새로운 알림:", data.notification.message);        
+  
+  useEffect(() => {
+    // EventSource 연결 및 재연결 처리
+    let eventSource;
 
-  //       jaxios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
-  //       .then((result)=>{
-  //         console.log("getNotificationTop4"+result.data.notificationList)
-  //         props.setNotificationList(result.data.notificationList)
-  //       }
-  //       ).catch((err)=>{console.error(err)})
+    const createEventSource = () => {
+      eventSource = new EventSource(`/api/sse/subscribe/${memberId}`);
 
-  //       setTimeout(() => alert(data.notification.message), 2000);        
+      eventSource.onopen = () => {
+        console.log("SSE 연결됨");
+      };
 
-  //     });
+      eventSource.addEventListener("notification", (event) => {
+        console.log("SSE 구독됨");
+        const data = JSON.parse(event.data);
+        console.log("📢 새로운 알림:", data.notification.message);        
 
-  //     eventSource.onerror = () => {
-  //       console.log("SSE 연결 종료됨, 10초 후 재연결 시도");
-  //       eventSource.close();  // 연결 종료
-  //       setTimeout(createEventSource, 10000);  // 10초 후 재연결 시도
-  //     };
-  //   };
+        jaxios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
+        .then((result)=>{
+          // console.log("getNotificationTop4"+result.data.notificationList)
+          props.setNotificationList(result.data.notificationList)
+        }
+        ).catch((err)=>{console.error(err)})
 
-  //   // 최초 연결
-  //   createEventSource();
+        setTimeout(() => alert(data.notification.message), 2000);        
 
-  //   // 컴포넌트 언마운트 시 연결 종료
-  //   return () => {
-  //     if (eventSource) {
-  //       eventSource.close();
-  //       console.log("SSE 연결 종료됨 (언마운트)");
-  //     }
-  //   };
-  // }, []);
+      });
+
+      eventSource.onerror = () => {
+        console.log("SSE 연결 종료됨, 10초 후 재연결 시도");
+        eventSource.close();  // 연결 종료
+        setTimeout(createEventSource, 10000);  // 10초 후 재연결 시도
+      };
+    };
+
+    // 최초 연결
+    createEventSource();
+
+    // 컴포넌트 언마운트 시 연결 종료
+    return () => {
+      if (eventSource) {
+        eventSource.close();
+        console.log("SSE 연결 종료됨 (언마운트)");
+      }
+    };
+  }, []);
 
 
 
   async function getNotification(){
-    
-
-    console.log("getNotification")
+    // console.log("getNotification")
 
     jaxios.get(`/api/notification/getNotificationTop4`, { params: { memberId:loginUser.memberId } })
     .then((result)=>{
-      console.log("getNotificationTop4"+result.data.notificationList)
+      // console.log("getNotificationTop4"+result.data.notificationList)
       props.setNotificationList(result.data.notificationList)
     }
     ).catch((err)=>{console.error(err)}) 
 
     setIsOpen(!isOpen);
-
   }
 
   async function updateNotificationRead(notificationId){
     console.log("updateNotificationRead")
     jaxios.post(`/api/notification/updateNotificationRead`, null ,{ params: { notificationId , memberId:loginUser.memberId } })
     .then((result)=>{
-      console.log("updateNotificationRead"+result.data.notificationList)
+      // console.log("updateNotificationRead"+result.data.notificationList)
       props.setNotificationList(result.data.notificationList)      
     }
     ).catch((err)=>{console.error(err)})
   }
   
-
-
-
   return (
     <div className='notificationContainer'>
       <IoIosNotifications
@@ -115,8 +113,6 @@ const Notification = (props) => {
         onClick={getNotification}
         style={{ color: props.notificationList && props.notificationList.length > 0 ? 'red' : 'black' }}
       />
-
-
 
       {isOpen && ( // isOpen이 true일 때만 렌더링
         <div className="notificationList">

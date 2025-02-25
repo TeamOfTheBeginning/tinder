@@ -99,12 +99,16 @@ const MyPage = ({openSubMenu}) => {
             // 오류 발생
             return alert(response.message);
         }
+        const result = await jaxios.post('/api/payment/order',null,{params:{
+            memberId:loginUser.memberId, productId:1}
+        })
+
         
           // /payment/complete 엔드포인트를 구현해야 합니다. 다음 목차에서 설명합니다.
         const notified = await jaxios.post('/api/payment/complete', {
             paymentId: response.paymentId,
             memberId: loginUser.memberId,
-            // 주문 정보...
+            orderId:loginUser.memberId,
         }, {
             headers: { "Content-Type": "application/json" }
         });
@@ -218,11 +222,6 @@ const buyItems = async () => {
                     ))}
                 </ul>
                 </Modal>
-
-
-
-                        
-            
 
                 {/* <div className='userpost' >
                     {

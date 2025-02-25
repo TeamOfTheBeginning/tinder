@@ -28,10 +28,10 @@ public class RealTimeChatRoom {
             joinColumns = @JoinColumn(name = "chat_room_id"),
             inverseJoinColumns = @JoinColumn(name = "member_id")
     )
-    private List<Member> members; // ✅ 채팅방 멤버 리스트 추가
+    private List<Member> members;
 
     @ManyToOne
     @JoinColumn(name = "creator_id", nullable = false)
-    private Member creator; // ✅ 채팅방을 만든 사용자 정보 저장
+    private Member creator;
 
 }
