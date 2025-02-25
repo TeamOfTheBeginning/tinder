@@ -223,9 +223,12 @@ const Post = (props) => {
                 }
             </div>
 
-            
-            <div className='content' style={{fontWeight:"bold"}}><pre>{props.post.content}</pre></div>
+            {/* post 본문 */}
+            <div className='content'>
+                <pre>{props.post.content}</pre>
+            </div>
 
+            {/* post 댓글 */}
             <div className='reply'  style={replyView}>
                 <div style={{ display:'flex', flexDirection:'column' }} >
                     {
@@ -256,7 +259,7 @@ const Post = (props) => {
                     }/>
                     <button id='pinkBtn' style={{flex:"1"}} onClick={
                         ()=>{ addReply() }
-                    }>댓글입력</button>
+                    }>작성</button>
                 </div>
             </div>
         </div>

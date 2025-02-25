@@ -225,53 +225,59 @@ const EditProfile = () => {
     return (
         <div className='SideContainer'>
             <div className='editForm'>
-                <div className="logo" style={{fontSize:"2.0rem"}}>회원정보수정</div>
-                <div className='field'>
-                    <label>E-MAIL</label>
-                    <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}} readOnly/>
-                </div>
-                <div className='field'>
-                    <label>PASSWORD</label>
-                    <input type="password" onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label>RETYPE PW</label>
-                    <input type="password" onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label>NICKNAME</label>
-                    <input type="text"  value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label style={{flex:2}}>GENDER</label>
-                    <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}>
-                        <option value='0'>남성</option>
-                        <option value='1'>여성</option>
-                    </select>
-                    <label style={{flex:2}}>BIRTHDATE</label>
-                    <input
-                        style={{flex:3}}
-                        // type="date"
-                        value={birthDate}
-                        // onChange={handleBirthDateChange}
-                        // required
-                        readOnly
-                    />
-                </div>
-                <div className='field'>
-                    <label>PHONE</label>
-                    <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label>ADDRESS</label>
-                    <input type="text"  value={zipnum} onChange={(e)=>{setZipnum(e.currentTarget.value)}}/>
-                </div>
-                <div className='field'>
-                    <label>INTRO</label>
-                    <input type="text"  value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
+                <div className="logo" >회원정보수정</div>
+
+                {/* 필수정보 */}
+                <div className='title'>필수정보</div>
+                <div className='Essential-info'>
+                    <div className='field'>
+                        <label>E-MAIL</label>
+                        <input type="text" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}} readOnly/>
+                    </div>
+                    <div className='field'>
+                        <label>PASSWORD</label>
+                        <input type="password" onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
+                    </div>
+                    <div className='field'>
+                        <label>RETYPE PW</label>
+                        <input type="password" onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
+                    </div>
+                    <div className='field'>
+                        <label>NICKNAME</label>
+                        <input type="text"  value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
+                    </div>
+                    <div className='field'>
+                        <label style={{flex:2}}>GENDER</label>
+                        <select style={{flex:3}} value={gender} onChange={(e)=>{setGender(e.currentTarget.value)}}>
+                            <option value='0'>남성</option>
+                            <option value='1'>여성</option>
+                        </select>
+                        <label style={{flex:2}}>BIRTHDATE</label>
+                        <input
+                            style={{flex:3}}
+                            // type="date"
+                            value={birthDate}
+                            // onChange={handleBirthDateChange}
+                            // required
+                            readOnly
+                        />
+                    </div>
+                    <div className='field'>
+                        <label>PHONE</label>
+                        <input type="text"  value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}}/>
+                    </div>
+                    <div className='field'>
+                        <label>ADDRESS</label>
+                        <input type="text"  value={zipnum} onChange={(e)=>{setZipnum(e.currentTarget.value)}}/>
+                    </div>
+                    <div className='field'>
+                        <label>INTRO</label>
+                        <input type="text"  value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
+                    </div>
                 </div>
 
                 {/* 추가선택정보 */}
+                <div className='title'>추가선택정보</div>
                 <div className='optional-info'>
                     <div className='field'>
                         <label>MBTI</label>
@@ -318,7 +324,7 @@ const EditProfile = () => {
                         </div>
                     ))}
 
-                    <div className="field">
+                    <div className="field hobby">
                         <label>HOBBY</label>
                         <div id="hobby-container">
                             {hobbyCategories.map((category) => (
