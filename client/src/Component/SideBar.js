@@ -49,7 +49,7 @@ const SideBar = () => {
 
   useEffect(() => {
     if (loginUser.profileImg) {
-      setProfileImg(`http://localhost:8070/userimg/${loginUser.profileImg}`);
+      setProfileImg(`/api/userimg/${loginUser.profileImg}`);
     }
   }, [loginUser]);
 

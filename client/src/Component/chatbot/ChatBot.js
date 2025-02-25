@@ -1,13 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../style/chatbot/chatbot.css";
 
 import jaxios from '../../util/jwtUtil';
 
+export const API_BASE_URL = "http://192.168.0.44:8070";
+
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const chatContainerRef = useRef(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (window.location.pathname === "/chatbot") {
+        navigate("/");
+    }
+  }, [navigate]);
 
   const [userId] = useState(() => {
     let storedUserId = localStorage.getItem("chatbotUserId");
@@ -21,7 +32,7 @@ const ChatBot = () => {
   useEffect(() => {
     const fetchChatHistory = async () => {
       try {
-        const response = await jaxios.get(`http://localhost:8070/api/chatbot/history/${userId}`);
+        const response = await jaxios.get(`${API_BASE_URL}/api/chatbot/history/${userId}`);
         if (response.data && response.data.history) {
           setMessages(response.data.history);
         } else {
@@ -54,7 +65,7 @@ const ChatBot = () => {
     setInput("");
 
     try {
-      const response = await jaxios.post(`http://localhost:8070/api/chatbot/ask/${userId}`, {
+      const response = await jaxios.post(`${API_BASE_URL}/api/chatbot/ask/${userId}`, {
         message: input,
       });
 
