@@ -115,13 +115,19 @@ const JoinForm = () => {
         setProfileimg(result.data.filename)
     }
 
+    const uuid = () => {
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+    };
+
 
     const handleIdentityVerification = async () => {
         try {
             const response = await PortOne.requestIdentityVerification({
             // 고객사 storeId로 변경해주세요.
             storeId: "store-0ef99292-e8d5-4956-a265-e1ec0ee73634",
-            identityVerificationId: `identity-verification-${crypto.randomUUID()}`,
+            identityVerificationId: `identity-verification-${uuid()}`,
             // 연동 정보 메뉴의 채널 관리 탭에서 확인 가능합니다.
             channelKey: "channel-key-a6f549c2-b895-4933-ad92-117931b006a5",
         });
