@@ -4,7 +4,9 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import ChatGroupRandom from './ChatGroupRandom';
 
-import '../../style/message/findchatgrouprandom.css';
+// import '../../style/message/findchatgrouprandom.css';
+// css 최대한 재활용 할 수 있도록 정리중
+import '../../style/message/findchatgroup.css';
 
 import jaxios from '../../util/jwtUtil';
 
@@ -45,25 +47,47 @@ const FindChatGroupRandom = ({openSubMenu}) => {
         ).catch((err)=>{console.error(err)}) 
     }
 
-    return (
-        <div className='findChatGroupRandomContainer'>
-            <div className='findChatGroupRandomBtns'>
-                <button onClick={()=>setAnonymousMessageRoom()}>랜덤쪽지</button>
-            </div>
-        {
-            (chatGroupList)?(
-                chatGroupList.map((chatGroup, idx)=>{
-                return (
-                    <div key={idx} className='findChatGroupRandomListContainer'>
-                        <ChatGroupRandom chatGroup={chatGroup}  openSubMenu={openSubMenu}/>
-                    </div>
-                )
-                })
-            ):("Loading...")
-        }
+    // return (
+    //     <div className='findChatGroupContainer'>
+    //         <div className='chatGroupInfo'>
+    //             <div className='chatGroupBtns'>
+    //                 <button className='chatGroupbtn' onClick={()=>setAnonymousMessageRoom()}>랜덤쪽지</button>
+    //             </div>
+    //         </div>
+    //     {
+    //         (chatGroupList)?(
+    //             chatGroupList.map((chatGroup, idx)=>{
+    //             return (
+    //                 <div key={idx} className='findChatGroupListContainer'>
+    //                     <ChatGroupRandom chatGroup={chatGroup}  openSubMenu={openSubMenu}/>
+    //                 </div>
+    //             )
+    //             })
+    //         ):("Loading...")
+    //     }
         
+    //     </div>
+    // )
+    return (
+        <div className='findChatGroupContainer'>
+            <div className='chatGroupHeader'>
+                <div className='chatGroupBtns'>
+                    <button className='chatGroupBtn' onClick={() => setAnonymousMessageRoom()}>
+                        랜덤쪽지
+                    </button>
+                </div>
+            </div>
+            {chatGroupList ? (
+                chatGroupList.map((chatGroup, idx) => (
+                    <div key={idx} className='findChatGroupListContainer'>
+                        <ChatGroupRandom chatGroup={chatGroup} openSubMenu={openSubMenu} />
+                    </div>
+                ))
+            ) : (
+                "Loading..."
+            )}
         </div>
-    )
+    );
 }
 
 export default FindChatGroupRandom

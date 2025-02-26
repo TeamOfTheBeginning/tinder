@@ -43,29 +43,33 @@ const ChatGroup = (props) => {
 
 return (
     <div className='chatGroupContainer'>
-        <div className='chatGroupProfile'>
-            
-        {props.chatGroup.chatGroupName}
-        ({props.chatGroup.memberCount}인)<br/>{formatDate(props.chatGroup.createdDate)}
-        
-
+        <div className='chatGroupInfo'>
+            <div className='chatGroupProfile'>
+                <div className='chatroom-name'>
+                {props.chatGroup.chatGroupName}
+                ({props.chatGroup.memberCount}인)</div>
+                <div className='chatroom-date'>{formatDate(props.chatGroup.createdDate)}</div>
+            </div>
+            <div className='chatGroupMember'>
+                {
+                    (chatMemberList) ? (
+                        chatMemberList.map((chatMember, idx) => {
+                            return (
+                                <div key={idx}>
+                                    {chatMember.nickname}
+                                    {idx < chatMemberList.length - 1 && ', '}
+                                    &nbsp;
+                                </div>
+                            )
+                        })
+                    ) : ("Loading...")
+                }
+            </div>
         </div>
-        <div className='chatGroupMember'>
-        {
-            (chatMemberList)?(
-                chatMemberList.map((chatMember, idx)=>{
-                    return (
-                        <div key={idx}>
-                            {chatMember.nickname}&nbsp;
-                        </div>
-                    )
-                })
-            ):("Loading...")
-        }
-        </div>
 
-        <div className='chatGroupBtns'>
-            <div id ="btn" onClick={()=> props.openSubMenu('chatRoomFromChatGroup', props.chatGroup.chatGroupId)}><button>입장</button></div>&nbsp;
+
+        <div className='chatGroupBtns' onClick={()=> props.openSubMenu('chatRoomFromChatGroup', props.chatGroup.chatGroupId)}>
+            <button className='chatGroupBtn'>입장</button>
         </div>
     </div>
   )

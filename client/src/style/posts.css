@@ -131,7 +131,7 @@
 
 /* 버튼 스타일 */
 button{
-    margin-left: 5px;
+    /* margin-left: 5px; */
     padding: 3px;
     width: 60px;
     height: 30px;
