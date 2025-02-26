@@ -81,6 +81,7 @@
     max-width: 400px; /* 최대 크기 제한 */
     height: auto; /* 비율 유지 */
     margin-top: 20px; /* 여백 추가 */
+    border-radius: 10px;
 }
 
 .animation-step1,
