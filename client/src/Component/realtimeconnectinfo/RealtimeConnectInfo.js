@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { FaUser } from "react-icons/fa";
+import { IoIosContact } from "react-icons/io";
 
 import "../../style/realtimeconnectinfo/realtimeconnectinfo.css";
 
@@ -85,15 +86,16 @@ const RealtimeConnectInfo = () => {
       onMouseLeave={() => setShowTooltip(false)}
       onClick={()=>toggle()}
       >
-      <FaUser id='FaUser'/>
+      <IoIosContact id='IoIosContact'/>
+      {/* // <FaUser id='FaUser'/> */}
       
       {showTooltip && (
         <div 
           style={{
-            position: 'absolute',
-            bottom: '70%',
-            left: '50%',
-            transform: 'translateX(-50%)',
+            // position: 'absolute',
+            // bottom: '70%',
+            // left: '50%',
+            // transform: 'translateX(-50%)',
             background: 'black',
             color: 'white',
             padding: '5px 10px',
@@ -101,6 +103,8 @@ const RealtimeConnectInfo = () => {
             fontSize: '12px',
             whiteSpace: 'nowrap',
           }}
+
+          id='userCount'
         >
           {userCount}
         </div>

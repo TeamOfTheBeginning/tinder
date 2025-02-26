@@ -36,7 +36,7 @@ const initialState={
 
 
 const getLoginUser=()=>{
-    const memberinfo = getCookie1('user')
+    const memberinfo = cookies.get('user')
     
     if( memberinfo && memberinfo.email ){
         memberinfo.memberId = decodeURIComponent( memberinfo.memberId )
