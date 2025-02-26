@@ -1,4 +1,4 @@
-.realtimeConnectInfoContent{
+#IoIosContact{
     position: fixed;
     top: 2%;
     right: 8%;
@@ -10,20 +10,20 @@
     transition: transform 0.2s ease-in-out;
 }
 
-#FaUser{
-    position: fixed;
-    top: 2.25%;
-    right: 8.15%;
-    width: 45px;
-    height: 45px;
-    /* border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
+#IoIosContact:hover {
+    transform: scale(0.9);
 }
 
-#FaUser:hover {
-    transform: scale(0.9);
+.realtimeConnectInfoContainer{
+    position: fixed;
+    top: 2%;
+    right: 8%;
+}
+
+#userCount{
+    position: fixed;
+    top: 1%;
+    right: 8%;
 }
 
 .realTimeAccessUserList{
