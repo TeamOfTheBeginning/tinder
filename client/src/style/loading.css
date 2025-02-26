@@ -1,0 +1,128 @@
+/* 로딩 컨테이너 스타일 */
+.loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+}
+
+/* 흰색 네온 글로우 효과를 가진 blur 처리된 원형 배경 */
+.blur-circle {
+    position: absolute;
+    width: 300px; /* 원의 너비 */
+    bottom: 40vh;
+    height: 300px; /* 원의 높이 */
+    border-radius: 50%; /* 원형으로 만들기 */
+    background-color: rgba(255, 255, 255, 0.2); /* 흰색 + 투명도 */
+    filter: blur(20px); /* blur 효과 */
+    z-index: -1; /* 다른 요소 뒤로 배치 */
+
+    /* 네온 글로우 효과 */
+    box-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.5), 
+        0 0 40px rgba(255, 255, 255, 0.4), 
+        0 0 60px rgba(255, 255, 255, 0.3);
+
+    /* 초기 상태 (숨김) */
+    opacity: 0; 
+    transform: scale(0.8); 
+
+    /* 스르륵 나타나는 애니메이션 */
+    animation: fadeInBlurCircleGlow 1s forwards ease-in-out;
+}
+
+/* blur-circle 애니메이션 정의 */
+@keyframes fadeInBlurCircleGlow {
+    from {
+        opacity: 0;
+        transform: scale(0.8); /* 작게 시작 */
+        box-shadow: 
+            0 0 10px rgba(255, 255, 255, 0.2), 
+            0 0 20px rgba(255, 255, 255, 0.1);
+    }
+    to {
+        opacity: 1; 
+        transform: scale(1); /* 원래 크기로 확장 */
+        box-shadow:
+            0 0 20px rgba(255, 255, 255, 0.5), 
+            0 0 40px rgba(255, 255, 255, 0.4), 
+            0 0 60px rgba(255, 255, 255, 0.3); /* 네온 글로우 효과 강화 */
+    }
+}
+
+/* 공통 로딩 애니메이션 */
+.loader {
+    position: absolute; /* 화면 중앙에 고정 */
+    bottom: 12%;
+    height: 4px;
+    width: 75vw;
+    border-radius: 50%;
+    --c:no-repeat linear-gradient(#aa003e 0 0);
+    background: var(--c),var(--c),#fcf2b8;
+    background-size: 60% 100%;
+    animation: l16 3s infinite;
+}
+
+@keyframes l16 {
+    0%   {background-position:-150% 0,-150% 0}
+    66%  {background-position: 250% 0,-150% 0}
+    100% {background-position: 250% 0, 250% 0}
+  }
+
+/* 첫 번째 애니메이션 스타일 */
+
+.animation-step1 img {
+    width: 40%; /* 브라우저 화면 너비의 40% */
+    max-width: 400px; /* 최대 크기 제한 */
+    height: auto; /* 비율 유지 */
+    margin-top: 20px; /* 여백 추가 */
+}
+
+.animation-step1,
+.animation-step2 {
+    text-align: center;
+    opacity: 0; /* 초기 상태에서 보이지 않음 */
+    animation: fadeIn 1s forwards; /* 페이드 인 애니메이션 */
+}
+
+.animation-step2 {
+    animation-delay: 0s; /* 즉시 실행 */
+}
+
+
+/* 하트 스타일 */
+.heart-animation {
+    margin-top: 20px;
+    display: flex; /* flexbox 사용 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+}
+
+
+.animation-step2 {
+    animation-delay: 0s; /* 즉시 실행 */
+}
+
+.heart {
+    width: 15vw; /* 뷰포트 너비의 비율 */
+    min-width: 100px; /* 최대 크기 제한 */
+    aspect-ratio: 1;
+    background: linear-gradient(#dc1818 0 0) bottom/100% 0% no-repeat #ccc;
+    -webkit-mask: 
+      radial-gradient(circle at 60% 65%, #000 62%, #0000 65%) top left, 
+      radial-gradient(circle at 40% 65%, #000 62%, #0000 65%) top right, 
+      linear-gradient(to bottom left, #000 42%,#0000 43%) bottom left , 
+      linear-gradient(to bottom right,#000 42%,#0000 43%) bottom right;
+    -webkit-mask-size: 50% 50%;
+    -webkit-mask-repeat: no-repeat;
+    animation: l19 3s forwards;  /* animation을 한 번만 실행 */
+  }
+  
+  @keyframes l19 {
+    90%, 100% { background-size: 100% 100%; }
+  }

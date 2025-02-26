@@ -62,11 +62,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    max-width: 100%;
     width: 100%;
     border-radius: 20px;
     background-color: transparent; /* 배경 제거 */
     box-shadow: none; /* 그림자 제거 */
-    padding: 0; /* 내부 여백 제거 */
+    box-sizing: border-box;
+    padding: 0;
+    /* padding: 20px; */
+    overflow: hidden;
 }
 .joinform .btns{
     display: flex;
@@ -82,6 +86,10 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+}
+.hide-label,
+#login-field label{
+    display: none;
 }
 /* 전환 버튼 */
 .signin .login-btns, .signup .login-btns{
@@ -138,9 +146,6 @@
     gap: 10px; /* 요소 간 간격 */
     margin-bottom: 15px; /* 필드 간 여백 */
 }
-#login-field label {
-    display: none;
-}
 
 .field input {
     flex: 1; /* 부모 요소 크기에 맞게 확장 */
@@ -163,14 +168,19 @@
 .field.flex-row {
     display: flex;
     flex-direction: row;
-    justify-content: space-between; /* 요소 간격 자동 정렬 */
-    gap: 10px; /* 요소 간격 조정 */
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%; /* 부모 크기 안에서 정렬 */
+    max-width: 100%; /* 넘치지 않도록 제한 */
+    box-sizing: border-box; /* 패딩과 테두리를 포함한 크기 계산 */
+    overflow: hidden; /* 넘치는 부분 숨김 */
 }
 
 /* 개별 요소 크기 조정 */
 .field.flex-row > * {
-    flex: 1 1 48%; /* 한 줄에 두 개씩 표시 */
-    max-width: 48%; /* 최대 너비 제한 */
+    flex: 1 1 48%; /* 한 줄에 두 개씩 배치 */
+    max-width: 48%;
+    box-sizing: border-box;
 }
 
 /* 버튼 그룹 */
@@ -256,36 +266,6 @@
   
 
 
-/* 반응형 스타일 */
-@media (max-width: 600px) {
-    .loginform .joinform {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        width: calc(95% - 40px);
-        /*height: fit-content;*/
-        height: 80%;
-    }
-    .field.flex-row > * {
-        flex: 1 1 100%; /* 한 줄에 하나씩 표시 */
-        max-width: 100%;
-    }
-    .joinform .login-btns {
-        width: 100%;
-    }
-    .loginform #login-field input, 
-    .loginform .login-btns button {
-        padding:8px;
-    }
-    .signin .field, .signup .field {
-        margin: 0;
-    }
-    .loginform .field.flex-row {
-        gap: 0; /* 요소 간격 조정 */
-        margin:0;
-    }
-}
 
 .success-message {
     display: flex;
@@ -384,3 +364,38 @@
     transition: width 0.2s ease-in-out;
 }
 
+
+
+/* 반응형 스타일 */
+@media (max-width: 600px) {
+    .loginform .joinform {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: calc(95% - 40px);
+        /*height: fit-content;*/
+        height: 80%;
+    }
+    .field.flex-row {
+        flex-direction: column;
+    }
+    .field.flex-row > * {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+    .joinform .login-btns {
+        width: 100%;
+    }
+    .loginform #login-field input, 
+    .loginform .login-btns button {
+        padding:8px;
+    }
+    .signin .field, .signup .field {
+        margin: 0;
+    }
+    .loginform .field.flex-row {
+        gap: 0; /* 요소 간격 조정 */
+        margin:0;
+    }
+}
