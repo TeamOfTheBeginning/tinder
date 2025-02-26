@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import SideBar from "../SideBar";
 import "../../style/sidebar.css";
 import "../../style/posts.css";
 import "../../style/writePost.css";

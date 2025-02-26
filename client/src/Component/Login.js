@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react';
+import Loading from "./Loading";
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
@@ -20,6 +21,7 @@ import jaxios from '../util/jwtUtil'
 
 const Login = () => {
     const [isLoginSuccess, setIsLoginSuccess] = useState(false);
+    const [loadingComplete, setLoadingComplete] = useState(false);
     const [showWelcomeMessage, setShowWelcomeMessage] = useState(false);
     const [progress, setProgress] = useState(0);
 
@@ -29,6 +31,12 @@ const Login = () => {
     const navigate = useNavigate('');
     const dispatch = useDispatch('');
     const cookies = new Cookies('');
+
+    const handleLoginSuccess = () => {
+        setIsLoginSuccess(true); // 로그인 성공 상태 활성화
+        setTimeout(() => setLoadingComplete(true), 6500); // 로딩 완료 후 상태 변경
+        setTimeout(() => navigate("/main"), 6500); // 메인 페이지로 이동
+    };
 
     async function onLoginLocal(){
         if( !email ){ return alert('이메일을 입력하세요')}
@@ -98,18 +106,18 @@ const Login = () => {
                         //     navigate('/main');
                         // }, 2000);
 
-            // 충전 애니메이션 시작
-            let percent = 0;
-            const interval = setInterval(() => {
-                percent += 10;
-                setProgress(percent);
-                if (percent >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        navigate('/main');
-                    }, 1000); // 충전 완료 후 0.5초 후 이동
-                }
-            }, 200);
+            // // 충전 애니메이션 시작
+            // let percent = 0;
+            // const interval = setInterval(() => {
+            //     percent += 10;
+            //     setProgress(percent);
+            //     if (percent >= 100) {
+            //         clearInterval(interval);
+            //         setTimeout(() => {
+            //             navigate('/main');
+            //         }, 1000); // 충전 완료 후 0.5초 후 이동
+            //     }
+            // }, 200);
 
             
 
@@ -187,20 +195,20 @@ const Login = () => {
       setPwd('');
     };
 
+
+    const handleLoadingComplete = () => {
+        navigate("/main"); // 메인 페이지로 이동
+        setLoadingComplete(true);
+    };
+
     return (
         <div className="container">
-        {isLoginSuccess ? ( // 로그인 성공 시 화면 변경
-            <div className="success-message">
-                <h1>오늘 하루 설렘의 시작</h1>
-                {/* <h2>{progress}%</h2> */}
-                <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/White Square Tinder App Logo Symbol.png`} />
-                {/* <h2>설렘 충전 중... {progress}%</h2>
-                <div className="progress-bar">
-                    <div className="progress" style={{ width: `${progress}%` }}></div>
-                </div> */}
-            </div>
-        ) : (
-            <div className="loginform-header">
+            {isLoginSuccess ? (
+                !loadingComplete ? (
+                    <Loading onComplete={handleLoadingComplete} />
+                ) : null
+            ) : (
+                <div className="loginform-header">
                 <RealtimeConnectInfo />
                 <div className="toggle-btns">
                     <button
@@ -225,7 +233,7 @@ const Login = () => {
                         {!isSignUp ? (
                             <div className="signin">
                                 <div className="field">
-                                    <label>E-MAIL</label>
+                                    <label className="hide-label">E-MAIL</label>
                                     <input
                                         type="text"
                                         value={email}
@@ -234,7 +242,7 @@ const Login = () => {
                                     />
                                 </div>
                                 <div className="field">
-                                    <label>PASSWORD</label>
+                                    <label className="hide-label">PASSWORD</label>
                                     <input
                                         type="password"
                                         value={pwd}

@@ -198,11 +198,11 @@ const JoinForm = () => {
                     <div className="login-btn" onClick={ ()=>{   handleIdentityVerification()    }  }>성인인증</div>
                 </div>
                 <div className='field' id="login-field">
-                    <label>NAME</label>
+                    <label className="hide-label">NAME</label>
                     <input type="text" placeholder="이름" value={memberName} onChange={(e)=>{setNickname(e.currentTarget.value)}} readOnly/>
                 </div>
                 <div className='field flex-row' id="login-field">
-                    <label>GENDER</label>
+                    <label className="hide-label">GENDER</label>
 
                     {/* 인증시 받아오는 경우 */}
                     <input type="text" placeholder="성별"
@@ -210,7 +210,7 @@ const JoinForm = () => {
                     readOnly
                     />
 
-                    <label>&nbsp;&nbsp;BIRTHDATE&nbsp;&nbsp;</label>
+                    <label className="hide-label">BIRTHDATE</label>
                     
                     {/* 수정 불가능 하게 할 경우 */}
                     <input
