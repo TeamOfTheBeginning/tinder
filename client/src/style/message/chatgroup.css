@@ -1,11 +1,24 @@
 .chatGroupContainer{
     width: 100%;
-    font-size: 150%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.chatGroupMember{
+.chatGroupInfo {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+}
+.chatGroupProfile {
+    display: flex;
+    justify-content: space-between; /* 이름과 날짜를 양 끝으로 배치 */
+    margin-bottom: 8px; /* 아래쪽 여백 추가 */
+}
+
+.chatGroupMember {
+    display: flex;
+    flex-wrap: wrap; /* 여러 줄로 표시할 수 있도록 설정 */
 }
 
 .findChatGroupListContainer{
@@ -13,7 +26,82 @@
 
 }
 
-.chatGroupBtns{
+/* 그룹채팅방 정보-채팅방이름 */
+.chatGroupProfile{
+    width: 100%;
     display: flex;
-    justify-content: center;
+    gap: 5px;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.chatroom-name, .chatroom-date {
+    font-weight: bold;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 그룹채팅방 참여자 */
+.chatGroupMember{
+    width: 100%;
+    font-size: 16px;
+}
+
+/* 입장 버튼 */
+/* 랜덤쪽지 버튼의 부모 컨테이너 */
+.chatGroupBtns {
+    display: flex; /* 내부 요소를 정렬 */
+    justify-content: center; /* 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    width: 100%; /* 부모 컨테이너의 너비를 100%로 설정 */
+    margin-top: 10px; /* 위쪽 여백 추가 */
+}
+
+/* 랜덤쪽지 버튼 */
+.chatGroupbtn {
+    width: 100%; /* 버튼의 너비를 부모 컨테이너에 맞춤 */
+    max-width: 300px; /* 최대 너비를 제한 (선택 사항) */
+    height: 40px; /* 버튼 높이 설정 */
+    background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 300% 100%;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .chatGroupProfile {
+        flex-direction: column;
+    }
+    .chatGroupContainer {
+        justify-content: flex-start;
+        height: fit-content;
+    }
+
+    /* 입장버튼의 부모 컨테이너 */
+    .chatGroupBtns {
+        display: flex; /* 내부 요소를 정렬 */
+        justify-content: center; /* 중앙 정렬 */
+        align-items: center; /* 세로 중앙 정렬 */
+        width: 100%; /* 부모 컨테이너의 너비를 100%로 설정 */
+        margin-top: 10px; /* 위쪽 여백 추가 */
+    }
+    
+    .chatGroupBtns .chatGroupBtn {
+        width: 100%; /* 부모(.chatGroupBtns)에 맞춰 꽉 차게 */
+        display: flex; /* 내부 버튼을 정렬 */
+        justify-content: center; /* 버튼을 중앙 정렬 */
+        align-items: center; /* 세로 중앙 정렬 */
+    }
+    
+    .chatGroupBtns button {
+        width: 100%; /* 버튼을 전체 너비로 설정 */
+        max-width: 100%; /* 100% 이상으로 커지지 않도록 제한 */
+        display: block; /* 인라인 요소 문제 방지 */
+    }
 }

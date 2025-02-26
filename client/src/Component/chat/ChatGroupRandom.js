@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
-import '../../style/message/chatgrouprandom.css';
+// import '../../style/message/chatgrouprandom.css';
+import '../../style/message/chatgroup.css';
 
 import jaxios from '../../util/jwtUtil';
 
@@ -32,14 +33,20 @@ const ChatGroupRandom = (props) => {
     }
 
   return (
-    <div className='chatGroupRandomContainer'>
-        <div className='chatGroupRandomProfile'>            
-        {props.chatGroup.chatGroupName}
-        ({props.chatGroup.memberCount}인)<br/>{formatDate(props.chatGroup.createdDate)}
-        </div>        
+    <div className='chatGroupContainer'>
+        <div className='chatGroupInfo'>
+            <div className='chatGroupProfile'> 
+                    <div className='chatroom-name'>
+                        {props.chatGroup.chatGroupName}
+                    ({props.chatGroup.memberCount}인)
+                    </div>
+                    <div className='chatroom-date'>
+                    {formatDate(props.chatGroup.createdDate)}
+                    </div>
+                </div>        
+            </div> 
 
-        <div className='chatGroupRandomBtns'>
-            <div id ="btn" onClick={()=> props.openSubMenu('chatRoomFromRandom', props.chatGroup.chatGroupId)}><button>입장</button></div>&nbsp;
+        <div className='chatGroupBtns' onClick={()=> props.openSubMenu('chatRoomFromRandom', props.chatGroup.chatGroupId)}><button className='chatGroupBtn'>입장</button>
         </div>
     </div>
   )

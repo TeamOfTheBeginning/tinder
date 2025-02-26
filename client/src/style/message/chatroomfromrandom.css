@@ -1,4 +1,4 @@
-.chatRoomFromRandomContainer{
+/* .chatRoomFromRandomContainer{
     width: 100%;
     height: 100vh;
 
@@ -6,54 +6,39 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    /* border: 1px solid black; */
 }
 
 .chatRoomFromRandomContents{
-    /* border: 1px solid black; */
-
     width: 90%;
 }
 
 .chatRoomFromRandomContents .chat {    
-    /* border: 1px solid black; */
-    background-color: #f0f0f0;  /* 기본 배경색 */
-    text-align: left;  /* 기본 텍스트 정렬 */
-
+    background-color: #f0f0f0;
+    text-align: left;
     display: flex;
     flex-direction: row;
     justify-content: start;
 }
 
-/* 로그인한 사용자의 메시지 스타일 */
+로그인한 사용자의 메시지 스타일
 .chatRoomFromRandomContents .chat.myChat {
-    /* background-color: #ed6ea0;   */
-    /* 다른 배경 색 */
-    text-align: right;  /* 오른쪽 정렬 */
-
+    text-align: right;
     justify-content: end;
 }
 
 .chatRoomFromRandomContents .chatContainer{
     display: flex;
     flex-direction: row;
-
-    /* border: 1px solid black; */
-
     width: 20vw;
 }
 
 .chatRoomFromRandomContents .chatImg{
     width: 5vh;
     height: 5vh;
-
     border-radius: 10px;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     overflow: hidden;
 }
 
@@ -67,7 +52,6 @@
 }
 
 .findChatGroupRandomContainer button{
-    width: 80px;
     height: 30px;
     background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
     background-size: 300% 100%;
@@ -75,9 +59,6 @@
     font-weight: 500;
     font-size: 13px;
     cursor: pointer;
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
 }
 
 .findChatGroupRandomContainer button:hover{
@@ -86,16 +67,7 @@
 }
 
 .findChatGroupRandomListContainer{
-    /* display: flex;
-    flex-direction: row; */
-    /* justify-content: center;
-    align-items: center; */
-
     width: 80%;
-    /* height: 15vh;
-    border: 1px solid black; */
-
-
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -110,4 +82,4 @@
 .findChatGroupRandomListContainer:hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
+} */

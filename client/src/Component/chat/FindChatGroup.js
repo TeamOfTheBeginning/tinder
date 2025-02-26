@@ -29,6 +29,7 @@ const FindChatGroup = ({openSubMenu}) => {
   
   return (
     <div className='findChatGroupContainer'>
+      <h2>그룹 채팅</h2>
       {
         (chatGroupList)?(
           chatGroupList.map((chatGroup, idx)=>{
