@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "../../style/sidebar.css";
 import "../../style/posts.css";
 import "../../style/writePost.css";
 import { useSelector } from "react-redux";
-
 import jaxios from '../../util/jwtUtil';
 
 const WritePost = ({ closeSideViewer }) => {
@@ -17,11 +15,11 @@ const WritePost = ({ closeSideViewer }) => {
   const [imgSrcs, setImgSrcs] = useState(Array(10).fill(""));
   const [imgStyle, setImgStyle] = useState(Array(10).fill({ display: 'none' }));
 
-  // 이미지 업로드 함수 (파일 확장자 검사 + 이미지 스타일 조정 추가)
+  // 이미지 업로드 함수
   async function imgUpload(e, index) {
     if (!e.target.files.length) return;
 
-    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];  // 허용된 확장자 목록
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
     const file = e.target.files[0];
     const fileExtension = file.name.split('.').pop().toLowerCase();
 
@@ -38,7 +36,7 @@ const WritePost = ({ closeSideViewer }) => {
 
       const result = await jaxios.post("/api/post/fileupload", formData);
 
-      // 업로드된 이미지 URL을 상태에 추가 (특정 인덱스에 삽입)
+      // 업로드된 이미지 URL을 상태에 추가
       setImgSrcs((prevImgSrcs) => {
         const newImgSrcs = [...prevImgSrcs];
         newImgSrcs[index] = `http://localhost:8070/userimg/${result.data.filename}`;
@@ -46,12 +44,16 @@ const WritePost = ({ closeSideViewer }) => {
       });
 
       // 파일명 리스트 업데이트
-      setImgList((prevImgList) => [...prevImgList, result.data.filename]);
+      setImgList((prevImgList) => {
+        const newImgList = [...prevImgList];
+        newImgList[index] = result.data.filename; // 해당 인덱스에 파일명 저장
+        return newImgList;
+      });
 
       // 업로드된 이미지 스타일 조정
       setImgStyle((prevStyles) => {
         const newStyles = [...prevStyles];
-        newStyles[index] = { display: 'block', width: '200px' };  // 각 인덱스에 스타일 적용
+        newStyles[index] = { display: 'block', width: '200px' };
         return newStyles;
       });
 
@@ -70,7 +72,7 @@ const WritePost = ({ closeSideViewer }) => {
 
     setImgList((prevImgList) => {
       const newImgList = [...prevImgList];
-      newImgList.splice(index, 1); // 리스트에서 해당 이미지 제거
+      newImgList[index] = ""; // 삭제할 파일명 위치 초기화
       return newImgList;
     });
 
@@ -90,7 +92,9 @@ const WritePost = ({ closeSideViewer }) => {
       return;
     }
 
-    if (imgList.length === 0) {
+    // 유효한 이미지가 하나 이상 있는지 확인
+    const validImages = imgList.filter(img => img); // 빈 값이 아닌 파일만 필터링
+    if (validImages.length === 0) {
       alert("사진을 최소 1장 이상 첨부해주세요.");
       return;
     }
@@ -104,7 +108,7 @@ const WritePost = ({ closeSideViewer }) => {
       const post_id = result.data.postid;
 
       await Promise.all(
-        imgList.map((filename) =>
+        validImages.map((filename) =>
           jaxios.post("/api/post/writeImages", {
             postId: post_id,
             savefileName: filename,
@@ -114,10 +118,7 @@ const WritePost = ({ closeSideViewer }) => {
 
       if (result.data.msg === "ok") {
         alert("작성이 완료되었습니다.");
-        // 게시글 작성 완료 후 SideViewer 닫기
         closeSideViewer();
-
-        // 메인 페이지로 이동
         navigate("/main");
       }
 
