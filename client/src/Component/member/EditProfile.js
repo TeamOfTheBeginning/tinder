@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import '../../style/mypage.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from '../../store/userSlice';
+
+import '../../style/mypage.css';
+import LoadingSpinner from "../LoadingSpinner";
+
 import { Cookies } from 'react-cookie';
 import jaxios from '../../util/jwtUtil';
 
 const EditProfile = () => {
+    const [loading, setLoading] = useState(false);
+
     const loginUser = useSelector(state => state.user);
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
@@ -63,6 +68,7 @@ const EditProfile = () => {
     };
 
     useEffect(() => {
+        setLoading(true); // 로딩 시작
         jaxios.get("/api/member/hobbies")
             .then((response) => {
                 setHobbyCategories(response.data.categories); // 카테고리 설정
@@ -73,7 +79,8 @@ const EditProfile = () => {
                     const initialSelectedHobbies = loginUser.memberInfo.hobbies.map((h) => h.hobbyId);
                     setSelectedHobbies(initialSelectedHobbies);
                 }
-            });
+            })
+            .finally(() => setLoading(false)); // 로딩 종료;
 
         setAge(loginUser.age);
         setBirthDate(loginUser.birthDate);
@@ -137,6 +144,9 @@ const EditProfile = () => {
         if (loginUser.provider !== 'kakao' && pwd === '') { return alert('패스워드를 입력하세요'); }
         if (loginUser.provider !== 'kakao' && pwd !== pwdChk) { return alert('패스워드 확인이 일치하지 않습니다'); }
         if (nickname === '') { return alert('닉네임을 입력하세요'); }
+
+        setLoading(true); // 로딩 시작
+
         try {
             let result = await jaxios.post('/api/member/nicknamecheckUpdate', null, { params: { memberId: loginUser.memberId, nickname } });
             if (result.data.msg === 'no') {
@@ -180,7 +190,9 @@ const EditProfile = () => {
                 cookies.set('user', JSON.stringify(res.data.loginUser), { path: '/', })
                 dispatch(loginAction(res.data.loginUser));
             }
-        } catch (err) { console.error(err); }
+        } catch (err) { console.error(err); } finally {
+            setLoading(false); // 로딩 종료
+        }
     }
 
     const [inputValue, setInputValue] = useState('');
@@ -227,6 +239,9 @@ const EditProfile = () => {
 
     return (
         <div className='SideContainer'>
+            {/* 로딩 상태일 때만 표시 */}
+            {loading && <LoadingSpinner />} 
+
             <div className='editForm'>
                 <div className="logo">회원정보수정</div>
                 <div className='info-container'>
@@ -332,7 +347,9 @@ const EditProfile = () => {
                     </div>
 
                     <div className='btn-container'>
-                        <button onClick={onSubmit}>저장</button>
+                        <button onClick={onSubmit} disabled={loading}>
+                        {loading ? "저장 중..." : "저장"}
+                    </button>
                     </div>
                 </div>
             </div>
