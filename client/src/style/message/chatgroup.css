@@ -85,6 +85,9 @@
 
     /* 입장버튼의 부모 컨테이너 */
     .chatGroupBtns {
+       
+
+
         display: flex; /* 내부 요소를 정렬 */
         justify-content: center; /* 중앙 정렬 */
         align-items: center; /* 세로 중앙 정렬 */
@@ -92,7 +95,8 @@
         margin-top: 10px; /* 위쪽 여백 추가 */
     }
     
-    .chatGroupBtns .chatGroupBtn {
+    .chatGroupBtns .chatGroupBtn {       
+
         width: 100%; /* 부모(.chatGroupBtns)에 맞춰 꽉 차게 */
         display: flex; /* 내부 버튼을 정렬 */
         justify-content: center; /* 버튼을 중앙 정렬 */
@@ -103,5 +107,15 @@
         width: 100%; /* 버튼을 전체 너비로 설정 */
         max-width: 100%; /* 100% 이상으로 커지지 않도록 제한 */
         display: block; /* 인라인 요소 문제 방지 */
+    }
+
+    .chatGroupHeader .chatGroupBtn{
+
+        position:absolute;
+        bottom:30px;
+
+        width: 80%; /* 버튼을 전체 너비로 설정 */
+        max-width: 80%; /* 100% 이상으로 커지지 않도록 제한 */
+
     }
 }

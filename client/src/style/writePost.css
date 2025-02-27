@@ -137,3 +137,16 @@
   #file {
     display: none;
   }
+
+  @media (max-width: 600px) {
+    #write-form {
+      flex-direction: column;
+      position: absolute;
+      bottom:30px
+    }
+    
+    /* .search-controls label, .search-controls input, .search-controls button {
+      margin: 5px 0;
+      width: 95%;
+    } */
+  }

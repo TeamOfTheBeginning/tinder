@@ -32,3 +32,16 @@
     background-position: 100% 0;
     color: #fff;
 }
+
+@media (max-width: 600px) {
+    .matchBtns {
+      flex-direction: column;
+      position: absolute;
+      bottom:30px
+    }
+    
+    /* .search-controls label, .search-controls input, .search-controls button {
+      margin: 5px 0;
+      width: 95%;
+    } */
+  }
