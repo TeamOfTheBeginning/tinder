@@ -36,7 +36,22 @@ const initialState={
 
 
 const getLoginUser=()=>{
-    const memberinfo = cookies.get('user')
+    const memberinfoStr = getCookie1('user'); // 문자열로 가져옴
+// console.log("memberinfoStr: " + memberinfoStr);
+
+let memberinfo;
+if (memberinfoStr) {
+    try {
+        memberinfo = JSON.parse(memberinfoStr); // JSON 객체로 변환
+        // console.log("memberId:", memberinfo?.memberId);
+        // console.log("nickname:", memberinfo?.nickname);
+        // console.log("email:", memberinfo?.email);
+        // console.log("hobbies:", memberinfo?.memberInfo.hobbies)
+    } catch (error) {
+        console.error("JSON parsing error: ", error);
+        memberinfo = null; // 변환 실패 시 null 처리
+    }
+}
     
     if( memberinfo && memberinfo.email ){
         memberinfo.memberId = decodeURIComponent( memberinfo.memberId )
@@ -56,8 +71,13 @@ const getLoginUser=()=>{
         memberinfo.longitude = decodeURIComponent( memberinfo.longitude )
         memberinfo.account = decodeURIComponent( memberinfo.account )
         memberinfo.temp = decodeURIComponent( memberinfo.temp )
-        memberinfo.memberInfo = decodeURIComponent( memberinfo.memberInfo )
-        memberinfo.opponentMemberInfo = decodeURIComponent( memberinfo.opponentMemberInfo )
+
+        // console.log(typeof memberinfo.memberInfo); 
+        // console.log(memberinfo.memberInfo);
+
+
+        memberinfo.memberInfo = memberinfo.memberInfo;
+        memberinfo.opponentMemberInfo = memberinfo.opponentMemberInfo
 
         memberinfo.accessToken = decodeURIComponent( memberinfo.accessToken )
         memberinfo.refreshToken = decodeURIComponent( memberinfo.refreshToken )
