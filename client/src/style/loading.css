@@ -11,48 +11,67 @@
     background-color: transparent;
 }
 
-/* 흰색 네온 글로우 효과를 가진 blur 처리된 원형 배경 */
+/* 밝기 강화된 네온 글로우 효과 + 심장 박동 애니메이션 */
 .blur-circle {
-    position: absolute;
-    width: 300px; /* 원의 너비 */
-    bottom: 40vh;
-    height: 300px; /* 원의 높이 */
-    border-radius: 50%; /* 원형으로 만들기 */
-    background-color: rgba(255, 255, 255, 0.2); /* 흰색 + 투명도 */
-    filter: blur(20px); /* blur 효과 */
-    z-index: -1; /* 다른 요소 뒤로 배치 */
+  position: absolute;
+  width: 320px; /* 원의 크기 */
+  bottom: 32vh;
+  height: 320px;
+  border-radius: 50%;
+  /* 그라디언트로 중앙을 더 밝게 */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 30%, rgba(255, 255, 255, 0.3) 80%, rgba(255, 255, 255, 0.1) 100%);
+  filter: blur(25px);
+  z-index: -1;
 
-    /* 네온 글로우 효과 */
-    box-shadow: 
-        0 0 20px rgba(255, 255, 255, 0.5), 
-        0 0 40px rgba(255, 255, 255, 0.4), 
-        0 0 60px rgba(255, 255, 255, 0.3);
+  /* 네온 글로우 효과 (강화) */
+  box-shadow: 
+      0 0 30px rgba(255, 255, 255, 0.7), 
+      0 0 60px rgba(255, 255, 255, 0.6), 
+      0 0 90px rgba(255, 255, 255, 0.5);
 
-    /* 초기 상태 (숨김) */
-    opacity: 0; 
-    transform: scale(0.8); 
+  /* 초기 상태 */
+  opacity: 0;
+  transform: scale(0.8);
 
-    /* 스르륵 나타나는 애니메이션 */
-    animation: fadeInBlurCircleGlow 1s forwards ease-in-out;
+  /* 부드러운 등장 후 심장 박동 애니메이션 */
+  animation: fadeInBlurCircleGlow 1.2s forwards ease-in-out, heartbeat 2s infinite ease-in-out;
 }
 
-/* blur-circle 애니메이션 정의 */
+/* 초기 등장 애니메이션 */
 @keyframes fadeInBlurCircleGlow {
-    from {
-        opacity: 0;
-        transform: scale(0.8); /* 작게 시작 */
-        box-shadow: 
-            0 0 10px rgba(255, 255, 255, 0.2), 
-            0 0 20px rgba(255, 255, 255, 0.1);
-    }
-    to {
-        opacity: 1; 
-        transform: scale(1); /* 원래 크기로 확장 */
-        box-shadow:
-            0 0 20px rgba(255, 255, 255, 0.5), 
-            0 0 40px rgba(255, 255, 255, 0.4), 
-            0 0 60px rgba(255, 255, 255, 0.3); /* 네온 글로우 효과 강화 */
-    }
+  from {
+      opacity: 0;
+      transform: scale(0.6); /* 더 작게 시작 */
+      box-shadow: 
+          0 0 15px rgba(255, 255, 255, 0.3), 
+          0 0 30px rgba(255, 255, 255, 0.2);
+  }
+  to {
+      opacity: 1; 
+      transform: scale(0.8); /* 기본 크기 */
+      box-shadow:
+          0 0 30px rgba(255, 255, 255, 0.8), 
+          0 0 60px rgba(255, 255, 255, 0.7), 
+          0 0 100px rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* 심장 박동 애니메이션 */
+@keyframes heartbeat {
+  0%, 100% {
+      transform: scale(0.8);
+      box-shadow: 
+          0 0 30px rgba(255, 255, 255, 0.8), 
+          0 0 60px rgba(255, 255, 255, 0.7), 
+          0 0 100px rgba(255, 255, 255, 0.6);
+  }
+  50% {
+      transform: scale(1); /* 커졌다가 다시 원래대로 */
+      box-shadow: 
+          0 0 40px rgba(255, 255, 255, 1), 
+          0 0 80px rgba(255, 255, 255, 0.9), 
+          0 0 120px rgba(255, 255, 255, 0.8);
+  }
 }
 
 /* 공통 로딩 애니메이션 */
@@ -75,7 +94,6 @@
   }
 
 /* 첫 번째 애니메이션 스타일 */
-
 .animation-step1 img {
     width: 40%; /* 브라우저 화면 너비의 40% */
     max-width: 400px; /* 최대 크기 제한 */
@@ -104,7 +122,6 @@
     align-items: center; /* 수직 중앙 정렬 */
 }
 
-
 .animation-step2 {
     animation-delay: 0s; /* 즉시 실행 */
 }
@@ -127,3 +144,43 @@
   @keyframes l19 {
     90%, 100% { background-size: 100% 100%; }
   }
+
+
+/* 로딩스피너 컨테이너 */
+.spinner-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* 다른 요소 위에 표시 */
+}
+
+  /* 로딩스피너 */
+.loading-spinner {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #f7186a; /* 진한 핑크 */
+  box-shadow: 32px 0 #ec8c69, -32px 0 #FBB03B; /* 따뜻한 오렌지 계열 */
+  position: relative;
+  animation: flash 0.5s ease-out infinite alternate;
+}
+
+@keyframes flash {
+  0% {
+    background-color: #f7186a66; /* 반투명 핑크 */
+    box-shadow: 32px 0 #ec8c6966, -32px 0 #FBB03B;
+  }
+  50% {
+    background-color: #ed6ea0; /* 부드러운 핑크 */
+    box-shadow: 32px 0 #FBB03B66, -32px 0 #f7186a66;
+  }
+  100% {
+    background-color: #f7186a66;
+    box-shadow: 32px 0 #FBB03B, -32px 0 #ec8c69;
+  }
+}

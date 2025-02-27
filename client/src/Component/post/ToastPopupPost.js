@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../style/posts.css';
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiSolidMessageSquareDetail, BiSolidMessageSquareDots } from "react-icons/bi";
+import LoadingSpinner from "../LoadingSpinner";
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -205,7 +206,7 @@ const ToastPopupPost = (props) => {
                             <AiOutlineHeart id='icons' onClick={ ()=>{ onLike() } } />
                         )
                     ):(
-                        <span>Loading....</span>
+                        <LoadingSpinner />
                     )
                 }
                 &nbsp;&nbsp;
@@ -219,7 +220,7 @@ const ToastPopupPost = (props) => {
                             <span>아직 좋아요가 없어요</span>
                         )
                     ):(
-                        <span>Loading....</span>
+                        <LoadingSpinner />
                     )
                 }
             </div>
@@ -244,7 +245,7 @@ const ToastPopupPost = (props) => {
                                     </div>
                                 )
                             })
-                        ):(<div>Loading...</div>)
+                        ):( <LoadingSpinner /> )
                     }
                     
                 </div>

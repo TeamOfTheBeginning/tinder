@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { FiX } from "react-icons/fi";
 import { FcCustomerSupport } from "react-icons/fc";
@@ -12,8 +11,6 @@ import ToastPopupPost from './post/ToastPopupPost';
 import MatchingMember from './match/MatchingMember';
 import ChatBot from './chatbot/ChatBot';
 
-import { XyzTransition } from '@animxyz/react';
-import '@animxyz/core';
 import jaxios from '../util/jwtUtil';
 
 import '../style/posts.css';

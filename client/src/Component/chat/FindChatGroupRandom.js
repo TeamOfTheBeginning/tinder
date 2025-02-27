@@ -1,12 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import ChatGroupRandom from './ChatGroupRandom';
 
-// import '../../style/message/findchatgrouprandom.css';
-// css 최대한 재활용 할 수 있도록 정리중
 import '../../style/message/findchatgroup.css';
+import LoadingSpinner from "../LoadingSpinner";
 
 import jaxios from '../../util/jwtUtil';
 
@@ -84,7 +82,7 @@ const FindChatGroupRandom = ({openSubMenu}) => {
                     </div>
                 ))
             ) : (
-                "Loading..."
+                <LoadingSpinner />
             )}
         </div>
     );
