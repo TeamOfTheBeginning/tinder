@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ChatGroup from './ChatGroup';
 
 import '../../style/message/findchatgroup.css';
+import LoadingSpinner from "../LoadingSpinner";
 
 import jaxios from '../../util/jwtUtil';
 
@@ -39,7 +40,7 @@ const FindChatGroup = ({openSubMenu}) => {
               </div>
             )
           })
-        ):("Loading...")
+        ):( <LoadingSpinner /> )
       }
     </div>
   )

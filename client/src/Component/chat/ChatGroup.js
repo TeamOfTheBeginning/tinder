@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner";
 
 import '../../style/message/chatgroup.css';
 
@@ -62,7 +63,7 @@ return (
                                 </div>
                             )
                         })
-                    ) : ("Loading...")
+                    ) : ( <LoadingSpinner /> )
                 }
             </div>
         </div>
