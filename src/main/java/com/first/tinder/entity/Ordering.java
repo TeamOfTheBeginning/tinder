@@ -2,6 +2,9 @@ package com.first.tinder.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -18,4 +21,7 @@ public class Ordering {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     Product product;
+
+    @CreationTimestamp
+    private Timestamp indate;
 }

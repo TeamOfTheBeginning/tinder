@@ -25,6 +25,9 @@ const initialState={
     
     account:'',
     temp:'',
+
+    memberRoleList:[],
+
     memberInfo:{},
     opponentMemberInfo:{},
     follower:[],
@@ -72,6 +75,7 @@ if (memberinfoStr) {
         memberinfo.account = decodeURIComponent( memberinfo.account )
         memberinfo.temp = decodeURIComponent( memberinfo.temp )
 
+        memberinfo.memberRoleList = memberinfo.memberRoleList;
         // console.log(typeof memberinfo.memberInfo); 
         // console.log(memberinfo.memberInfo);
 
@@ -108,6 +112,7 @@ export const userSlice=createSlice(
                 state.longitude = action.payload.longitude;
                 state.account = action.payload.account;
                 state.temp = action.payload.temp;
+                state.memberRoleList = action.payload.memberRoleList;
                 state.memberInfo = action.payload.memberInfo;
                 state.opponentMemberInfo = action.payload.opponentMemberInfo;
                 state.accessToken = action.payload.accessToken;
@@ -131,6 +136,7 @@ export const userSlice=createSlice(
                 state.longitude = '';
                 state.account = '';
                 state.temp = '';
+                state.memberRoleList = [];
                 state.memberInfo ={};
                 state.opponentMemberInfo ={};
                 state.follower = [];

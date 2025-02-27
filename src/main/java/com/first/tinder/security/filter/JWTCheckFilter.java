@@ -59,8 +59,8 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
             int temp = (int) claims.get("temp");
 
-            List<String> list = new ArrayList<>();
-            list.add("USER");
+            List<String> memberRoleList = (List<String>) claims.get("memberRoleList");
+
 
             Gson gson = new Gson();
             MemberInfo memberInfo = gson.fromJson(gson.toJson(claims.get("memberInfo")), MemberInfo.class);
@@ -69,7 +69,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
                     gson.toJson(claims.get("opponentMemberInfo")), OpponentMemberInfo.class
             );
 
-            MemberDTO memberDTO = new MemberDTO(email, pwd, memberId, nickname, memberName, phone, gender,age, birthDate ,account,zipnum,address,latitude,longitude, profileImg, profileMsg, snsId ,provider,temp, list
+            MemberDTO memberDTO = new MemberDTO(email, pwd, memberId, nickname, memberName, phone, gender,age, birthDate ,account,zipnum,address,latitude,longitude, profileImg, profileMsg, snsId ,provider,temp, memberRoleList
                     ,memberInfo,opponentMemberInfo);
 
             UsernamePasswordAuthenticationToken authenticationToken

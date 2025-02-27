@@ -5,6 +5,7 @@ import '../../style/mypage.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from '../../store/userSlice';
 import { Cookies } from 'react-cookie';
+import { setCookie1, getCookie1 } from '../../util/cookieUtil2';
 import jaxios from '../../util/jwtUtil';
 
 const EditProfile = () => {
@@ -176,9 +177,18 @@ const EditProfile = () => {
 
             if (result.data.msg === 'ok') {
                 alert('회원 정보 수정이 완료되었습니다.')
-                const res = await jaxios.get('/api/member/getLoginUser');
-                cookies.set('user', JSON.stringify(res.data.loginUser), { path: '/', })
-                dispatch(loginAction(res.data.loginUser));
+                const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:result.data.memberId}});
+
+                let accessToken=loginUser.accessToken
+                let refreshToken=loginUser.refreshToken
+                
+                res.data.loginUser.accessToken = accessToken;
+                res.data.loginUser.refreshToken = refreshToken;
+                
+
+                setCookie1('user', JSON.stringify(res.data.loginUser) , 1)
+                dispatch( loginAction( res.data.loginUser ) )
+        
             }
         } catch (err) { console.error(err); }
     }

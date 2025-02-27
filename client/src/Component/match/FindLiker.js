@@ -18,7 +18,7 @@ const FindLiker = () => {
         console.log(loginUser)
         jaxios.get(`/api/member2/findLiker`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
-                console.log("result.data.likerList: " + JSON.stringify(result.data.likerList));
+                // console.log("result.data.likerList: " + JSON.stringify(result.data.likerList));
                 serLikerList(result.data.likerList);
             })
             .catch((err) => { console.error(err); });
@@ -28,7 +28,7 @@ const FindLiker = () => {
 
         await jaxios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:memberId })
         .then((result)=>{
-            console.log("result.data.msg"+result.data.msg)
+            // console.log("result.data.msg"+result.data.msg)
     
             if(result.data.msg=='yes') {alert("좋아요가 완료되었습니다!")}
             else if(result.data.msg=='no') {alert("좋아요가 취소되었습니다!")}

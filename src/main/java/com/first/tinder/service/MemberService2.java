@@ -34,6 +34,12 @@ public class MemberService2 {
     @Autowired
     BlockRepository br;
 
+    @Autowired
+    OrderingRepository or;
+
+    @Autowired
+    ProductRepository pr;
+
     public Member getOppsiteGender(int gender, int age) {
 //        List<Member> members = mr.findByGender(gender);
 
@@ -404,5 +410,25 @@ public Member getOppsiteGender2(int memberId) {
         member.getOpponentMemberInfo().setNs(ns);
         member.getOpponentMemberInfo().setTf(tf);
         member.getOpponentMemberInfo().setJp(jp);
+    }
+
+    public String setMemberRoleGold(int memberId) {
+        Member member = mr.findByMemberId(memberId).orElse(null);
+        if(member.getAccount()>0) {
+
+            Ordering ordering = new Ordering();
+            ordering.setMember(member);
+            Product product2 = pr.findByProductId(2);
+            ordering.setProduct(product2);
+            or.save(ordering);
+
+            member.setAccount(member.getAccount()-product2.getProductPrice());
+
+            member.getMemberRoleList().add(MemberRole.Gold);
+            System.out.println(member.getMemberRoleList());
+            return "yes";
+        }else{
+            return "money";
+        }
     }
 }

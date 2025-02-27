@@ -45,7 +45,7 @@ const MatchingMember = (props) => {
 
     await jaxios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , liked:props.oppositeGender.memberId })
     .then((result)=>{
-        console.log("result.data.msg"+result.data.msg)
+        // console.log("result.data.msg"+result.data.msg)
 
         if(result.data.msg=='yes') {alert("좋아요가 완료되었습니다!")}
         else if(result.data.msg=='no') {alert("좋아요가 취소되었습니다!")}
