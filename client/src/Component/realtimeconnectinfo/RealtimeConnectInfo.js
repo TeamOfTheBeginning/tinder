@@ -8,6 +8,16 @@ import "../../style/realtimeconnectinfo/realtimeconnectinfo.css";
 
 import jaxios from '../../util/jwtUtil';
 
+//웹소켓 경로 관련
+const isLocalhost = window.location.hostname === "localhost" ;
+// || window.location.hostname === "127.0.0.1";
+
+const API_BASE_URL = isLocalhost
+  ? "http://localhost:8070" // 로컬 개발 환경
+  : `http://${window.location.hostname}:8070`; // 클라이언트가 실행 중인 네트워크 기반으로 서버 IP 설정
+
+const SOCKET_URL = `${API_BASE_URL}/ws_real_chat`;
+
 const RealtimeConnectInfo = () => {
 
 
@@ -20,7 +30,7 @@ const RealtimeConnectInfo = () => {
   useEffect(() => {
     // WebSocket 클라이언트 설정
     const stompClient = new Client({
-      brokerURL: `ws://${process.env.REACT_APP_ADDRESS2}/ws_real_chat`,
+      brokerURL: `ws://${API_BASE_URL}/ws_real_chat`,
       // brokerURL: 'ws://localhost:8070/ws_real_chat',  
       // // 서버의 WebSocket 엔드포인트
       connectHeaders: {
@@ -61,7 +71,7 @@ const RealtimeConnectInfo = () => {
       onStompError: (frame) => {
         // console.error('STOMP error: ', frame);
       },
-      webSocketFactory: () => new SockJS(`${process.env.REACT_APP_ADDRESS2}/ws_real_chat`),
+      webSocketFactory: () => new SockJS(`${API_BASE_URL}/ws_real_chat`),
     });
 
     stompClient.activate();
