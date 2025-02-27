@@ -248,9 +248,9 @@ const JoinForm = () => {
                         <label className="hidden">ZIPNUM</label>
                         <input type="text" value={zipnum} readOnly placeholder="우편번호" />
                     </div>
-                    <div className='login-btn'>
+                    <div className='login-btn' onClick={() => setIsAddressModalOpen(true)}>
                         <label>주소 검색</label>
-                        <button className='hidden' onClick={() => setIsAddressModalOpen(true)}>주소 검색</button>
+                        <button className='hidden'>주소 검색</button>
                     </div>
                 </div>
                 <div className='field'>
