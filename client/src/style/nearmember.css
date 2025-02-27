@@ -127,11 +127,13 @@ h2 {
   @media (max-width: 600px) {
     .search-controls {
       flex-direction: column;
+      position: absolute;
+      bottom:10px
     }
     
     .search-controls label, .search-controls input, .search-controls button {
       margin: 5px 0;
-      width: 100%;
+      width: 95%;
     }
   }
   

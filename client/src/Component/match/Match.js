@@ -43,6 +43,12 @@ const Match = (props) => {
 
   return (
     <div className='matchContainer'>
+      
+
+      <div className='matchMemberContainer'>
+        <MatchingMember oppositeGender={oppositeGender}/>
+      </div>
+
       <div className='matchBtns'>
         <button className='matchBtn' onClick={()=>rematch()}>재매칭</button>        
         <button 
@@ -59,10 +65,6 @@ const Match = (props) => {
         </button>
 
         <button className='matchBtn' onClick={()=> props.onSubMenuSelect('matchedMember')}>매칭조회</button>&nbsp;        
-      </div>
-
-      <div className='matchMemberContainer'>
-        <MatchingMember oppositeGender={oppositeGender}/>
       </div>
     </div>
   )
