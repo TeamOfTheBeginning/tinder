@@ -43,6 +43,16 @@ public class ChatBotService {
 
         saveChatHistory(userId, "user", userMessage);
 
+        Map<String, String> predefinedResponses = Map.of(
+                "조언받기", "연애 조언이 필요하신가요? 프로필 작성 팁이나 첫 데이트 아이디어를 드릴 수 있어요!",
+                "계정문의", "계정 관련 문제를 해결하는 방법입니다. 어떤 문제가 있으신가요? (예: 로그인 문제, 비밀번호 찾기)",
+                "기타문의", "어떤 도움이 필요하신가요? 질문을 입력해 주세요!",
+                "실시간 고객센터 연결", "호출");
+
+        if (predefinedResponses.containsKey(userMessage)) {
+            return saveAndReturnResponse(userId, userMessage, predefinedResponses.get(userMessage));
+        }
+
         List<ChatBotHistory> chatHistories = chatbotHistoryRepository.findByUserIdOrderByTimestampAsc(userId);
         logger.info("새로운 대화 기록 개수: {}", chatHistories.size());
         if (chatHistories.size() > 10) {
