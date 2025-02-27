@@ -5,6 +5,7 @@ import com.first.tinder.dto.Paging;
 import com.first.tinder.entity.*;
 import com.first.tinder.service.dao.PostDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -260,22 +261,39 @@ public class PostService {
     @Autowired
     PostDao pdao;
 
-    public List<Post> getPostList2( String word , Paging paging ) {
-        List<Post> list = null;
+    public Page<Post> getPostList2(String word , Paging paging ) {
+        Page<Post> list = null;
+
+//        list = pr.findAll(Sort.by(Sort.Direction.DESC, "postId"));
+//        list = pr.findAll()
+//
+//        paging.setTotalCount(list.size());
+//        paging.getStartNum();
+
+        int page = paging.getPage();
+
+        Pageable pageable = PageRequest.of(page, 2, Sort.by(Sort.Order.desc("postId")));
 
         if( word == null || word.equals("") ) {
+            System.out.println("word == null");
             // 검색어가 비어있으면 모두 검색
-            list = pdao.getPostListByPaging( paging.getStartNum(), paging.getDisplayRow() );
+//            list = pdao.getPostListByPaging( paging.getStartNum(), paging.getDisplayRow() );
+            list = pr.findAllByOrderByPostIdDesc(pageable);
         }else{
+            System.out.println("word != null");
             Optional<Hashtag> hashtag = hr.findByWord(word);  // word 를 hasgtag 테이블에서 검색
 
             if( !hashtag.isPresent() ) {
                 // 검색하려는 단어가 한번도 등록된적이 없으면 모두검색
-                list = pr.findAll(Sort.by(Sort.Direction.DESC, "postId"));  // 검색 결과가 없으면 모두 검색
+
+                list = pr.findAllByOrderByPostIdDesc(pageable);
+//                list = pr.findAll(Sort.by(Sort.Direction.DESC, "postId"));  // 검색 결과가 없으면 모두 검색
             }else{
                 // 검색하려는 단어가 hashag 테이블에 있는 단어라면
                 // List<PostHash> phList = phr.findByHashid(  record.get().getId() );
-                list = pdao.getPostListByTagByPage( hashtag.get().getHashtagId(), paging.getStartNum(), paging.getDisplayRow()  );
+//                list = pdao.getPostListByTagByPage( hashtag.get().getHashtagId(), paging.getStartNum(), paging.getDisplayRow()  );
+//                list = pr.findByOrderByPostIdDesc(pageable);
+
             }
         }
         return list;

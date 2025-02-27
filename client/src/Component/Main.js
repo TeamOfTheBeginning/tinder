@@ -18,18 +18,20 @@ import jaxios from '../util/jwtUtil';
 
 import '../style/posts.css';
 import '../style/chatbot/chatbot.css';
+import { SiOutline } from 'react-icons/si';
 
 const Main = () => {
     const [postList, setPostList] = useState([]);
     const [postOne, setPostOne] = useState();
     const navigate = useNavigate();
     const [followed, setFollowed] = useState([]);
-    const [word, setWord] = useState('n');
+    const [word, setWord] = useState('');
     const loginUser = useSelector(state => state.user);
     const [notificationList, setNotificationList] = useState();
     const [oppositeGender, setOppositeGender] = useState();
     const [isChatbotOpen, setIsChatbotOpen] = useState(false);
     const [chatMessages, setChatMessages] = useState([]);
+    const [pageable, setPageable] = useState();
 
     const toggleChatbot = () => {
         if (!isChatbotOpen) {
@@ -38,10 +40,47 @@ const Main = () => {
         setIsChatbotOpen(!isChatbotOpen);
     };
 
+    useEffect(
+        ()=>{
+            window.addEventListener('scroll', handleScroll );
+            return () => {
+                window.removeEventListener("scroll", handleScroll);
+            }
+        }
+    )
+      
+    const handleScroll=()=>{
+    const scrollHeight = document.documentElement.scrollHeight - 10; // 스크롤이 가능한 크기
+    // 가능 크기를 10px 줄여서 다음페이지 표시 반응 영역을 조금더 넓힙니다
+    const scrollTop = document.documentElement.scrollTop;  // 현재 위치
+    const clientHeight = document.documentElement.clientHeight; // 내용물의 크기
+    if( scrollTop + clientHeight >= scrollHeight ) {
+        
+        onPageMove( pageable.pageNumber + 1 );
+    }
+    }
+    
+    async function onPageMove( page ){
+    
+        const result = await jaxios.get(`/api/post/getPostList`, {params:{page:page,word}})
+        .then((result)=>{
+        
+        setPageable( result.data.postList2.pageable );
+        let posts = [];
+        posts = [...postList];
+        posts = [...posts, ...result.data.postList2.content ];
+        
+        setPostList([...posts]);
+        }).catch((err)=>{console.error(err)})
+    }
+
     useEffect(() => {
-        jaxios.get(`/api/post/getPostList`, { params: { word, page: 1 } })
+        jaxios.get(`/api/post/getPostList`, { params: { word, page: 0 } })
             .then((result) => {
-                setPostList(result.data.postList2);
+                console.log("result.data.postList2"+result.data.postList2.pageable)
+                console.log(JSON.stringify(result.data.postList2.pageable))
+                setPostList(result.data.postList2.content);
+                setPageable(result.data.postList2.pageable)
             }).catch((err) => { console.error(err) });
 
         jaxios.get(`/api/post/getPostOneWithin3daysOrderByRand`)
