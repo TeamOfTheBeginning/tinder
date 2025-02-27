@@ -1,6 +1,7 @@
 package com.first.tinder.dao;
 
 import com.first.tinder.entity.Post;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +28,10 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query("select p from Post p where p.writedate >= :threeDaysAgo order by function('RAND')")
     List<Post> findRandomPostWithinLast3Days(@Param("threeDaysAgo") Timestamp threeDaysAgo, Pageable pageable);
 
+    Page<Post> findAllByOrderByPostIdDesc(Pageable pageable);
+
+    @Query("SELECT p FROM Post p WHERE p.postId IN " +
+            "(SELECT ph.post.postId FROM PostHashtag ph WHERE ph.hashtag.hashtagId = :hashtagId) " +
+            "ORDER BY p.postId DESC")
+    Page<Post> findAllByHashtagId(@Param("hashtagId") int hashtagId, Pageable pageable);
 }

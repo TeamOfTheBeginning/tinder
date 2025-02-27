@@ -100,7 +100,7 @@ const Post = (props) => {
                 setReplyList([...temp]);
             }).catch((err)=>{console.error(err)})
 
-        },[]
+        },[props.post]
     )
 
     async function onFollow(memberId){

@@ -7,7 +7,7 @@ import '../../style/search.css';
 
 import jaxios from '../../util/jwtUtil';
 
-const Search = () => {
+const Search = (props) => {
   const [memberList, setMemberList] = useState();
   const [word, setWord] = useState();
   const [inviteMemberList,setInviteMemberList] =useState();
@@ -19,7 +19,7 @@ const Search = () => {
   async function findMemberWithNickname(){
     jaxios.get(`/api/member2/getMembersWithNickname`, { params: { word, memberId:loginUser.memberId } })
     .then((result)=>{
-      console.log(result.data.memberList)
+      // console.log(result.data.memberList)
       setMemberList(result.data.memberList)
     }
     ).catch((err)=>{console.error(err)}) 
@@ -51,7 +51,7 @@ const Search = () => {
   }
 
   function enterChatRoomFromChatGroup(chatGroupId){
-    console.log(chatGroupId);        
+    // console.log(chatGroupId);        
     navigate(`/chatRoomFromChatGroup/${chatGroupId}`);
   }
 
@@ -71,8 +71,8 @@ const Search = () => {
       return alert("맴버를 선택하세요");
     }
 
-    console.log("inviteMemberList : "+inviteMemberList)
-    console.log("inviteMemberIdList : "+inviteMemberIdList)
+    // console.log("inviteMemberList : "+inviteMemberList)
+    // console.log("inviteMemberIdList : "+inviteMemberIdList)
 
     const inviteMemberListStr = inviteMemberIdList.join(",");
 
@@ -80,7 +80,7 @@ const Search = () => {
       inviteMemberIdList: inviteMemberListStr , memberId:loginUser.memberId
     } } )
     .then((result)=>{
-      console.log("result.data.chatGroupId"+result.data.chatGroupId)
+      // console.log("result.data.chatGroupId"+result.data.chatGroupId)
       enterChatRoomFromChatGroup(result.data.chatGroupId);
     }
     ).catch((err)=>{console.error(err)}) 
@@ -128,17 +128,27 @@ const Search = () => {
     try {
       // 서버에 데이터 전송
       const response = await jaxios.get('/api/member2/getMembersWithMBTI', { params:{numberValue,memberId:loginUser.memberId} });
-      console.log(response.data); // 응답 처리
+      // console.log(response.data); // 응답 처리
       setMemberList(response.data.memberList)
     } catch (error) {
       console.error('Error sending data:', error);
     }
   };
 
+  function findPostByHashtag(){
+    // console.log("findPostByHashtag"+word)
+    props.setHashtag(word);
+    // console.log("props.hashtag"+props.hashtag)
+  }
+
 
   return (
     <div className='searchContainer'>
-      <h3>맴버를 검색합니다.</h3>
+      <h3>포스트 검색</h3>
+        <div className='searchContainerHashtag'>
+          <input onChange={(e) => { setWord(e.target.value) }}placeholder="해쉬태그 입력"></input><button onClick={()=>findPostByHashtag()}>해쉬태그</button>
+        </div>
+      <h3>맴버 검색</h3>
       나를 차단한 사용자는 검색되지 않습니다.<br/><br/><br/>
         <div className='searchContainerNickname'>
           <input onChange={(e) => { setWord(e.target.value) }}placeholder="닉네임 입력"></input><button onClick={()=>findMemberWithNickname()}>맴버</button>
@@ -167,6 +177,8 @@ const Search = () => {
           </div>
         </div>
         <br/><br/>
+
+        
         
         <div className='searchResult'>
         {
