@@ -222,25 +222,25 @@ public class MemberController2 {
     }
 
     // 선택된 취미 업데이트 API
-    @PostMapping("/updateOpponentHobbies")
-    public HashMap<String, Object> updateOpponentHobbies(@RequestBody HashMap<String, Object> payload) {
-        int memberId = (int) payload.get("memberId");
-
-        List<Integer> hobbyIds = (List<Integer>) payload.get("hobbies");
-        System.out.println("memberId"+memberId+"hobbyIds"+hobbyIds);
-
-        Member member = ms.getMemberById(memberId);
-        OpponentMemberInfo opponentMemberInfo = member.getOpponentMemberInfo();
-        List<Hobby> hobbies = ms.getHobbiesByIds(hobbyIds);
-
-        opponentMemberInfo.setHobbies(hobbies);
-        System.out.println("memberInfo@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+opponentMemberInfo);
-//        ms.updateMember(member);
-        omis.updateOpponentMemberInfo(opponentMemberInfo);
-
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("msg", "ok");
-        return result;
-    }
+//    @PostMapping("/updateOpponentHobbies")
+//    public HashMap<String, Object> updateOpponentHobbies(@RequestBody HashMap<String, Object> payload) {
+//        int memberId = (int) payload.get("memberId");
+//
+//        List<Integer> hobbyIds = (List<Integer>) payload.get("hobbies");
+//        System.out.println("memberId"+memberId+"hobbyIds"+hobbyIds);
+//
+//        Member member = ms.getMemberById(memberId);
+//        OpponentMemberInfo opponentMemberInfo = member.getOpponentMemberInfo();
+//        List<Hobby> hobbies = ms.getHobbiesByIds(hobbyIds);
+//
+//        opponentMemberInfo.setHobbies(hobbies);
+//        System.out.println("memberInfo@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+opponentMemberInfo);
+////        ms.updateMember(member);
+//        omis.updateOpponentMemberInfo(opponentMemberInfo);
+//
+//        HashMap<String, Object> result = new HashMap<>();
+//        result.put("msg", "ok");
+//        return result;
+//    }
 
 }

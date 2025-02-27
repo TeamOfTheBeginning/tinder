@@ -181,7 +181,9 @@ const SideBar = () => {
           <img src={profileImg} alt="Profile" />
         </div>
 
-        <div className='sidebar-btn' onClick={() => navigate('/main')}>
+        <div className='sidebar-btn' 
+        onClick={() => window.location.reload()}
+        >
           <IoHomeSharp />
         </div>
 

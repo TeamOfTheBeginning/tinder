@@ -38,11 +38,11 @@ public class OpponentMemberInfo {
 //    @Column(columnDefinition = "TINYINT")
 //    private int smoke=0;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "opponent_member_hobby",
-            joinColumns = @JoinColumn(name = "opponent_member_info_id"),
-            inverseJoinColumns = @JoinColumn(name = "hobby_id")
-    )
-    private List<Hobby> hobbies;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "opponent_member_hobby",
+//            joinColumns = @JoinColumn(name = "opponent_member_info_id"),
+//            inverseJoinColumns = @JoinColumn(name = "hobby_id")
+//    )
+//    private List<Hobby> hobbies;
 }

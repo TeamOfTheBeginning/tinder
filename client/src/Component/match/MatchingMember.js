@@ -15,13 +15,8 @@ const MatchingMember = (props) => {
   const speed = loginUser.memberInfo.speed
   const date = loginUser.memberInfo.date
   const workout = loginUser.memberInfo.workout
-
   const hobbies = [...loginUser.memberInfo.hobbies] ;
   
-  console.log("hobbies")
-  console.log ((hobbies)?(hobbies):(null))
-
-
   const [person, setPerson] = useState([smoke, alcohol, speed, date, workout, hobbies]);
 
   const [person2, setPerson2] = useState([0,0,0,0,0,[]]);

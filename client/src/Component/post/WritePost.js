@@ -119,7 +119,7 @@ const WritePost = ({ closeSideViewer }) => {
       if (result.data.msg === "ok") {
         alert("작성이 완료되었습니다.");
         closeSideViewer();
-        navigate("/main");
+        window.location.reload();
       }
 
     } catch (error) {
