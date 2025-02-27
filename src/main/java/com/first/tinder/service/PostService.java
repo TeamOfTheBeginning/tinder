@@ -283,21 +283,38 @@ public class PostService {
             list = pr.findAllByOrderByPostIdDesc(pageable);
         }else{
             System.out.println("word != null");
-            Optional<Hashtag> hashtag = hr.findByWord(word);  // word 를 hasgtag 테이블에서 검색
+//            Optional<Hashtag> hashtag = hr.findByWord(word);  // word 를 hasgtag 테이블에서 검색
 
-            if( !hashtag.isPresent() ) {
-                // 검색하려는 단어가 한번도 등록된적이 없으면 모두검색
-
+            List<Hashtag> hashtags = hr.findByWordContaining(word);
+            if( hashtags.size() > 0 ) {
+                list = pr.findAllByHashtags(hashtags, pageable);
+            }else {
                 list = pr.findAllByOrderByPostIdDesc(pageable);
-//                list = pr.findAll(Sort.by(Sort.Direction.DESC, "postId"));  // 검색 결과가 없으면 모두 검색
-            }else{
-                // 검색하려는 단어가 hashag 테이블에 있는 단어라면
-                // List<PostHash> phList = phr.findByHashid(  record.get().getId() );
-//                List<Post> list2 = pdao.getPostListByTagByPage( hashtag.get().getHashtagId(), paging.getStartNum(), paging.getDisplayRow()  );
-
-                list = pr.findAllByHashtagId(hashtag.get().getHashtagId(), pageable);
-
             }
+
+
+//            if( hashtags.isPresent() ) {
+//                list = pr.findAllByHashtags(hashtags, pageable);
+//            }else{
+//                list = pr.findAllByOrderByPostIdDesc(pageable);
+//            }
+
+
+//            if( !hashtags.isPresent() ) {
+//                // 검색하려는 단어가 한번도 등록된적이 없으면 모두검색
+//
+//                list = pr.findAllByOrderByPostIdDesc(pageable);
+////                list = pr.findAll(Sort.by(Sort.Direction.DESC, "postId"));  // 검색 결과가 없으면 모두 검색
+//            }else{
+//                // 검색하려는 단어가 hashag 테이블에 있는 단어라면
+//                // List<PostHash> phList = phr.findByHashid(  record.get().getId() );
+////                List<Post> list2 = pdao.getPostListByTagByPage( hashtag.get().getHashtagId(), paging.getStartNum(), paging.getDisplayRow()  );
+//
+////                list = pr.findAllByHashtagId(hashtag.get().getHashtagId(), pageable);
+//
+//                list = pr.findAllByHashtags(hashtags, pageable);
+//            }
+
         }
         return list;
     }

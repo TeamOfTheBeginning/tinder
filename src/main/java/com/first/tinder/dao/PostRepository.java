@@ -1,5 +1,6 @@
 package com.first.tinder.dao;
 
+import com.first.tinder.entity.Hashtag;
 import com.first.tinder.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,4 +35,9 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             "(SELECT ph.post.postId FROM PostHashtag ph WHERE ph.hashtag.hashtagId = :hashtagId) " +
             "ORDER BY p.postId DESC")
     Page<Post> findAllByHashtagId(@Param("hashtagId") int hashtagId, Pageable pageable);
+
+    @Query("SELECT p FROM Post p WHERE p.postId IN " +
+            "(SELECT ph.post.postId FROM PostHashtag ph WHERE ph.hashtag IN :hashtags) " +
+            "ORDER BY p.postId DESC")
+    Page<Post> findAllByHashtags(@Param("hashtags") List<Hashtag> hashtags, Pageable pageable);
 }
