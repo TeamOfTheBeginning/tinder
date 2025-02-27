@@ -7,7 +7,7 @@ import '../../style/search.css';
 
 import jaxios from '../../util/jwtUtil';
 
-const Search = () => {
+const Search = (props) => {
   const [memberList, setMemberList] = useState();
   const [word, setWord] = useState();
   const [inviteMemberList,setInviteMemberList] =useState();
@@ -135,10 +135,20 @@ const Search = () => {
     }
   };
 
+  function findPostByHashtag(){
+    console.log("findPostByHashtag"+word)
+    props.setHashtag(word);
+    console.log("props.hashtag"+props.hashtag)
+  }
+
 
   return (
     <div className='searchContainer'>
-      <h3>맴버를 검색합니다.</h3>
+      <h3>포스트 검색</h3>
+        <div className='searchContainerHashtag'>
+          <input onChange={(e) => { setWord(e.target.value) }}placeholder="해쉬태그 입력"></input><button onClick={()=>findPostByHashtag()}>해쉬태그</button>
+        </div>
+      <h3>맴버 검색</h3>
       나를 차단한 사용자는 검색되지 않습니다.<br/><br/><br/>
         <div className='searchContainerNickname'>
           <input onChange={(e) => { setWord(e.target.value) }}placeholder="닉네임 입력"></input><button onClick={()=>findMemberWithNickname()}>맴버</button>
@@ -167,6 +177,8 @@ const Search = () => {
           </div>
         </div>
         <br/><br/>
+
+        
         
         <div className='searchResult'>
         {

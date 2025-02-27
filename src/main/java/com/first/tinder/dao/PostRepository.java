@@ -29,4 +29,9 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findRandomPostWithinLast3Days(@Param("threeDaysAgo") Timestamp threeDaysAgo, Pageable pageable);
 
     Page<Post> findAllByOrderByPostIdDesc(Pageable pageable);
+
+    @Query("SELECT p FROM Post p WHERE p.postId IN " +
+            "(SELECT ph.post.postId FROM PostHashtag ph WHERE ph.hashtag.hashtagId = :hashtagId) " +
+            "ORDER BY p.postId DESC")
+    Page<Post> findAllByHashtagId(@Param("hashtagId") int hashtagId, Pageable pageable);
 }

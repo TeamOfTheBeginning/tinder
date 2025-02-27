@@ -264,6 +264,8 @@ public class PostService {
     public Page<Post> getPostList2(String word , Paging paging ) {
         Page<Post> list = null;
 
+//        word = "망고주스";
+
 //        list = pr.findAll(Sort.by(Sort.Direction.DESC, "postId"));
 //        list = pr.findAll()
 //
@@ -291,8 +293,9 @@ public class PostService {
             }else{
                 // 검색하려는 단어가 hashag 테이블에 있는 단어라면
                 // List<PostHash> phList = phr.findByHashid(  record.get().getId() );
-//                list = pdao.getPostListByTagByPage( hashtag.get().getHashtagId(), paging.getStartNum(), paging.getDisplayRow()  );
-//                list = pr.findByOrderByPostIdDesc(pageable);
+//                List<Post> list2 = pdao.getPostListByTagByPage( hashtag.get().getHashtagId(), paging.getStartNum(), paging.getDisplayRow()  );
+
+                list = pr.findAllByHashtagId(hashtag.get().getHashtagId(), pageable);
 
             }
         }
