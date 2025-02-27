@@ -243,4 +243,12 @@ public class MemberController2 {
 //        return result;
 //    }
 
+    @PostMapping("/setMemberRoleGold")
+    public HashMap<String,Object> setMemberRoleGold (@RequestParam("memberId") int memberId){
+        HashMap<String, Object> result = new HashMap<>();
+        String msg = ms2.setMemberRoleGold(memberId);
+        result.put("msg", msg);
+        return result;
+    }
+
 }

@@ -36,11 +36,29 @@ const Match = (props) => {
     ).catch((err)=>{console.error(err)}) 
   } 
 
+  // ✅ 특정 역할이 있는지 체크하는 함수
+  const hasRequiredRoles = (roles) => {
+    return roles.includes("USER") && roles.includes("Gold");
+};
+
+
   return (
     <div className='matchContainer'>
       <div className='matchBtns'>
         <button className='matchBtn' onClick={()=>rematch()}>재매칭</button>        
-        <button className='matchBtn' onClick={()=> props.onSubMenuSelect('findLiker')}>Liker조회</button>&nbsp;
+        <button 
+            className='matchBtn' 
+            onClick={() => {
+                if (loginUser && hasRequiredRoles(loginUser.memberRoleList)) {
+                    props.onSubMenuSelect('findLiker');
+                } else {
+                    alert("Gold 회원 전용입니다.");
+                }
+            }}
+        >
+            Liker 조회
+        </button>
+
         <button className='matchBtn' onClick={()=> props.onSubMenuSelect('matchedMember')}>매칭조회</button>&nbsp;        
       </div>
 

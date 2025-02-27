@@ -26,10 +26,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/member")
@@ -273,6 +270,7 @@ public class MemberController {
 
 
         member.setTemp(37);
+        member.setMemberRoleList(Collections.singletonList(MemberRole.USER));
         member.setMemberInfo(returnMemberInfo);
         member.setOpponentMemberInfo(returnOpponentMemberInfo);
 

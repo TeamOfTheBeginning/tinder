@@ -57,7 +57,7 @@ const Login = () => {
 
                 // setCookie( 'user', JSON.stringify(result.data) , 1)
 
-                setCookie1('user', JSON.stringify(result.data) , 1)
+                // setCookie1('user', JSON.stringify(result.data) , 1)
 
                 // setCookie( 'accessToken', JSON.stringify(result.data.accessToken) , 1)
 
@@ -70,12 +70,27 @@ const Login = () => {
                 // console.log(sizeInBytes); // 바이트 단위로 크기 출력
                 // console.log(sizeInBytes / 1024 / 1024); // MB 단위로 크기 출력
                 
-                
-
+                setCookie1('user', JSON.stringify(result.data) , 1)
                 dispatch( loginAction( result.data ) )
+                
                 // navigate('/main');
 
+                let accessToken=result.data.accessToken
+                let refreshToken=result.data.refreshToken
+
                 const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:result.data.memberId}});
+
+                // console.log("JSON.stringify(res.data.loginUser)"+JSON.stringify(res.data.loginUser))
+
+                res.data.loginUser.accessToken=accessToken;
+                res.data.loginUser.refreshToken=refreshToken;
+
+                setCookie1('user', JSON.stringify(res.data.loginUser) , 1)
+                dispatch( loginAction( res.data.loginUser ) )
+
+                // console.log(res.data.loginUser)
+                // console.log(JSON.stringify(res.data.loginUser))
+
                 const lUser = res.data.loginUser;
 
                 lUser['follower'] = res.data.follower;

@@ -405,4 +405,16 @@ public Member getOppsiteGender2(int memberId) {
         member.getOpponentMemberInfo().setTf(tf);
         member.getOpponentMemberInfo().setJp(jp);
     }
+
+    public String setMemberRoleGold(int memberId) {
+        Member member = mr.findByMemberId(memberId).orElse(null);
+        if(member.getAccount()>0) {
+            member.setAccount(member.getAccount()-1);
+            member.getMemberRoleList().add(MemberRole.Gold);
+            System.out.println(member.getMemberRoleList());
+            return "yes";
+        }else{
+            return "money";
+        }
+    }
 }

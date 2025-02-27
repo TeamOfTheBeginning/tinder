@@ -42,7 +42,7 @@ public class MemberDTO extends User {
 
         this.temp = temp;
 
-        this.roleNames = authorities;
+        this.memberRoleList = authorities;
 
         this.memberInfo = memberInfo;
         this.opponentMemberInfo = opponentMemberInfo;
@@ -72,7 +72,7 @@ public class MemberDTO extends User {
 
     private int temp;
 
-    private List<String> roleNames = new ArrayList<String>();
+    private List<String> memberRoleList = new ArrayList<String>();
 
     MemberInfo memberInfo;
     OpponentMemberInfo opponentMemberInfo;
@@ -102,7 +102,7 @@ public class MemberDTO extends User {
 
         dataMap.put("temp", temp);
 
-        dataMap.put("roleNames", roleNames);
+        dataMap.put("memberRoleList", memberRoleList);
         dataMap.put("memberInfo", memberInfo);
         dataMap.put("opponentMemberInfo", opponentMemberInfo);
         return dataMap;
