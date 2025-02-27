@@ -14,15 +14,15 @@ const NearMember = () => {
 
     const handleSearch = async () => {
         ;
-        console.log(loginUser);
+        // console.log(loginUser);
         // loginUser가 null 또는 undefined인 경우 처리
         if (!loginUser || !loginUser.latitude || !loginUser.longitude) {
             console.warn("loginUser 정보가 유효하지 않습니다.");
             return;
         }
 
-        console.log('fetchNearbyMembers 실행');
-        console.log('loginUser:', loginUser);
+        // console.log('fetchNearbyMembers 실행');
+        // console.log('loginUser:', loginUser);
         try {
             const response = await jaxios.get('/api/member/nearby', {
                 params: {
@@ -64,7 +64,7 @@ const NearMember = () => {
 
         await jaxios.post(`/api/member2/insertMemberLike`,{liker:loginUser.memberId , memberId })
         .then((result)=>{
-            console.log("result.data.msg"+result.data.msg)
+            // console.log("result.data.msg"+result.data.msg)
     
             if(result.data.msg=='yes') {alert("좋아요가 완료되었습니다!")}
             else if(result.data.msg=='no') {alert("좋아요가 취소되었습니다!")}

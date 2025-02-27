@@ -94,7 +94,10 @@ public class PaymentService {
                 System.out.println("결제완료");
                 Optional<Member> member = mr.findById(memberId);
                 if (member.isPresent()) {
-                    member.get().setAccount(member.get().getAccount()+1);
+                    Product product = pr.findById(1).orElse(null);
+                    System.out.println(product);
+
+                    member.get().setAccount(member.get().getAccount()+product.getProductPrice());
                     System.out.println("member.get()"+member.get());
                     System.out.println("member.get().getAccount()"+member.get().getAccount());
                     mr.save(member.get());

@@ -49,7 +49,7 @@ if (memberinfoStr) {
         // console.log("memberId:", memberinfo?.memberId);
         // console.log("nickname:", memberinfo?.nickname);
         // console.log("email:", memberinfo?.email);
-        console.log("hobbies:", memberinfo?.memberInfo.hobbies)
+        // console.log("hobbies:", memberinfo?.memberInfo.hobbies)
     } catch (error) {
         console.error("JSON parsing error: ", error);
         memberinfo = null; // 변환 실패 시 null 처리

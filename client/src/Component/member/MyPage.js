@@ -104,9 +104,9 @@ const MyPage = ({openSubMenu}) => {
         const result = await jaxios.post('/api/payment/order',null,{params:{
             memberId:loginUser.memberId, productId:1}
         })
-        console.log("result1"+result)
-        console.log("result2"+result.data)
-        console.log("result3"+result.orderingId)
+        // console.log("result1"+result)
+        // console.log("result2"+result.data)
+        // console.log("result3"+result.orderingId)
 
         
           // /payment/complete 엔드포인트를 구현해야 합니다. 다음 목차에서 설명합니다.
@@ -120,22 +120,46 @@ const MyPage = ({openSubMenu}) => {
 
         alert("결제완료")
 
-        const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:result.data.memberId}});
-        setCookie1('user', JSON.stringify(res.data.loginUser) , 1)
-        dispatch( loginAction( res.data.loginUser ) )
+        jaxios.get(`/api/member/getLoginUser`, { params: { memberId:loginUser.memberId } })
+            .then((result) => {
+
+            let accessToken=loginUser.accessToken
+            let refreshToken=loginUser.refreshToken
+            
+            result.data.loginUser.accessToken = accessToken;
+            result.data.loginUser.refreshToken = refreshToken;
+            
+
+            setCookie1('user', JSON.stringify(result.data.loginUser) , 1)
+            dispatch( loginAction( result.data.loginUser ) )
+
+
+
+            }).catch((err) => { console.error(err) });
 
     } catch (error) {
         console.error('본인 인증 오류:', error);
     } finally { }
 }
 
+// ✅ 특정 역할이 있는지 체크하는 함수
+const hasRequiredRoles = (roles) => {
+    return roles.includes("USER") && roles.includes("Gold");
+};
+
 const buyItems = async () => {
+
+    
     if(window.confirm("Gold 회원권을 구매하시겠습니까?")) {
 
         if(loginUser.account<=0){
             alert("잔고를 확인해주세요!")
             return
         }
+
+        // if(){
+
+        // }
 
     jaxios.post(`/api/member2/setMemberRoleGold`, null ,{ params: { memberId:loginUser.memberId } })
     .then((result) => {
@@ -246,7 +270,28 @@ const buyItems = async () => {
                     
                     <div id ="btn" onClick={()=>{requestPayment()}}><button>충전</button></div>
                     
-                    <div id ="btn" onClick={()=>{buyItems()}}><button>골드회원</button></div>
+                    <div id ="btn">
+                
+                    <div id ="btn">
+                        <button 
+                            
+                            onClick={() => {
+                                if (loginUser && hasRequiredRoles(loginUser.memberRoleList)) {
+                                    // props.onSubMenuSelect('findLiker');
+                                    alert("이미 골드회원이십니다.")
+                                } else {
+                                    buyItems();
+                                }
+                            }}
+                        >
+                            골드회원
+                        </button>
+                    </div>
+                
+
+                
+                </div>
+                
                 </div>
 
                 <Modal isOpen={isFollowerModalOpen} onClose={toggleFollowerModal}>

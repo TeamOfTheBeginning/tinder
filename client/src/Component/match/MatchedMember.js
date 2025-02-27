@@ -14,7 +14,7 @@ const MatchedMember = (props) => {
     const [matchedMemberList, serMatchedMemberList] = useState();
 
     useEffect(() => {
-        console.log(loginUser)
+        // console.log(loginUser)
         jaxios.get(`/api/member2/getMatchedMember`, { params: { memberId:loginUser.memberId } })
         .then((result) => {
             // console.log("result.data.likerList: " + JSON.stringify(result.data.likerList));
@@ -24,7 +24,7 @@ const MatchedMember = (props) => {
     }, []);
 
     function enterChatRoomFromMatchedMember(memberId){
-        console.log(memberId);
+        // console.log(memberId);
         props.openSubMenu('chatRoomFromMatch', memberId)
         // navigate(`/chatRoomFromMatch/${memberId}`);
     }
