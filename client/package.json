@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@animxyz/core": "^0.6.6",
-    "@animxyz/react": "^0.6.7",
     "@portone/browser-sdk": "^0.0.12",
     "@reduxjs/toolkit": "^2.5.1",
     "@stomp/stompjs": "^7.0.0",
