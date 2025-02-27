@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import Loading from "./Loading";
+import Loading from './Loading';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
@@ -14,7 +14,7 @@ import { setCookie1, getCookie1 } from '../util/cookieUtil2';
 import '../style/login.css';
 import { IoLogIn, IoCreateOutline } from 'react-icons/io5';
 import RealtimeConnectInfo from './realtimeconnectinfo/RealtimeConnectInfo';
-import JoinForm from "./member/JoinForm";
+import JoinForm from './member/JoinForm';
 import { SiOutline } from 'react-icons/si';
 
 import jaxios from '../util/jwtUtil'
@@ -37,7 +37,7 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
-    const [isSignUp, setIsSignUp] = useState(false); // Sign In / Sign Up 전환 상태
+    const [isSignUp, setIsSignUp] = useState(false);
     const navigate = useNavigate('');
     const dispatch = useDispatch('');
     const cookies = new Cookies('');
@@ -45,7 +45,7 @@ const Login = () => {
     const handleLoginSuccess = () => {
         setIsLoginSuccess(true); // 로그인 성공 상태 활성화
         setTimeout(() => setLoadingComplete(true), 6500); // 로딩 완료 후 상태 변경
-        setTimeout(() => navigate("/main"), 6500); // 메인 페이지로 이동
+        setTimeout(() => navigate('/main'), 6500); // 메인 페이지로 이동
     };
 
     async function onLoginLocal(){
@@ -53,15 +53,15 @@ const Login = () => {
         if( !pwd ){ return alert('비밀번호를 입력하세요')}
         try{
             const result = await axios.post('/api/member/loginlocal', null ,{ params:{username:email, password:pwd} })
-            // console.log("1")
+            // console.log('1')
             // console.log(result)
 
             if( result.data.error === 'ERROR_LOGIN'){
-                setPwd("");
+                setPwd('');
                 return alert('이메일과 패스워드를 확인하세요')
             }else{              
                 // console.log(result.data)
-                // console.log("result.data"+JSON.stringify( result.data ))
+                // console.log('result.data'+JSON.stringify( result.data ))
 
                 // cookies.set('user', JSON.stringify( result.data ) , {path:'/', })
 
@@ -114,11 +114,11 @@ const Login = () => {
                 cookies.set('follower', JSON.stringify( res.data.follower ) , {path:'/', })
                 cookies.set('followed', JSON.stringify( res.data.followed ) , {path:'/', })            
                 
-                // console.log("result.data.memberId"+result.data.memberId)
-                // console.log("result.data.nickname"+result.data.nickname)
+                // console.log('result.data.memberId'+result.data.memberId)
+                // console.log('result.data.nickname'+result.data.nickname)
 
                 handleJoin(result.data.memberId)
-                localStorage.setItem("nickname", result.data.nickname);
+                localStorage.setItem('nickname', result.data.nickname);
                 
                 // 로그인 성공 상태 활성화
                 setIsLoginSuccess(true);
@@ -166,14 +166,14 @@ const Login = () => {
 
             // 서버로부터 접속자 수 업데이트를 실시간으로 받기 위해 구독
             stompClient.subscribe('/topic/real_chat/userCount', (message) => {
-            // console.log("Received message:", message.body);
+            // console.log('Received message:', message.body);
             // alert(message.body);
 
             const parsedMessage = JSON.parse(message.body);
 
-            // console.log("parsedMessage"+parsedMessage)
+            // console.log('parsedMessage'+parsedMessage)
             
-            // console.log("parsedMessage.userCount"+parsedMessage.userCount)
+            // console.log('parsedMessage.userCount'+parsedMessage.userCount)
 
             const userCount = Number(parsedMessage.userCount);
 
@@ -214,20 +214,20 @@ const Login = () => {
 
 
     const handleLoadingComplete = () => {
-        navigate("/main"); // 메인 페이지로 이동
+        navigate('/main'); // 메인 페이지로 이동
         setLoadingComplete(true);
     };
 
     return (
-        <div className="container">
+        <div className='container'>
             {isLoginSuccess ? (
                 !loadingComplete ? (
                     <Loading onComplete={handleLoadingComplete} />
                 ) : null
             ) : (
-                <div className="loginform-header">
+                <div className='loginform-header'>
                 <RealtimeConnectInfo />
-                <div className="toggle-btns">
+                <div className='toggle-btns'>
                     <button
                         className={`toggle-btn ${!isSignUp ? 'active' : ''}`}
                         onClick={() => setIsSignUp(false)}
@@ -240,42 +240,42 @@ const Login = () => {
                     >
                         JOIN
                     </button>
-                    <button id="kakao" onClick={() => {
+                    <button id='kakao' onClick={() => {
                         window.location.href = 'http://localhost:8070/member/kakaoStart';
                     }}>KAKAO LOGIN</button>
                 </div>
 
-                <div className="loginContent">
-                    <div className="loginform">
+                <div className='loginContent'>
+                    <div className='loginform'>
                         {!isSignUp ? (
-                            <div className="signin">
-                                <div className="field">
-                                    <label className="hide-label">E-MAIL</label>
+                            <div className='signin'>
+                                <div className='field'>
+                                    <label className='hidden'>E-MAIL</label>
                                     <input
-                                        type="text"
+                                        type='text'
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="E-MAIL"
+                                        placeholder='E-MAIL'
                                     />
                                 </div>
-                                <div className="field">
-                                    <label className="hide-label">PASSWORD</label>
+                                <div className='field'>
+                                    <label className='hidden'>PASSWORD</label>
                                     <input
-                                        type="password"
+                                        type='password'
                                         value={pwd}
                                         onChange={(e) => setPwd(e.target.value)}
-                                        placeholder="PASSWORD"
+                                        placeholder='PASSWORD'
                                     />
                                 </div>
-                                <div className="login-btns">
-                                    <div className="login-btn" onClick={onLoginLocal}>
+                                <div className='login-btns'>
+                                    <div className='login-btn' onClick={onLoginLocal}>
                                         <IoLogIn />
                                         &nbsp;LOGIN
                                     </div>
                                 </div>
                             </div>
                         ) : (
-                            <div className="signup">
+                            <div className='signup'>
                                 <JoinForm onCancel={() => setIsSignUp(false)} />
                             </div>
                         )}

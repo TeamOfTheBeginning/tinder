@@ -1,6 +1,4 @@
-import React, {useState, useEffect} from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
 
 import '../../style/posts.css';
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
@@ -34,12 +32,40 @@ const Post = (props) => {
     const [viewVal, setViewVal] = useState(false)
     const [replyContent, setReplyContent] = useState('')
     const [replyList, setReplyList] = useState([])
-    
+    const [loading, setLoading] = useState(true);
+
     const dispatch = useDispatch()
     const cookies = new Cookies();    
 
     // redux에 저장된 로그인 유저 로딩
     let loginUser = useSelector( state=>state.user ); 
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true); // 데이터 로드 시작 전 로딩 상태 설정
+
+                const imgResult = await jaxios.get(`/api/post/getImages/${props.post.postId}`);
+                setImgList(imgResult.data.imgList);
+
+                const likeResult = await jaxios.get(`/api/post/getLikeList/${props.post.postId}`);
+                setLikeList([...likeResult.data.likeList]);
+
+                const replyResult = await jaxios.get(`/api/post/getReplyList/${props.post.postId}`);
+                let temp = [...replyResult.data.replyList2];
+                for (let i = 0; i < temp.length; i++) {
+                    temp[i].nickname = await getNickname(temp[i].writer);
+                }
+                setReplyList([...temp]);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setLoading(false); // 데이터 로드 완료 후 로딩 상태 해제
+            }
+        };
+
+        fetchData();
+    }, [props.post.postId]);
 
     async function getNickname(memberId){
         // const result = await axios.get(`/api/member/getNickname/${memberId}`)

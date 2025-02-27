@@ -45,27 +45,6 @@ const FindChatGroupRandom = ({openSubMenu}) => {
         ).catch((err)=>{console.error(err)}) 
     }
 
-    // return (
-    //     <div className='findChatGroupContainer'>
-    //         <div className='chatGroupInfo'>
-    //             <div className='chatGroupBtns'>
-    //                 <button className='chatGroupbtn' onClick={()=>setAnonymousMessageRoom()}>랜덤쪽지</button>
-    //             </div>
-    //         </div>
-    //     {
-    //         (chatGroupList)?(
-    //             chatGroupList.map((chatGroup, idx)=>{
-    //             return (
-    //                 <div key={idx} className='findChatGroupListContainer'>
-    //                     <ChatGroupRandom chatGroup={chatGroup}  openSubMenu={openSubMenu}/>
-    //                 </div>
-    //             )
-    //             })
-    //         ):("Loading...")
-    //     }
-        
-    //     </div>
-    // )
     return (
         <div className='findChatGroupContainer'>
             <div className='chatGroupHeader'>
