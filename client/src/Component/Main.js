@@ -79,12 +79,12 @@ const Main = () => {
     }
 
     useEffect(() => {
-        console.log("Updated hashtag:", hashtag);
+        // console.log("Updated hashtag:", hashtag);
         jaxios.get(`/api/post/getPostList`, { params: { word:hashtag, page: 0 } })
             .then((result) => {
-                console.log("result.data.postList2")
-                console.log(JSON.stringify(result.data.postList2.content))
-                console.log(JSON.stringify(result.data.postList2.pageable))
+                // console.log("result.data.postList2")
+                // console.log(JSON.stringify(result.data.postList2.content))
+                // console.log(JSON.stringify(result.data.postList2.pageable))
                 setPostList(result.data.postList2.content);
                 setPageable(result.data.postList2.pageable)
             }).catch((err) => { console.error(err) });

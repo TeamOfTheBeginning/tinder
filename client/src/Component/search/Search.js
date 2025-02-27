@@ -19,7 +19,7 @@ const Search = (props) => {
   async function findMemberWithNickname(){
     jaxios.get(`/api/member2/getMembersWithNickname`, { params: { word, memberId:loginUser.memberId } })
     .then((result)=>{
-      console.log(result.data.memberList)
+      // console.log(result.data.memberList)
       setMemberList(result.data.memberList)
     }
     ).catch((err)=>{console.error(err)}) 
@@ -51,7 +51,7 @@ const Search = (props) => {
   }
 
   function enterChatRoomFromChatGroup(chatGroupId){
-    console.log(chatGroupId);        
+    // console.log(chatGroupId);        
     navigate(`/chatRoomFromChatGroup/${chatGroupId}`);
   }
 
@@ -71,8 +71,8 @@ const Search = (props) => {
       return alert("맴버를 선택하세요");
     }
 
-    console.log("inviteMemberList : "+inviteMemberList)
-    console.log("inviteMemberIdList : "+inviteMemberIdList)
+    // console.log("inviteMemberList : "+inviteMemberList)
+    // console.log("inviteMemberIdList : "+inviteMemberIdList)
 
     const inviteMemberListStr = inviteMemberIdList.join(",");
 
@@ -80,7 +80,7 @@ const Search = (props) => {
       inviteMemberIdList: inviteMemberListStr , memberId:loginUser.memberId
     } } )
     .then((result)=>{
-      console.log("result.data.chatGroupId"+result.data.chatGroupId)
+      // console.log("result.data.chatGroupId"+result.data.chatGroupId)
       enterChatRoomFromChatGroup(result.data.chatGroupId);
     }
     ).catch((err)=>{console.error(err)}) 
@@ -128,7 +128,7 @@ const Search = (props) => {
     try {
       // 서버에 데이터 전송
       const response = await jaxios.get('/api/member2/getMembersWithMBTI', { params:{numberValue,memberId:loginUser.memberId} });
-      console.log(response.data); // 응답 처리
+      // console.log(response.data); // 응답 처리
       setMemberList(response.data.memberList)
     } catch (error) {
       console.error('Error sending data:', error);
@@ -136,9 +136,9 @@ const Search = (props) => {
   };
 
   function findPostByHashtag(){
-    console.log("findPostByHashtag"+word)
+    // console.log("findPostByHashtag"+word)
     props.setHashtag(word);
-    console.log("props.hashtag"+props.hashtag)
+    // console.log("props.hashtag"+props.hashtag)
   }
 
 
