@@ -31,8 +31,11 @@
 /* 로그인/회원가입 폼 */
 .loginContent {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     height: fit-content;
+    max-height: 95vh;
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 0.8);
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
@@ -40,11 +43,22 @@
 
 .loginform {
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     padding: 20px;
     width: 400px;
+    height: 100%;
     max-height: 80vh;
-    overflow-y: auto; /* 내부 스크롤 활성화 */
+    overflow-y: auto;
     overflow-x: hidden;
+}
+
+.loginform {
+    scrollbar-width: none; /* Firefox */
+}
+.loginform::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
 }
 
 
@@ -54,71 +68,63 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    height: 100vh; /* 전체 화면 높이 */
+    align-items: center;
+    flex-direction: column;
+    min-height: 100%;
+    overflow-y: auto;
 }
+
 .joinform {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    max-width: 100%;
     width: 100%;
     border-radius: 20px;
     background-color: transparent; /* 배경 제거 */
     box-shadow: none; /* 그림자 제거 */
     box-sizing: border-box;
-    padding: 0;
-    /* padding: 20px; */
-    overflow: hidden;
 }
-.joinform .btns{
+
+.hidden{
+    display: none;
+}
+
+/* 로그인, 회원가입 전환 tab */
+.signin, .signup {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: auto; /* 자식 요소의 높이를 자동으로 조정 */
+}
+.signin, .signup{
+    width: 100%; }
+
+.login-btns{
     width: 90%;
 }
 
-
-/* 로그인, 회원가입 전환 tab */
-.signin, .signup{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-.hide-label,
-#login-field label{
-    display: none;
-}
 /* 전환 버튼 */
-.signin .login-btns, .signup .login-btns{
-    width: 85%;
-}
+
 .toggle-btns {
     display: flex;
     margin-left: 20px;
     padding: 0;
 }
 .toggle-btns button{
-    margin:0;
+    margin: 0;
     padding: 10px;
-    min-width: 80px;
     height: 30px;
-    border-radius: 20px 20px 0 0 ;
-    box-sizing: border-box;
-    border: none;
-    font-size: 11px;
-    color: #fff;
-    background-color: #5C6A6E;
+    border-radius: 20px 20px 0 0;
 }
 .toggle-btn {
-    display: flex;  /* 플렉스 박스로 설정 */
-    align-items: center;
-    justify-content: center;  /* 수평 중앙 정렬 */
+    display: flex;
+    align-items: center;    justify-content: center;
     cursor: pointer;
+    width:7em;
     transition: background-color 0.5s, color 0.5s;
-    text-align: center; /* 추가: 텍스트 중앙 정렬 */
+    text-align: center;
 }
 .toggle-btn.active {
     background-color: #f7186a;
@@ -130,20 +136,19 @@
     background-color: #ec8c69;
 }
 
-
 /* 입력 필드 스타일 */
-.signin .field, .signup .field{
+.loginform .signin .field,
+.loginform .signup .field{
     display: flex;
     justify-content: space-between;
-    width: 90%;
-    margin: 10px 0;
+    width: 100%;
 }
 
 .field {
     display: flex;
     justify-content: space-between;
     flex-direction: column; /* 기본적으로 세로 정렬 */
-    gap: 10px; /* 요소 간 간격 */
+    gap: 10px;
     margin-bottom: 15px; /* 필드 간 여백 */
 }
 
@@ -155,41 +160,44 @@
     border: none;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* 약간의 깊이감 추가 */
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
 }
 .field input:focus {
-    outline: none; /* 기본 브라우저 포커스 제거 */
+    outline: none; /* 기본 아웃라인 제거 */
     border-color: #f7186a; /* 포커스 시 테두리 색상 변경 */
     box-shadow: inset 0 1px 3px rgba(247,24,106,0.5), 
                 0px 0px 5px rgba(247,24,106,0.5); /* 포커스 시 강조 효과 */
 }
 
 
-/* 성별 & 생년월일을 한 줄에 두 개씩 정렬 (반응형 적용) */
+/* 한 줄에 두 개씩 정렬 (반응형 적용) */
 .field.flex-row {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    gap: 10px;
-    width: 100%; /* 부모 크기 안에서 정렬 */
-    max-width: 100%; /* 넘치지 않도록 제한 */
-    box-sizing: border-box; /* 패딩과 테두리를 포함한 크기 계산 */
-    overflow: hidden; /* 넘치는 부분 숨김 */
+    gap: 5px;
 }
-
-/* 개별 요소 크기 조정 */
-.field.flex-row > * {
-    flex: 1 1 48%; /* 한 줄에 두 개씩 배치 */
-    max-width: 48%;
-    box-sizing: border-box;
+.field.flex-row > div {
+    flex: 1; /* 각 항목이 동일한 비율로 크기를 차지 */
+}
+.field.flex-row input {
+    width: 100%; /* 입력 필드가 부모 요소의 너비를 채움 */
+    padding: 10px; /* 내부 여백 추가 */
+    border-radius: 10px;
+    font-size: 14px;
+    border: none;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.field.flex-row .login-btn{
+    margin:0;
+    font-size: 1em;
 }
 
 /* 버튼 그룹 */
 /* 로그인/회원가입 버튼 */
-.login-btns .login-btn {
+.login-btn {
     margin-top: 10px; padding: 5px;
     border-radius: 25px;
     font-weight: bold;
-    transition: all 0.5s ease-in-out;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -197,13 +205,21 @@
     font-size: 18px;
     background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
     background-size: 300% 100%;
+    transition: all 0.5s ease-in-out;
     color: #fff;
     border-radius: 50px;
 }
-
 .login-btn:hover {
     background-position: 100% 0;
     cursor: pointer;
+}
+
+/* 입력창용 버튼 */
+.input-btn{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
 }
 
 /* 카카오 로그인 버튼 */
@@ -263,9 +279,6 @@
     border: none;
     color: #333;
 }
-  
-
-
 
 .success-message {
     display: flex;
@@ -291,62 +304,27 @@
     }
 }
 
-/* @keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    25% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
-    75% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
-} */
-
 .success-message {
-    text-align: center; /* 중앙 정렬 */
+    text-align: center;
 }
-
 .success-message h1 {
     transition: opacity 1s ease;
     opacity: 1;
 }
-
 .success-message h1.fade-out {
     opacity: 1;
 }
-
 .success-message h1.fade-in {
     opacity: 1;
 }
-
 .fade-out {
     opacity: 1;
     transition: opacity 0.5s ease;
 }
-
 .fade-in {
     opacity: 1;
     transition: opacity 0.5s ease;
 }
-
-
-/* .success-message {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-size: 24px;
-    font-weight: bold;
-    animation: fadeIn 1s ease-in-out;
-} */
 
 .progress-bar {
     width: 60%;
@@ -356,7 +334,6 @@
     overflow: hidden;
     margin-top: 20px;
 }
-
 .progress {
     height: 100%;
     width: 0%;
@@ -364,38 +341,33 @@
     transition: width 0.2s ease-in-out;
 }
 
-
-
 /* 반응형 스타일 */
-@media (max-width: 600px) {
-    .loginform .joinform {
+@media (max-width: 768px) {
+    .loginContent {
+        width: 350px;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
+    }
+
+    .loginform, .joinform.join-container {
+        display: flex;
         align-items: center;
-        flex-direction: column;
-        width: calc(95% - 40px);
-        /*height: fit-content;*/
-        height: 80%;
-    }
-    .field.flex-row {
-        flex-direction: column;
-    }
-    .field.flex-row > * {
-        flex: 1 1 100%;
-        max-width: 100%;
-    }
-    .joinform .login-btns {
+        flex-direction: row;
         width: 100%;
+        height: auto;
+        padding: 15px;
     }
-    .loginform #login-field input, 
-    .loginform .login-btns button {
-        padding:8px;
+
+    .field.flex-row {
+        flex-direction: column; /* 세로 정렬 */
+        margin-bottom: 8px;
+        gap: 1em;
     }
-    .signin .field, .signup .field {
-        margin: 0;
-    }
-    .loginform .field.flex-row {
-        gap: 0; /* 요소 간격 조정 */
-        margin:0;
+
+    /* 추가: 입력 필드 스타일 */
+    .loginform input {
+        transition: border-color 0.3s; /* 부드러운 변화 */
     }
 }
+
+

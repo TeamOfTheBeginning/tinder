@@ -1,7 +1,6 @@
 import React, {useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import DaumPostcode from 'react-daum-postcode';
-import axios from "axios";
 import * as PortOne from "@portone/browser-sdk/v2";
 import '../../style/login.css';
 import { IoCreateOutline } from "react-icons/io5";
@@ -193,85 +192,93 @@ const JoinForm = () => {
 
     return (
         <div className='join-container'>
+            <div className='login-btns'>
+                <div className="login-btn" onClick={ ()=>{   handleIdentityVerification()    }  }>성인인증</div>
+            </div>
             <div className='joinform'>
-                <div className='login-btns'>
-                    <div className="login-btn" onClick={ ()=>{   handleIdentityVerification()    }  }>성인인증</div>
-                </div>
-                <div className='field' id="login-field">
-                    <label className="hide-label">NAME</label>
+                <div className='field'>
+                    <label className="hidden">NAME</label>
                     <input type="text" placeholder="이름" value={memberName} onChange={(e)=>{setNickname(e.currentTarget.value)}} readOnly/>
                 </div>
-                <div className='field flex-row' id="login-field">
-                    <label className="hide-label">GENDER</label>
 
-                    {/* 인증시 받아오는 경우 */}
-                    <input type="text" placeholder="성별"
-                    value={gender === "" || gender === null || gender === undefined ? "" : gender === 0 ? "남성" : "여성"}
-                    readOnly
+                <div className='field flex-row'>
+                    <div className='gender'>
+                    <label className="hidden">GENDER</label>
+                        {/* 인증시 받아오는 경우 */}
+                        <input type="text" placeholder="성별"
+                        value={gender === "" || gender === null || gender === undefined ? "" : gender === 0 ? "남성" : "여성"}
+                        readOnly
                     />
+                    </div>
 
-                    <label className="hide-label">BIRTHDATE</label>
-                    
-                    {/* 수정 불가능 하게 할 경우 */}
-                    <input
-                    type="text" // type을 date로 변경
-                    placeholder="생년월일"
-                    value={birthDate}
-                    required
-                />
-
+                    <div className='birth'>
+                    <label className="hidden">BIRTHDATE</label>
+                        {/* 수정 불가능 하게 할 경우 */}
+                        <input
+                            type="text" // type을 date로 변경
+                            placeholder="생년월일"
+                            value={birthDate}
+                            required
+                    />
+                    </div>
                 </div>
-                <div className='field' id="login-field">
-                    <label>PHONE</label>
+
+                <div className='field'>
+                    <label className="hidden">PHONE</label>
                     <input type="text" placeholder="전화번호" value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}} readOnly/>
                 </div>
-                <div className='field' id="login-field">
-                    <label>E-MAIL</label>
-                    <input type="text" placeholder="E-MAIL" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
+                <div className='field'>
+                    <label className="hidden">E-MAIL</label>
+                    <input type="text" placeholder="E-MAIL (로그인 시 아이디로 사용됩니다.)" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
                 </div>
-                <div className='field' id="login-field">
-                    <label>PASSWORD</label>
-                    <input type="password" placeholder="PASSWORD" value={pwd} onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
+                <div className='field'>
+                    <label className="hidden">PASSWORD</label>
+                    <input type="password" placeholder="비밀번호" value={pwd} onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
                 </div>
-                <div className='field' id="login-field">
-                    <label>RETYPE PW</label>
-                    <input type="password" placeholder="RETYPE PW" value={pwdChk} onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
+                <div className='field'>
+                    <label className="hidden">RETYPE PW</label>
+                    <input type="password" placeholder="비밀번호 확인" value={pwdChk} onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
                 </div>
-                <div className='field' id="login-field">
-                    <label>NICKNAME</label>
-                    <input type="text" placeholder="NICKNAME" value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
+                <div className='field'>
+                    <label className="hidden">NICKNAME</label>
+                    <input type="text" placeholder="닉네임" value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
                 </div>
-                <div className='field flex-row' id="login-field">
-                    <label>ZIPNUM</label>
-                    <input type="text" value={zipnum} readOnly placeholder="우편번호" />
-                    <button onClick={() => setIsAddressModalOpen(true)}>주소 검색</button>
+                <div className='field flex-row'>
+                    <div className='zipnum'>
+                        <label className="hidden">ZIPNUM</label>
+                        <input type="text" value={zipnum} readOnly placeholder="우편번호" />
+                    </div>
+                    <div className='login-btn' onClick={() => setIsAddressModalOpen(true)}>
+                        <label>주소 검색</label>
+                        <button className='hidden'>주소 검색</button>
+                    </div>
                 </div>
-                <div className='field' id="login-field">
-                    <label>ADDRESS</label>
+                <div className='field'>
+                    <label className="hidden">ADDRESS</label>
                     <input type="text" value={address} readOnly placeholder="주소" />
 
                 </div>
-                <div className='field' id="login-field">
-                    <label>INTRO</label>
-                    <input type="text" placeholder="INTRO" value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
+                <div className='field'>
+                    <label className="hidden">INTRO</label>
+                    <input type="text" placeholder="한마디" value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
                 </div>
-                <div className='field' id="login-field">
-                    <label>PROFILE IMG</label>
+                <div className='field'>
+                    <label className="hidden">PROFILE IMG</label>
                     <input type="file" onChange={(e)=>{fileUpload(e)}}/>
                 </div>
-                <div className='field' id="login-field">
-                    <label>Profile img preview</label>
+                <div className='field'>
+                    <label className="hidden">Profile img preview</label>
                     <div><img src={imgSrc} style={imgStyle} /></div>
-                </div>
-
-                <div className='login-btns'>
-                    <div className="login-btn" onClick={ ()=>{   onSubmit()    }  }><IoCreateOutline />JOIN</div>
                 </div>
                 <AddressModal
                     isOpen={isAddressModalOpen}
                     onClose={() => setIsAddressModalOpen(false)}
                     onComplete={handleComplete}
                 />
+            </div>
+
+            <div className='login-btns'>
+                <div className="login-btn" onClick={ ()=>{   onSubmit()    }  }><IoCreateOutline />JOIN</div>
             </div>
         </div>
 
