@@ -1,296 +1,184 @@
-import React, {useState, useEffect} from 'react';
-
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import '../../style/posts.css';
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { BiSolidMessageSquareDetail, BiSolidMessageSquareDots } from "react-icons/bi";
+import { BiSolidMessageSquareDetail } from "react-icons/bi";
 import LoadingSpinner from "../LoadingSpinner";
-
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
-import { useSelector, useDispatch } from 'react-redux';
-import { setFollower } from '../../store/userSlice';
 import { Cookies } from 'react-cookie';
-
-import jaxios from '../../util/jwtUtil'
-
-const settings = {
-    dot:false,
-    arrows:false,
-    infinite:false,
-    speed:500,
-    slidesToShow:1,
-    slidesToScroll:1
-}
+import jaxios from '../../util/jwtUtil';
 
 const Post = (props) => {
-
-    const [imgList, setImgList]=useState([])
-    const [likeList, setLikeList] = useState([])
-    const [replyView, setReplyView] = useState({})
-    const [viewVal, setViewVal] = useState(false)
-    const [replyContent, setReplyContent] = useState('')
-    const [replyList, setReplyList] = useState([])
+    const [imgList, setImgList] = useState([]);
+    const [likeList, setLikeList] = useState([]);
+    const [replyView, setReplyView] = useState(false);
+    const [replyContent, setReplyContent] = useState('');
+    const [replyList, setReplyList] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isLoadingLikes, setIsLoadingLikes] = useState(true);
+    const [isLoadingReplies, setIsLoadingReplies] = useState(true);
 
-    const dispatch = useDispatch()
-    const cookies = new Cookies();    
+    const dispatch = useDispatch();
+    const cookies = new Cookies();
+    let loginUser = useSelector(state => state.user);
 
-    // redux에 저장된 로그인 유저 로딩
-    let loginUser = useSelector( state=>state.user ); 
-
+    // 데이터 로드
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
+            setIsLoadingLikes(true);
+            setIsLoadingReplies(true);
             try {
-                setLoading(true); // 데이터 로드 시작 전 로딩 상태 설정
-
                 const imgResult = await jaxios.get(`/api/post/getImages/${props.post.postId}`);
                 setImgList(imgResult.data.imgList);
 
                 const likeResult = await jaxios.get(`/api/post/getLikeList/${props.post.postId}`);
-                setLikeList([...likeResult.data.likeList]);
+                setLikeList(likeResult.data.likeList);
 
                 const replyResult = await jaxios.get(`/api/post/getReplyList/${props.post.postId}`);
-                let temp = [...replyResult.data.replyList2];
-                for (let i = 0; i < temp.length; i++) {
-                    temp[i].nickname = await getNickname(temp[i].writer);
-                }
-                setReplyList([...temp]);
+                let temp = await Promise.all(replyResult.data.replyList2.map(async (reply) => {
+                    reply.nickname = await getNickname(reply.writer);
+                    return reply;
+                }));
+                setReplyList(temp);
             } catch (err) {
                 console.error(err);
+                alert('데이터를 불러오는 중 오류가 발생했습니다.');
             } finally {
-                setLoading(false); // 데이터 로드 완료 후 로딩 상태 해제
+                setIsLoadingLikes(false);
+                setIsLoadingReplies(false);
+                setLoading(false);
             }
         };
 
         fetchData();
-    }, [props.post.postId]);
+    }, [props.post.postId, loginUser.memberId]);
 
-    async function getNickname(memberId){
-        // const result = await axios.get(`/api/member/getNickname/${memberId}`)
-        // const nickname = result.data.nickname;
-        // return result.data.nickname;
-    }
+    const getNickname = async (memberId) => {
+        const result = await jaxios.get(`/api/member/getNickname/${memberId}`);
+        return result.data.nickname;
+    };
 
-    useEffect(
-        ()=>{
-
-            // setPostWriter( getNickname( props.post.member.nickname ) )
-
-            jaxios.get(`/api/post/getImages/${props.post.postId}` )
-            .then((result)=>{ 
-                // console.log("result.data.imgList"+JSON.stringify(result.data.imgList))
-                setImgList( result.data.imgList );
-            }).catch((err)=>{console.error(err)})
-
-            jaxios.get(`/api/post/getLikeList/${props.post.postId}`)
-            .then((result)=>{
-                // console.log("result.data.likeList"+JSON.stringify(result.data.likeList))
-                 setLikeList( [...result.data.likeList ] );
-            }).catch((err)=>{console.error(err)})
-
-            jaxios.get(`/api/post/getReplyList/${props.post.postId}`)
-            .then((result)=>{
-                // console.log(result.data.replyList2)
-                let temp = [...result.data.replyList2];
-                for(let i=0; i<temp.length; i++){
-                    temp[i].nickname = getNickname( temp[i].writer );
-                }                    
-                setReplyList([...temp]);
-            }).catch((err)=>{console.error(err)})
-
-        },[props.post]
-    )
-
-    async function onFollow(memberId){
-        if( window.confirm(`${props.post.member.nickname} 님을 팔로우 하시겠습니까?`) ){
-            let result = await jaxios.post('/api/member/follow',null, {params:{ follower:loginUser.memberId,  followed:memberId }});
-
-            result = await jaxios.get('/api/member/getLoginUser',{params:{memberId:loginUser.memberId}});
-            // props.setFollower( [...result.data.follower] ) // 현재 운영중인  props.followings 변수 갱신
-            // dispatch( setFollower(result.data.follower) )   // 리듀스 갱신
-            // loginUser['followings'] = result.data.followings   // 현재 loginUser변수 갱신. 현재 화면에서는 갱신의 필요가 없음
-            cookies.set('user', JSON.stringify( loginUser ) , {path:'/', })  // 쿠키 갱신
-        }else{
-            return
-        }
-    }
-
-    async function onLike(){
-        // 현재 로그인 유저의 닉네임과 현재 포스트의 id 로  like 작업
-        // 현재 로그인 유저의 닉네임과 현재 포스트의 id 를 서버에 보내서 내역이 있으면 삭제 , 없으면 추가
-        // likeList 재조회 & 갱신
-        let result = await jaxios.post('/api/post/addLike',null ,{params:{ postId:props.post.postId,  memberId:loginUser.memberId }})
-
-        result = await jaxios.get(`/api/post/getLikeList/${props.post.postId}` )
-        setLikeList( [...result.data.likeList] );
-    }
-
-    useEffect(
-        ()=>{
-            if( viewVal ){
-                setReplyView({display:'block'})
-            }else{
-                setReplyView({display:'none'})
+    const onFollow = async (memberId) => {
+        if (window.confirm(`${props.post.member.nickname} 님을 팔로우 하시겠습니까?`)) {
+            try {
+                await jaxios.post('/api/member/follow', null, { params: { follower: loginUser.memberId, followed: memberId } });
+                const result = await jaxios.get('/api/member/getLoginUser', { params: { memberId: loginUser.memberId } });
+                cookies.set('user', JSON.stringify(result.data), { path: '/' });
+            } catch (err) {
+                console.error(err);
             }
-        }, [viewVal]
-    )
-
-    function ViewOrNot(){
-        setViewVal( !viewVal ) // 현재 viewVal 변수값의 반대값으로 저장
-    }
-
-    async function addReply(){
-        try{
-            // 현재포스트의 아이디와 로그인유저의 닉네임과 replyContent 변수값으로 reply 테이블에 레코드를 추가합니다
-            let result = await jaxios.post('/api/post/addReply', null ,{params :{postId:props.post.postId, memberId:loginUser.memberId , content:replyContent}})
-            setReplyContent('')
-            // 댓글 추가후 댓글 입력란을 비웁니다
-
-            jaxios.get(`/api/post/getReplyList/${props.post.postId}`)
-            .then((result)=>{
-                // console.log(result.data.replyList2)
-                let temp = [...result.data.replyList2];
-                for(let i=0; i<temp.length; i++){
-                    temp[i].nickname = getNickname( temp[i].writer );
-                }                    
-                setReplyList([...temp]);
-            }).catch((err)=>{console.error(err)})
-        }catch(err){ console.error(err) }
-    }
-
-
-    async function deleteReply(replyId){
-        if( window.confirm('해당 댓글을 삭제하시겠습니까?') ){
-            let result = await jaxios.delete(`/api/post/deleteReply/${replyId}`)
-
-            jaxios.get(`/api/post/getReplyList/${props.post.postId}`)
-            .then((result)=>{
-                // console.log(result.data.replyList2)
-                let temp = [...result.data.replyList2];
-                for(let i=0; i<temp.length; i++){
-                    temp[i].nickname = getNickname( temp[i].writer );
-                }                    
-                setReplyList([...temp]);
-            }).catch((err)=>{console.error(err)})
         }
-    }
+    };
+
+    const onLike = async () => {
+        try {
+            await jaxios.post('/api/post/addLike', null, {
+                params: { postId: props.post.postId, memberId: loginUser.memberId }
+            });
+            const isLiked = likeList.some(like => like.member.memberId === loginUser.memberId);
+            setLikeList(isLiked
+                ? likeList.filter(like => like.member.memberId !== loginUser.memberId)
+                : [...likeList, { member: { memberId: loginUser.memberId, nickname: loginUser.nickname } }]
+            );
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const toggleReplyView = () => {
+        setReplyView(prev => !prev);
+    };
+
+    const addReply = async () => {
+        try {
+            const result = await jaxios.post('/api/post/addReply', null, {
+                params: { postId: props.post.postId, memberId: loginUser.memberId, content: replyContent },
+            });
+            const newReply = {
+                replyId: result.data.replyId,
+                member: { memberId: loginUser.memberId, nickname: loginUser.nickname },
+                content: replyContent,
+            };
+            setReplyContent('');
+            setReplyList(prev => [newReply, ...prev]); // 새로운 댓글을 리스트에 추가
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const deleteReply = async (replyId) => {
+        if (window.confirm('해당 댓글을 삭제하시겠습니까?')) {
+            try {
+                await jaxios.delete(`/api/post/deleteReply/${replyId}`);
+                setReplyList(prev => prev.filter(reply => reply.replyId !== replyId));
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    };
 
     const formatDate = (dateString) => {
-        const date = new Date(dateString); // ISO 8601 형식의 문자열을 Date 객체로 변환
-    
-        const day = String(date.getDate()).padStart(2, '0'); // 일 (2자리로 맞추기)
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // 월 (0부터 시작하므로 +1)
-        const year = String(date.getFullYear()).slice(-2); // 년 (끝 두 자리만 사용)
-        
-        const hours = String(date.getHours()).padStart(2, '0'); // 시간
-        const minutes = String(date.getMinutes()).padStart(2, '0'); // 분
-        
-        return `${year}/${month}/${day} ${hours}:${minutes}`;
-    }
+        const date = new Date(dateString);
+        return date.toLocaleString('ko-KR', { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+    };
 
     return (
         <div className='post'>
-            <div className='writer' style={{display:"flex"}}>
+            <div className='writer'>
                 <div>{props.post.postId}&nbsp;&nbsp;</div>
                 <div>{props.post.member.nickname}&nbsp;&nbsp;</div>
-                <div style={{marginRight:10}}>{formatDate(props.post.writedate)}</div>
-                {
-                    ( 
-                        ( props.post.member.memberId != loginUser.memberId) &&
-                        ( !props.follower?.some( (follower)=>(props.post.member.memberId==follower.followed)) )
-                    )?
-                    (<div id='followBtn'><button onClick={()=>{ onFollow(props.post.member.memberId) }} >FOLLOW</button></div>):
-                    (null)
-                }
-                
+                <div style={{ marginRight: 10 }}>{formatDate(props.post.writedate)}</div>
+                {props.post.member.memberId !== loginUser.memberId &&
+                    !props.follower?.some(follower => props.post.member.memberId === follower.followed) && (
+                        <div id='followBtn'>
+                            <button onClick={() => onFollow(props.post.member.memberId)}>FOLLOW</button>
+                        </div>
+                    )}
             </div>
+
             <div id='imgbox'>
-            { 
-                <Slider {...settings}>
-                    {
-                        (imgList)?(
-                            imgList.map((img, idx)=>{
-                                return (
-                                    <img key={idx} src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} width="750" height="700"/>
-                                )
-                            })
-                        ):(null)
-                    }    
-                </Slider>
-            }    
+                {imgList.map(img => (
+                    <img key={img.savefileName} src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} width="750" height="700" alt="Post" />
+                ))}
             </div>
 
             <div className='like'>
-                {
-                    (likeList)?(
-                        ( likeList.some( (like)=>( loginUser.memberId == like.member.memberId ) ) )?(
-                            <AiFillHeart id='icons' onClick={ ()=>{ onLike() } } />
-                        ):(
-                            <AiOutlineHeart id='icons' onClick={ ()=>{ onLike() } } />
-                        )
-                    ):(
-                        <LoadingSpinner />
-                    )
-                }
+                {isLoadingLikes ? (
+                    <LoadingSpinner />
+                ) : likeList.some(like => loginUser.memberId === like.member.memberId) ? (
+                    <AiFillHeart id='icons' onClick={onLike} />
+                ) : (
+                    <AiOutlineHeart id='icons' onClick={onLike} />
+                )}
                 &nbsp;&nbsp;
-                <BiSolidMessageSquareDetail id='icons' onClick={()=>{ ViewOrNot() }} />
+                <BiSolidMessageSquareDetail id='icons' onClick={toggleReplyView} />
                 &nbsp;&nbsp;
-                {
-                    (likeList)?(
-                        (likeList.length>=1)?(
-                            <span>{likeList.length}명이 좋아합니다</span>
-                        ):(
-                            <span>아직 좋아요가 없어요</span>
-                        )
-                    ):(
-                        <LoadingSpinner />
-                    )
-                }
+                <span>{likeList.length > 0 ? `${likeList.length}명이 좋아합니다` : '아직 좋아요가 없어요'}</span>
             </div>
 
-            {/* post 본문 */}
             <div className='content'>
                 <pre>{props.post.content}</pre>
             </div>
 
-            {/* post 댓글 */}
-            <div className='reply'  style={replyView}>
-                <div style={{ display:'flex', flexDirection:'column' }} >
-                    {
-                        (replyList)?(
-                            replyList.map((reply, idx)=>{
-                                return (
-                                    <div key={idx} style={{display:'flex', margin:'5px 3px'}}>
-                                        <div style={{flex:"1", fontWeight:"bold"}}>{ reply.member.nickname}&nbsp;</div>
-                                        <div style={{flex:"5"}}>{reply.content}</div>
-                                        {
-                                            (reply.member.memberId===loginUser.memberId)?(
-                                                <button style={{flex:"1"}} onClick={
-                                                    ()=>{ deleteReply(reply.replyId) }
-                                                }>삭제</button>
-                                            ):(<div style={{flex:"1"}}></div>)
-                                        }
-                                        
-                                    </div>
-                                )
-                            })
-                        ):( <LoadingSpinner /> )
-                    }
-                    
-                </div>
-                <div style={{ display:'flex' }} >
-                    <input type="text" style={{flex:"5"}} value={replyContent} onChange={
-                        (e)=>{setReplyContent(e.currentTarget.value)}
-                    }/>
-                    <button id='replyBtn' style={{flex:"1"}} onClick={
-                        ()=>{ addReply() }
-                    }>작성</button>
+            <div className='reply' style={{ display: replyView ? 'block' : 'none' }}>
+                {isLoadingReplies ? (
+                    <LoadingSpinner />
+                ) : replyList.map(reply => (
+                    <div key={reply.replyId} style={{ display: 'flex', margin: '5px 3px' }}>
+                        <div style={{ flex: '1', fontWeight: 'bold' }}>{reply.member.nickname}&nbsp;</div>
+                        <div style={{ flex: '5' }}>{reply.content}</div>
+                        {reply.member.memberId === loginUser.memberId && (
+                            <button style={{ flex: '1' }} onClick={() => deleteReply(reply.replyId)}>삭제</button>
+                        )}
+                    </div>
+                ))}
+                <div style={{ display: 'flex' }}>
+                    <input type="text" style={{ flex: '5' }} value={replyContent} onChange={(e) => setReplyContent(e.currentTarget.value)} />
+                    <button id='replyBtn' style={{ flex: '1' }} onClick={addReply}>작성</button>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Post
+export default Post;
