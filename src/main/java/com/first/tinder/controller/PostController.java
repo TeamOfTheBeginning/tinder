@@ -93,7 +93,7 @@ public class PostController {
         paging.calPaging();
         result.put("postList2", ps.getPostList2( word, paging ) );
         System.out.println("postList2"+ps.getPostList2( word, paging ));
-        result.put("paging", paging);
+//        result.put("paging", paging);
         return result;
     }
 

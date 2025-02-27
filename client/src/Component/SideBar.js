@@ -37,7 +37,7 @@ import '../style/sidebar.css';
 // import jaxios from '../util/jwtUtil';
 import { setCookie1 , getCookie1 , removeCookie1} from "../util/cookieUtil2";
 
-const SideBar = () => {
+const SideBar = (props) => {
   const loginUser = useSelector(state => state.user);
   const [profileImg, setProfileImg] = useState('');
   const [selectedMenu, setSelectedMenu] = useState(null);
@@ -282,7 +282,7 @@ const SideBar = () => {
             : subMenu === 'editOpponent' ? <EditOpponent />
             : <MyPage openSubMenu={handleSubMenuClick} />
           )}
-          {selectedMenu === 'search' && <Search />}
+          {selectedMenu === 'search' && <Search {...props}/>}
         </div>
       </div>
     </div>
