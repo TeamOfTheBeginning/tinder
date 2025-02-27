@@ -30,7 +30,7 @@
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
-    margin: 20px 0;
+    margin-top: 25px;
 }
 
 .profileImg {
@@ -204,25 +204,24 @@
     .SideViewer {
         min-width: auto;
         max-width: 320px;
-        left: 55px; /* MenuBar 오른쪽에 위치 */
+        left: 55px;
     }
-
     .SideViewer .sideViewerHeader .closeBtn {
-        left: calc(320px - 40px); /* 닫기 버튼 위치 조정 */
+        left: calc(320px - 40px);
     }
 }
 
 @media (max-width: 480px) {
-
-    .sidebar-btn {
-        margin-top: 5px;
+    .MenubarBtns {
+        margin-top: 2.3em;
     }
-
+    .sidebar-btn {
+        margin-top: 15px;
+    }
     .SideViewer {
         min-width: 300px;
         min-height: auto;
     }
-
     .SideViewer .sideViewerHeader .closeBtn {
         left: calc(70% - 40px);
     }

@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useMemo, useRef} from 'react'
-import axios from 'axios';
+import React, {useState, useEffect, useMemo, useRef} from 'react';
 import { useSelector } from 'react-redux';
 
 import '../../style/match/matchingmember.css';
+import LoadingSpinner from "../LoadingSpinner";
 
 import jaxios from '../../util/jwtUtil';
 
@@ -168,7 +168,7 @@ const calculateSimilarity = () => {
 
 
 
-  if (!props.oppositeGender) return <p>Loading...</p>;
+  if (!props.oppositeGender) return <LoadingSpinner />;
     
   return (
     <div className='matchingMemberContainer'>          
