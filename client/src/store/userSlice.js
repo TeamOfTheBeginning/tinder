@@ -37,7 +37,7 @@ const initialState={
 
 const getLoginUser=()=>{
     const memberinfoStr = getCookie1('user'); // 문자열로 가져옴
-console.log("memberinfoStr: " + memberinfoStr);
+// console.log("memberinfoStr: " + memberinfoStr);
 
 let memberinfo;
 if (memberinfoStr) {
@@ -72,8 +72,8 @@ if (memberinfoStr) {
         memberinfo.account = decodeURIComponent( memberinfo.account )
         memberinfo.temp = decodeURIComponent( memberinfo.temp )
 
-        console.log(typeof memberinfo.memberInfo); 
-        console.log(memberinfo.memberInfo);
+        // console.log(typeof memberinfo.memberInfo); 
+        // console.log(memberinfo.memberInfo);
 
 
         memberinfo.memberInfo = memberinfo.memberInfo;

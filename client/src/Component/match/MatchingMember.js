@@ -16,7 +16,7 @@ const MatchingMember = (props) => {
   const date = loginUser.memberInfo.date
   const workout = loginUser.memberInfo.workout
   const hobbies = [...loginUser.memberInfo.hobbies] ;
-  
+
   const [person, setPerson] = useState([smoke, alcohol, speed, date, workout, hobbies]);
 
   const [person2, setPerson2] = useState([0,0,0,0,0,[]]);
@@ -25,8 +25,8 @@ const MatchingMember = (props) => {
     if (props.oppositeGender?.memberInfo) {
       const hobbies2 = [...props.oppositeGender.memberInfo.hobbies] ; 
 
-      console.log("hobbies2")
-      console.log ((hobbies2)?(hobbies2):(null))
+      // console.log("hobbies2")
+      // console.log ((hobbies2)?(hobbies2):(null))
 
 
       setPerson2([
@@ -151,7 +151,7 @@ const calculateSimilarity = () => {
   // 취미 유사성 계산
   const hobbySimilarity = calculateHobbySimilarity(person[5], person2[5]); // 6번째 인덱스에서 취미 비교
 
-  console.log("weightedDiffs:", weightedDiffs, "averageDiff:", averageDiff, "hobbySimilarity:", hobbySimilarity);
+  // console.log("weightedDiffs:", weightedDiffs, "averageDiff:", averageDiff, "hobbySimilarity:", hobbySimilarity);
 
   // 유사도 점수 조정
   const totalSimilarityScore = ((1 - averageDiff) * 100 * 0.7 + hobbySimilarity * 0.3); // 가중치 조정
