@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { FiX } from "react-icons/fi";
@@ -66,40 +66,32 @@ const Main = () => {
     }
     }
 
+    const videoRefs = useRef([]); // 비디오 요소를 저장할 배열
 
-    useEffect(() => {
-        const handleClick = (event) => {
-            const windowHeight = window.innerHeight; // 현재 화면 높이
-            const clickY = event.clientY; // 클릭한 위치 (뷰포트 기준)
 
-            if (clickY >= windowHeight - 100) { 
-                // 👇 하단 클릭 시 아래로 스크롤
-                window.scrollBy({
-                    top: windowHeight, 
-                    behavior: "smooth"
-                });
-            } else if (clickY <= 100) { 
-                // ☝️ 상단 클릭 시 위로 스크롤
-                window.scrollBy({
-                    top: -windowHeight, 
-                    behavior: "smooth"
-                });
-            }
-        };
+    // 📌 비디오 재생/정지 함수
+  const handleVideoPlayPause = () => {
+    videoRefs.current.forEach((video) => {
+      if (!video) return;
+      const rect = video.getBoundingClientRect();
+      const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
 
-        document.addEventListener("click", handleClick);
+      if (isVisible) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    });
+  };
 
-        return () => {
-            document.removeEventListener("click", handleClick);
-        };
-    }, [pageable]);
+  
 
     
     async function onPageMove( page ){
     
         const result = await jaxios.get(`/api/post/getPostList`, {params:{page:page,word:hashtag}})
         .then((result)=>{
-        
+        console.log(result.data.postList2.pageable)
         setPageable( result.data.postList2.pageable );
         let posts = [];
         posts = [...postList];
@@ -115,7 +107,7 @@ const Main = () => {
             .then((result) => {
                 // console.log("result.data.postList2")
                 // console.log(JSON.stringify(result.data.postList2.content))
-                // console.log(JSON.stringify(result.data.postList2.pageable))
+                console.log(JSON.stringify(result.data.postList2.pageable))
                 setPostList(result.data.postList2.content);
                 setPageable(result.data.postList2.pageable)
             }).catch((err) => { console.error(err) });
@@ -138,6 +130,38 @@ const Main = () => {
                 setNotificationList(result.data.notificationList);
             }).catch((err) => { console.error(err) });
     }, []);
+
+    // 📌 클릭 이벤트 → 페이지 이동 + 비디오 제어 추가
+  useEffect(() => {
+    const handleClick = (event) => {
+      const windowHeight = window.innerHeight;
+      const clickY = event.clientY;
+
+      if (clickY >= windowHeight - 100) {
+        if (pageable?.pageNumber !== undefined) { // 🔥 undefined 방지
+            onPageMove(pageable.pageNumber + 1);
+        }
+        window.scrollBy({ top: windowHeight, behavior: "smooth" });
+      } else if (clickY <= 100) {
+        // setPageable((prev) => ({ pageNumber: Math.max(prev.pageNumber - 1, 0) }));
+        window.scrollBy({ top: -windowHeight, behavior: "smooth" });
+      }
+      
+      // 📌 페이지 변경 후 비디오 상태 업데이트
+      setTimeout(handleVideoPlayPause, 500); // 스크롤 후 실행
+    };
+
+    document.addEventListener("click", handleClick);
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
+
+  // 📌 스크롤 이벤트 추가 → 스크롤 시에도 비디오 관리
+  useEffect(() => {
+    window.addEventListener("scroll", handleVideoPlayPause);
+    return () => window.removeEventListener("scroll", handleVideoPlayPause);
+  }, [pageable]);
 
     
     const [showToast1, setShowToast1] = useState(false);
@@ -237,7 +261,7 @@ const Main = () => {
                         postList.map((post, idx) => {
                             return (
                                 <React.Fragment key={idx}>
-                                    <Post post={post} followed={followed} setFollowed={setFollowed} />
+                                    <Post post={post} followed={followed} setFollowed={setFollowed} videoRef={(el) => (videoRefs.current[idx] = el)}/>
 
                                     {/* 🔥 5번째마다 SpecialComponent 삽입 (단, 10번째에는 광고만 표시) */}
                                     {(idx + 1) % 5 === 0 && (idx + 1) % 10 !== 0 && <Statistics />}
