@@ -29,13 +29,21 @@ const ChatRoomFromChatGroup = (props) => {
     
 
     useEffect(() => {
-    // console.log(loginUser)
-    jaxios.get(`/api/chat/getChatList1`, { params: { chatGroupId:props.chatGroupId } })
-        .then((result) => {
-            setChatList(result.data.chatList);
-        })
-        .catch((err) => { console.error(err); });
-    }, []);
+        const fetchChatList = () => {
+            jaxios.get(`/api/chat/getChatList1`, { params: { chatGroupId:props.chatGroupId } })
+                .then((result) => {
+                    if (JSON.stringify(chatList) !== JSON.stringify(result.data.chatList)) {
+                        setChatList(result.data.chatList);
+                    }
+                })
+                .catch((err) => { console.error(err); });
+        };
+    
+        fetchChatList();
+        const interval = setInterval(fetchChatList, 5000);
+    
+        return () => clearInterval(interval);
+    }, [chatGroupId, chatList]);
 
 
     const formatDate = (dateString) => {

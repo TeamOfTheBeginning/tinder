@@ -24,16 +24,35 @@ const ChatRoomFromMatch = (props) => {
         setMessage(e.target.value); // 사용자 입력을 상태에 저장
     };
 
-    useEffect(() => {    
-        jaxios.get(`/api/chat/getChatList2`, { params: { myMemberId:loginUser.memberId,matchedMemberId:memberId } })
-        .then((result) => {
-            console.log("chatList"+JSON.stringify(result.data.chatList))
-            setChatList(result.data.chatList);
-            setChatGroupId(result.data.chatGroupId);
-            console.log("chatList"+JSON.stringify(chatList))
-        })
-        .catch((err) => { console.error(err); });
-    }, []);
+    // useEffect(() => {    
+    //     jaxios.get(`/api/chat/getChatList2`, { params: { myMemberId:loginUser.memberId,matchedMemberId:memberId } })
+    //     .then((result) => {
+    //         // console.log("chatList"+JSON.stringify(result.data.chatList))
+    //         setChatList(result.data.chatList);
+    //         setChatGroupId(result.data.chatGroupId);
+    //         // console.log("chatList"+JSON.stringify(chatList))
+    //     })
+    //     .catch((err) => { console.error(err); });
+    // }, []);
+
+
+    useEffect(() => {
+        const fetchChatList = () => {
+            jaxios.get(`/api/chat/getChatList2`, { params: { myMemberId:loginUser.memberId,matchedMemberId:memberId } })
+                .then((result) => {
+                    if (JSON.stringify(chatList) !== JSON.stringify(result.data.chatList)) {
+                        setChatList(result.data.chatList);
+                        setChatGroupId(result.data.chatGroupId);
+                    }
+                })
+                .catch((err) => { console.error(err); });
+        };
+    
+        fetchChatList();
+        const interval = setInterval(fetchChatList, 60000);
+    
+        return () => clearInterval(interval);
+    }, [chatGroupId, chatList]);
 
     const formatDate = (dateString) => {
 

@@ -220,6 +220,10 @@ const buyItems = async () => {
                             <div>{loginUser.nickname}</div>
                         </div>
                         <div className='field'>
+                            <label>지위</label>
+                            <div>{loginUser.memberRoleList}</div>
+                        </div>
+                        <div className='field'>
                             <label onClick={toggleFollowerModal} style={{cursor:'pointer'}}>Follower</label>
                             <div>
                                 {
@@ -246,11 +250,7 @@ const buyItems = async () => {
                         <div className='field'>
                             <label>온도</label>
                             <div>{loginUser.temp}</div>
-                        </div>
-                        <div className='field'>
-                            <label>맴버롤</label>
-                            <div>{loginUser.memberRoleList}</div>
-                        </div>
+                        </div>                        
                         <div className='field'>
                             <label>MBTI</label>
                             <div>

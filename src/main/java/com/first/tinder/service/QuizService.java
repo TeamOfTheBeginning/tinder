@@ -1,6 +1,7 @@
 package com.first.tinder.service;
 
 import com.first.tinder.dao.*;
+import com.first.tinder.dto.QuizStatisticsDTO;
 import com.first.tinder.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,5 +85,25 @@ public class QuizService {
 
     public boolean isSameAnswer(int opponentAnswer, int answer) {
         return opponentAnswer == answer;
+    }
+
+    public QuizStatisticsDTO getStatistics() {
+        Quiz quiz = new Quiz();
+        Double ratio = 0.0;
+
+        List<Object[]> result = cgqar.getRandomQuizAnswerStatistics();
+        if (!result.isEmpty()) {
+            Object[] row = result.get(0);
+            quiz = (Quiz) row[0];
+            ratio = (Double) row[1];
+
+            System.out.println("Random Quiz: " + quiz.getContent() + ", 1의 비율: " + ratio);
+        }
+
+        QuizStatisticsDTO quizStatisticsDto = new QuizStatisticsDTO(quiz,ratio);
+
+        System.out.println(quizStatisticsDto);
+
+        return quizStatisticsDto;
     }
 }
