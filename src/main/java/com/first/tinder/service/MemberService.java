@@ -73,6 +73,7 @@ public class MemberService {
             updateMember.setEmail(member.getEmail());
             updateMember.setNickname(member.getNickname());
             System.out.println("encoder.encode(member.getPwd())"+encoder.encode(member.getPwd()));
+            updateMember.setBirthDate(member.getBirthDate());
             updateMember.setPwd(encoder.encode(member.getPwd()));
             updateMember.setPhone(member.getPhone());
             updateMember.setAddress(member.getAddress());

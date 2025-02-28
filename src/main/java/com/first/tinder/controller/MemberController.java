@@ -2,8 +2,11 @@ package com.first.tinder.controller;
 
 import com.first.tinder.dao.MemberRepository;
 import com.first.tinder.dto.KakaoProfile;
+import com.first.tinder.dto.MemberDTO;
 import com.first.tinder.dto.OAuthToken;
 import com.first.tinder.entity.*;
+import com.first.tinder.security.handler.APILoginSuccessHandler;
+import com.first.tinder.security.service.CustomUserDetailsService;
 import com.first.tinder.security.util.CustomJWTException;
 import com.first.tinder.security.util.JWTUtil;
 import com.first.tinder.service.MemberInfoService;
@@ -11,11 +14,14 @@ import com.first.tinder.service.MemberService;
 import com.first.tinder.service.OpponentMemberInfoService;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +29,7 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -40,6 +47,9 @@ public class MemberController {
 
     @Autowired
     OpponentMemberInfoService omis;
+
+    @Autowired
+    CustomUserDetailsService suds;
 
 
 //    @PostMapping("/loginlocal")
@@ -190,7 +200,62 @@ public class MemberController {
         }
 //        HttpSession session = request.getSession();
 //        session.setAttribute("loginUser", member.getMemberId() );
+
+
+
+        String data1 = member.getEmail();
+//        String data2 = "a";
+
+        BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
+//        System.out.println(pe.decode("a"));
+
+
+//MemberDto
+        UserDetails userDetails =suds.loadUserByUsername(data1);
+
+        MemberDTO memberDTO = (MemberDTO) userDetails;
+
+        Map<String, Object> claims = memberDTO.getClaims();
+
+        // 사용장정보가 들어있는 Map 자료(claims)를 이용하여 토큰을 생성
+        String accessToken = JWTUtil.generateToken(claims, 1);
+        String refreshToken = JWTUtil.generateToken(claims, 60*24);
+
+        claims.put("accessToken", accessToken);
+        claims.put("refreshToken", refreshToken);
+//        System.out.println("userDetails"+userDetails);
+//        System.out.println("userDetails.getAuthorities()"+userDetails.getAuthorities());
+//        System.out.println("userDetails.getAuthorities().getClass()"+userDetails.getAuthorities().getClass());
+
+//        String data1 = "someData1";
+//        String data2 = "someData2";
+
+//        Gson gson = new Gson();
+//        String jsonStr = gson.toJson(claims);  // claims에 있는 데이터를 json형태로 변환
+//
+//        response.setContentType("application/json");  // response 에 전송될 데이터형을 설정
+//        response.setCharacterEncoding("UTF-8");   // 한글 인코딩 설정
+//        PrintWriter printWriter = response.getWriter();  // 출력도구를 얻어서
+//        printWriter.println(jsonStr);  // 얻어낸 도구로 출력  -> 전송
+//        printWriter.close();
+//
+//
+//        response.sendRedirect("http://localhost:3000/savekakaoinfo" );
+
+        // 카카오 로그인 후, 클라이언트에 데이터를 쿠키로 설정
+        String jsonStr = gson.toJson(claims);
+        Cookie cookie = new Cookie("claims", URLEncoder.encode(jsonStr, "UTF-8"));
+//        cookie.setHttpOnly(true);  // 보안을 위해 HttpOnly 속성 추가
+        cookie.setMaxAge(60 * 60); // 쿠키 유효 시간 1시간
+        cookie.setPath("/");  // 애플리케이션 전체에서 접근 가능하도록 설정
+        response.addCookie(cookie);  // 쿠키를 응답에 추가
+
+// 리다이렉션
         response.sendRedirect("http://localhost:3000/savekakaoinfo");
+
+
+
+//        response.sendRedirect("http://localhost:3000/savekakaoinfo?data=" + data);
     }
 
     //거리를 기준 맴버를 조회하는 매서드입니다.
