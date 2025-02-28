@@ -5,7 +5,7 @@ import "../../style/chatbot/chatbot.css";
 
 import jaxios from '../../util/jwtUtil';
 
-export const API_BASE_URL = "http://192.168.25.38:8070";
+export const API_BASE_URL = "http://192.168.0.44:8070";
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
@@ -40,7 +40,7 @@ const ChatBot = () => {
             {
               role: "assistant",
               content: "안녕하세요! 무엇을 도와드릴까요?",
-              buttons: ["조언받기", "계정문의", "기타문의", "실시간 고객센터 연결"]
+              buttons: ["조언받기", "계정문의", "기타문의", "친구찾기", "실시간 고객센터 연결"]
             }
           ]);
         }
@@ -50,7 +50,7 @@ const ChatBot = () => {
           {
             role: "assistant",
             content: "안녕하세요! 무엇을 도와드릴까요?",
-            buttons: ["조언받기", "계정문의", "기타문의", "실시간 고객센터 연결"]
+            buttons: ["조언받기", "계정문의", "기타문의", "친구찾기", "실시간 고객센터 연결"]
           }
         ]);
       }
