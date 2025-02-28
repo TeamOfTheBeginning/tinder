@@ -1,8 +1,10 @@
 package com.first.tinder.service.chatbot;
 
+import com.first.tinder.dao.MemberRepository;
 import com.first.tinder.dao.chatbot.ChatBotHistoryRepository;
 import com.first.tinder.dto.chatbot.ChatBotRequest;
 import com.first.tinder.dto.chatbot.ChatBotResponse;
+import com.first.tinder.entity.Member;
 import com.first.tinder.entity.chatbot.ChatBotHistory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,8 @@ import org.springframework.http.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class ChatBotService {
@@ -27,16 +31,61 @@ public class ChatBotService {
     private final ChatBotHistoryRepository chatbotHistoryRepository;
     private final NewsService newsService;
     private final MusicService musicService;
+    private final MemberRepository memberRepository;
 
-    public ChatBotService(RestTemplate restTemplate, WorldInfoService worldInfoService, ChatBotHistoryRepository chatbotHistoryRepository, NewsService newsService, MusicService musicService) {
+    public ChatBotService(RestTemplate restTemplate, WorldInfoService worldInfoService, ChatBotHistoryRepository chatbotHistoryRepository, NewsService newsService, MusicService musicService, MemberRepository memberRepository) {
         this.restTemplate = restTemplate;
         this.worldInfoService = worldInfoService;
         this.chatbotHistoryRepository = chatbotHistoryRepository;
         this.newsService = newsService;
         this.musicService = musicService;
+        this.memberRepository = memberRepository;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ChatBotService.class);
+
+    private String recommendMemberByAgeAndGender(int gender, int age) {
+        List<Member> recommendedMembers = memberRepository.findEligibleMatches(
+                gender, age - 3, age + 3
+        );
+
+        if (recommendedMembers.isEmpty()) {
+            return "조건에 맞는 멤버가 없습니다.";
+        }
+
+        Collections.shuffle(recommendedMembers); // 셔플
+
+        int limit = Math.min(3, recommendedMembers.size());
+        List<Member> selectedMembers = recommendedMembers.subList(0, limit);
+
+        StringBuilder recommendations = new StringBuilder("추천된 멤버 목록:\n");
+        for (Member member : selectedMembers) {
+            recommendations.append(String.format("닉네임: %s, 나이: %d, 지역: %s\n",
+                    member.getNickname(), member.getAge(), member.getAddress()));
+        }
+
+        return recommendations.toString();
+    }
+
+    private int getAgeFromMessage(String message) {
+        Pattern pattern = Pattern.compile("\\d+"); // 숫자 찾기
+        Matcher matcher = pattern.matcher(message);
+
+        if (matcher.find()) {
+            return Integer.parseInt(matcher.group()); // 첫 번째 숫자 반환
+        }
+
+        return -1; // 나이가 입력되지 않은 경우
+    }
+
+    private int getGenderFromMessage(String message) {
+        if (message.contains("남성") || message.contains("남자")) {
+            return 0; // 남성
+        } else if (message.contains("여성") || message.contains("여자")) {
+            return 1; // 여성
+        }
+        return -1; // 성별이 명확하지 않은 경우
+    }
 
     public ChatBotResponse getChatBotResponse(String userId, ChatBotRequest request) {
         String userMessage = request.getMessage().toLowerCase();
@@ -45,12 +94,26 @@ public class ChatBotService {
 
         Map<String, String> predefinedResponses = Map.of(
                 "조언받기", "연애 조언이 필요하신가요? 프로필 작성 팁이나 첫 데이트 아이디어를 드릴 수 있어요!",
+                "친구찾기", "추천받고 싶은 성별과 나이를 입력해주세요! \n (예: 23살 여성 멤버 추천) \n 나이차이는 ± 3살까지 추천됩니다. ",
                 "계정문의", "계정 관련 문제를 해결하는 방법입니다. 어떤 문제가 있으신가요? (예: 로그인 문제, 비밀번호 찾기)",
                 "기타문의", "어떤 도움이 필요하신가요? 질문을 입력해 주세요!",
                 "실시간 고객센터 연결", "호출");
 
         if (predefinedResponses.containsKey(userMessage)) {
             return saveAndReturnResponse(userId, userMessage, predefinedResponses.get(userMessage));
+        }
+
+        if (userMessage.contains("이성 추천") || userMessage.contains("멤버 추천")) {
+            int age = getAgeFromMessage(userMessage);
+            int gender = getGenderFromMessage(userMessage);
+
+            if (age == -1 || gender == -1) {
+                return saveAndReturnResponse(userId, userMessage, "추천받고 싶은 성별과 나이를 입력해주세요! (예: 23살 여성 멤버 추천)");
+            }
+
+            String recommendedMembers = recommendMemberByAgeAndGender(gender, age);
+
+            return saveAndReturnResponse(userId, userMessage, recommendedMembers);
         }
 
         List<ChatBotHistory> chatHistories = chatbotHistoryRepository.findByUserIdOrderByTimestampAsc(userId);
@@ -63,6 +126,8 @@ public class ChatBotService {
         for (ChatBotHistory chat : chatHistories) {
             messages.add(Map.of("role", chat.getRole(), "content", chat.getContent()));
         }
+
+        messages.add(Map.of("role", "user", "content", userMessage));
 
         if (userMessage.contains("뉴스") || userMessage.contains("최신 뉴스")) {
             String news = newsService.getLatestNews();
