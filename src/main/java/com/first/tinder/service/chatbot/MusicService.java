@@ -60,9 +60,15 @@ public class MusicService {
         List<String> songList = new ArrayList<>();
         try {
             Document doc = Jsoup.connect(BILLBOARD_URL).get();
-            Elements songs = doc.select(".o-chart-results-list__item h3");
-            for (Element song : songs) {
-                songList.add(song.text());
+            Elements items = doc.select("li.o-chart-results-list__item");
+
+            for (Element item : items) {
+                String title = item.select("h3.c-title").text(); // 노래 제목
+                String artist = item.select("span.c-label").text(); // 가수 이름
+
+                if (!title.isEmpty() && !artist.isEmpty()) {
+                    songList.add(title + " - " + artist);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,20 +79,35 @@ public class MusicService {
     private String getMusicFromMelon() {
         try {
             Document doc = Jsoup.connect(MELON_URL)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
-                    .referrer("http://www.google.com")
-                    .timeout(5000)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/109.0")
+                    .header("Accept-Language", "ko-KR,ko;q=0.9")
+                    .header("Accept-Encoding", "gzip, deflate, br")
+                    .header("Connection", "keep-alive")
+                    .referrer("https://www.melon.com/")
+                    .timeout(10000) // 타임아웃 설정 (10초)
                     .get();
 
-            Elements songElements = doc.select("div.ellipsis.rank01 a");
+            Elements rows = doc.select("tr");
+
             List<String> songList = new ArrayList<>();
-            for (Element song : songElements) {
-                songList.add(song.text());
+            int rank = 1;
+
+            for (Element row : rows) {
+                Element titleElement = row.selectFirst("div.ellipsis.rank01 a"); // 제목
+                Element artistElement = row.selectFirst("div.ellipsis.rank02 a"); // 가수
+
+                if (titleElement != null && artistElement != null) {
+                    String title = titleElement.text();
+                    String artist = artistElement.text();
+                    songList.add(rank + ". " + title + " - " + artist);
+                    rank++;
+
+                    if (rank > 5) break;
+                }
             }
 
             if (!songList.isEmpty()) {
-                return "멜론 최신 차트 Top 5:\n- " +
-                        String.join("\n- ", songList.subList(0, Math.min(5, songList.size())));
+                return "멜론 최신 차트 Top 5:\n" + String.join("\n", songList);
             }
         } catch (IOException e) {
             e.printStackTrace();

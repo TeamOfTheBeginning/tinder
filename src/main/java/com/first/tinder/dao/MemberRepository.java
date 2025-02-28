@@ -28,4 +28,8 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     Optional<Member> findBySnsId(String id);
 
     List<Member> findByMemberInfo_EiAndMemberInfo_NsAndMemberInfo_TfAndMemberInfo_JpAndGender(int ei, int ns, int tf, int jp, int gender);
+
+    @Query("SELECT m FROM Member m WHERE m.gender = :gender AND m.age BETWEEN :minAge AND :maxAge")
+    List<Member> findEligibleMatches(@Param("gender") int gender, @Param("minAge") int minAge, @Param("maxAge") int maxAge);
+
 }
