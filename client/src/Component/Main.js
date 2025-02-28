@@ -63,6 +63,35 @@ const Main = () => {
         onPageMove( pageable.pageNumber + 1 );
     }
     }
+
+
+    useEffect(() => {
+        const handleClick = (event) => {
+            const windowHeight = window.innerHeight; // 현재 화면 높이
+            const clickY = event.clientY; // 클릭한 위치 (뷰포트 기준)
+
+            if (clickY >= windowHeight - 100) { 
+                // 👇 하단 클릭 시 아래로 스크롤
+                window.scrollBy({
+                    top: windowHeight, 
+                    behavior: "smooth"
+                });
+            } else if (clickY <= 100) { 
+                // ☝️ 상단 클릭 시 위로 스크롤
+                window.scrollBy({
+                    top: -windowHeight, 
+                    behavior: "smooth"
+                });
+            }
+        };
+
+        document.addEventListener("click", handleClick);
+
+        return () => {
+            document.removeEventListener("click", handleClick);
+        };
+    }, [pageable]);
+
     
     async function onPageMove( page ){
     

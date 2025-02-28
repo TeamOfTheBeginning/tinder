@@ -35,11 +35,11 @@ const Post = (props) => {
                 setLikeList(likeResult.data.likeList);
 
                 const replyResult = await jaxios.get(`/api/post/getReplyList/${props.post.postId}`);
-                let temp = await Promise.all(replyResult.data.replyList2.map(async (reply) => {
-                    reply.nickname = await getNickname(reply.writer);
-                    return reply;
-                }));
-                setReplyList(temp);
+                // let temp = await Promise.all(replyResult.data.replyList2.map(async (reply) => {
+                //     reply.nickname = await getNickname(reply.writer);
+                //     return reply;
+                // }));
+                setReplyList(replyResult.data.replyList2);
             } catch (err) {
                 console.error(err);
                 alert('데이터를 불러오는 중 오류가 발생했습니다.');
@@ -53,10 +53,10 @@ const Post = (props) => {
         fetchData();
     }, [props.post.postId, loginUser.memberId]);
 
-    const getNickname = async (memberId) => {
-        const result = await jaxios.get(`/api/member/getNickname/${memberId}`);
-        return result.data.nickname;
-    };
+    // const getNickname = async (memberId) => {
+    //     const result = await jaxios.get(`/api/member/getNickname/${memberId}`);
+    //     return result.data.nickname;
+    // };
 
     const onFollow = async (memberId) => {
         if (window.confirm(`${props.post.member.nickname} 님을 팔로우 하시겠습니까?`)) {

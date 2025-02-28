@@ -187,7 +187,9 @@ const EditProfile = () => {
 
             if (result.data.msg === 'ok') {
                 alert('회원 정보 수정이 완료되었습니다.')
-                const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:result.data.memberId}});
+                const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:loginUser.memberId}});
+
+                
 
                 let accessToken=loginUser.accessToken
                 let refreshToken=loginUser.refreshToken
@@ -315,6 +317,25 @@ const EditProfile = () => {
                             <label>INTRO</label>
                             <textarea value={intro} onChange={(e) => { setIntro(e.currentTarget.value) }} />
                         </div>
+
+                        {['흡연여부(흡연:1)', '음주여부(주5회)' , '연애속도(빠름5)', '선호데이트방식(외부5)', '운동횟수(주5회)'].map((label, index) => (
+                            <div key={index} className='field' >
+                                <label>{label}: {person[index]}</label>
+                                <input className='input'
+                                    type="range"
+                                    value={person[index]}
+                                    onChange={(e) => setPerson((prev) => {
+                                    const newArray = [...prev];
+                                    newArray[index] = +e.target.value;
+                                    return newArray;
+                                    })}
+                                    min={index === 0 ? 0 : 1}
+                                    max={index === 0 ? 1 : 5}
+                                />
+                            </div>
+                        ))}
+
+
                         <div className='field'>
                             <label>HOBBY</label>
                             <div className='hobby-list'>
