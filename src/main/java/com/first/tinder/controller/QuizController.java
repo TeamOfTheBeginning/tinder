@@ -1,6 +1,7 @@
 package com.first.tinder.controller;
 
 import com.first.tinder.dto.QuizDTO;
+import com.first.tinder.dto.QuizStatisticsDTO;
 import com.first.tinder.entity.ChatGroupQuiz;
 import com.first.tinder.entity.Quiz;
 import com.first.tinder.service.QuizService;
@@ -50,4 +51,14 @@ public class QuizController {
         return ResponseEntity.ok().body(Map.of("result", isSameAnswer ? "CONTINUE" : "END"));
     }
 
+    @GetMapping("/getStatistics")
+    public ResponseEntity<?> getStatistics() {
+        HashMap<String,Object> result = new HashMap<>();
+
+        QuizStatisticsDTO quizStatisticsDTO = qs.getStatistics();
+
+        result.put("quizStatistics", quizStatisticsDTO);
+
+        return ResponseEntity.ok().body(result);
+    }
 }

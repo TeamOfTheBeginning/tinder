@@ -6,6 +6,8 @@ import { FcCustomerSupport } from "react-icons/fc";
 
 import SideBar from './SideBar';
 import Post from './post/Post';
+import Statistics from './post/Statistics';
+import AdComponent from './post/AdComponent';
 import Notification from './notification/Notification';
 import ToastPopupPost from './post/ToastPopupPost';
 import MatchingMember from './match/MatchingMember';
@@ -234,12 +236,22 @@ const Main = () => {
                     postList ? (
                         postList.map((post, idx) => {
                             return (
-                                <Post key={idx} post={post} followed={followed} setFollowed={setFollowed} />
-                            )
+                                <React.Fragment key={idx}>
+                                    <Post post={post} followed={followed} setFollowed={setFollowed} />
+
+                                    {/* 🔥 5번째마다 SpecialComponent 삽입 (단, 10번째에는 광고만 표시) */}
+                                    {(idx + 1) % 5 === 0 && (idx + 1) % 10 !== 0 && <Statistics />}
+
+                                    {/* 🔥 10번째마다 광고 삽입 */}
+                                    {(idx + 1) % 10 === 0 && <AdComponent />}
+                                </React.Fragment>
+                            );
                         })
                     ) : (null)
                 }
             </div>
+
+
 
             <div className="customer-service-icon" onClick={toggleChatbot}>
                 {isChatbotOpen ? <FiX size={24} /> : <FcCustomerSupport size={24} />}

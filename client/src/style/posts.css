@@ -42,6 +42,8 @@
 
 
 #imgbox {
+    display: flex;
+    justify-content: center;
     position: relative; /* writer의 배경 기준이 되도록 설정 */
     width: 100%;
     height: auto; /* 높이를 자동으로 조정 */
@@ -170,7 +172,10 @@ button{
 
 #imgbox {
     width:100%;
-    height: min(100%, calc(100vw * 4 / 3)); /* 높이를 최대 90vh로 제한하면서 비율 유지 */
+
+    /* 높이를 최대 90vh로 제한하면서 비율 유지 */
+    /* height: min(100%, calc(100vw * 4 / 3));  */
+    
     max-height: 80vh;
     overflow:hidden;
     margin:0 auto;
@@ -292,6 +297,19 @@ button{
         width: 100%;  /* 가로 너비를 부모 요소에 맞춤 */
         max-width: 350px; /* 최대 너비 제한 */
     }
+    #IoIosContact {
+        top: 2%;
+        right: 15%;
+        z-index: 9999;
+    }
+    #IoIosNotifications{
+        top: 2%;
+        right: 4.5%;
+        z-index: 9999;
+    }
+    .notificationList{
+        z-index: 9999;
+    }
 }
 
 @media (max-width: 480px) {
@@ -303,5 +321,30 @@ button{
         margin-left: 20px;
         width: 100%;
         max-width: 300px; /* 작은 화면에서 적절한 크기로 조정 */
+    }
+    .statisticsContainer{
+        margin-left: 20px; /* 더 작은 화면에서 여백 축소 */
+        min-width: 280px;
+
+    }
+    .adComponentContainer{
+        margin-left: 20px; /* 더 작은 화면에서 여백 축소 */
+        max-width: 280px;
+        min-width: 280px;
+    }
+
+
+    #IoIosContact {
+        top: 2%;
+        right: 20%;
+        z-index: 9999;
+    }
+    #IoIosNotifications{
+        top: 2%;
+        right: 4.5%;
+        z-index: 9999;
+    }
+    .notificationList{
+        z-index: 9999;
     }
 }

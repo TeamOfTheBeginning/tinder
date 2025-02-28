@@ -137,9 +137,23 @@ const Post = (props) => {
             </div>
 
             <div id='imgbox'>
-                {imgList.map(img => (
-                    <img key={img.savefileName} src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} width="750" height="700" alt="Post" />
-                ))}
+                {imgList.map(img => {
+                    // 이미지 파일인지 확인
+                    const isImage = img.savefileName.match(/\.(jpeg|jpg|png|gif)$/i);
+                    // 비디오 파일인지 확인
+                    const isVideo = img.savefileName.match(/\.(mp4|webm|ogg)$/i);
+
+                    return (
+                        isImage ? (
+                            <img key={img.savefileName} src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} width="750" height="700" alt="Post" />
+                        ) : isVideo ? (
+                            <video key={img.savefileName} width="750" height="700"  controls autoPlay loop>
+                                <source src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} type="video/mp4" />
+                                Your browser does not support the video tag.
+                            </video>
+                        ) : null
+                    );
+                })}
             </div>
 
             <div className='like'>

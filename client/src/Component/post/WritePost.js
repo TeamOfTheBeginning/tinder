@@ -19,13 +19,13 @@ const WritePost = ({ closeSideViewer }) => {
   async function imgUpload(e, index) {
     if (!e.target.files.length) return;
 
-    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif','mp4','webm','ogg'];
     const file = e.target.files[0];
     const fileExtension = file.name.split('.').pop().toLowerCase();
 
     // 파일 확장자 검사
     if (!allowedExtensions.includes(fileExtension)) {
-      alert('이미지 파일만 업로드 가능합니다. (jpg, jpeg, png, gif)');
+      alert('이미지/영상 파일만 업로드 가능합니다. (jpg, jpeg, png, gif,mp4,webm,ogg)');
       e.target.value = ''; // input 리셋
       return;
     }
@@ -168,10 +168,20 @@ const WritePost = ({ closeSideViewer }) => {
                     />
                     {imgSrcs[index] && (
                       <div>
-                        <img src={imgSrcs[index]} style={imgStyle[index]} alt={`uploaded-${index}`} />
+                        {/* 이미지 파일인지 비디오 파일인지 확인 */}
+                        {imgSrcs[index].match(/\.(jpeg|jpg|png|gif)$/i) ? (
+                          <img src={imgSrcs[index]} style={imgStyle[index]} alt={`uploaded-${index}`} />
+                        ) : imgSrcs[index].match(/\.(mp4|webm|ogg)$/i) ? (
+                          <video width="320" height="240" controls autoPlay loop>
+                            <source src={imgSrcs[index]} type="video/mp4" />
+                            Your browser does not support the video tag.
+                          </video>
+                        ) : null}
+                        
                         <button type="button" onClick={() => removeImage(index)}>삭제</button> {/* 삭제 버튼 */}
                       </div>
                     )}
+
                   </div>
                 </label>
               </div>
