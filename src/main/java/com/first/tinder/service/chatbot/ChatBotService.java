@@ -2,10 +2,12 @@ package com.first.tinder.service.chatbot;
 
 import com.first.tinder.dao.MemberRepository;
 import com.first.tinder.dao.chatbot.ChatBotHistoryRepository;
+import com.first.tinder.dao.chatbot.JongroRestaurantRepository;
 import com.first.tinder.dto.chatbot.ChatBotRequest;
 import com.first.tinder.dto.chatbot.ChatBotResponse;
 import com.first.tinder.entity.Member;
 import com.first.tinder.entity.chatbot.ChatBotHistory;
+import com.first.tinder.entity.chatbot.ChatJongroRestaurants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,17 +34,25 @@ public class ChatBotService {
     private final NewsService newsService;
     private final MusicService musicService;
     private final MemberRepository memberRepository;
+    private final JongroRestaurantRepository jongroRestaurantRepository;
 
-    public ChatBotService(RestTemplate restTemplate, WorldInfoService worldInfoService, ChatBotHistoryRepository chatbotHistoryRepository, NewsService newsService, MusicService musicService, MemberRepository memberRepository) {
+    public ChatBotService(RestTemplate restTemplate, WorldInfoService worldInfoService, ChatBotHistoryRepository chatbotHistoryRepository, NewsService newsService, MusicService musicService, MemberRepository memberRepository, JongroRestaurantRepository jongroRestaurantRepository) {
         this.restTemplate = restTemplate;
         this.worldInfoService = worldInfoService;
         this.chatbotHistoryRepository = chatbotHistoryRepository;
         this.newsService = newsService;
         this.musicService = musicService;
         this.memberRepository = memberRepository;
+        this.jongroRestaurantRepository = jongroRestaurantRepository;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ChatBotService.class);
+
+    private static final List<String> BUSINESS_TYPES = List.of(
+            "감성주점", "경양식", "카페", "분식",
+            "외국음식전문점(인도,태국등)", "일식",
+            "중국식", "한식", "호프/통닭"
+    );
 
     private String recommendMemberByAgeAndGender(int gender, int age) {
         List<Member> recommendedMembers = memberRepository.findEligibleMatches(
@@ -90,6 +100,10 @@ public class ChatBotService {
     public ChatBotResponse getChatBotResponse(String userId, ChatBotRequest request) {
         String userMessage = request.getMessage().toLowerCase();
 
+        if (userMessage.contains("종로 맛집")) {
+            return new ChatBotResponse("어떤 종류의 음식을 원하시나요? \n" + String.join(", ", BUSINESS_TYPES));
+        }
+
         saveChatHistory(userId, "user", userMessage);
 
         Map<String, String> predefinedResponses = Map.of(
@@ -112,8 +126,19 @@ public class ChatBotService {
             }
 
             String recommendedMembers = recommendMemberByAgeAndGender(gender, age);
-
             return saveAndReturnResponse(userId, userMessage, recommendedMembers);
+        }
+
+        for (String type : BUSINESS_TYPES) {
+            if (userMessage.contains(type)) {
+                List<ChatJongroRestaurants> restaurants = jongroRestaurantRepository.findRandomRestaurantsByType(type);
+                if (restaurants.isEmpty()) {
+                    return new ChatBotResponse("해당 유형의 음식점을 찾을 수 없습니다.");
+                }
+                ChatJongroRestaurants restaurant = restaurants.get(0);
+                return new ChatBotResponse(
+                        String.format("추천 맛집: %s\n주소: %s", restaurant.getBusinessName(), restaurant.getAddress()));
+            }
         }
 
         List<ChatBotHistory> chatHistories = chatbotHistoryRepository.findByUserIdOrderByTimestampAsc(userId);
