@@ -274,7 +274,7 @@ public class PostService {
 
         int page = paging.getPage();
 
-        Pageable pageable = PageRequest.of(page, 2, Sort.by(Sort.Order.desc("postId")));
+        Pageable pageable = PageRequest.of(page, 1, Sort.by(Sort.Order.desc("postId")));
 
         if( word == null || word.equals("") ) {
             System.out.println("word == null");

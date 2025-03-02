@@ -18,9 +18,10 @@
     position: relative; /* 내부 요소들의 위치 조정을 위한 relative 설정 */
     min-width: 320px;
     width: 50%;
+    height: 90vh;
     display: flex;
     flex-direction: column;
-    margin: 30px 0 20px 0;
+    margin: 5vh 0 5vh 0;
     font-size: 12px;
     
     /* 배경과 블러 효과 추가 */
