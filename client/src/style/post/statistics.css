@@ -19,6 +19,10 @@
     overflow: hidden;
     padding-bottom: 0;
 }
+.statisticsContainer h2{
+    font-size: 230%;
+    font-weight: bold;
+}
 
 .statisticsContainer h3{
     font-size: 200%;
@@ -29,6 +33,57 @@
     font-size: 150%;
 }
 
+.statisticsContainer .img{
+    width: 100%;
+
+}
+
+.statisticsContainer .img img{
+    width: 100%;
+}
+
+.statisticsContainer progress {
+    width: 60%;
+    height: 10px;
+    border-radius: 10px; /* 선택사항: 둥근 모서리 추가 */
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+/* 웹킷 브라우저들(Chrome, Safari 등)용 스타일링 */
+.statisticsContainer progress::-webkit-progress-bar {
+background-color: #e0e0e0; /* 빈 로딩 바의 배경색 */
+border-radius: 10px; /* 선택사항: 둥근 모서리 */
+}
+
+.statisticsContainer progress::-webkit-progress-value {
+background-color: #F7186A; /* 진행 중인 색상 */
+border-radius: 10px; /* 선택사항: 둥근 모서리 */
+}
+
+/* Firefox 브라우저용 스타일링 */
+.statisticsContainer progress::-moz-progress-bar {
+background-color: #F7186A; /* 진행 중인 색상 */
+border-radius: 10px; /* 선택사항: 둥근 모서리 */
+}
+
+
+.statisticsContainer .loading-bar-container {
+    width: 90%;
+    height: 20px;
+    background-color: #e0e0e0; /* 빈 로딩 바 색상 */
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.statisticsContainer .loading-bar {
+    height: 100%;
+    background-color: #F7186A;
+    /* background-image: linear-gradient(-35deg, #ed6ea0, #ec8c69, #f7186a, #FBB03B);  */
+    /* 그라디언트 */
+    border-radius: 10px;
+    transition: width 1s ease-out; /* 부드럽게 변화 */
+}
 
 @media (max-width: 480px) {  
 

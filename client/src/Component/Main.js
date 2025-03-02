@@ -64,7 +64,7 @@ const Main = () => {
     const scrollTop = document.documentElement.scrollTop;  // 현재 위치
     const clientHeight = document.documentElement.clientHeight; // 내용물의 크기
     if( scrollTop + clientHeight >= scrollHeight ) {
-        console.log("handleScroll"+pageable.pageNumber + 1)
+        // console.log("handleScroll"+pageable.pageNumber + 1)
         onPageMove( pageable.pageNumber + 1 );
     }
     }
@@ -91,7 +91,7 @@ const Main = () => {
     };
 
     async function onPageMove( page ){
-        console.log("pageable.pageNumber"+pageable.pageNumber)
+        // console.log("pageable.pageNumber"+pageable.pageNumber)
         jaxios.get(`/api/post/getPostList`, {params:{page:page,word:hashtag}})
         .then((result)=>{
         // console.log(result.data.postList2.pageable.pageNumber)
@@ -116,7 +116,7 @@ const Main = () => {
                 setShowStatistics(true);
                 setTimeout(() => {
                     setShowStatistics(false); // Statistics를 숨기고 Post를 보여줌
-                }, 3000); // 3초 후 Post 등장
+                }, 5000); // 3초 후 Post 등장
             }
         }
 
@@ -130,7 +130,7 @@ const Main = () => {
             .then((result) => {
                 // console.log("result.data.postList2")
                 // console.log(JSON.stringify(result.data.postList2.content))
-                console.log(JSON.stringify(result.data.postList2.pageable))
+                // console.log(JSON.stringify(result.data.postList2.pageable))
                 setPostList(result.data.postList2.content);
                 setPageable(result.data.postList2.pageable)
             }).catch((err) => { console.error(err) });
@@ -166,13 +166,13 @@ const Main = () => {
 
         if (clickY >= windowHeight - 100) {
             if (pageable?.pageNumber !== undefined) { // 🔥 undefined 방지
-                console.log("handleClick"+pageable.pageNumber + 1)
+                // console.log("handleClick"+pageable.pageNumber + 1)
                 onPageMove(pageable.pageNumber + 1);
             }
             // window.scrollBy({ top: windowHeight, behavior: "smooth" });
         } else if (clickY <= 100) {
             if (pageable?.pageNumber !== undefined) { // 🔥 undefined 방지
-                console.log("handleClick"+pageable.pageNumber - 1)
+                // console.log("handleClick"+pageable.pageNumber - 1)
                 onPageMove(pageable.pageNumber - 1);
             }
             // setPageable((prev) => ({ pageNumber: Math.max(prev.pageNumber - 1, 0) }));
