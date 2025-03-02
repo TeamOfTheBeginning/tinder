@@ -246,6 +246,22 @@ button{
     background-color: rgba(0, 0, 0, .8);
     color: white;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+
+    /* width: 15vw; */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.toastPopup2 .post video{
+    width: 15vw;
+}
+
+.toastPopup2 .post{
+    height: auto;
+    width: auto;
 }
 
 .toastPopup2Title{    
@@ -285,19 +301,15 @@ button{
 
 
 /* 반응형 스타일 */
-@media (max-width: 768px) {
+@media (min-width: 480px) and (max-width: 768px) {
     .PostList {
-        margin-left: 55px;
+        /* margin-left: 55px; */
     }
-    .Posts {
+    .PostList .post {
         margin-left: 55px;
-        min-width: 320px;
+        min-width: 300px;
     }
-    .Posts .post {
-        margin-left: 55px;
-        width: 100%;  /* 가로 너비를 부모 요소에 맞춤 */
-        max-width: 350px; /* 최대 너비 제한 */
-    }
+    
     #IoIosContact {
         top: 2%;
         right: 15%;
@@ -311,17 +323,24 @@ button{
     .notificationList{
         z-index: 9999;
     }
+    .toastPopup2{
+        width: 40vh;
+        top: 20px;
+    }
 }
 
 @media (max-width: 480px) {
     .Posts {
-        margin-left: 20px; /* 더 작은 화면에서 여백 축소 */
+        /* margin-left: 20px;  */
+        /* 더 작은 화면에서 여백 축소 */
         min-width: 280px;
     }
-    .Posts .post {
+    .PostList .post {
         margin-left: 20px;
         width: 100%;
-        max-width: 300px; /* 작은 화면에서 적절한 크기로 조정 */
+        max-width: 280px; /* 작은 화면에서 적절한 크기로 조정 */
+        height: 85dvh;
+        margin: 5vh 0vh 10vh 7dvh;
     }
     .statisticsContainer{
         margin-left: 20px; /* 더 작은 화면에서 여백 축소 */
@@ -347,5 +366,15 @@ button{
     }
     .notificationList{
         z-index: 9999;
+    }
+
+    .toastPopup2{
+        /* width: 60vh; */
+        top: 30px;
+    }
+
+    .toastPopup2 .post video{
+        width: 100%;
+
     }
 }
