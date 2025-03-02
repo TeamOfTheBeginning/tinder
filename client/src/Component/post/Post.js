@@ -145,9 +145,13 @@ const Post = (props) => {
 
                     return (
                         isImage ? (
-                            <img key={img.savefileName} src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} width="750" height="700" alt="Post" />
+                            <img key={img.savefileName} src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} 
+                            // width="750" height="700" 
+                            alt="Post" />
                         ) : isVideo ? (
-                            <video key={img.savefileName} ref={props.videoRef} width="750" height="700"  controls autoPlay loop>
+                            <video key={img.savefileName} ref={props.videoRef} 
+                            // width="750" height="700"  
+                            controls autoPlay muted playsInline loop>
                                 <source src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} type="video/mp4" />
                                 Your browser does not support the video tag.
                             </video>
