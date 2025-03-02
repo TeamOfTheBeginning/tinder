@@ -20,9 +20,12 @@ import '../style/chatbot/chatbot.css';
 import { SiOutline } from 'react-icons/si';
 
 const Main = () => {
-    
-
+    const [prevPost, setPrevPost] = useState(null); // 이전 포스트 저장
+    const [postCount, setPostCount] = useState(0); // 전체 카운트
     const [postList, setPostList] = useState([]);
+    const [showStatistics, setShowStatistics] = useState(false); // Statistics 표시 여부
+
+
     const [postOne, setPostOne] = useState();
     const navigate = useNavigate();
     const [followed, setFollowed] = useState([]);
@@ -54,50 +57,70 @@ const Main = () => {
             }
         }
     )
-      
+
     const handleScroll=()=>{
-    const scrollHeight = document.documentElement.scrollHeight - 10; // 스크롤이 가능한 크기
+    const scrollHeight = document.documentElement.scrollHeight - 20; // 스크롤이 가능한 크기
     // 가능 크기를 10px 줄여서 다음페이지 표시 반응 영역을 조금더 넓힙니다
     const scrollTop = document.documentElement.scrollTop;  // 현재 위치
     const clientHeight = document.documentElement.clientHeight; // 내용물의 크기
     if( scrollTop + clientHeight >= scrollHeight ) {
-        
+        console.log("handleScroll"+pageable.pageNumber + 1)
         onPageMove( pageable.pageNumber + 1 );
     }
     }
+
+
+
 
     const videoRefs = useRef([]); // 비디오 요소를 저장할 배열
 
 
     // 📌 비디오 재생/정지 함수
-  const handleVideoPlayPause = () => {
-    videoRefs.current.forEach((video) => {
-      if (!video) return;
-      const rect = video.getBoundingClientRect();
-      const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
+    const handleVideoPlayPause = () => {
+        videoRefs.current.forEach((video) => {
+        if (!video) return;
+        const rect = video.getBoundingClientRect();
+        const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
 
-      if (isVisible) {
-        video.play();
-      } else {
-        video.pause();
-      }
-    });
-  };
+        if (isVisible) {
+            video.play();
+        } else {
+            video.pause();
+        }
+        });
+    };
 
-  
-
-    
     async function onPageMove( page ){
-    
-        const result = await jaxios.get(`/api/post/getPostList`, {params:{page:page,word:hashtag}})
+        console.log("pageable.pageNumber"+pageable.pageNumber)
+        jaxios.get(`/api/post/getPostList`, {params:{page:page,word:hashtag}})
         .then((result)=>{
-        console.log(result.data.postList2.pageable)
+        // console.log(result.data.postList2.pageable.pageNumber)
         setPageable( result.data.postList2.pageable );
-        let posts = [];
-        posts = [...postList];
-        posts = [...posts, ...result.data.postList2.content ];
+        // console.log("result.data.postList2.pageable.pageNumber"+result.data.postList2.pageable.pageNumber)
+        // let posts = [];
+        // // posts = [...postList];
+        // posts = [...result.data.postList2.content ];
         
-        setPostList([...posts]);
+        // setPostList(result.data.postList2.content);
+
+
+
+        const newPost = result.data.postList2.content[0]; // 새로 가져온 1개의 포스트
+        if (newPost) {
+            setPrevPost(postList[0]); // 현재 포스트를 이전 포스트로 저장
+            setPostList([newPost]); // 항상 1개 유지
+            setPostCount(prev => prev + 1); // 전체 카운트 증가
+
+            // 5번째일 때 Statistics만 먼저 보여주고 Post는 잠시 멈춤
+            if ((postCount + 1) % 5 === 0) {
+                setShowStatistics(true);
+                setTimeout(() => {
+                    setShowStatistics(false); // Statistics를 숨기고 Post를 보여줌
+                }, 3000); // 3초 후 Post 등장
+            }
+        }
+
+
         }).catch((err)=>{console.error(err)})
     }
 
@@ -132,36 +155,45 @@ const Main = () => {
     }, []);
 
     // 📌 클릭 이벤트 → 페이지 이동 + 비디오 제어 추가
-  useEffect(() => {
-    const handleClick = (event) => {
-      const windowHeight = window.innerHeight;
-      const clickY = event.clientY;
+    useEffect(() => {
+        const handleClick = (event) => {
+        const windowHeight = window.innerHeight;
+        const clickY = event.clientY;
 
-      if (clickY >= windowHeight - 100) {
-        if (pageable?.pageNumber !== undefined) { // 🔥 undefined 방지
-            onPageMove(pageable.pageNumber + 1);
+        if (event.target.closest('[data-ignore-click="true"]')) {
+            return; // 아이콘 클릭 시 페이지 이동 막기
         }
-        window.scrollBy({ top: windowHeight, behavior: "smooth" });
-      } else if (clickY <= 100) {
-        // setPageable((prev) => ({ pageNumber: Math.max(prev.pageNumber - 1, 0) }));
-        window.scrollBy({ top: -windowHeight, behavior: "smooth" });
-      }
-      
-      // 📌 페이지 변경 후 비디오 상태 업데이트
-      setTimeout(handleVideoPlayPause, 500); // 스크롤 후 실행
-    };
 
-    document.addEventListener("click", handleClick);
-    return () => {
-      document.removeEventListener("click", handleClick);
-    };
-  }, []);
+        if (clickY >= windowHeight - 100) {
+            if (pageable?.pageNumber !== undefined) { // 🔥 undefined 방지
+                console.log("handleClick"+pageable.pageNumber + 1)
+                onPageMove(pageable.pageNumber + 1);
+            }
+            // window.scrollBy({ top: windowHeight, behavior: "smooth" });
+        } else if (clickY <= 100) {
+            if (pageable?.pageNumber !== undefined) { // 🔥 undefined 방지
+                console.log("handleClick"+pageable.pageNumber - 1)
+                onPageMove(pageable.pageNumber - 1);
+            }
+            // setPageable((prev) => ({ pageNumber: Math.max(prev.pageNumber - 1, 0) }));
+            // window.scrollBy({ top: -windowHeight, behavior: "smooth" });
+        }
+        
+        // 📌 페이지 변경 후 비디오 상태 업데이트
+        setTimeout(handleVideoPlayPause, 500); // 스크롤 후 실행
+        };
 
-  // 📌 스크롤 이벤트 추가 → 스크롤 시에도 비디오 관리
-  useEffect(() => {
-    window.addEventListener("scroll", handleVideoPlayPause);
-    return () => window.removeEventListener("scroll", handleVideoPlayPause);
-  }, [pageable]);
+        document.addEventListener("click", handleClick);
+        return () => {
+        document.removeEventListener("click", handleClick);
+        };
+    }, [pageable]);
+
+    // 📌 스크롤 이벤트 추가 → 스크롤 시에도 비디오 관리
+    useEffect(() => {
+        window.addEventListener("scroll", handleVideoPlayPause);
+        return () => window.removeEventListener("scroll", handleVideoPlayPause);
+    }, [pageable]);
 
     
     const [showToast1, setShowToast1] = useState(false);
@@ -222,6 +254,8 @@ const Main = () => {
         setIsAnimationEnded(true);
     };
 
+    
+
     return (
         <div className='Container'>
             <Notification setNotificationList={setNotificationList} notificationList={notificationList} />
@@ -255,25 +289,36 @@ const Main = () => {
             <SideBar {...props}/>
 
             {/* post */}
-            <div className='PostList'>
-                {
+            <div className="PostList">
+                {showStatistics ? (
+                    <Statistics />
+                ) : (
+                    postList.length > 0 && <Post post={postList[0]} followed={followed} setFollowed={setFollowed} />
+                )}
+            </div>
+
+
+
+            {/* <div className='PostList'> */}
+                {/* {
                     postList ? (
                         postList.map((post, idx) => {
+                            
+
                             return (
                                 <React.Fragment key={idx}>
                                     <Post post={post} followed={followed} setFollowed={setFollowed} videoRef={(el) => (videoRefs.current[idx] = el)}/>
 
-                                    {/* 🔥 5번째마다 SpecialComponent 삽입 (단, 10번째에는 광고만 표시) */}
                                     {(idx + 1) % 5 === 0 && <Statistics />}
 
-                                    {/* 🔥 10번째마다 광고 삽입 */}
-                                    {/* {(idx + 1) % 10 === 0 && <AdComponent />} */}
+                                    🔥 10번째마다 광고 삽입
+                                    {(idx + 1) % 10 === 0 && <AdComponent />}
                                 </React.Fragment>
                             );
                         })
                     ) : (null)
-                }
-            </div>
+                } */}
+            {/* </div> */}
 
 
 

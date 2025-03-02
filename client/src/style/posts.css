@@ -21,6 +21,7 @@
     height: 90vh;
     display: flex;
     flex-direction: column;
+    
     margin: 5vh 0 5vh 0;
     font-size: 12px;
     
@@ -175,7 +176,7 @@ button{
     width:100%;
 
     /* 높이를 최대 90vh로 제한하면서 비율 유지 */
-    /* height: min(100%, calc(100vw * 4 / 3));  */
+    height: min(100%, calc(100vw * 4 / 3)); 
     
     max-height: 80vh;
     overflow:hidden;
@@ -339,23 +340,23 @@ button{
         margin-left: 20px;
         width: 100%;
         max-width: 280px; /* 작은 화면에서 적절한 크기로 조정 */
-        height: 85dvh;
-        margin: 5vh 0vh 10vh 7dvh;
+        height: 80dvh;
+        margin: 10vh 0vh 10vh 7dvh;
     }
 
-    .statisticsContainer{
-        margin-left: 20px; /* 더 작은 화면에서 여백 축소 */
+    /* .statisticsContainer{
+        margin-left: 20px; 
         min-width: 280px;
         margin: 5vh 0vh 10vh 7dvh;
 
     }
 
     .adComponentContainer{
-        margin-left: 20px; /* 더 작은 화면에서 여백 축소 */
+        margin-left: 20px; 
         max-width: 280px;
         min-width: 280px;
         margin: 5vh 0vh 10vh 7dvh;
-    }
+    } */
 
     #IoIosContact {
         top: 2%;
