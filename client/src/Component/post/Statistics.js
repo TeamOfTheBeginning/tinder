@@ -27,7 +27,10 @@ const Statistics = () => {
             <div>문제 : {statistics.content}</div>
             <div>정답률 : 1번 {(statistics.ratio)*100} %</div>
         </>
-      ):("Loading...")}
+      ):("Loading...")}<br/>
+
+                  <h3>광고페이지 입니다.</h3><br/>
+      <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/다이브.png`} />
       
     </div>
   )

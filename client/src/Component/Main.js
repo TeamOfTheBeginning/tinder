@@ -264,10 +264,10 @@ const Main = () => {
                                     <Post post={post} followed={followed} setFollowed={setFollowed} videoRef={(el) => (videoRefs.current[idx] = el)}/>
 
                                     {/* 🔥 5번째마다 SpecialComponent 삽입 (단, 10번째에는 광고만 표시) */}
-                                    {(idx + 1) % 5 === 0 && (idx + 1) % 10 !== 0 && <Statistics />}
+                                    {(idx + 1) % 5 === 0 && <Statistics />}
 
                                     {/* 🔥 10번째마다 광고 삽입 */}
-                                    {(idx + 1) % 10 === 0 && <AdComponent />}
+                                    {/* {(idx + 1) % 10 === 0 && <AdComponent />} */}
                                 </React.Fragment>
                             );
                         })

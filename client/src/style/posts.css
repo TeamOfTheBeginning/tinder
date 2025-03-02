@@ -342,17 +342,20 @@ button{
         height: 85dvh;
         margin: 5vh 0vh 10vh 7dvh;
     }
+
     .statisticsContainer{
         margin-left: 20px; /* 더 작은 화면에서 여백 축소 */
         min-width: 280px;
+        margin: 5vh 0vh 10vh 7dvh;
 
     }
+
     .adComponentContainer{
         margin-left: 20px; /* 더 작은 화면에서 여백 축소 */
         max-width: 280px;
         min-width: 280px;
+        margin: 5vh 0vh 10vh 7dvh;
     }
-
 
     #IoIosContact {
         top: 2%;
