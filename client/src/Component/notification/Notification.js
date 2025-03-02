@@ -111,6 +111,7 @@ const Notification = (props) => {
     <div className='notificationContainer'>
       <IoIosNotifications
         id='IoIosNotifications'
+        data-ignore-click="true" 
         onClick={getNotification}
         style={{ color: props.notificationList && props.notificationList.length > 0 ? 'red' : 'black' }}
       />

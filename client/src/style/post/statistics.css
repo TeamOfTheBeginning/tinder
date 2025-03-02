@@ -2,11 +2,12 @@
     position: relative;
     min-width: 320px;
     width: 50%;
-    height: 85vh;
+    height: 90vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     margin: 5vh 0 5vh 0;
     font-size: 12px;
     background: rgba(255, 255, 255, 0.15);
@@ -19,13 +20,23 @@
     padding-bottom: 0;
 }
 
+.statisticsContainer h3{
+    font-size: 200%;
+
+}
+
+.statisticsContainer div{
+    font-size: 150%;
+}
+
 
 @media (max-width: 480px) {  
 
     .statisticsContainer{
         margin-left: 20px; /* 더 작은 화면에서 여백 축소 */
-        min-width: 280px;
-        margin: 5vh 0vh 10vh 7dvh;
-
+        /* width: 100%;
+        min-width: 280px; */
+        height: 80dvh;
+        margin: 10vh 0vh 10vh 7dvh;
     }    
 }

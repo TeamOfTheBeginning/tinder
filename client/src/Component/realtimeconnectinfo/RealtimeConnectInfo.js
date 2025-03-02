@@ -92,6 +92,7 @@ const RealtimeConnectInfo = () => {
     <div className='realtimeConnectInfoContainer'>
       <div 
       className='realtimeConnectInfoContent' 
+      data-ignore-click="true" 
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
       onClick={()=>toggle()}

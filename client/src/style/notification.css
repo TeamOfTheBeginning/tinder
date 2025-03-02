@@ -22,3 +22,15 @@
     height: 100px;
 
 }
+
+@media (max-width: 480px) {
+    .notificationList{
+        position: fixed;
+        top: 2%;
+        left: 30%;
+        width: 200px;
+        height: 100px;
+    
+    }
+    
+}

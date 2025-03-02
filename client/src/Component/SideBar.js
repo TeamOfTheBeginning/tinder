@@ -186,7 +186,7 @@ const SideBar = (props) => {
     <div className='MenuBar'>
       <RealtimeConnectInfo />
       <div className='MenubarBtns'>
-        <div className={`profileImg ${selectedMenu === 'mypage' ? 'active' : ''}`} 
+        <div data-ignore-click="true" className={`profileImg ${selectedMenu === 'mypage' ? 'active' : ''}`} 
         onClick={() => handleMenuClick('mypage')}>
           <img src={profileImg} alt="Profile" />
         </div>
