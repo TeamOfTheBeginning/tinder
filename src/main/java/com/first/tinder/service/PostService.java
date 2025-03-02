@@ -337,12 +337,22 @@ public class PostService {
         return posts.isEmpty() ? null : posts.get(0);
     }
 
-    public Ads getAds() {
-    return ar.findAll()
-            .stream()
-            .skip(new Random().nextInt((int) ar.findAll().stream().count()))  // 랜덤한 인덱스
-            .findFirst()
-            .get();
+    // 광고를 랜덤하게 가져오고 adCount를 증가시킨 후 저장
+    public Ads getRandomAdAndIncrementCount() {
+        // 광고 리스트에서 랜덤으로 하나 선택
+        Ads ad = ar.findAll()
+                .stream()
+                .skip(new Random().nextInt((int) ar.findAll().stream().count()))  // 랜덤한 인덱스
+                .findFirst()
+                .get();
+
+        // adCount 증가
+        ad.incrementAdCount();
+
+        // 변경된 ad 객체를 저장 (데이터베이스 반영)
+        ar.save(ad);
+
+        return ad;
     }
 }
 
