@@ -176,7 +176,7 @@ public class PostController {
     @GetMapping("/getAd")
     public HashMap<String,Object> getAd(){
         HashMap<String,Object> result = new HashMap<>();
-        Ads ads = ps.getAds();
+        Ads ads = ps.getRandomAdAndIncrementCount();
         result.put("ads", ads);
         return result;
     }

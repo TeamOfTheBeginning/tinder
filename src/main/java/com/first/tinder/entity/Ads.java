@@ -12,4 +12,9 @@ public class Ads {
     private int adId;
     private String advertiser;
     private String adImage;
+    private int adCount;
+
+    public void incrementAdCount() {
+        this.adCount++;
+    }
 }

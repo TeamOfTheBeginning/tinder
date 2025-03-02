@@ -358,11 +358,7 @@ button{
         margin: 5vh 0vh 10vh 7dvh;
     } */
 
-    #IoIosContact {
-        top: 2%;
-        right: 20%;
-        z-index: 9999;
-    }
+    
     #IoIosNotifications{
         top: 2%;
         right: 4.5%;

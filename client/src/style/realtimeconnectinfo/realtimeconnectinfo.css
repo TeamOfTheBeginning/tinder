@@ -35,12 +35,25 @@
 }
 
 @media (max-width: 480px) {
+    #IoIosContact {
+        top: 2%;
+        right: 20%;
+        z-index: 9999;
+    }
+
     .realTimeAccessUserList{
         position: fixed;
         top: 2%;
         left: 30%;
         width: 200px;
         height: 100px;    
+    }
+
+    #userCount{
+        position: fixed;
+        top: 1%;
+        right: 21.5%;
+        width: 20px;
     }
     
 }
