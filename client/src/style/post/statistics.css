@@ -7,7 +7,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 5vh 0 10vh 7dvh;
+    margin: 5vh 0 5vh 0;
     font-size: 12px;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(4.5px);
@@ -17,4 +17,15 @@
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     overflow: hidden;
     padding-bottom: 0;
+}
+
+
+@media (max-width: 480px) {  
+
+    .statisticsContainer{
+        margin-left: 20px; /* 더 작은 화면에서 여백 축소 */
+        min-width: 280px;
+        margin: 5vh 0vh 10vh 7dvh;
+
+    }    
 }
