@@ -29,6 +29,15 @@
     font-size: 150%;
 }
 
+.statisticsContainer .img{
+    width: 100%;
+
+}
+
+.statisticsContainer .img img{
+    width: 100%;
+}
+
 
 @media (max-width: 480px) {  
 

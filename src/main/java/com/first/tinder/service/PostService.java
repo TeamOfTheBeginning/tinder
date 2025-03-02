@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,6 +35,8 @@ public class PostService {
     NotificationRepository nr;
     @Autowired
     SseEmitterService ses;
+    @Autowired
+    AdRepository ar;
 
     public Post insertPost(Post post) {
     Optional<Member> member = mr.findById(post.getMember().getMemberId());
@@ -336,6 +335,14 @@ public class PostService {
 
         // 게시글이 있으면 첫 번째 게시글을 리턴, 없으면 null
         return posts.isEmpty() ? null : posts.get(0);
+    }
+
+    public Ads getAds() {
+    return ar.findAll()
+            .stream()
+            .skip(new Random().nextInt((int) ar.findAll().stream().count()))  // 랜덤한 인덱스
+            .findFirst()
+            .get();
     }
 }
 

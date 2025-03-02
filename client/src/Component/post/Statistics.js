@@ -13,6 +13,8 @@ const Statistics = () => {
               setStatistics(result.data.quizStatistics);
           })
           .catch((err) => { console.error(err) });
+
+      jaxios.get(`/api/post/getAd`)
   }, []);
 
   useEffect(() => {
@@ -36,7 +38,9 @@ const Statistics = () => {
         ) : ("Loading...")}<br/>
 
         <h3>광고페이지 입니다. <br/>({countdown}초 후 이동)</h3><br/>
-        <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/다이브.png`} />
+        <div className='img'>
+          <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/다이브1.png`} />
+        </div>
     </div>
   );
 }

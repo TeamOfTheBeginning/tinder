@@ -2,6 +2,7 @@ package com.first.tinder.controller;
 
 import com.first.tinder.dto.Paging;
 
+import com.first.tinder.entity.Ads;
 import com.first.tinder.entity.Images;
 import com.first.tinder.entity.Post;
 import com.first.tinder.entity.PostLikes;
@@ -171,4 +172,13 @@ public class PostController {
         result.put("msg", "ok");
         return result;
     }
+
+    @GetMapping("/getAd")
+    public HashMap<String,Object> getAd(){
+        HashMap<String,Object> result = new HashMap<>();
+        Ads ads = ps.getAds();
+        result.put("ads", ads);
+        return result;
+    }
+
 }
