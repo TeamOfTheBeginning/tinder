@@ -39,7 +39,7 @@ export function validateFile(file) {
 /**
  * 단일 파일 업로드 함수
  */
-export async function uploadFile(file, url) {
+async function uploadFile(file, url) {
     const validation = validateFile(file);
     if (!validation.valid) {
         alert(validation.message);

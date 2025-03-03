@@ -104,11 +104,22 @@ const JoinForm = () => {
         }catch(err){  console.error(err);     }
     }
 
+    // async function fileUpload(e){
+    //     const formData = new FormData();
+    //     formData.append('image',  e.target.files[0]);
+    //     const result = await jaxios.post('/api/member/fileupload', formData);
+    //     console.log(result);
+    //     setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
+    //     setImgStyle({display:"block", width:"200px"});
+    //     setProfileimg(result.data.filename)
+    // }
+
     async function fileUpload(e){
         const formData = new FormData();
         formData.append('image',  e.target.files[0]);
         const result = await jaxios.post('/api/member/fileupload', formData);
-        console.log(result);
+        console.log(result); // 응답 데이터 확인
+        console.log(result.data); // result.data가 실제로 존재하는지 확인
         setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
         setImgStyle({display:"block", width:"200px"});
         setProfileimg(result.data.filename)
@@ -264,7 +275,7 @@ const JoinForm = () => {
                 </div>
                 <div className='field'>
                     <label className="hidden">PROFILE IMG</label>
-                    <input type="file" onChange={(e)=>{fileUpload(e)}}/>
+                    <input type="file" accept=".jpg,.jpeg,.png,.gif" onChange={(e)=>{fileUpload(e)}}/>
                 </div>
                 <div className='field'>
                     <label className="hidden">Profile img preview</label>

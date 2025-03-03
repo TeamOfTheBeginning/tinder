@@ -125,7 +125,7 @@ async function imgUpload(e) {
             </div>
 
             {/* ✅ 파일 업로드 input 태그 */}
-            <input type="file" multiple accept="image/*,video/mp4,video/webm,video/ogg" onChange={imgUpload} />
+            <input type="file" multiple accept="image/jpg, image/jpeg, image/png, image/gif,video/mp4,video/webm,video/ogg" onChange={imgUpload} />
 
             {/* ✅ 이미지 및 동영상 미리보기 */}
             <div className="preview-container">
