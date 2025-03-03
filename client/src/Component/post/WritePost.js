@@ -149,7 +149,7 @@ const WritePost = ({ closeSideViewer }) => {
               </div>
             </div>
 
-            {Array.from({ length: 10 }).map((_, index) => (
+            {Array.from({ length: 1 }).map((_, index) => (
               <div
                 key={index}
                 className="field"
@@ -162,7 +162,7 @@ const WritePost = ({ closeSideViewer }) => {
                     파일 첨부
                     <input
                       type="file"
-                      accept=".jpg,.jpeg,.png,.gif"
+                      accept=".jpg,.jpeg,.png,.gif,.mp4,.webm,.ogg"
                       id={`file-${index}`}
                       onChange={(e) => imgUpload(e, index)}
                     />
@@ -172,7 +172,7 @@ const WritePost = ({ closeSideViewer }) => {
                         {imgSrcs[index].match(/\.(jpeg|jpg|png|gif)$/i) ? (
                           <img src={imgSrcs[index]} style={imgStyle[index]} alt={`uploaded-${index}`} />
                         ) : imgSrcs[index].match(/\.(mp4|webm|ogg)$/i) ? (
-                          <video width="320" height="240" controls autoPlay loop>
+                          <video width="320" height="240" controls autoPlay muted loop>
                             <source src={imgSrcs[index]} type="video/mp4" />
                             Your browser does not support the video tag.
                           </video>
