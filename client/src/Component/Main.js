@@ -281,8 +281,9 @@ const Main = () => {
                     onAnimationEnd={handleAnimationEnd} // 애니메이션 종료 후 처리
                     style={{ pointerEvents: isAnimationEnded ? 'none' : 'auto' }} 
                 >
-                    <div className='toastPopup2Title'>오늘의 추천 포스트</div>
-                    <Post post={postOne} followed={followed} setFollowed={setFollowed} />
+                    {postOne?(<><div className='toastPopup2Title'>오늘의 추천 포스트</div>
+                        <Post post={postOne} followed={followed} setFollowed={setFollowed} /></>):("포스트가 없습니다.")}
+                    
                 </div>
             )}
 
