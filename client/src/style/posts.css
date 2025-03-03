@@ -43,20 +43,79 @@
 }
 
 
+/* #imgbox: 이미지 & 비디오를 담는 컨테이너 */
 #imgbox {
     display: flex;
     justify-content: center;
-    position: relative; /* writer의 배경 기준이 되도록 설정 */
+    align-items: center;
+    position: relative;
     width: 100%;
-    height: auto; /* 높이를 자동으로 조정 */
+    height: min(100%, calc(100vw * 4 / 3)); /* 높이 최대 90vh로 제한 */
+    max-height: 80vh;
     overflow: hidden;
+    margin: 0 auto;
+    background-color: black; /* 비디오가 로딩될 때 배경 표시 */
 }
 
+/* 이미지 파일 (높이를 이미지 박스에 맞춤) */
 #imgbox img {
-    width: 100%;
-    height: 350px;
-    object-fit: cover;
+    width: auto; /* 너비는 자동 조정 */
+    height: 100%; /* 이미지 박스 높이에 맞춤 */
+    object-fit: cover; /* 비율 유지하며 크롭 */
 }
+
+/* 비디오 파일 (너비를 이미지 박스에 맞춤) */
+#imgbox video {
+    width: 100%; /* 이미지 박스 너비에 맞춤 */
+    height: auto; /* 높이는 자동 조정 */
+    max-height: 100%; /* 컨테이너를 벗어나지 않도록 제한 */
+    object-fit: contain; /* 비율 유지, 크롭 없이 맞춤 */
+}
+
+
+/* 좌우 이동 버튼 (이미지 박스 양 옆에 배치) */
+.slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;  /* 기본적으로 숨김 */
+    visibility: hidden;
+    transition: opacity 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* 왼쪽 버튼: 이미지 박스의 왼쪽 */
+.slide-btn.left {
+    left: 5%;
+}
+
+/* 오른쪽 버튼: 이미지 박스의 오른쪽 */
+.slide-btn.right {
+    right: 5%;
+}
+
+/* 마우스를 이미지 박스 위에 올리면 버튼이 나타남 */
+#imgbox:hover .slide-btn {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 마우스 호버 시 버튼 강조 효과 */
+.slide-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: translateY(-50%) scale(1.1);
+}
+
 
 .writer {
     position: absolute;
@@ -170,24 +229,6 @@ button{
 
 
 
-/* post 이미지 크롭 */
-
-#imgbox {
-    width:100%;
-
-    /* 높이를 최대 90vh로 제한하면서 비율 유지 */
-    height: min(100%, calc(100vw * 4 / 3)); 
-    
-    max-height: 80vh;
-    overflow:hidden;
-    margin:0 auto;
-}
-
-#imgbox img {
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
 
 .reply input{
     padding-inline: 6px;
@@ -369,7 +410,6 @@ button{
     }
 
     .toastPopup2{
-        /* width: 60vh; */
         top: 30px;
     }
 
