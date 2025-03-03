@@ -141,8 +141,9 @@
   @media (max-width: 600px) {
     #write-form {
       flex-direction: column;
-      position: absolute;
-      bottom:30px
+      top: 60px;
+      height: 100%;
+      padding-bottom: 20px;
     }
     
     /* .search-controls label, .search-controls input, .search-controls button {

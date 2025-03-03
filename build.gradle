@@ -37,6 +37,8 @@ dependencies {
     implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    // Thumbnailator
+    implementation 'net.coobird:thumbnailator:0.4.14'
 
     //이메일
 //    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'

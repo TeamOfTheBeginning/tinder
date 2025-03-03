@@ -34,6 +34,7 @@
 }
 
 .profileImg {
+    display: flex;
     position: absolute; /* 절대 위치 */
     top: 40px; /* MenuBar 안에서 위쪽에 고정 */
     border-radius: 50%;
@@ -44,6 +45,8 @@
 }
 .profileImg img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* 개별 버튼 스타일 */
