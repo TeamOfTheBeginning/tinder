@@ -34,6 +34,9 @@ async function imgUpload(e) {
       // ✅ 파일 업로드 요청
       const results = await uploadMultipleFiles(validFiles, "/api/post/fileupload");
 
+      console.log("results"+results)
+      console.log("JSON.stringify(results.data)"+JSON.stringify(results))
+
       if (!results || results.length === 0) {
           alert("파일 업로드에 실패했습니다.");
           return;
@@ -41,14 +44,14 @@ async function imgUpload(e) {
 
       // ✅ 파일 URL 설정 (동영상 & 이미지 구분)
       const newSrcs = results
-          .filter(result => result && result.filename)
+          .filter(result => result && result.originalfilename)
           .map(result => ({
-              url: `http://localhost:8070/userimg/${result.filename}`,
-              type: result.filename.split(".").pop().toLowerCase(),
+              url: `https://tinderfile.s3.ap-northeast-2.amazonaws.com/${result.originalfilename}`,
+              type: result.originalfilename.split(".").pop().toLowerCase(),
           }));
 
       setImgSrcs(prev => [...prev, ...newSrcs].slice(0, 10));
-      setImgList(prev => [...prev, ...results.map(r => r.filename)].slice(0, 10));
+      setImgList(prev => [...prev, ...results.map(r => r.originalfilename)].slice(0, 10));
 
   } catch (error) {
       console.error("파일 업로드 오류:", error);

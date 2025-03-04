@@ -7,6 +7,7 @@ import com.first.tinder.entity.Images;
 import com.first.tinder.entity.Post;
 import com.first.tinder.entity.PostLikes;
 import com.first.tinder.service.PostService;
+import com.first.tinder.service.S3UploadService;
 import jakarta.servlet.ServletContext;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FilenameUtils;
@@ -82,6 +83,29 @@ public class PostController {
         result.put("filename", filename);
         return result;
     }
+
+    //아마존 업로드
+//    @Autowired
+//    S3UploadService sus;
+//
+//    @PostMapping("/fileupload")
+//    public HashMap<String, Object> fileupload( @RequestParam("file") MultipartFile file){
+//
+//        HashMap<String, Object> result = new HashMap<String, Object>();
+//        System.out.println("file"+file);
+//        String originalfilename = file.getOriginalFilename();
+//
+//        try {
+//            String uploadFilePathName =sus.saveFile(file);
+//            System.out.println("originalfilename"+originalfilename);
+//            System.out.println("uploadFilePathName"+uploadFilePathName);
+//            result.put("originalfilename", originalfilename);
+//            result.put("filename",uploadFilePathName);
+//        } catch (IllegalStateException | IOException e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
 
 
     @PostMapping("/writePost")

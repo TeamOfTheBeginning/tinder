@@ -6,6 +6,7 @@ import '../../style/login.css';
 import { IoCreateOutline } from "react-icons/io5";
 import AddressModal from './AddressModal';
 
+import axios from 'axios';
 import jaxios from '../../util/jwtUtil';
 
 const JoinForm = () => {
@@ -117,10 +118,10 @@ const JoinForm = () => {
     async function fileUpload(e){
         const formData = new FormData();
         formData.append('image',  e.target.files[0]);
-        const result = await jaxios.post('/api/member/fileupload', formData);
+        const result = await axios.post('/api/member/fileupload', formData);
         console.log(result); // 응답 데이터 확인
         console.log(result.data); // result.data가 실제로 존재하는지 확인
-        setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
+        setImgSrc(`https://tinderfile.s3.ap-northeast-2.amazonaws.com/${result.data.originalfilename}`);
         setImgStyle({display:"block", width:"200px"});
         setProfileimg(result.data.filename)
     }
