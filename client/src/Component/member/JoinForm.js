@@ -82,22 +82,22 @@ const JoinForm = () => {
         console.log(latitude)
         console.log(address)
         if(!adultVerification){ return alert('성인인증을 해주세요')}
-        if(email==''){ return alert('이메일을 입력하세요');}
-        if(pwd==''){ return alert('패스워드를 입력하세요');}
+        if(email===''){ return alert('이메일을 입력하세요');}
+        if(pwd===''){ return alert('패스워드를 입력하세요');}
         if(pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
-        if(nickname==''){ return alert('닉네임을 입력하세요');}
+        if(nickname===''){ return alert('닉네임을 입력하세요');}
         // if(age<18){return alert('만 18세 이상만 가입 가능합니다');}
         try{
             let result = await jaxios.post('/api/member/emailcheck', null, {params:{email}} );
-            if(result.data.msg == 'no' ){
+            if(result.data.msg === 'no' ){
                 return alert('이메일이 중복됩니다');
             }
             result = await jaxios.post('/api/member/nicknamecheck', null, {params:{nickname}} );
-            if(result.data.msg == 'no' ){
+            if(result.data.msg === 'no' ){
                 return alert('닉네임이 중복됩니다');
             }
             result = await jaxios.post('/api/member/join', {email, pwd, age, gender, nickname, memberName, phone, birthDate , address, latitude, longitude, profileMsg : intro, profileImg :profileimg, zipnum});
-            if(result.data.msg =='ok'){
+            if(result.data.msg ==='ok'){
                 alert('회원 가입이 완료되었습니다. 로그인하세요');
                 window.location.reload();
             }
@@ -209,14 +209,14 @@ const JoinForm = () => {
             <div className='joinform'>
                 <div className='field'>
                     <label className="hidden">NAME</label>
-                    <input type="text" placeholder="이름" value={memberName} onChange={(e)=>{setNickname(e.currentTarget.value)}} readOnly/>
+                    <input type="text" name='unsername' placeholder="이름" value={memberName} onChange={(e)=>{setMemberName(e.currentTarget.value)}} readOnly/>
                 </div>
 
                 <div className='field flex-row'>
                     <div className='gender'>
                     <label className="hidden">GENDER</label>
                         {/* 인증시 받아오는 경우 */}
-                        <input type="text" placeholder="성별"
+                        <input type="text" name='gender' placeholder="성별"
                         value={gender === "" || gender === null || gender === undefined ? "" : gender === 0 ? "남성" : "여성"}
                         readOnly
                     />
@@ -227,6 +227,7 @@ const JoinForm = () => {
                         {/* 수정 불가능 하게 할 경우 */}
                         <input
                             type="text" // type을 date로 변경
+                            name='birthdate'
                             placeholder="생년월일"
                             value={birthDate}
                             required
@@ -236,28 +237,28 @@ const JoinForm = () => {
 
                 <div className='field'>
                     <label className="hidden">PHONE</label>
-                    <input type="text" placeholder="전화번호" value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}} readOnly/>
+                    <input type="text" name='phone' placeholder="전화번호" value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}} readOnly/>
                 </div>
                 <div className='field'>
                     <label className="hidden">E-MAIL</label>
-                    <input type="text" placeholder="E-MAIL (로그인 시 아이디로 사용됩니다.)" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
+                    <input type="text" name='email' placeholder="E-MAIL (로그인 시 아이디로 사용됩니다.)" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
                 </div>
                 <div className='field'>
                     <label className="hidden">PASSWORD</label>
-                    <input type="password" placeholder="비밀번호" value={pwd} onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
+                    <input type="password" name='password' placeholder="비밀번호" value={pwd} onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
                 </div>
                 <div className='field'>
                     <label className="hidden">RETYPE PW</label>
-                    <input type="password" placeholder="비밀번호 확인" value={pwdChk} onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
+                    <input type="password" name='pwdchk' placeholder="비밀번호 확인" value={pwdChk} onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
                 </div>
                 <div className='field'>
                     <label className="hidden">NICKNAME</label>
-                    <input type="text" placeholder="닉네임" value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
+                    <input type="text" name='nickname' placeholder="닉네임" value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
                 </div>
                 <div className='field flex-row'>
                     <div className='zipnum'>
                         <label className="hidden">ZIPNUM</label>
-                        <input type="text" value={zipnum} readOnly placeholder="우편번호" />
+                        <input type="text" name='zipnum' value={zipnum} readOnly placeholder="우편번호" />
                     </div>
                     <div className='login-btn' onClick={() => setIsAddressModalOpen(true)}>
                         <label>주소 검색</label>
@@ -266,20 +267,20 @@ const JoinForm = () => {
                 </div>
                 <div className='field'>
                     <label className="hidden">ADDRESS</label>
-                    <input type="text" value={address} readOnly placeholder="주소" />
+                    <input type="text" name='address' value={address} readOnly placeholder="주소" />
 
                 </div>
                 <div className='field'>
                     <label className="hidden">INTRO</label>
-                    <input type="text" placeholder="한마디" value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
+                    <input type="text" name='intro' placeholder="한마디" value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
                 </div>
                 <div className='field'>
                     <label className="hidden">PROFILE IMG</label>
-                    <input type="file" accept=".jpg,.jpeg,.png,.gif" onChange={(e)=>{fileUpload(e)}}/>
+                    <input type="file" name='profileimg' accept=".jpg,.jpeg,.png,.gif" onChange={(e)=>{fileUpload(e)}}/>
                 </div>
                 <div className='field'>
                     <label className="hidden">Profile img preview</label>
-                    <div><img src={imgSrc} style={imgStyle} /></div>
+                    <div><img alt='previmg' src={imgSrc} style={imgStyle} /></div>
                 </div>
                 <AddressModal
                     isOpen={isAddressModalOpen}
