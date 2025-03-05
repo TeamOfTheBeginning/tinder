@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 // import axios from 'axios';
@@ -8,26 +8,26 @@ import SockJS from 'sockjs-client';
 import RealtimeConnectInfo from './realtimeconnectinfo/RealtimeConnectInfo';
 
 // 아이콘 import
-import { IoHomeSharp, IoSparkles, IoSearch, IoLogOut } from "react-icons/io5";
-import { MdOutlineAddPhotoAlternate } from "react-icons/md";
-import { TbMailHeart } from "react-icons/tb";
-import { IoClose } from "react-icons/io5";
-import { FaRandom } from "react-icons/fa";
-import { HiOutlineChatAlt2 } from "react-icons/hi";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { IoHomeSharp, IoSparkles, IoSearch, IoLogOut } from 'react-icons/io5';
+import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
+import { TbMailHeart } from 'react-icons/tb';
+import { IoClose } from 'react-icons/io5';
+import { FaRandom } from 'react-icons/fa';
+import { HiOutlineChatAlt2 } from 'react-icons/hi';
+import { FaMapMarkerAlt } from 'react-icons/fa';
 // page import
-import WritePost from "./post/WritePost";
-import Match from "./match/Match";
+import WritePost from './post/WritePost';
+import Match from './match/Match';
 import FindLiker from './match/FindLiker';
 import MatchedMember from './match/MatchedMember';
 import FindChatGroupRandom from './chat/FindChatGroupRandom';
-import FindChatGroup from "./chat/FindChatGroup";
-import ChatRoomFromMatch from "./chat/ChatRoomFromMatch"
-import ChatRoomFromChatGroup from "./chat/ChatRoomFromChatGroup";
-import ChatRoomFromRandom from "./chat/ChatRoomFromRandom";
-import RealTimeChat from "./realtimechat/RealTimeChat";
-import MyPage from "./member/MyPage";
-import Search from "./search/Search";
+import FindChatGroup from './chat/FindChatGroup';
+import ChatRoomFromMatch from './chat/ChatRoomFromMatch';
+import ChatRoomFromChatGroup from './chat/ChatRoomFromChatGroup';
+import ChatRoomFromRandom from './chat/ChatRoomFromRandom';
+import RealTimeChat from './realtimechat/RealTimeChat';
+import MyPage from './member/MyPage';
+import Search from './search/Search';
 import EditProfile from './member/EditProfile';
 import EditOpponent from './member/EditOpponent';
 import NearMember from './member/NearMember';
@@ -35,14 +35,14 @@ import NearMember from './member/NearMember';
 import '../style/sidebar.css';
 
 import jaxios from '../util/jwtUtil';
-import { setCookie1 , getCookie1 , removeCookie1} from "../util/cookieUtil2";
+import { setCookie1 , getCookie1 , removeCookie1} from '../util/cookieUtil2';
 
 //웹소켓 경로 관련
-const isLocalhost = window.location.hostname === "localhost" ;
-// || window.location.hostname === "127.0.0.1";
+const isLocalhost = window.location.hostname === 'localhost' ;
+// || window.location.hostname === '127.0.0.1';
 
 const API_BASE_URL = isLocalhost
-  ? "http://localhost:8070" // 로컬 개발 환경
+  ? 'http://localhost:8070' // 로컬 개발 환경
   : `http://${window.location.hostname}:8070`; // 클라이언트가 실행 중인 네트워크 기반으로 서버 IP 설정
 
 const SOCKET_URL = `${API_BASE_URL}/ws_real_chat`;
@@ -74,7 +74,7 @@ const SideBar = (props) => {
   // 서브 메뉴 클릭 핸들러
   const handleSubMenuClick = (menu, chatGroupId) => {
     setSubMenu(menu);  // 서브메뉴 이름 변경
-    // console.log("chatGroupId"+chatGroupId)
+    // console.log('chatGroupId'+chatGroupId)
     setSubMenuData(chatGroupId);  // chatGroupId 값 설정
 
 };
@@ -89,19 +89,19 @@ useEffect(() => {
 
 const closeSideViewer = () => {
   if (selectedMenuRef.current === 'findChatGroupRandom' && subMenuRef.current === 'chatRoomFromRandom') {
-    const isConfirmed = window.confirm("정말 나가시겠습니까? 진행 중인 대화가 사라집니다.");
+    const isConfirmed = window.confirm('정말 나가시겠습니까? 진행 중인 대화가 사라집니다.');
     if (!isConfirmed) {return}
     else{
-      console.log("subMenuData"+subMenuData)
+      console.log('subMenuData'+subMenuData)
 
       jaxios.post(`/api/chat/setChatRoomDeactivated`, null, {
         params: { chatGroupId:subMenuData }
       })
       .then((res) => {
-          if (res.data.result === "yes") {
-              alert("채팅방이 종료됩니다.");
+          if (res.data.result === 'yes') {
+              alert('채팅방이 종료됩니다.');
           } else {
-              alert("오류발생.");
+              alert('오류발생.');
           }
       })
       .catch((err) => console.error(err));
@@ -149,13 +149,13 @@ const closeSideViewer = () => {
 
           // 서버로부터 접속자 수 업데이트를 실시간으로 받기 위해 구독
           stompClient.subscribe('/topic/real_chat/userCount', (message) => {
-            // console.log("Received message:", message.body);
+            // console.log('Received message:', message.body);
 
             const parsedMessage = JSON.parse(message.body);
 
-            // console.log("parsedMessage"+parsedMessage)
+            // console.log('parsedMessage'+parsedMessage)
 
-            // console.log("parsedMessage.userCount"+parsedMessage.userCount)
+            // console.log('parsedMessage.userCount'+parsedMessage.userCount)
 
             const userCount = Number(parsedMessage.userCount);
 
@@ -216,9 +216,9 @@ const closeSideViewer = () => {
     <div className='MenuBar'>
       <RealtimeConnectInfo />
       <div className='MenubarBtns'>
-        <div data-ignore-click="true" className={`profileImg ${selectedMenu === 'mypage' ? 'active' : ''}`} 
+        <div data-ignore-click='true' className={`profileImg ${selectedMenu === 'mypage' ? 'active' : ''}`} 
         onClick={() => handleMenuClick('mypage')}>
-          <img src={profileImg} alt="Profile" />
+          <img src={profileImg} alt='Profile' />
         </div>
 
         <div className='sidebar-btn' 

@@ -20,11 +20,11 @@ import { SiOutline } from 'react-icons/si';
 import jaxios from '../util/jwtUtil'
 
 //웹소켓 경로 관련
-const isLocalhost = window.location.hostname === "localhost" ;
-// || window.location.hostname === "127.0.0.1";
+const isLocalhost = window.location.hostname === 'localhost' ;
+// || window.location.hostname === '127.0.0.1';
 
 const API_BASE_URL = isLocalhost
-  ? "http://localhost:8070" // 로컬 개발 환경
+  ? 'http://localhost:8070' // 로컬 개발 환경
   : `http://${window.location.hostname}:8070`; // 클라이언트가 실행 중인 네트워크 기반으로 서버 IP 설정
 
 const SOCKET_URL = `${API_BASE_URL}/ws_real_chat`;
@@ -90,7 +90,7 @@ const Login = () => {
 
                 const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:result.data.memberId}});
 
-                // console.log("JSON.stringify(res.data.loginUser)"+JSON.stringify(res.data.loginUser))
+                // console.log('JSON.stringify(res.data.loginUser)'+JSON.stringify(res.data.loginUser))
 
                 res.data.loginUser.accessToken=accessToken;
                 res.data.loginUser.refreshToken=refreshToken;
@@ -117,7 +117,7 @@ const Login = () => {
                 // console.log('result.data.memberId'+result.data.memberId)
                 // console.log('result.data.nickname'+result.data.nickname)
 
-                handleJoin(result.data.memberId)
+                handleJoin(result.data.memberId);
                 localStorage.setItem('nickname', result.data.nickname);
                 
                 // 로그인 성공 상태 활성화
@@ -226,65 +226,73 @@ const Login = () => {
                 ) : null
             ) : (
                 <div className='loginform-header'>
-                <RealtimeConnectInfo />
-                <div className='toggle-btns'>
-                    <button
-                        className={`toggle-btn ${!isSignUp ? 'active' : ''}`}
-                        onClick={() => setIsSignUp(false)}
-                    >
-                        LOGIN
-                    </button>
-                    <button
-                        className={`toggle-btn ${isSignUp ? 'active' : ''}`}
-                        onClick={() => setIsSignUp(true)}
-                    >
-                        JOIN
-                    </button>
-                    <button id='kakao' onClick={() => {
-                        window.location.href = 'http://localhost:8070/member/kakaoStart';
-                    }}>KAKAO LOGIN</button>
-                </div>
-
-                <div className='loginContent'>
-                    <div className='loginform'>
-                        {!isSignUp ? (
-                            <div className='signin'>
-                                <div className='field'>
-                                    <label className='hidden'>E-MAIL</label>
-                                    <input
-                                        type='text'
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        placeholder='E-MAIL'
-                                    />
-                                </div>
-                                <div className='field'>
-                                    <label className='hidden'>PASSWORD</label>
-                                    <input
-                                        type='password'
-                                        value={pwd}
-                                        onChange={(e) => setPwd(e.target.value)}
-                                        placeholder='PASSWORD'
-                                    />
-                                </div>
-                                <div className='login-btns'>
-                                    <div className='login-btn' onClick={onLoginLocal}>
-                                        <IoLogIn />
-                                        &nbsp;LOGIN
+                    <RealtimeConnectInfo />
+                    <div className='toggle-btns'>
+                        <button
+                            className={`toggle-btn ${!isSignUp ? 'active' : ''}`}
+                            onClick={() => setIsSignUp(false)}
+                        >
+                            LOGIN
+                        </button>
+                        <button
+                            className={`toggle-btn ${isSignUp ? 'active' : ''}`}
+                            onClick={() => setIsSignUp(true)}
+                        >
+                            JOIN
+                        </button>
+                        <button id='kakao' onClick={() => {
+                            window.location.href = 'http://localhost:8070/member/kakaoStart';
+                        }}>KAKAO LOGIN</button>
+                    </div>
+    
+                    <div className='loginContent'>
+                        <div className='loginform'>
+                            <form onSubmit={onLoginLocal}>
+                                {!isSignUp ? (
+                                    <div className='signin'>
+                                        <div className='field'>
+                                            <label className='hidden'>E-MAIL</label>
+                                            <input
+                                                type='text'
+                                                name='email'
+                                                autoComplete='email'
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                placeholder='E-MAIL'
+                                            />
+                                        </div>
+                                        <div className='field'>
+                                            <label className='hidden'>PASSWORD</label>
+                                            <input
+                                                type='password'
+                                                value={pwd}
+                                                name='password'
+                                                autoComplete='current-password'
+                                                onChange={(e) => setPwd(e.target.value)}
+                                                placeholder='PASSWORD'
+                                            />
+                                        </div>
+                                        <div className='login-btns'>
+                                            <button type='submit' className='login-btn'>
+                                                <IoLogIn />
+                                                &nbsp;LOGIN
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className='signup'>
-                                <JoinForm onCancel={() => setIsSignUp(false)} />
-                            </div>
-                        )}
+                                ) : (
+                                    <div className='signup'>
+                                        <JoinForm onCancel={() => setIsSignUp(false)} />
+                                    </div>
+                                )}
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )}
-    </div>
-);
+            )}
+        </div>
+    );
+    
+    
 };
 
 export default Login;
