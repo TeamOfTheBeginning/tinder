@@ -89,7 +89,9 @@ const JoinForm = (props) => {
         if(pwd===''){ return alert('패스워드를 입력하세요');}
         if(pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
         if(nickname===''){ return alert('닉네임을 입력하세요');}
-        // if(age<18){return alert('만 18세 이상만 가입 가능합니다');}
+        if(zipnum==''||address==''){ return alert('주소 검색을 하세요');}
+        if(profileimg==''){ return alert('프로필 이미지를 업로드 하세요');}
+
         try{
             let result = await axios.post('/api/member/emailcheck', null, {params:{email}} );
             if(result.data.msg === 'no' ){

@@ -65,7 +65,8 @@ const Main = () => {
     const clientHeight = document.documentElement.clientHeight; // 내용물의 크기
     if( scrollTop + clientHeight >= scrollHeight ) {
         // console.log('handleScroll'+pageable.pageNumber + 1)
-        onPageMove( pageable.pageNumber + 1 );
+        if(pageable.pageNumber){onPageMove( pageable.pageNumber + 1 );}
+        
     }
     }
 

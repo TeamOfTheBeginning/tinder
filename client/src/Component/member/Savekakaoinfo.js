@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import DaumPostcode from 'react-daum-postcode';
 import * as PortOne from "@portone/browser-sdk/v2";
-import '../../style/login.css';
+import '../../style/member/savekakaoinfo.css';
 import { IoCreateOutline } from "react-icons/io5";
 import AddressModal from './AddressModal';
+
+import Loading from '../Loading';
 
 import { useSearchParams } from "react-router-dom";
 
@@ -21,6 +23,7 @@ import { LuActivity } from 'react-icons/lu';
 const Savekakaoinfo = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [showModal, setShowModal] = useState(false);
     // const cookies = new Cookies()
 
     // useEffect(() => {
@@ -34,80 +37,85 @@ const Savekakaoinfo = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['claims']);  // 쿠키 이름 배열로 전달
   const [claims, setClaims] = useState(null);
 
-  useEffect(() => {
-    // 'claims' 쿠키가 존재하면 상태에 저장
-    if (cookies.claims) {
-      let claimsObj;
-  
-      // 쿠키 값이 문자열이라면 JSON 파싱
-      if (typeof cookies.claims === 'string') {
-        try {
-          claimsObj = JSON.parse(decodeURIComponent(cookies.claims));  // 쿠키 데이터 디코딩 및 파싱
-          console.log(claimsObj);  // claims 객체를 출력
-        } catch (error) {
-          console.error("JSON 파싱 오류:", error);
-          return;
+    useEffect(() => {
+        // 'claims' 쿠키가 존재하면 상태에 저장
+        if (cookies.claims) {
+        let claimsObj;
+    
+        // 쿠키 값이 문자열이라면 JSON 파싱
+        if (typeof cookies.claims === 'string') {
+            try {
+            claimsObj = JSON.parse(decodeURIComponent(cookies.claims));  // 쿠키 데이터 디코딩 및 파싱
+            console.log(claimsObj);  // claims 객체를 출력
+            } catch (error) {
+            console.error("JSON 파싱 오류:", error);
+            return;
+            }
+        } else {
+            // console.log("이미 객체")
+            // 이미 객체라면 바로 사용
+            claimsObj = cookies.claims;
         }
-      } else {
-        console.log("이미 객체")
-        // 이미 객체라면 바로 사용
-        claimsObj = cookies.claims;
-      }
-      setClaims(claimsObj);  // 상태에 claims 저장
+        setClaims(claimsObj);  // 상태에 claims 저장
 
-    setCookie1('user', JSON.stringify(claimsObj), 1);
-    dispatch(loginAction(claimsObj));
+        // alert("사용자 정보를 입력해주세요(최초 1회)")
 
-    let accessToken = claimsObj.accessToken;
-    let refreshToken = claimsObj.refreshToken;
+        setCookie1('user', JSON.stringify(claimsObj), 1);
+        dispatch(loginAction(claimsObj));
 
-    console.log("accessToken"+accessToken)
-    console.log("claimsObj.nickname"+claimsObj.nickname)
-    
-    if(claimsObj.nickname&&claimsObj.zipnum&&claimsObj.birthDate){
+        let accessToken = claimsObj.accessToken;
+        let refreshToken = claimsObj.refreshToken;
 
-        alert("로그인 완료. 메인페이지로 이동합니다.")      
-            
-        console.log("claimsObj.memberId"+claimsObj.memberId)
-        jaxios.get(`/api/member/getLoginUser`, { params: { memberId:claimsObj.memberId } })
-        .then((result) => {
-
-        console.log("result.data.loginUser"+result.data.loginUser)
-        console.log("accessToken2"+accessToken)
-
-        result.data.loginUser.accessToken = accessToken;
-        result.data.loginUser.refreshToken = refreshToken;
-
-        setCookie1('user', JSON.stringify(result.data.loginUser) , 1)
-        dispatch( loginAction( result.data.loginUser ) )
+        // console.log("accessToken"+accessToken)
+        // console.log("claimsObj.nickname"+claimsObj.nickname)
         
-        const lUser = result.data.loginUser;
-        lUser['follower'] = result.data.follower;
-        lUser['followed'] = result.data.followed;
-    
-        dispatch(setFollower(result.data.follower));
-        dispatch(setFollowed(result.data.followed));
-    
-        setCookie('follower', JSON.stringify(result.data.follower), { path: '/' });
-        setCookie('followed', JSON.stringify(result.data.followed), { path: '/' });
+        if(claimsObj.nickname&&claimsObj.zipnum&&claimsObj.birthDate){
+            setShowModal(true);  // ✅ 배경을 어둡게 만드는 모달 표시
 
-        setTimeout(() => {
-            navigate('/main');
-        }, 200);
-        }).catch((err) => { console.error(err) });  
-    }
+            // alert("로그인 완료. 메인페이지로 이동합니다.")      
+                
+            console.log("claimsObj.memberId"+claimsObj.memberId)
+            jaxios.get(`/api/member/getLoginUser`, { params: { memberId:claimsObj.memberId } })
+            .then((result) => {
 
-      
-    } else {
-      console.log("쿠키에 claims 데이터가 없습니다.");
-    }
-  }, []);  // 쿠키가 변경될 때마다 effect 실행
+            // console.log("result.data.loginUser"+result.data.loginUser)
+            // console.log("accessToken2"+accessToken)
+
+            result.data.loginUser.accessToken = accessToken;
+            result.data.loginUser.refreshToken = refreshToken;
+
+            setCookie1('user', JSON.stringify(result.data.loginUser) , 1)
+            dispatch( loginAction( result.data.loginUser ) )
+            
+            const lUser = result.data.loginUser;
+            lUser['follower'] = result.data.follower;
+            lUser['followed'] = result.data.followed;
+        
+            dispatch(setFollower(result.data.follower));
+            dispatch(setFollowed(result.data.followed));
+        
+            setCookie('follower', JSON.stringify(result.data.follower), { path: '/' });
+            setCookie('followed', JSON.stringify(result.data.followed), { path: '/' });
+
+            setIsLoginSuccess(true);
+
+            // setTimeout(() => {
+                // navigate('/main');
+            // }, 200);
+            }).catch((err) => { console.error(err) });  
+        }
+
+        
+        } else {
+        console.log("쿠키에 claims 데이터가 없습니다.");
+        }
+    }, []);  // 쿠키가 변경될 때마다 effect 실행
   
 
 
-    const [email, setEmail] = useState('')
-    const [pwd, setPwd] = useState('')
-    const [pwdChk, setPwdChk ] = useState('')
+    // const [email, setEmail] = useState('')
+    // const [pwd, setPwd] = useState('')
+    // const [pwdChk, setPwdChk ] = useState('')
     const [memberName,setMemberName] = useState('')
     const [nickname, setNickname] = useState('')
     const [gender, setGender] = useState('')
@@ -178,18 +186,23 @@ const Savekakaoinfo = () => {
         console.log(address)
         if(!adultVerification){ return alert('성인인증을 해주세요')}
         if(nickname==''){ return alert('닉네임을 입력하세요');}
+        if(zipnum==''||address==''){ return alert('주소 검색을 하세요');}
+        if(profileimg==''){ return alert('프로필 이미지를 업로드 하세요');}
+        
         try{            
             let result = await axios.post('/api/member/nicknamecheck', null, {params:{nickname}} );
             if(result.data.msg == 'no' ){
                 return alert('닉네임이 중복됩니다');
             }
             console.log({
-                memberId: claims.memberId, email:claims.email, pwd, age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
+                memberId: claims.memberId, email:claims.email, age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
               })            
             result = await jaxios.post('/api/member/update', {
-              memberId: claims.memberId, email:claims.email, pwd, age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
+              memberId: claims.memberId, email:claims.email, pwd:'a',age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
             });
-            alert("가입완료. 2초 후에 메인페이지로 이동합니다.")      
+
+            alert("가입완료.")      
+
             jaxios.get(`/api/member/getLoginUser`, { params: { memberId:claims.memberId } })
             .then((result) => {
 
@@ -218,14 +231,23 @@ const Savekakaoinfo = () => {
             // localStorage.setItem('nickname', result.data.nickname);         
       
             // 2초 후에 /main으로 이동
-            setTimeout(() => {
-                navigate('/main');
-            }, 2000);
+            // setTimeout(() => {
+            //     navigate('/main');
+            // }, 2000);
+
+            setIsLoginSuccess(true);
 
             }).catch((err) => { console.error(err) });  
         }catch(err){  console.error(err);     }
     }
-    
+
+    const handleLoadingComplete = () => {
+        navigate('/main'); // 메인 페이지로 이동
+        setLoadingComplete(true);
+    };
+
+    const [isLoginSuccess, setIsLoginSuccess] = useState(false);
+    const [loadingComplete, setLoadingComplete] = useState(false);
 
     async function fileUpload(e){
         const formData = new FormData();
@@ -233,7 +255,7 @@ const Savekakaoinfo = () => {
         const result = await axios.post('/api/member/fileupload', formData);
         console.log(result); // 응답 데이터 확인
         console.log(result.data); // result.data가 실제로 존재하는지 확인
-        setImgSrc(`https://tinderfile.s3.ap-northeast-2.amazonaws.com/${result.data.originalfilename}`);
+        setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
         setImgStyle({display:"block", width:"200px"});
         setProfileimg(result.data.filename)
     }
@@ -371,8 +393,20 @@ const Savekakaoinfo = () => {
     }, [identityVerificationId, code, message]);
 
     return (
-
+    <div>
+{isLoginSuccess?(!loadingComplete ? (
+                    <Loading onComplete={handleLoadingComplete} />
+                ) : null)
+:
+(<>
 <div className='join-container'>
+    {showModal && (
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <p>로그인 중입니다...</p>
+            </div>
+        </div>
+    )}
             <div className='login-btns'>
                 <div className="login-btn" onClick={ ()=>{   handleIdentityVerification()    }  }>성인인증</div>
             </div>
@@ -454,9 +488,9 @@ const Savekakaoinfo = () => {
 
 
 
+        </>)}
 
-
-        
+        </div>
 
     )
 }
