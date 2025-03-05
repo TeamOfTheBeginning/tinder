@@ -48,18 +48,6 @@ const Login = () => {
         setTimeout(() => navigate('/main'), 6500); // 메인 페이지로 이동
     };
 
-    useEffect(() => {
-        // 리디렉션 이후에 sessionStorage에서 값을 읽어 복구
-        const isSignUp = sessionStorage.getItem("isSignUp");
-
-
-        if (isSignUp) {
-            // console.log("Login isSignUp")
-            setIsSignUp(true);
-            // 추가 처리
-        }
-    }, []);
-
     async function onLoginLocal(){
         if( !email ){ return alert('이메일을 입력하세요')}
         if( !pwd ){ return alert('비밀번호를 입력하세요')}
@@ -256,55 +244,50 @@ const Login = () => {
                             window.location.href = 'http://localhost:8070/member/kakaoStart';
                         }}>KAKAO LOGIN</button>
                     </div>
-
+    
                     <div className='loginContent'>
                         <div className='loginform'>
-                            <form onSubmit={onLoginLocal}>
-                                {!isSignUp ? (
-                                    <div className='signin'>
-                                        <div className='field'>
-                                            <label className='hidden'>E-MAIL</label>
-                                            <input
-                                                type='text'
-                                                name='email'
-                                                autoComplete='email'
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
-                                                placeholder='E-MAIL'
-                                            />
-                                        </div>
-                                        <div className='field'>
-                                            <label className='hidden'>PASSWORD</label>
-                                            <input
-                                                type='password'
-                                                value={pwd}
-                                                name='password'
-                                                autoComplete='current-password'
-                                                onChange={(e) => setPwd(e.target.value)}
-                                                placeholder='PASSWORD'
-                                            />
-                                        </div>
-                                        <div className='login-btns'>
-                                            <button type='submit' className='login-btn'>
-                                                <IoLogIn />
-                                                &nbsp;LOGIN
-                                            </button>
+                            {!isSignUp ? (
+                                <div className='signin'>
+                                    <div className='field'>
+                                        <label className='hidden'>E-MAIL</label>
+                                        <input
+                                            type='text'
+                                            name='email'
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder='E-MAIL'
+                                        />
+                                    </div>
+                                    <div className='field'>
+                                        <label className='hidden'>PASSWORD</label>
+                                        <input
+                                            type='password'
+                                            value={pwd}
+                                            name='password'
+                                            onChange={(e) => setPwd(e.target.value)}
+                                            placeholder='PASSWORD'
+                                        />
+                                    </div>
+                                    <div className='login-btns'>
+                                        <div className='login-btn' onClick={onLoginLocal}>
+                                            <IoLogIn />
+                                            &nbsp;LOGIN
                                         </div>
                                     </div>
-                                ) : (
-                                    <div className='signup'>
-                                        <JoinForm onCancel={() => setIsSignUp(false)} />
-                                    </div>
-                                )}
-                            </form>
+                                </div>
+                            ) : (
+                                <div className='signup'>
+                                    <JoinForm onCancel={() => setIsSignUp(false)} />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
             )}
         </div>
     );
-
-
+    
 };
 
 export default Login;
