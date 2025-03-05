@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FiX } from "react-icons/fi";
-import { FcCustomerSupport } from "react-icons/fc";
+import { FiX } from 'react-icons/fi';
+import { FcCustomerSupport } from 'react-icons/fc';
 
 import SideBar from './SideBar';
 import Post from './post/Post';
@@ -44,7 +44,7 @@ const Main = () => {
 
     const toggleChatbot = () => {
         if (!isChatbotOpen) {
-            setChatMessages([{ role: "assistant", content: "안녕하세요! 무엇을 도와드릴까요?" }]);
+            setChatMessages([{ role: 'assistant', content: '안녕하세요! 무엇을 도와드릴까요?' }]);
         }
         setIsChatbotOpen(!isChatbotOpen);
     };
@@ -53,7 +53,7 @@ const Main = () => {
         ()=>{
             window.addEventListener('scroll', handleScroll );
             return () => {
-                window.removeEventListener("scroll", handleScroll);
+                window.removeEventListener('scroll', handleScroll);
             }
         }
     )
@@ -64,7 +64,7 @@ const Main = () => {
     const scrollTop = document.documentElement.scrollTop;  // 현재 위치
     const clientHeight = document.documentElement.clientHeight; // 내용물의 크기
     if( scrollTop + clientHeight >= scrollHeight ) {
-        // console.log("handleScroll"+pageable.pageNumber + 1)
+        // console.log('handleScroll'+pageable.pageNumber + 1)
         onPageMove( pageable.pageNumber + 1 );
     }
     }
@@ -91,12 +91,12 @@ const Main = () => {
     };
 
     async function onPageMove( page ){
-        // console.log("pageable.pageNumber"+pageable.pageNumber)
+        // console.log('pageable.pageNumber'+pageable.pageNumber)
         jaxios.get(`/api/post/getPostList`, {params:{page:page,word:hashtag}})
         .then((result)=>{
         // console.log(result.data.postList2.pageable.pageNumber)
         setPageable( result.data.postList2.pageable );
-        // console.log("result.data.postList2.pageable.pageNumber"+result.data.postList2.pageable.pageNumber)
+        // console.log('result.data.postList2.pageable.pageNumber'+result.data.postList2.pageable.pageNumber)
         // let posts = [];
         // // posts = [...postList];
         // posts = [...result.data.postList2.content ];
@@ -125,10 +125,10 @@ const Main = () => {
     }
 
     useEffect(() => {
-        // console.log("Updated hashtag:", hashtag);
+        // console.log('Updated hashtag:', hashtag);
         jaxios.get(`/api/post/getPostList`, { params: { word:hashtag, page: 0 } })
             .then((result) => {
-                // console.log("result.data.postList2")
+                // console.log('result.data.postList2')
                 // console.log(JSON.stringify(result.data.postList2.content))
                 // console.log(JSON.stringify(result.data.postList2.pageable))
                 setPostList(result.data.postList2.content);
@@ -166,33 +166,33 @@ const Main = () => {
 
         if (clickY >= windowHeight - 100) {
             if (pageable?.pageNumber !== undefined) { // 🔥 undefined 방지
-                // console.log("handleClick"+pageable.pageNumber + 1)
+                // console.log('handleClick'+pageable.pageNumber + 1)
                 onPageMove(pageable.pageNumber + 1);
             }
-            // window.scrollBy({ top: windowHeight, behavior: "smooth" });
+            // window.scrollBy({ top: windowHeight, behavior: 'smooth' });
         } else if (clickY <= 100) {
             if (pageable?.pageNumber !== undefined) { // 🔥 undefined 방지
-                // console.log("handleClick"+pageable.pageNumber - 1)
+                // console.log('handleClick'+pageable.pageNumber - 1)
                 onPageMove(pageable.pageNumber - 1);
             }
             // setPageable((prev) => ({ pageNumber: Math.max(prev.pageNumber - 1, 0) }));
-            // window.scrollBy({ top: -windowHeight, behavior: "smooth" });
+            // window.scrollBy({ top: -windowHeight, behavior: 'smooth' });
         }
         
         // 📌 페이지 변경 후 비디오 상태 업데이트
         setTimeout(handleVideoPlayPause, 500); // 스크롤 후 실행
         };
 
-        document.addEventListener("click", handleClick);
+        document.addEventListener('click', handleClick);
         return () => {
-        document.removeEventListener("click", handleClick);
+        document.removeEventListener('click', handleClick);
         };
     }, [pageable]);
 
     // 📌 스크롤 이벤트 추가 → 스크롤 시에도 비디오 관리
     useEffect(() => {
-        window.addEventListener("scroll", handleVideoPlayPause);
-        return () => window.removeEventListener("scroll", handleVideoPlayPause);
+        window.addEventListener('scroll', handleVideoPlayPause);
+        return () => window.removeEventListener('scroll', handleVideoPlayPause);
     }, [pageable]);
 
     
@@ -262,7 +262,7 @@ const Main = () => {
 
             {showToast1 && (
                 <div
-                    className="toastPopup1"
+                    className='toastPopup1'
                     onMouseEnter={pauseTimer}  // 마우스 오버 시 타이머 중단
                     onMouseLeave={resumeTimer} // 마우스 떠날 때 남은 시간부터 다시 시작
                     onAnimationEnd={handleAnimationEnd} // 애니메이션 종료 후 처리
@@ -275,14 +275,14 @@ const Main = () => {
 
             {showToast2 && (
                 <div
-                    className="toastPopup2"
+                    className='toastPopup2'
                     onMouseEnter={pauseTimer}  // 마우스 오버 시 타이머 중단
                     onMouseLeave={resumeTimer} // 마우스 떠날 때 남은 시간부터 다시 시작
                     onAnimationEnd={handleAnimationEnd} // 애니메이션 종료 후 처리
                     style={{ pointerEvents: isAnimationEnded ? 'none' : 'auto' }} 
                 >
                     {postOne?(<><div className='toastPopup2Title'>오늘의 추천 포스트</div>
-                        <Post post={postOne} followed={followed} setFollowed={setFollowed} /></>):("포스트가 없습니다.")}
+                        <Post post={postOne} followed={followed} setFollowed={setFollowed} /></>):('포스트가 없습니다.')}
                     
                 </div>
             )}
@@ -290,7 +290,7 @@ const Main = () => {
             <SideBar {...props}/>
 
             {/* post */}
-            <div className="PostList">
+            <div className='PostList'>
                 {showStatistics ? (
                     <Statistics />
                 ) : (
@@ -323,12 +323,12 @@ const Main = () => {
 
 
 
-            <div className="customer-service-icon" onClick={toggleChatbot}>
+            <div className='customer-service-icon' onClick={toggleChatbot}>
                 {isChatbotOpen ? <FiX size={24} /> : <FcCustomerSupport size={24} />}
             </div>
 
             {isChatbotOpen && (
-                <div className="chatbot-popup">
+                <div className='chatbot-popup'>
                     <ChatBot chatMessages={chatMessages} />
                 </div>
             )}

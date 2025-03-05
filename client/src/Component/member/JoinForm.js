@@ -1,9 +1,9 @@
 import React, {useState, useEffect } from 'react'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import DaumPostcode from 'react-daum-postcode';
-import * as PortOne from "@portone/browser-sdk/v2";
+import * as PortOne from '@portone/browser-sdk/v2';
 import '../../style/login.css';
-import { IoCreateOutline } from "react-icons/io5";
+import { IoCreateOutline } from 'react-icons/io5';
 import AddressModal from './AddressModal';
 import { useSearchParams } from "react-router-dom";
 
@@ -25,7 +25,7 @@ const JoinForm = (props) => {
     const [zipnum, setZipnum] = useState('')
     const [profileimg, setProfileimg] = useState('')
     const [imgSrc, setImgSrc] = useState('')
-    const [imgStyle, setImgStyle] = useState({display:"none"});
+    const [imgStyle, setImgStyle] = useState({display:'none'});
     const [birthDate, setBirthDate] = useState('');
     const [adultVerification, setAdultVerification] = useState(false);
 
@@ -113,7 +113,7 @@ const JoinForm = (props) => {
     //     const result = await jaxios.post('/api/member/fileupload', formData);
     //     console.log(result);
     //     setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
-    //     setImgStyle({display:"block", width:"200px"});
+    //     setImgStyle({display:'block', width:'200px'});
     //     setProfileimg(result.data.filename)
     // }
 
@@ -123,8 +123,8 @@ const JoinForm = (props) => {
         const result = await axios.post('/api/member/fileupload', formData);
         console.log(result); // 응답 데이터 확인
         console.log(result.data); // result.data가 실제로 존재하는지 확인
-        setImgSrc(`https://tinderfile.s3.ap-northeast-2.amazonaws.com/${result.data.originalfilename}`);
-        setImgStyle({display:"block", width:"200px"});
+        setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
+        setImgStyle({display:'block', width:'200px'});
         setProfileimg(result.data.filename)
     }
 
@@ -142,10 +142,10 @@ const JoinForm = (props) => {
         try {
             const response = await PortOne.requestIdentityVerification({
             // 고객사 storeId로 변경해주세요.
-            storeId: "store-0ef99292-e8d5-4956-a265-e1ec0ee73634",
+            storeId: 'store-0ef99292-e8d5-4956-a265-e1ec0ee73634',
             identityVerificationId: `identity-verification-${uuid()}`,
             // 연동 정보 메뉴의 채널 관리 탭에서 확인 가능합니다.
-            channelKey: "channel-key-a6f549c2-b895-4933-ad92-117931b006a5",
+            channelKey: 'channel-key-a6f549c2-b895-4933-ad92-117931b006a5',
             redirectUrl: window.location.origin,
         });
 
@@ -157,20 +157,20 @@ const JoinForm = (props) => {
         }
 
         const verificationResult = await fetch('/api/identityVerifications/verifyIdentity1', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 identityVerificationId:response.identityVerificationId,
             }),
         })
         .then(response => response.json())
             .then(data => {
-                console.log("서버 응답:", data); // 디버깅용
+                console.log('서버 응답:', data); // 디버깅용
 
                 // 응답 데이터 처리
-                if (data.message === "Age restriction satisfied") {                
+                if (data.message === 'Age restriction satisfied') {
 
-                alert("성인 인증 성공!");
+                alert('성인 인증 성공!');
                 setAdultVerification(true)
                 setMemberName(data.name)
                 setPhone(data.phoneNumber)
@@ -180,19 +180,19 @@ const JoinForm = (props) => {
                 if(data.gender==='MALE'){setGender(0)}
                 else if(data.gender==='FEMALE'){setGender(1)}
                 else{
-                    console.log("성별 오류")
+                    console.log('성별 오류')
                 }
 
 
                 }
-                else if (data.message === "Age restriction not satisfied") {
-                    console.log("성인 인증 실패!");
-                } else if (data.message === "Verification Failed") {
-                console.log("인증 실패!");
-                } else if (data.message === "API Error") {
-                console.log("API 오류 발생!");
-                } else if (data.message === "API Request Failed") {
-                console.log("API 요청 실패!");
+                else if (data.message === 'Age restriction not satisfied') {
+                    console.log('성인 인증 실패!');
+                } else if (data.message === 'Verification Failed') {
+                console.log('인증 실패!');
+                } else if (data.message === 'API Error') {
+                console.log('API 오류 발생!');
+                } else if (data.message === 'API Request Failed') {
+                console.log('API 요청 실패!');
                 }
 
                 return data; // data를 반환하여 외부에서 사용할 수 있도록 함
@@ -201,7 +201,7 @@ const JoinForm = (props) => {
                 console.error('Error:', error);
             });
 
-        console.log("verificationResult: " + JSON.stringify(verificationResult));
+        console.log('verificationResult: ' + JSON.stringify(verificationResult));
 
 
     } catch (error) {
@@ -270,31 +270,31 @@ const JoinForm = (props) => {
     return (
         <div className='join-container'>
             <div className='login-btns'>
-                <div className="login-btn" onClick={ ()=>{   handleIdentityVerification()    }  }>성인인증</div>
+                <div className='login-btn' onClick={ ()=>{   handleIdentityVerification()    }  }>성인인증</div>
             </div>
             <div className='joinform'>
                 <div className='field'>
-                    <label className="hidden">NAME</label>
-                    <input type="text" name='unsername' placeholder="이름" value={memberName} onChange={(e)=>{setMemberName(e.currentTarget.value)}} readOnly/>
+                    <label className='hidden'>NAME</label>
+                    <input type='text' name='unsername' placeholder='이름' value={memberName} onChange={(e)=>{setMemberName(e.currentTarget.value)}} readOnly/>
                 </div>
 
                 <div className='field flex-row'>
                     <div className='gender'>
-                    <label className="hidden">GENDER</label>
+                    <label className='hidden'>GENDER</label>
                         {/* 인증시 받아오는 경우 */}
-                        <input type="text" name='gender' placeholder="성별"
-                        value={gender === "" || gender === null || gender === undefined ? "" : gender === 0 ? "남성" : "여성"}
+                        <input type='text' name='gender' placeholder='성별'
+                        value={gender === '' || gender === null || gender === undefined ? '' : gender === 0 ? '남성' : '여성'}
                         readOnly
                     />
                     </div>
 
                     <div className='birth'>
-                    <label className="hidden">BIRTHDATE</label>
+                    <label className='hidden'>BIRTHDATE</label>
                         {/* 수정 불가능 하게 할 경우 */}
                         <input
-                            type="text" // type을 date로 변경
+                            type='text' // type을 date로 변경
                             name='birthdate'
-                            placeholder="생년월일"
+                            placeholder='생년월일'
                             value={birthDate}
                             required
                     />
@@ -302,29 +302,29 @@ const JoinForm = (props) => {
                 </div>
 
                 <div className='field'>
-                    <label className="hidden">PHONE</label>
-                    <input type="text" name='phone' placeholder="전화번호" value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}} readOnly/>
+                    <label className='hidden'>PHONE</label>
+                    <input type='text' name='phone' placeholder='전화번호' value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}} readOnly/>
                 </div>
                 <div className='field'>
-                    <label className="hidden">E-MAIL</label>
-                    <input type="text" name='email' placeholder="E-MAIL (로그인 시 아이디로 사용됩니다.)" value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
+                    <label className='hidden'>E-MAIL</label>
+                    <input type='text' name='email' autoComplete='email' placeholder='E-MAIL (로그인 시 아이디로 사용됩니다.)' value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
                 </div>
                 <div className='field'>
-                    <label className="hidden">PASSWORD</label>
-                    <input type="password" name='password' placeholder="비밀번호" value={pwd} onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
+                    <label className='hidden'>PASSWORD</label>
+                    <input type='password' name='password' autoComplete='new-password' placeholder='비밀번호' value={pwd} onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
                 </div>
                 <div className='field'>
-                    <label className="hidden">RETYPE PW</label>
-                    <input type="password" name='pwdchk' placeholder="비밀번호 확인" value={pwdChk} onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
+                    <label className='hidden'>RETYPE PW</label>
+                    <input type='password' name='pwdchk' autoComplete='new-password' placeholder='비밀번호 확인' value={pwdChk} onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
                 </div>
                 <div className='field'>
-                    <label className="hidden">NICKNAME</label>
-                    <input type="text" name='nickname' placeholder="닉네임" value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
+                    <label className='hidden'>NICKNAME</label>
+                    <input type='text' name='nickname' placeholder='닉네임' value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
                 </div>
                 <div className='field flex-row'>
                     <div className='zipnum'>
-                        <label className="hidden">ZIPNUM</label>
-                        <input type="text" name='zipnum' value={zipnum} readOnly placeholder="우편번호" />
+                        <label className='hidden'>ZIPNUM</label>
+                        <input type='text' name='zipnum' value={zipnum} readOnly placeholder='우편번호' />
                     </div>
                     <div className='login-btn' onClick={() => setIsAddressModalOpen(true)}>
                         <label>주소 검색</label>
@@ -332,20 +332,20 @@ const JoinForm = (props) => {
                     </div>
                 </div>
                 <div className='field'>
-                    <label className="hidden">ADDRESS</label>
-                    <input type="text" name='address' value={address} readOnly placeholder="주소" />
+                    <label className='hidden'>ADDRESS</label>
+                    <input type='text' name='address' value={address} readOnly placeholder='주소' />
 
                 </div>
                 <div className='field'>
-                    <label className="hidden">INTRO</label>
-                    <input type="text" name='intro' placeholder="한마디" value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
+                    <label className='hidden'>INTRO</label>
+                    <input type='text' name='intro' placeholder='한마디' value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
                 </div>
                 <div className='field'>
-                    <label className="hidden">PROFILE IMG</label>
-                    <input type="file" name='profileimg' accept=".jpg,.jpeg,.png,.gif" onChange={(e)=>{fileUpload(e)}}/>
+                    <label className='hidden'>PROFILE IMG</label>
+                    <input type='file' name='profileimg' accept='.jpg,.jpeg,.png,.gif' onChange={(e)=>{fileUpload(e)}}/>
                 </div>
                 <div className='field'>
-                    <label className="hidden">Profile img preview</label>
+                    <label className='hidden'>Profile img preview</label>
                     <div><img alt='previmg' src={imgSrc} style={imgStyle} /></div>
                 </div>
                 <AddressModal
@@ -356,7 +356,7 @@ const JoinForm = (props) => {
             </div>
 
             <div className='login-btns'>
-                <div className="login-btn" onClick={ ()=>{   onSubmit()    }  }><IoCreateOutline />JOIN</div>
+                <div className='login-btn' onClick={ ()=>{   onSubmit()    }  }><IoCreateOutline />JOIN</div>
             </div>
         </div>
 
