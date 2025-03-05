@@ -20,6 +20,10 @@
 }
 
 /* 로그인/회원가입 폼 */
+.loginContainer {
+    width:460px;
+}
+
 .loginContent {
     display: flex;
     justify-content: center;
@@ -76,17 +80,13 @@
 .loginform .signin, .loginform .signup {
     display: flex;
     padding:20px;
+    width:90%;
     min-height: 100%;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     height: auto;
 }
-
-.loginform .signin {
-    width: 35vw;
-}
-
 .login-btns{
     width: 100%;
 }
@@ -334,6 +334,10 @@
 
 /* 반응형 스타일 */
 @media (max-width: 768px) {
+    .loginContainer {
+        width:80%;
+        min-width: 280px;
+    }
     .loginform {
         min-width: 280px;
     }
@@ -347,17 +351,9 @@
         max-width: 90vw;
     }
 
-    .loginform .signin {
-        min-width: 80vw;
-    }
-
+    .loginform .signin,
     .loginform .signup {
-        min-width: 80vw;
-        max-height: 85dvh;
-    }
-    
-    .loginform .signup .join-container {
-        max-height: 85dvh;
+        min-width: 80%;
     }
 
     .field.flex-row {
@@ -381,6 +377,6 @@
 }
 @media (max-height: 600px){
     .container {
-        padding-top: 20px;
+        padding-top: 30px;
     }
 }
