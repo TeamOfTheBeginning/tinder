@@ -78,6 +78,7 @@ const MyPage = ({openSubMenu}) => {
             totalAmount: 1,
             currency: "CURRENCY_KRW",
             payMethod: "CARD",
+            redirectUrl: window.location.origin,
             customer: {
                 fullName: loginUser.nickname,
                 phoneNumber: loginUser.phone,

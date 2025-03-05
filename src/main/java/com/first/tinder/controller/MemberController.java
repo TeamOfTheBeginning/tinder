@@ -31,6 +31,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -193,8 +194,13 @@ public class MemberController {
             member.setNickname( pf.getNickname() );
             member.setProvider( "kakao" );
             member.setPwd( "kakao" );
+
+            Date today = new Date();
+            member.setBirthDate(today);
+
             member.setSnsId( kakaoProfile.getId() );
             member.setTemp(37);
+            member.setMemberRoleList(Collections.singletonList(MemberRole.USER));
             member.setMemberInfo( returnMemberInfo );
             member.setOpponentMemberInfo( returnOpponentMemberInfo );
             ms.insertMember(member);
@@ -368,6 +374,41 @@ public class MemberController {
         return result;
     }
 
+//    //회원가입
+//    @PostMapping("/join2")
+//    public HashMap<String, Object> join2(@RequestBody Member member) {
+////        System.out.println("join!!");
+//        HashMap<String, Object> result = new HashMap<>();
+//
+//        // Date를 LocalDate로 변환
+//        LocalDate birthLocalDate = member.getBirthDate().toInstant()
+//                .atZone(ZoneId.systemDefault())
+//                .toLocalDate();
+//
+//        // 현재 날짜
+//        LocalDate now = LocalDate.now();
+//
+//        // 나이 계산
+//        int age = Period.between(birthLocalDate, now).getYears();
+//        member.setAge(age); // Member 객체에 나이 설정
+//
+//        MemberInfo memberInfo = new MemberInfo();
+//        MemberInfo returnMemberInfo = mis.insertMemberInfo(memberInfo);
+//
+//        OpponentMemberInfo opponentMemberInfo = new OpponentMemberInfo();
+//        OpponentMemberInfo returnOpponentMemberInfo = omis.insertOpponentMemberInfo(opponentMemberInfo);
+//
+//
+//        member.setTemp(37);
+//        member.setMemberRoleList(Collections.singletonList(MemberRole.USER));
+//        member.setMemberInfo(returnMemberInfo);
+//        member.setOpponentMemberInfo(returnOpponentMemberInfo);
+//
+//        ms.insertMember(member);
+//        result.put("msg", "ok");
+//        return result;
+//    }
+
     //회원정보 수정시 닉네임 체크합니다.
     @PostMapping("/nicknamecheckUpdate")
     public HashMap<String, Object> nicknamecheckUpdate(
@@ -485,7 +526,7 @@ public class MemberController {
             @PathVariable("refreshToken") String refreshToken,
             @RequestHeader("Authorization") String authHeader
     ) throws CustomJWTException {
-//        System.out.println("refresh token");
+        System.out.println("refresh token");
 //        System.out.println("refresh token : " + refreshToken);
 
         HashMap<String, Object> result = new HashMap<>();

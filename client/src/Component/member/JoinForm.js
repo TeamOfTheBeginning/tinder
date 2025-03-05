@@ -5,11 +5,12 @@ import * as PortOne from "@portone/browser-sdk/v2";
 import '../../style/login.css';
 import { IoCreateOutline } from "react-icons/io5";
 import AddressModal from './AddressModal';
+import { useSearchParams } from "react-router-dom";
 
 import axios from 'axios';
 import jaxios from '../../util/jwtUtil';
 
-const JoinForm = () => {
+const JoinForm = (props) => {
 
     const [email, setEmail] = useState('')
     const [pwd, setPwd] = useState('')
@@ -79,6 +80,7 @@ const JoinForm = () => {
     const navigate = useNavigate();
 
     async function onSubmit(){
+        sessionStorage.removeItem("isSignUp");
         console.log(longitude)
         console.log(latitude)
         console.log(address)
@@ -89,15 +91,15 @@ const JoinForm = () => {
         if(nickname===''){ return alert('닉네임을 입력하세요');}
         // if(age<18){return alert('만 18세 이상만 가입 가능합니다');}
         try{
-            let result = await jaxios.post('/api/member/emailcheck', null, {params:{email}} );
+            let result = await axios.post('/api/member/emailcheck', null, {params:{email}} );
             if(result.data.msg === 'no' ){
                 return alert('이메일이 중복됩니다');
             }
-            result = await jaxios.post('/api/member/nicknamecheck', null, {params:{nickname}} );
+            result = await axios.post('/api/member/nicknamecheck', null, {params:{nickname}} );
             if(result.data.msg === 'no' ){
                 return alert('닉네임이 중복됩니다');
             }
-            result = await jaxios.post('/api/member/join', {email, pwd, age, gender, nickname, memberName, phone, birthDate , address, latitude, longitude, profileMsg : intro, profileImg :profileimg, zipnum});
+            result = await axios.post('/api/member/join', {email, pwd, age, gender, nickname, memberName, phone, birthDate , address, latitude, longitude, profileMsg : intro, profileImg :profileimg, zipnum});
             if(result.data.msg ==='ok'){
                 alert('회원 가입이 완료되었습니다. 로그인하세요');
                 window.location.reload();
@@ -134,6 +136,9 @@ const JoinForm = () => {
 
 
     const handleIdentityVerification = async () => {
+        // alert("JoinForm isSignUp")
+        sessionStorage.setItem("isSignUp", "true");
+
         try {
             const response = await PortOne.requestIdentityVerification({
             // 고객사 storeId로 변경해주세요.
@@ -141,6 +146,7 @@ const JoinForm = () => {
             identityVerificationId: `identity-verification-${uuid()}`,
             // 연동 정보 메뉴의 채널 관리 탭에서 확인 가능합니다.
             channelKey: "channel-key-a6f549c2-b895-4933-ad92-117931b006a5",
+            redirectUrl: window.location.origin,
         });
 
         console.log('결제 요청 응답:', response);
@@ -169,6 +175,7 @@ const JoinForm = () => {
                 setMemberName(data.name)
                 setPhone(data.phoneNumber)
                 setBirthDate(data.birthDate)
+                setAge(parseInt(data.age, 10))
 
                 if(data.gender==='MALE'){setGender(0)}
                 else if(data.gender==='FEMALE'){setGender(1)}
@@ -201,6 +208,64 @@ const JoinForm = () => {
     console.error('본인 인증 오류:', error);
     } finally {}
 };
+
+
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const identityVerificationId = searchParams.get("identityVerificationId");
+    const code = searchParams.get("code");
+    const message = searchParams.get("message");
+
+    useEffect(() => {
+        if (code) {
+            alert(`본인인증 실패: ${message}`);
+        } else if (identityVerificationId) {
+            // 본인인증 성공 시 서버에 인증 완료 요청
+            fetch('/api/identityVerifications/verifyIdentity1', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ identityVerificationId }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("서버 응답:", data); // 디버깅용
+
+                // 응답 데이터 처리
+                if (data.message === "Age restriction satisfied") {
+
+                // console.log("setIsSignUp 실행됨!");
+                // props.setIsSignUp(true);
+
+                alert("성인 인증 성공!");
+                setAdultVerification(true)
+                setMemberName(data.name)
+                setPhone(data.phoneNumber)
+                setBirthDate(data.birthDate)
+
+                if(data.gender==='MALE'){setGender(0)}
+                else if(data.gender==='FEMALE'){setGender(1)}
+                else{
+                    console.log("성별 오류")
+                }
+
+
+                }
+                else if (data.message === "Age restriction not satisfied") {
+                    console.log("성인 인증 실패!");
+                } else if (data.message === "Verification Failed") {
+                console.log("인증 실패!");
+                } else if (data.message === "API Error") {
+                console.log("API 오류 발생!");
+                } else if (data.message === "API Request Failed") {
+                console.log("API 요청 실패!");
+                }
+
+                return data; // data를 반환하여 외부에서 사용할 수 있도록 함
+            })
+            .catch(error => console.error("오류 발생:", error));
+        }
+    }, [identityVerificationId, code, message]);
 
     return (
         <div className='join-container'>
