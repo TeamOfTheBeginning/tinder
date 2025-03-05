@@ -278,7 +278,10 @@ const closeSideViewer = () => {
 
         <div 
           className='sidebar-btn logout-btn' 
-          onClick={() => { navigate('/'); handleLeave(loginUser.memberId); removeCookie1('user', '/'); }}
+          onClick={() => { navigate('/'); handleLeave(loginUser.memberId); removeCookie1('user', '/'); 
+          sessionStorage.removeItem("user");
+
+          }}
         >
           <IoLogOut />
         </div>

@@ -113,7 +113,7 @@ const Savekakaoinfo = () => {
   
 
 
-    // const [email, setEmail] = useState('')
+    const [email, setEmail] = useState('')
     // const [pwd, setPwd] = useState('')
     // const [pwdChk, setPwdChk ] = useState('')
     const [memberName,setMemberName] = useState('')
@@ -185,6 +185,7 @@ const Savekakaoinfo = () => {
         console.log(latitude)
         console.log(address)
         if(!adultVerification){ return alert('성인인증을 해주세요')}
+        if(email===''){ return alert('이메일을 입력하세요');}
         if(nickname==''){ return alert('닉네임을 입력하세요');}
         if(zipnum==''||address==''){ return alert('주소 검색을 하세요');}
         if(profileimg==''){ return alert('프로필 이미지를 업로드 하세요');}
@@ -198,7 +199,7 @@ const Savekakaoinfo = () => {
                 memberId: claims.memberId, email:claims.email, age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
               })            
             result = await jaxios.post('/api/member/update', {
-              memberId: claims.memberId, email:claims.email, pwd:'a',age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
+              memberId: claims.memberId, email:email, pwd:'a',age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
             });
 
             alert("가입완료.")      
@@ -441,6 +442,11 @@ const Savekakaoinfo = () => {
                 <div className='field'>
                     <label className="hidden">PHONE</label>
                     <input type="text" placeholder="전화번호" value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}} readOnly/>
+                </div>
+
+                <div className='field'>
+                    <label className='hidden'>E-MAIL</label>
+                    <input type='text' name='email' autoComplete='email' placeholder='E-MAIL (로그인 시 아이디로 사용됩니다.)' value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
                 </div>
                 <div className='field'>
                     <label className="hidden">NICKNAME</label>
