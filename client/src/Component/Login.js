@@ -238,69 +238,68 @@ const Login = () => {
                     <Loading onComplete={handleLoadingComplete} />
                 ) : null
             ) : (
-                <div className='loginform-header'>
-                    <RealtimeConnectInfo />
-                    <div className='toggle-btns'>
-                        <button
-                            className={`toggle-btn ${!isSignUp ? 'active' : ''}`}
-                            onClick={() => setIsSignUp(false)}
-                        >
-                            LOGIN
-                        </button>
-                        <button
-                            className={`toggle-btn ${isSignUp ? 'active' : ''}`}
-                            onClick={() => setIsSignUp(true)}
-                        >
-                            JOIN
-                        </button>
-                        <button id='kakao' onClick={() => {
-                            window.location.href = 'http://localhost:8070/member/kakaoStart';
-                        }}>KAKAO LOGIN</button>
-                    </div>
-    
-                    <div className='loginContent'>
-                        <div className='loginform'>
-                            {!isSignUp ? (
-                                <div className='signin'>
-                                    <div className='field'>
-                                        <label className='hidden'>E-MAIL</label>
-                                        <input
-                                            type='text'
-                                            name='email'
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            placeholder='E-MAIL'
-                                        />
-                                    </div>
-                                    <div className='field'>
-                                        <label className='hidden'>PASSWORD</label>
-                                        <input
-                                            type='password'
-                                            value={pwd}
-                                            name='password'
-                                            onChange={(e) => setPwd(e.target.value)}
-                                            placeholder='PASSWORD'
-                                        />
-                                    </div>
-                                    <div className='login-btns'>
-                                        <div className='login-btn' onClick={onLoginLocal}>
-                                            <IoLogIn />
-                                            &nbsp;LOGIN
-                                        </div>
+                <div className='loginContainer'>
+                <RealtimeConnectInfo />
+                <div className='toggle-btns'>
+                    <button
+                        className={`toggle-btn ${!isSignUp ? 'active' : ''}`}
+                        onClick={() => setIsSignUp(false)}
+                    >
+                        LOGIN
+                    </button>
+                    <button
+                        className={`toggle-btn ${isSignUp ? 'active' : ''}`}
+                        onClick={() => setIsSignUp(true)}
+                    >
+                        JOIN
+                    </button>
+                    <button id='kakao' onClick={() => {
+                        window.location.href = 'http://localhost:8070/member/kakaoStart';
+                    }}>KAKAO LOGIN</button>
+                </div>
+
+                <div className='loginContent'>
+                    <div className='loginform'>
+                        {!isSignUp ? (
+                            <div className='signin'>
+                                <div className='field'>
+                                    <label className='hidden'>E-MAIL</label>
+                                    <input
+                                        type='text'
+                                        name='email'
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder='E-MAIL'
+                                    />
+                                </div>
+                                <div className='field'>
+                                    <label className='hidden'>PASSWORD</label>
+                                    <input
+                                        type='password'
+                                        value={pwd}
+                                        name='password'
+                                        onChange={(e) => setPwd(e.target.value)}
+                                        placeholder='PASSWORD'
+                                    />
+                                </div>
+                                <div className='login-btns'>
+                                    <div className='login-btn' onClick={onLoginLocal}>
+                                        <IoLogIn />
+                                        &nbsp;LOGIN
                                     </div>
                                 </div>
-                            ) : (
-                                <div className='signup'>
-                                    <JoinForm onCancel={() => setIsSignUp(false)} />
-                                </div>
-                            )}
-                        </div>
+                            </div>
+                        ) : (
+                            <div className='signup'>
+                                <JoinForm onCancel={() => setIsSignUp(false)} />
+                            </div>
+                        )}
                     </div>
                 </div>
-            )}
-        </div>
+            </div>
+        )}
+    </div>
     );
-    
 };
 
 export default Login;
