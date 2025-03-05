@@ -291,52 +291,52 @@ public class MemberController {
         return result;
     }
 
-//    //파일 업로드
-//    @Autowired
-//    ServletContext context;
-//
-//    @PostMapping("/fileupload")
-//    public HashMap<String, Object> fileupload( @RequestParam("image") MultipartFile file ) {
-//        HashMap<String, Object> result = new HashMap<>();
-//        String path = context.getRealPath("/userimg");
-//        Calendar today = Calendar.getInstance();
-//        long dt = today.getTimeInMillis();
-//        String filename = file.getOriginalFilename();
-//        String fn1 = filename.substring(0, filename.indexOf(".") );
-//        String fn2 = filename.substring(filename.indexOf(".") );
-//        String uploadPath = path + "/" + fn1 + dt + fn2;
-//        try {
-//            file.transferTo( new File(uploadPath) );
-//            result.put("filename", fn1 + dt + fn2);
-//        } catch (IllegalStateException | IOException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.print(result);
-//        return result;
-//    }
-
-    //아마존 업로드
+    //파일 업로드
     @Autowired
-    S3UploadService sus;
+    ServletContext context;
 
     @PostMapping("/fileupload")
-    public HashMap<String, Object> fileupload( @RequestParam("image") MultipartFile file){
-
-        HashMap<String, Object> result = new HashMap<String, Object>();
-        System.out.println("file"+file);
-        String originalfilename = file.getOriginalFilename();
-
+    public HashMap<String, Object> fileupload( @RequestParam("image") MultipartFile file ) {
+        HashMap<String, Object> result = new HashMap<>();
+        String path = context.getRealPath("/userimg");
+        Calendar today = Calendar.getInstance();
+        long dt = today.getTimeInMillis();
+        String filename = file.getOriginalFilename();
+        String fn1 = filename.substring(0, filename.indexOf(".") );
+        String fn2 = filename.substring(filename.indexOf(".") );
+        String uploadPath = path + "/" + fn1 + dt + fn2;
         try {
-            String uploadFilePathName =sus.saveFile(file);
-            System.out.println("originalfilename"+originalfilename);
-            System.out.println("uploadFilePathName"+uploadFilePathName);
-            result.put("originalfilename", originalfilename);
-            result.put("filename",uploadFilePathName);
+            file.transferTo( new File(uploadPath) );
+            result.put("filename", fn1 + dt + fn2);
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
         }
+        System.out.print(result);
         return result;
     }
+
+//    //아마존 업로드
+//    @Autowired
+//    S3UploadService sus;
+//
+//    @PostMapping("/fileupload")
+//    public HashMap<String, Object> fileupload( @RequestParam("image") MultipartFile file){
+//
+//        HashMap<String, Object> result = new HashMap<String, Object>();
+//        System.out.println("file"+file);
+//        String originalfilename = file.getOriginalFilename();
+//
+//        try {
+//            String uploadFilePathName =sus.saveFile(file);
+//            System.out.println("originalfilename"+originalfilename);
+//            System.out.println("uploadFilePathName"+uploadFilePathName);
+//            result.put("originalfilename", originalfilename);
+//            result.put("filename",uploadFilePathName);
+//        } catch (IllegalStateException | IOException e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
 
 
     //회원가입

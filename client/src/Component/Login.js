@@ -42,11 +42,32 @@ const Login = () => {
     const dispatch = useDispatch('');
     const cookies = new Cookies('');
 
+    useEffect(() => {
+        const savedUser = sessionStorage.getItem("user");
+        if (savedUser) {
+            dispatch(loginAction(JSON.parse(savedUser))); // 로그인 정보 복원
+            navigate('/main')
+        }
+    }, []);
+
     const handleLoginSuccess = () => {
         setIsLoginSuccess(true); // 로그인 성공 상태 활성화
         setTimeout(() => setLoadingComplete(true), 6500); // 로딩 완료 후 상태 변경
         setTimeout(() => navigate('/main'), 6500); // 메인 페이지로 이동
     };
+
+    //성인인증된 경우 JOINFORM OPEN
+    useEffect(() => {
+        // 리디렉션 이후에 sessionStorage에서 값을 읽어 복구
+        const isSignUp = sessionStorage.getItem("isSignUp");
+    
+        if (isSignUp) {
+            // 필요한 로직 처리
+            setIsSignUp(true);
+            // alert("성인 인증 성공!");
+            // 추가 처리
+        }
+    }, []);
 
     async function onLoginLocal(){
         if( !email ){ return alert('이메일을 입력하세요')}

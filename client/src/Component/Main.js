@@ -1,8 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+
 import { FiX } from 'react-icons/fi';
 import { FcCustomerSupport } from 'react-icons/fc';
+
+import { setCookie1, getCookie1 } from '../util/cookieUtil2';
+
+import { loginAction, setFollower, setFollowed } from '../store/userSlice';
 
 import SideBar from './SideBar';
 import Post from './post/Post';
@@ -28,6 +35,7 @@ const Main = () => {
 
     const [postOne, setPostOne] = useState();
     const navigate = useNavigate();
+    const dispatch = useDispatch()
     const [followed, setFollowed] = useState([]);
     const [hashtag, setHashtag] = useState('');
     const loginUser = useSelector(state => state.user);
@@ -41,6 +49,69 @@ const Main = () => {
         hashtag: hashtag,
         setHashtag: setHashtag,
     };
+
+    const [searchParams] = useSearchParams();
+
+    // 쿼리 파라미터에서 paymentId 가져오기
+    const paymentId = searchParams.get("paymentId");
+    const transactionType = searchParams.get("transactionType");
+    const txId = searchParams.get("txId");
+
+    useEffect(() => {
+        const handlePayment = async () => {
+            if (!paymentId) return;
+    
+            // console.log("결제 완료:", { paymentId, transactionType, txId });
+            // alert(`결제가 완료되었습니다! Payment ID: ${paymentId}`);
+    
+            try {
+                // 🔹 주문 요청
+                const result = await jaxios.post('/api/payment/order', null, {
+                    params: { memberId: loginUser.memberId, productId: 1 }
+                });
+    
+                // 주문 ID 확인
+                const orderingId = result.data;
+                if (!orderingId) {
+                    throw new Error("주문 ID가 없습니다.");
+                }
+    
+                // 🔹 결제 완료 요청
+                await jaxios.post('/api/payment/complete', {
+                    paymentId: paymentId, // searchParams에서 받은 값
+                    memberId: loginUser.memberId,
+                    orderingId: orderingId,
+                }, {
+                    headers: { "Content-Type": "application/json" }
+                });
+    
+                alert("결제 완료");
+    
+                // 🔹 로그인 정보 갱신
+                const response = await jaxios.get(`/api/member/getLoginUser`, {
+                    params: { memberId: loginUser.memberId }
+                });
+    
+                let accessToken = loginUser.accessToken;
+                let refreshToken = loginUser.refreshToken;
+    
+                response.data.loginUser.accessToken = accessToken;
+                response.data.loginUser.refreshToken = refreshToken;
+    
+                setCookie1('user', JSON.stringify(response.data.loginUser), 1);
+                dispatch(loginAction(response.data.loginUser));
+
+                sessionStorage.removeItem("user");
+    
+            } catch (err) {
+                console.error("결제 처리 중 오류:", err);
+                alert("결제 처리 중 오류가 발생했습니다.");
+            }
+        };
+    
+        handlePayment(); // 비동기 함수 호출
+    }, [paymentId, transactionType, txId]); 
+    
 
     const toggleChatbot = () => {
         if (!isChatbotOpen) {
@@ -65,7 +136,8 @@ const Main = () => {
     const clientHeight = document.documentElement.clientHeight; // 내용물의 크기
     if( scrollTop + clientHeight >= scrollHeight ) {
         // console.log('handleScroll'+pageable.pageNumber + 1)
-        onPageMove( pageable.pageNumber + 1 );
+        if(pageable.pageNumber){onPageMove( pageable.pageNumber + 1 );}
+        
     }
     }
 
@@ -153,6 +225,68 @@ const Main = () => {
                 setNotificationList(result.data.notificationList);
             }).catch((err) => { console.error(err) });
     }, []);
+
+    // const [searchParams] = useSearchParams();
+
+    // // 쿼리 파라미터에서 정보 추출
+    // const paymentId = searchParams.get("paymentId");
+    // const code = searchParams.get("code");
+    // const message = searchParams.get("message");
+
+    // useEffect(() => {
+    //     const handlePayment = async () => {
+    //         if (code) {
+    //             alert(`결제 실패: ${message}`);
+    //             return;
+    //         }
+
+    //         if (paymentId) {
+    //             try {
+    //                 // 주문 요청
+    //                 const result = await jaxios.post('/api/payment/order', null, {
+    //                     params: { memberId: loginUser.memberId, productId: 1 }
+    //                 });
+
+    //                 // orderingId가 있어야 함
+    //                 const orderingId = result.data;
+    //                 if (!orderingId) {
+    //                     throw new Error("주문 ID가 없습니다.");
+    //                 }
+
+    //                 // 결제 완료 요청
+    //                 const notified = await jaxios.post('/api/payment/complete', {
+    //                     paymentId: paymentId, // searchParams에서 받은 값
+    //                     memberId: loginUser.memberId,
+    //                     orderingId: orderingId,
+    //                 }, {
+    //                     headers: { "Content-Type": "application/json" }
+    //                 });
+
+    //                 alert("결제완료");
+
+    //                 // 로그인 정보 갱신
+    //                 const response = await jaxios.get(`/api/member/getLoginUser`, {
+    //                     params: { memberId: loginUser.memberId }
+    //                 });
+
+    //                 let accessToken = loginUser.accessToken;
+    //                 let refreshToken = loginUser.refreshToken;
+
+    //                 response.data.loginUser.accessToken = accessToken;
+    //                 response.data.loginUser.refreshToken = refreshToken;
+
+    //                 setCookie1('user', JSON.stringify(response.data.loginUser), 1);
+    //                 dispatch(loginAction(response.data.loginUser));
+
+    //             } catch (err) {
+    //                 console.error("결제 처리 중 오류:", err);
+    //                 alert("결제 처리 중 오류가 발생했습니다.");
+    //             }
+    //         }
+    //     };
+
+    //     handlePayment(); // useEffect 내부에서 실행
+    // }, [paymentId, code, message, loginUser, dispatch]);
 
     // 📌 클릭 이벤트 → 페이지 이동 + 비디오 제어 추가
     useEffect(() => {
