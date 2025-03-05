@@ -12,6 +12,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 @RestController
@@ -63,6 +65,17 @@ public class IdentityVerificationController {
                     String phoneNumber = getVerifiedCustomerInfo(verificationResponse.getBody(), "phoneNumber");
                     String gender = getVerifiedCustomerInfo(verificationResponse.getBody(), "gender");
                     String birthDate = getVerifiedCustomerInfo(verificationResponse.getBody(), "birthDate");
+
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    LocalDate birthDateLocal = LocalDate.parse(birthDate, formatter);
+                    LocalDate currentDate = LocalDate.now();
+
+// Calculate the age
+                    int age = Period.between(birthDateLocal, currentDate).getYears();
+
+                    // Convert age to String
+                    String ageString = String.valueOf(age);
+
 //                    System.out.println("ci"+ci);
 //                    System.out.println("di"+di);
 //                    System.out.println("name"+name);
@@ -77,6 +90,7 @@ public class IdentityVerificationController {
                         responseMap.put("phoneNumber", phoneNumber);
                         responseMap.put("gender", gender);
                         responseMap.put("birthDate", birthDate);
+                        responseMap.put("age", ageString);
 
                         // 연령 만족
 //                        System.out.println("연령 만족!");

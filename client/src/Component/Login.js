@@ -48,6 +48,18 @@ const Login = () => {
         setTimeout(() => navigate('/main'), 6500); // 메인 페이지로 이동
     };
 
+    useEffect(() => {
+        // 리디렉션 이후에 sessionStorage에서 값을 읽어 복구
+        const isSignUp = sessionStorage.getItem("isSignUp");
+
+
+        if (isSignUp) {
+            // console.log("Login isSignUp")
+            setIsSignUp(true);
+            // 추가 처리
+        }
+    }, []);
+
     async function onLoginLocal(){
         if( !email ){ return alert('이메일을 입력하세요')}
         if( !pwd ){ return alert('비밀번호를 입력하세요')}
@@ -244,7 +256,7 @@ const Login = () => {
                             window.location.href = 'http://localhost:8070/member/kakaoStart';
                         }}>KAKAO LOGIN</button>
                     </div>
-    
+
                     <div className='loginContent'>
                         <div className='loginform'>
                             <form onSubmit={onLoginLocal}>
@@ -291,8 +303,8 @@ const Login = () => {
             )}
         </div>
     );
-    
-    
+
+
 };
 
 export default Login;

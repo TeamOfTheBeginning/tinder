@@ -82,6 +82,11 @@ public class MemberService {
             updateMember.setAge(member.getAge());
             updateMember.setGender(member.getGender());
             updateMember.setZipnum(member.getZipnum());
+            if(member.getLatitude()!=null){
+                updateMember.setLatitude(member.getLatitude());
+                updateMember.setLongitude(member.getLongitude());
+            }
+
 
             // 변경 사항을 데이터베이스에 저장
             mr.save(updateMember);

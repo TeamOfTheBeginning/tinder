@@ -10,6 +10,8 @@ import { loginAction, setFollower, setFollowed } from '../../store/userSlice';
 import {Cookies} from 'react-cookie'
 import { setCookie1, getCookie1 } from '../../util/cookieUtil2';
 
+import { useSearchParams } from "react-router-dom";
+
 import jaxios from '../../util/jwtUtil';
 import '../../style/mypage.css'
 
@@ -78,6 +80,7 @@ const MyPage = ({openSubMenu}) => {
             totalAmount: 1,
             currency: "CURRENCY_KRW",
             payMethod: "CARD",
+            redirectUrl: window.location.origin,
             customer: {
                 fullName: loginUser.nickname,
                 phoneNumber: loginUser.phone,
@@ -141,6 +144,68 @@ const MyPage = ({openSubMenu}) => {
         console.error('본인 인증 오류:', error);
     } finally { }
 }
+
+    const [searchParams] = useSearchParams();
+
+    // 쿼리 파라미터에서 정보 추출
+    const paymentId = searchParams.get("paymentId");
+    const code = searchParams.get("code");
+    const message = searchParams.get("message");
+
+    useEffect(() => {
+        const handlePayment = async () => {
+            if (code) {
+                alert(`결제 실패: ${message}`);
+                return;
+            }
+
+            if (paymentId) {
+                try {
+                    // 주문 요청
+                    const result = await jaxios.post('/api/payment/order', null, {
+                        params: { memberId: loginUser.memberId, productId: 1 }
+                    });
+
+                    // orderingId가 있어야 함
+                    const orderingId = result.data;
+                    if (!orderingId) {
+                        throw new Error("주문 ID가 없습니다.");
+                    }
+
+                    // 결제 완료 요청
+                    const notified = await jaxios.post('/api/payment/complete', {
+                        paymentId: paymentId, // searchParams에서 받은 값
+                        memberId: loginUser.memberId,
+                        orderingId: orderingId,
+                    }, {
+                        headers: { "Content-Type": "application/json" }
+                    });
+
+                    alert("결제완료");
+
+                    // 로그인 정보 갱신
+                    const response = await jaxios.get(`/api/member/getLoginUser`, {
+                        params: { memberId: loginUser.memberId }
+                    });
+
+                    let accessToken = loginUser.accessToken;
+                    let refreshToken = loginUser.refreshToken;
+
+                    response.data.loginUser.accessToken = accessToken;
+                    response.data.loginUser.refreshToken = refreshToken;
+
+                    setCookie1('user', JSON.stringify(response.data.loginUser), 1);
+                    dispatch(loginAction(response.data.loginUser));
+
+                } catch (err) {
+                    console.error("결제 처리 중 오류:", err);
+                    alert("결제 처리 중 오류가 발생했습니다.");
+                }
+            }
+        };
+
+        handlePayment(); // useEffect 내부에서 실행
+    }, [paymentId, code, message, loginUser, dispatch]);
 
 // ✅ 특정 역할이 있는지 체크하는 함수
 const hasRequiredRoles = (roles) => {

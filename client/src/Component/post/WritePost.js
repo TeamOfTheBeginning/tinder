@@ -34,6 +34,9 @@ async function imgUpload(e) {
       // ✅ 파일 업로드 요청
       const results = await uploadMultipleFiles(validFiles, '/api/post/fileupload');
 
+      console.log("results"+results)
+      console.log("JSON.stringify(results.data)"+JSON.stringify(results))
+
       if (!results || results.length === 0) {
           alert('파일 업로드에 실패했습니다.');
           return;

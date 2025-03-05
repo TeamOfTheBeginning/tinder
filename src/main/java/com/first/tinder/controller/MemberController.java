@@ -12,6 +12,7 @@ import com.first.tinder.security.util.JWTUtil;
 import com.first.tinder.service.MemberInfoService;
 import com.first.tinder.service.MemberService;
 import com.first.tinder.service.OpponentMemberInfoService;
+import com.first.tinder.service.S3UploadService;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.Cookie;
@@ -30,6 +31,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -192,8 +194,13 @@ public class MemberController {
             member.setNickname( pf.getNickname() );
             member.setProvider( "kakao" );
             member.setPwd( "kakao" );
+
+            Date today = new Date();
+            member.setBirthDate(today);
+
             member.setSnsId( kakaoProfile.getId() );
             member.setTemp(37);
+            member.setMemberRoleList(Collections.singletonList(MemberRole.USER));
             member.setMemberInfo( returnMemberInfo );
             member.setOpponentMemberInfo( returnOpponentMemberInfo );
             ms.insertMember(member);
@@ -284,27 +291,50 @@ public class MemberController {
         return result;
     }
 
-    //파일 업로드
+//    //파일 업로드
+//    @Autowired
+//    ServletContext context;
+//
+//    @PostMapping("/fileupload")
+//    public HashMap<String, Object> fileupload( @RequestParam("image") MultipartFile file ) {
+//        HashMap<String, Object> result = new HashMap<>();
+//        String path = context.getRealPath("/userimg");
+//        Calendar today = Calendar.getInstance();
+//        long dt = today.getTimeInMillis();
+//        String filename = file.getOriginalFilename();
+//        String fn1 = filename.substring(0, filename.indexOf(".") );
+//        String fn2 = filename.substring(filename.indexOf(".") );
+//        String uploadPath = path + "/" + fn1 + dt + fn2;
+//        try {
+//            file.transferTo( new File(uploadPath) );
+//            result.put("filename", fn1 + dt + fn2);
+//        } catch (IllegalStateException | IOException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.print(result);
+//        return result;
+//    }
+
+    //아마존 업로드
     @Autowired
-    ServletContext context;
+    S3UploadService sus;
 
     @PostMapping("/fileupload")
-    public HashMap<String, Object> fileupload( @RequestParam("image") MultipartFile file ) {
-        HashMap<String, Object> result = new HashMap<>();
-        String path = context.getRealPath("/userimg");
-        Calendar today = Calendar.getInstance();
-        long dt = today.getTimeInMillis();
-        String filename = file.getOriginalFilename();
-        String fn1 = filename.substring(0, filename.indexOf(".") );
-        String fn2 = filename.substring(filename.indexOf(".") );
-        String uploadPath = path + "/" + fn1 + dt + fn2;
+    public HashMap<String, Object> fileupload( @RequestParam("image") MultipartFile file){
+
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        System.out.println("file"+file);
+        String originalfilename = file.getOriginalFilename();
+
         try {
-            file.transferTo( new File(uploadPath) );
-            result.put("filename", fn1 + dt + fn2);
+            String uploadFilePathName =sus.saveFile(file);
+            System.out.println("originalfilename"+originalfilename);
+            System.out.println("uploadFilePathName"+uploadFilePathName);
+            result.put("originalfilename", originalfilename);
+            result.put("filename",uploadFilePathName);
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
         }
-        System.out.print(result);
         return result;
     }
 
@@ -343,6 +373,41 @@ public class MemberController {
         result.put("msg", "ok");
         return result;
     }
+
+//    //회원가입
+//    @PostMapping("/join2")
+//    public HashMap<String, Object> join2(@RequestBody Member member) {
+////        System.out.println("join!!");
+//        HashMap<String, Object> result = new HashMap<>();
+//
+//        // Date를 LocalDate로 변환
+//        LocalDate birthLocalDate = member.getBirthDate().toInstant()
+//                .atZone(ZoneId.systemDefault())
+//                .toLocalDate();
+//
+//        // 현재 날짜
+//        LocalDate now = LocalDate.now();
+//
+//        // 나이 계산
+//        int age = Period.between(birthLocalDate, now).getYears();
+//        member.setAge(age); // Member 객체에 나이 설정
+//
+//        MemberInfo memberInfo = new MemberInfo();
+//        MemberInfo returnMemberInfo = mis.insertMemberInfo(memberInfo);
+//
+//        OpponentMemberInfo opponentMemberInfo = new OpponentMemberInfo();
+//        OpponentMemberInfo returnOpponentMemberInfo = omis.insertOpponentMemberInfo(opponentMemberInfo);
+//
+//
+//        member.setTemp(37);
+//        member.setMemberRoleList(Collections.singletonList(MemberRole.USER));
+//        member.setMemberInfo(returnMemberInfo);
+//        member.setOpponentMemberInfo(returnOpponentMemberInfo);
+//
+//        ms.insertMember(member);
+//        result.put("msg", "ok");
+//        return result;
+//    }
 
     //회원정보 수정시 닉네임 체크합니다.
     @PostMapping("/nicknamecheckUpdate")
@@ -461,7 +526,7 @@ public class MemberController {
             @PathVariable("refreshToken") String refreshToken,
             @RequestHeader("Authorization") String authHeader
     ) throws CustomJWTException {
-//        System.out.println("refresh token");
+        System.out.println("refresh token");
 //        System.out.println("refresh token : " + refreshToken);
 
         HashMap<String, Object> result = new HashMap<>();
