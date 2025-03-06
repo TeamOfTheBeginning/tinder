@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useMemo, useRef} from 'react';
 import { useSelector } from 'react-redux';
 
-import '../../style/match/matchingmember.css';
+import '../../style/match/match.css';
 import LoadingSpinner from "../LoadingSpinner";
 
 import jaxios from '../../util/jwtUtil';
@@ -179,28 +179,29 @@ const calculateSimilarity = () => {
       </div>
 
       <div className='matchingMemberTitle'>
-        &nbsp;&nbsp;{props.oppositeGender.nickname}({props.oppositeGender.age})
-
-        &nbsp;&nbsp;{props.oppositeGender.address}
-
-        &nbsp;&nbsp;&nbsp;
-        {props.oppositeGender.temp}도
-
-        &nbsp;&nbsp;{ei(props.oppositeGender.memberInfo.ei)}
-        {ns(props.oppositeGender.memberInfo.ns)}
-        {tf(props.oppositeGender.memberInfo.tf)}
-        {jp(props.oppositeGender.memberInfo.jp)}
+        <div>
+          <span>{props.oppositeGender.nickname}</span>
+          <span>({props.oppositeGender.age})</span>
+          <span>{props.oppositeGender.address}</span>
+          <span>{props.oppositeGender.temp}도</span>
+          <span>
+            {ei(props.oppositeGender.memberInfo.ei)}
+            {ns(props.oppositeGender.memberInfo.ns)}
+            {tf(props.oppositeGender.memberInfo.tf)}
+            {jp(props.oppositeGender.memberInfo.jp)}
+          </span>
+        </div>
       </div>
 
       <div className='matchingMemberMsg'>
-        &nbsp;&nbsp;{props.oppositeGender.profileMsg}
+        {props.oppositeGender.profileMsg}
       </div>
-      <br/>
+      
       <div className='matchingMemberInfo'>
-        <div> &nbsp;&nbsp;MBTI매칭률 {calculateMbtiMatchPercentage()}% </div>
-        <div> &nbsp;&nbsp;매칭률 : {calculateSimilarity()}%</div>
-        <div> &nbsp;&nbsp;거리 : {haversine(props.oppositeGender.latitude,props.oppositeGender.longitude)} km</div>
-      </div>      
+        <div> MBTI 매칭률 {calculateMbtiMatchPercentage()}% </div>
+        <div> 매칭률 : {calculateSimilarity()}%</div>
+        <div> 거리 : {haversine(props.oppositeGender.latitude,props.oppositeGender.longitude)} km</div>
+      </div>
 
       <div className='matchingMemberBtns'>
         <button className='matchBtn' onClick={()=>like()}>좋아요</button>
