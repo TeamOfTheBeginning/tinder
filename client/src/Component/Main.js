@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import { FiX } from 'react-icons/fi';
 import { FcCustomerSupport } from 'react-icons/fc';
 
+import Joyride from 'react-joyride';
+
 import { setCookie1, getCookie1 } from '../util/cookieUtil2';
 
 import { loginAction, setFollower, setFollowed } from '../store/userSlice';
@@ -19,12 +21,31 @@ import Notification from './notification/Notification';
 import ToastPopupPost from './post/ToastPopupPost';
 import MatchingMember from './match/MatchingMember';
 import ChatBot from './chatbot/ChatBot';
+import TutorialModal from './tutorial/TutorialModal';
 
 import jaxios from '../util/jwtUtil';
 
 import '../style/posts.css';
 import '../style/chatbot/chatbot.css';
 import { SiOutline } from 'react-icons/si';
+
+const Overlay = ({ isActive }) => {
+    if (!isActive) return null;
+  
+    return (
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          zIndex: 999, // Joyride 컴포넌트보다 낮은 z-index
+        }}
+      />
+    );
+  };
 
 const Main = () => {
     const [prevPost, setPrevPost] = useState(null); // 이전 포스트 저장
@@ -226,68 +247,6 @@ const Main = () => {
             }).catch((err) => { console.error(err) });
     }, []);
 
-    // const [searchParams] = useSearchParams();
-
-    // // 쿼리 파라미터에서 정보 추출
-    // const paymentId = searchParams.get("paymentId");
-    // const code = searchParams.get("code");
-    // const message = searchParams.get("message");
-
-    // useEffect(() => {
-    //     const handlePayment = async () => {
-    //         if (code) {
-    //             alert(`결제 실패: ${message}`);
-    //             return;
-    //         }
-
-    //         if (paymentId) {
-    //             try {
-    //                 // 주문 요청
-    //                 const result = await jaxios.post('/api/payment/order', null, {
-    //                     params: { memberId: loginUser.memberId, productId: 1 }
-    //                 });
-
-    //                 // orderingId가 있어야 함
-    //                 const orderingId = result.data;
-    //                 if (!orderingId) {
-    //                     throw new Error("주문 ID가 없습니다.");
-    //                 }
-
-    //                 // 결제 완료 요청
-    //                 const notified = await jaxios.post('/api/payment/complete', {
-    //                     paymentId: paymentId, // searchParams에서 받은 값
-    //                     memberId: loginUser.memberId,
-    //                     orderingId: orderingId,
-    //                 }, {
-    //                     headers: { "Content-Type": "application/json" }
-    //                 });
-
-    //                 alert("결제완료");
-
-    //                 // 로그인 정보 갱신
-    //                 const response = await jaxios.get(`/api/member/getLoginUser`, {
-    //                     params: { memberId: loginUser.memberId }
-    //                 });
-
-    //                 let accessToken = loginUser.accessToken;
-    //                 let refreshToken = loginUser.refreshToken;
-
-    //                 response.data.loginUser.accessToken = accessToken;
-    //                 response.data.loginUser.refreshToken = refreshToken;
-
-    //                 setCookie1('user', JSON.stringify(response.data.loginUser), 1);
-    //                 dispatch(loginAction(response.data.loginUser));
-
-    //             } catch (err) {
-    //                 console.error("결제 처리 중 오류:", err);
-    //                 alert("결제 처리 중 오류가 발생했습니다.");
-    //             }
-    //         }
-    //     };
-
-    //     handlePayment(); // useEffect 내부에서 실행
-    // }, [paymentId, code, message, loginUser, dispatch]);
-
     // 📌 클릭 이벤트 → 페이지 이동 + 비디오 제어 추가
     useEffect(() => {
         const handleClick = (event) => {
@@ -301,12 +260,14 @@ const Main = () => {
         if (clickY >= windowHeight - 100) {
             if (pageable?.pageNumber !== undefined) { // 🔥 undefined 방지
                 // console.log('handleClick'+pageable.pageNumber + 1)
+                
                 onPageMove(pageable.pageNumber + 1);
             }
             // window.scrollBy({ top: windowHeight, behavior: 'smooth' });
         } else if (clickY <= 100) {
             if (pageable?.pageNumber !== undefined) { // 🔥 undefined 방지
                 // console.log('handleClick'+pageable.pageNumber - 1)
+                if((pageable.pageNumber - 1)<0){return}
                 onPageMove(pageable.pageNumber - 1);
             }
             // setPageable((prev) => ({ pageNumber: Math.max(prev.pageNumber - 1, 0) }));
@@ -388,8 +349,135 @@ const Main = () => {
         setIsAnimationEnded(true);
     };
 
+    // const [showTutorial, setShowTutorial] = useState(true);
     
+    // useEffect(() => {
+    
+    //     if(loginUser.tutorialHidden==1){
+    //         setShowTutorial(false);
+    //     }
 
+    // }, []);
+
+    const [run, setRun] = useState(false);
+    const [isOverlayActive, setIsOverlayActive] = useState(false);
+  
+    useEffect(() => {
+        // console.log("Run is now:", run); // run 상태가 제대로 변경되는지 확인
+        if (run) {
+          setIsOverlayActive(true);
+        } else {
+          setIsOverlayActive(false);
+        }
+    }, [run]);
+
+    useEffect(() => {
+        const topElement = document.createElement("div");
+        topElement.className = "virtual-target-top";
+        document.body.appendChild(topElement);
+    
+        Object.assign(topElement.style, {
+          position: "absolute",
+          top: "50px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "1px",
+          height: "1px",
+          zIndex: "9999"
+        });
+    
+        const bottomElement = document.createElement("div");
+        bottomElement.className = "virtual-target-bottom";
+        document.body.appendChild(bottomElement);
+    
+        Object.assign(bottomElement.style, {
+          position: "absolute",
+          bottom: "50px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "1px",
+          height: "1px",
+          zIndex: "9999"
+        });
+    
+        return () => {
+          topElement.remove();
+          bottomElement.remove();
+        };
+      }, []);
+     
+
+    // 튜토리얼 단계 설정
+    const steps = [
+        {
+            target: ".virtual-target-top", // 타겟 요소
+            content: "페이지 상단을 누르면 이전 페이지로 갑니다.",
+            placement: "top",
+           
+        }
+            ,
+        {
+            target: ".virtual-target-bottom", // 타겟 요소
+            content: "페이지 하단을 누르면 다음 페이지로 갑니다.",
+            placement: "top",
+            
+        }
+            ,
+        {
+            target: "#IoIosContact", // 타겟 요소
+            content: "여기에서 실시간 접속자를 확인 할 수 있어요!",
+            placement: "bottom",
+        }
+            ,
+        
+        {
+            target: "#IoIosNotifications", // 타겟 요소
+            content: "여기에서 알림을 확인 할 수 있어요!",
+            placement: "bottom",
+        }
+            ,
+        {
+            target: ".FcCustomerSupport", // 강조할 요소
+            content: "여기에서 챗봇과 대화를 할 수 있습니다.",
+            placement: "top",
+        }   
+            ,
+        {
+            target: ".MenuBar", // 강조할 요소
+            content: "여기에서 메뉴에 접근 할 수 있습니다.",
+            placement: "right",
+        }   
+            ,
+        {
+            target: ".profileImg", // 강조할 요소
+            content: "사진을 클릭하시면 튜토리얼을 끌 수 있습니다.",
+            placement: "right",
+        }   
+            ,
+
+    ];
+    
+      
+  useEffect(() => {
+    if (loginUser.tutorialHidden==0) {
+      setRun(true); // Notification이 렌더링되었을 때 튜토리얼 실행
+    }
+  }, [loginUser]); 
+
+
+  const handleJoyrideCallback = (data) => {
+    
+    const { status } = data;
+    if (status === 'finished') {
+      console.log('튜토리얼이 종료되었습니다.');
+      setRun(false);
+    }
+
+  };
+  
+  
+
+      
     return (
         <div className='Container'>
             <Notification setNotificationList={setNotificationList} notificationList={notificationList} />
@@ -432,7 +520,90 @@ const Main = () => {
                 )}
             </div>
 
+                  {/* Joyride 컴포넌트 */}
 
+                <Joyride
+                    steps={steps}
+                    run={run}
+                    continuous={true}  // 계속 진행
+                    // showSkipButton={true}  // 스킵 버튼 추가
+                    styles={{
+                        options: {
+                        //   arrowColor: '#e3ffeb',
+                        //   backgroundColor: '#e3ffeb',
+                        //   overlayColor: 'rgba(79, 26, 0, 0.4)',
+                        //   primaryColor: '#000',
+                        //   textColor: '#004a14',
+                        //   width: 900,
+                        zIndex: 1000,
+                        }}}
+                    // debug={true}
+                    callback={handleJoyrideCallback}
+                    // spotlightClicks={true}
+                    
+                />
+
+      {/* <Joyride
+  steps={steps}
+  run={run}
+  continuous={true}
+  showSkipButton={true}
+  spotlightClicks={true}
+  showProgress={true}
+  overlayColor="rgba(0, 0, 0, 0.7)"
+  styles={{
+    options: {
+      arrowColor: '#e3ffeb',
+      backgroundColor: '#e3ffeb',
+      overlayColor: 'rgba(79, 26, 0, 0.4)',
+      primaryColor: '#000',
+      textColor: '#004a14',
+      width: 900,
+      zIndex: 1000,
+    },
+    spotlight: {
+      backgroundColor: 'rgba(0, 0, 0, 0.9)', // 강조 영역 배경색을 더 어둡게 설정
+      transition: 'all 0.3s ease-in-out', // 부드러운 전환 효과 추가
+    },
+  }}
+/> */}
+
+<Overlay isActive={isOverlayActive} />
+
+{/* <Joyride
+  steps={steps}
+  run={run}
+  continuous={true}
+  showSkipButton={true}
+  spotlightClicks={true}
+  showProgress={true}
+  overlayColor="rgba(0, 0, 0, 0.7)"
+  styles={{
+    options: {
+    //   arrowColor: '#e3ffeb',
+      backgroundColor: '#e3ffeb',
+      overlayColor: 'rgba(79, 26, 0, 0.4)',
+      primaryColor: '#000',
+      textColor: '#004a14',
+      width: 900,
+      zIndex: 1000,
+    },
+    spotlight: {
+      backgroundColor: 'rgba(0, 0, 0, 0.9)',
+      transition: 'all 0.3s ease-in-out',
+    },
+  }}
+  beforeBeacon={(step) => {
+    if (step.index === 0) {
+      // 첫 번째 단계에서만 배경을 더 어둡게 설정
+      document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+    } else {
+      document.body.style.backgroundColor = '';
+    }
+  }}
+/> */}
+
+            {/* {showTutorial && <TutorialModal onClose={() => setShowTutorial(false)} />} */}
 
             {/* <div className='PostList'> */}
                 {/* {
@@ -458,7 +629,7 @@ const Main = () => {
 
 
             <div className='customer-service-icon' onClick={toggleChatbot}>
-                {isChatbotOpen ? <FiX size={24} /> : <FcCustomerSupport size={24} />}
+                {isChatbotOpen ? <FiX size={24} /> : <FcCustomerSupport className='FcCustomerSupport' size={24} />}
             </div>
 
             {isChatbotOpen && (
