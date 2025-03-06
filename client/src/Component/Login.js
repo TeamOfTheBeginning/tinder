@@ -262,7 +262,7 @@ const Login = () => {
                         JOIN
                     </button>
                     <button id='kakao' onClick={() => {
-                        window.location.href = 'http://localhost:8070/member/kakaoStart';
+                        window.location.href = `${process.env.REACT_APP_ADDRESS2}/member/kakaoStart`;
                     }}>KAKAO LOGIN</button>
                 </div>
 
