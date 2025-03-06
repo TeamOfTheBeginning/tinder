@@ -45,17 +45,18 @@
 
 /* ------------------------------- matchingmember */
 
-.matchingMemberContainer{
-  width: 80%;
-  /* background-color: #f9f9f9; */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: transform 0.2s;
+.matchingMemberContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 80%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 10px;
+    transition: transform 0.2s;
 }
 
 .matchingMemberContainer:hover {
@@ -63,14 +64,34 @@
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
+.matchingMemberImgContainer {
+  display: flex;
+  position: relative;
+  border-radius: 10px;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow:hidden;
+}
+
 .matchingMemberTitle{
-  /* border: 1px solid black; */
-
-  font-family: "Gowun Dodum", serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 150%;
-
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  width: 100%;
+}
+.matchingMemberTitle span{
+  margin: 0.5rem;
+}
+.matchingMemberTitle .matchingMember-memberinfo{
+  background-color: rgba(0, 0, 0, 0.4); /* 반투명 배경 */
+  color: #fff;
+  font-size: 1.5rem;
+  text-align: center;
+  overflow: hidden; box-sizing: border-box;
 }
 
 .matchingMemberImg{
@@ -78,20 +99,15 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .matchingMemberImgImg{
-  width: 90%;
-  /* height: 500px; */
-  border-radius: 10px;
-
-
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-
   overflow: hidden;
-
 }
 
 .matchingMemberImg img{
@@ -100,21 +116,30 @@
 }
 
 .matchingMemberMsg{
-  /* border: 1px solid black; */
-
-  font-family: "Gowun Dodum", serif;
   font-weight: 400;
   font-style: normal;
   font-size: 150%;
 }
 
 .matchingMemberInfo{
-  /* border: 1px solid black; */
-
-  font-family: "Gowun Dodum", serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 150%;
+  font-size: 1.5rem;
+  margin-top: 20px;
+}
+
+.matchingMemberTemperature {
+  position: absolute;
+  bottom: 1%;
+  left: 50%;
+  transform: translateX(-50%); /* 가로 중앙 정렬 */
+  z-index: 1; /* 이미지 위로 올리기 */
+  width: 90%;
+  padding: 3px;
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+  overflow: hidden; box-sizing: border-box;
 }
 
 .matchingMemberBtns{
@@ -215,5 +240,7 @@
       margin-bottom: 0.5em;
       width: 100%;
     }
-
+    .matchingMember-memberinfo span {
+      font-size: 1rem;
+    }
   }

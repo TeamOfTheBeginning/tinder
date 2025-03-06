@@ -160,30 +160,21 @@ const calculateSimilarity = () => {
 
 
 
-
-
-
-
-
-
-
-
   if (!props.oppositeGender) return <LoadingSpinner />;
     
   return (
-    <div className='matchingMemberContainer'>          
-      <div className='matchingMemberImg'>
-        <div className='matchingMemberImgImg'>
-          <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${props.oppositeGender.profileImg}`} />
+    <div className='matchingMemberContainer'>
+      <div className='matchingMemberImgContainer'>
+        <div className='matchingMemberImg'>
+          <div className='matchingMemberImgImg'>
+            <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${props.oppositeGender.profileImg}`} />
+          </div>
         </div>
-      </div>
 
-      <div className='matchingMemberTitle'>
-        <div>
-          <span>{props.oppositeGender.nickname}</span>
-          <span>({props.oppositeGender.age})</span>
+        <div className='matchingMemberTitle'>
+        <div className='matchingMember-memberinfo'>
+          <span>{props.oppositeGender.nickname}({props.oppositeGender.age})</span>
           <span>{props.oppositeGender.address}</span>
-          <span>{props.oppositeGender.temp}도</span>
           <span>
             {ei(props.oppositeGender.memberInfo.ei)}
             {ns(props.oppositeGender.memberInfo.ns)}
@@ -193,22 +184,39 @@ const calculateSimilarity = () => {
         </div>
       </div>
 
+        <div className='matchingMemberTemperature'>
+          <div className="temp-graph">
+            <div className="temp-info">
+              <span>{props.oppositeGender.nickname}님의 매너는 {props.oppositeGender.temp}도 입니다.</span>
+            </div>
+            <div 
+              className="temp-bar" 
+              style={{ 
+                width: `${props.oppositeGender.temp}%`,  
+                backgroundSize: `${100 / props.oppositeGender.temp * 100}% 100%` 
+              }}
+            ></div>
+            <div className="temp-bg"></div>
+          </div>
+        </div>
+      </div>
+
       <div className='matchingMemberMsg'>
         {props.oppositeGender.profileMsg}
       </div>
-      
+
       <div className='matchingMemberInfo'>
         <div> MBTI 매칭률 {calculateMbtiMatchPercentage()}% </div>
         <div> 매칭률 : {calculateSimilarity()}%</div>
-        <div> 거리 : {haversine(props.oppositeGender.latitude,props.oppositeGender.longitude)} km</div>
+        <div> 거리 : {haversine(props.oppositeGender.latitude, props.oppositeGender.longitude)} km</div>
       </div>
 
       <div className='matchingMemberBtns'>
         <button className='matchBtn' onClick={()=>like()}>좋아요</button>
       </div>
-      
-      
     </div>
+
+
   )
 }
 
