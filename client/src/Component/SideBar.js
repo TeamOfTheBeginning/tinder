@@ -278,9 +278,11 @@ const closeSideViewer = () => {
 
         <div 
           className='sidebar-btn logout-btn' 
-          onClick={() => { navigate('/'); handleLeave(loginUser.memberId); removeCookie1('user', '/'); 
+          onClick={() => {  
+          handleLeave(loginUser.memberId); 
+          removeCookie1('user', '/'); 
           sessionStorage.removeItem("user");
-
+          navigate('/');
           }}
         >
           <IoLogOut />
@@ -323,7 +325,7 @@ const closeSideViewer = () => {
           {selectedMenu === 'mypage' && (
             subMenu === 'editProfile' ? <EditProfile />
             : subMenu === 'editOpponent' ? <EditOpponent />
-            : <MyPage openSubMenu={handleSubMenuClick} />
+            : <MyPage openSubMenu={handleSubMenuClick} handleLeave={handleLeave}/>
           )}
           {selectedMenu === 'search' && <Search {...props}/>}
         </div>
