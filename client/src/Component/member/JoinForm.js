@@ -84,22 +84,26 @@ const JoinForm = (props) => {
         console.log(longitude)
         console.log(latitude)
         console.log(address)
-        if(!adultVerification){ return alert('성인인증을 해주세요')}
-        if(email===''){ return alert('이메일을 입력하세요');}
-        if(pwd===''){ return alert('패스워드를 입력하세요');}
-        if(pwd!==pwdChk){ return alert('패스워드 확인이 일치하지 않습니다');}
-        if(nickname===''){ return alert('닉네임을 입력하세요');}
-        if(zipnum==''||address==''){ return alert('주소 검색을 하세요');}
-        if(profileimg==''){ return alert('프로필 이미지를 업로드 하세요');}
+        if(!adultVerification){ return alertAndScroll('성인인증을 해주세요', 'adultVerification');}
+        if(email===''){ return alertAndScroll('이메일을 입력하세요', 'email');}
+        if(pwd===''){ return alertAndScroll('패스워드를 입력하세요', 'pwd');}
+        if(pwd!==pwdChk){ return alertAndScroll('패스워드 확인이 일치하지 않습니다', 'pwdChk');}
+        if(nickname===''){ return alertAndScroll('닉네임을 입력하세요', 'nickname');}
+        if(zipnum===''||address===''){ return alertAndScroll('주소 검색을 하세요', 'zipnum');}
+        if (intro.length > 255) {
+            alertAndScroll('자기소개는 255자 이하로 작성해주세요.', 'intro');
+            return;
+        }
+        if(profileimg===''){ return alertAndScroll('프로필 이미지를 업로드 하세요', 'profileimg');}
 
         try{
             let result = await axios.post('/api/member/emailcheck', null, {params:{email}} );
             if(result.data.msg === 'no' ){
-                return alert('이메일이 중복됩니다');
+                return alertAndScroll('이메일이 중복됩니다', 'email');
             }
             result = await axios.post('/api/member/nicknamecheck', null, {params:{nickname}} );
             if(result.data.msg === 'no' ){
-                return alert('닉네임이 중복됩니다');
+                return alertAndScroll('닉네임이 중복됩니다', 'nickname');
             }
             result = await axios.post('/api/member/join', {email, pwd, age, gender, nickname, memberName, phone, birthDate , address, latitude, longitude, profileMsg : intro, profileImg :profileimg, zipnum});
             if(result.data.msg ==='ok'){
@@ -109,25 +113,39 @@ const JoinForm = (props) => {
         }catch(err){  console.error(err);     }
     }
 
-    // async function fileUpload(e){
-    //     const formData = new FormData();
-    //     formData.append('image',  e.target.files[0]);
-    //     const result = await jaxios.post('/api/member/fileupload', formData);
-    //     console.log(result);
-    //     setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
-    //     setImgStyle({display:'block', width:'200px'});
-    //     setProfileimg(result.data.filename)
-    // }
+    const handleIntroChange = (e) => {
+        let value = e.target.value;
+        if (value.length > 255) {
+            alertAndScroll('자기소개는 255자 이하로 작성해주세요.(공백 포함', 'intro');
+            value = value.slice(0, 255);
+        }
+        setIntro(value);
+    };
 
-    async function fileUpload(e){
-        const formData = new FormData();
-        formData.append('image',  e.target.files[0]);
-        const result = await axios.post('/api/member/fileupload', formData);
-        console.log(result); // 응답 데이터 확인
-        console.log(result.data); // result.data가 실제로 존재하는지 확인
-        setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
-        setImgStyle({display:'block', width:'200px'});
-        setProfileimg(result.data.filename)
+    // 검증 오류 alert 후 해당 입력창으로 스크롤 이동하는 함수
+    const alertAndScroll = (message, fieldId) => {
+        alert(message);
+        const element = document.getElementById(fieldId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.focus();
+        }
+    };
+
+    async function fileUpload(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('image', file);
+            const result = await axios.post('/api/member/fileupload', formData);
+            setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
+            setImgStyle({display:'block', width:'200px'});
+            setProfileimg(result.data.filename);
+        } else {
+            setImgSrc('');
+            setImgStyle({display:'none'});
+            setProfileimg('');
+        }
     }
 
     const uuid = () => {
@@ -272,7 +290,7 @@ const JoinForm = (props) => {
     return (
         <div className='join-container'>
             <div className='login-btns'>
-                <div className='login-btn' onClick={ ()=>{   handleIdentityVerification()    }  }>성인인증</div>
+                <div className='login-btn' id='adultVerification' onClick={ ()=>{   handleIdentityVerification()    }  }>성인인증</div>
             </div>
             <div className='joinform'>
                 <div className='field'>
@@ -299,7 +317,7 @@ const JoinForm = (props) => {
                             placeholder='생년월일'
                             value={birthDate}
                             required
-                    />
+                        />
                     </div>
                 </div>
 
@@ -307,19 +325,19 @@ const JoinForm = (props) => {
                     <label className='hidden'>PHONE</label>
                     <input type='text' name='phone' placeholder='전화번호' value={phone} onChange={(e)=>{setPhone(e.currentTarget.value)}} readOnly/>
                 </div>
-                <div className='field'>
+                <div className='field' id='email'>
                     <label className='hidden'>E-MAIL</label>
                     <input type='text' name='email' autoComplete='email' placeholder='E-MAIL (로그인 시 아이디로 사용됩니다.)' value={email} onChange={(e)=>{setEmail(e.currentTarget.value)}}/>
                 </div>
                 <div className='field'>
-                    <label className='hidden'>PASSWORD</label>
+                    <label className='hidden' id='pwd'>PASSWORD</label>
                     <input type='password' name='password' autoComplete='new-password' placeholder='비밀번호' value={pwd} onChange={(e)=>{setPwd(e.currentTarget.value)}}/>
                 </div>
                 <div className='field'>
-                    <label className='hidden'>RETYPE PW</label>
+                    <label className='hidden' id='pwdChk'>RETYPE PW</label>
                     <input type='password' name='pwdchk' autoComplete='new-password' placeholder='비밀번호 확인' value={pwdChk} onChange={(e)=>{setPwdChk(e.currentTarget.value)}}/>
                 </div>
-                <div className='field'>
+                <div className='field' id='nickname'>
                     <label className='hidden'>NICKNAME</label>
                     <input type='text' name='nickname' placeholder='닉네임' value={nickname} onChange={(e)=>{setNickname(e.currentTarget.value)}}/>
                 </div>
@@ -330,7 +348,7 @@ const JoinForm = (props) => {
                     </div>
                     <div className='login-btn' onClick={() => setIsAddressModalOpen(true)}>
                         <label>주소 검색</label>
-                        <button className='hidden'>주소 검색</button>
+                        <button className='hidden' id='zipnum'>주소 검색</button>
                     </div>
                 </div>
                 <div className='field'>
@@ -338,18 +356,21 @@ const JoinForm = (props) => {
                     <input type='text' name='address' value={address} readOnly placeholder='주소' />
 
                 </div>
-                <div className='field'>
-                    <label className='hidden'>INTRO</label>
-                    <input type='text' name='intro' placeholder='한마디' value={intro} onChange={(e)=>{setIntro(e.currentTarget.value)}}/>
+                <div className='field' id='intro'>
+                    <label className="hidden">INTRO</label>
+                    <input type="text" placeholder="한마디" value={intro} onChange={handleIntroChange} />
+                    <span className='profile-msg'>{intro.length} / 255</span>
                 </div>
-                <div className='field'>
+                <div className='field' id='profileimg'>
                     <label className='hidden'>PROFILE IMG</label>
                     <input type='file' name='profileimg' accept='.jpg,.jpeg,.png,.gif' onChange={(e)=>{fileUpload(e)}}/>
-                </div>
-                <div className='field'>
-                    <label className='hidden'>Profile img preview</label>
-                    <div><img alt='previmg' src={imgSrc} style={imgStyle} /></div>
-                </div>
+                    </div>
+                    {imgSrc && (
+                        <div className='field' id='prev'>
+                            <label className='hidden'>Profile img preview</label>
+                            <div className='prevImg'><img src={imgSrc} style={imgStyle} alt="Profile preview" /></div>
+                        </div>
+                    )}
                 <AddressModal
                     isOpen={isAddressModalOpen}
                     onClose={() => setIsAddressModalOpen(false)}
