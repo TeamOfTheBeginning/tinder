@@ -42,6 +42,14 @@ const Login = () => {
     const dispatch = useDispatch('');
     const cookies = new Cookies('');
 
+    useEffect(() => {
+        const savedUser = sessionStorage.getItem("user");
+        if (savedUser) {
+            dispatch(loginAction(JSON.parse(savedUser))); // 로그인 정보 복원
+            navigate('/main')
+        }
+    }, []);
+
     const handleLoginSuccess = () => {
         setIsLoginSuccess(true); // 로그인 성공 상태 활성화
         setTimeout(() => setLoadingComplete(true), 6500); // 로딩 완료 후 상태 변경
