@@ -154,6 +154,60 @@ const hasRequiredRoles = (roles) => {
     return roles.includes("USER") && roles.includes("Gold");
 };
 
+const togleTutorial = async () => {
+    console.log("togleTutorial")
+
+    jaxios.post(`/api/member2/setTutorialHidden`, null ,{ params: { memberId:loginUser.memberId } })
+    .then((result) => {
+        
+        if(result.data.msg="yes"){
+            
+            alert("튜토리얼을 껐습니다.");
+
+            jaxios.get(`/api/member/getLoginUser`, { params: { memberId:loginUser.memberId } })
+            .then((result) => {
+
+            let accessToken=loginUser.accessToken
+            let refreshToken=loginUser.refreshToken
+            
+            result.data.loginUser.accessToken = accessToken;
+            result.data.loginUser.refreshToken = refreshToken;
+            
+
+            setCookie1('user', JSON.stringify(result.data.loginUser) , 1)
+            dispatch( loginAction( result.data.loginUser ) )
+
+
+
+            }).catch((err) => { console.error(err) });        
+
+            
+        }else if(result.data.msg="no"){
+            alert("튜토리얼을 켰습니다.");
+
+            jaxios.get(`/api/member/getLoginUser`, { params: { memberId:loginUser.memberId } })
+            .then((result) => {
+
+            let accessToken=loginUser.accessToken
+            let refreshToken=loginUser.refreshToken
+            
+            result.data.loginUser.accessToken = accessToken;
+            result.data.loginUser.refreshToken = refreshToken;
+            
+
+            setCookie1('user', JSON.stringify(result.data.loginUser) , 1)
+            dispatch( loginAction( result.data.loginUser ) )
+
+
+
+            }).catch((err) => { console.error(err) }); 
+        }
+
+
+    }).catch((err) => { console.error(err) });
+
+}
+
 const buyItems = async () => {
 
     
@@ -202,8 +256,7 @@ const buyItems = async () => {
 
     }else{
     alert("Gold 회원권 구매를 취소 하셨습니다.");
-}
-    
+}    
 }
 
     return (
@@ -277,7 +330,7 @@ const buyItems = async () => {
                     
                     <div id ="btn" onClick={()=>{requestPayment()}}><button>충전</button></div>
                     
-                    <div id ="btn">
+                    
                 
                     <div id ="btn">
                         <button 
@@ -294,10 +347,8 @@ const buyItems = async () => {
                             골드회원
                         </button>
                     </div>
-                
 
-                
-                </div>
+                    <div id ="btn" onClick={()=>{togleTutorial()}}><button>튜토리얼 끄기/켜기</button></div>
                 
                 </div>
 

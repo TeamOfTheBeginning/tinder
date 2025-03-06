@@ -431,4 +431,15 @@ public Member getOppsiteGender2(int memberId) {
             return "money";
         }
     }
+
+    public String setTutorialHidden(int memberId) {
+        Member member = mr.findByMemberId(memberId).orElse(null);
+        if(member.getTutorialHidden()==0){
+            member.setTutorialHidden(1);
+            return "yes";
+        }else {
+            member.setTutorialHidden(0);
+            return "no";
+        }
+    }
 }
