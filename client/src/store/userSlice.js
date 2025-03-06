@@ -25,6 +25,7 @@ const initialState={
     
     account:'',
     temp:'',
+    tutorialHidden:'',
 
     memberRoleList:[],
 
@@ -74,6 +75,7 @@ if (memberinfoStr) {
         memberinfo.longitude = decodeURIComponent( memberinfo.longitude )
         memberinfo.account = decodeURIComponent( memberinfo.account )
         memberinfo.temp = decodeURIComponent( memberinfo.temp )
+        memberinfo.tutorialHidden = decodeURIComponent( memberinfo.tutorialHidden )
 
         memberinfo.memberRoleList = memberinfo.memberRoleList;
         // console.log(typeof memberinfo.memberInfo); 
@@ -112,6 +114,7 @@ export const userSlice=createSlice(
                 state.longitude = action.payload.longitude;
                 state.account = action.payload.account;
                 state.temp = action.payload.temp;
+                state.tutorialHidden = action.payload.tutorialHidden;
                 state.memberRoleList = action.payload.memberRoleList;
                 state.memberInfo = action.payload.memberInfo;
                 state.opponentMemberInfo = action.payload.opponentMemberInfo;
@@ -136,6 +139,7 @@ export const userSlice=createSlice(
                 state.longitude = '';
                 state.account = '';
                 state.temp = '';
+                state.tutorialHidden ='';
                 state.memberRoleList = [];
                 state.memberInfo ={};
                 state.opponentMemberInfo ={};

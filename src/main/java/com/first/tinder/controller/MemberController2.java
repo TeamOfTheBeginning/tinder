@@ -251,4 +251,12 @@ public class MemberController2 {
         return result;
     }
 
+    @PostMapping("setTutorialHidden")
+    public HashMap<String,Object> setTutorialHidden (@RequestParam("memberId") int memberId){
+        HashMap<String, Object> result = new HashMap<>();
+        String msg = ms2.setTutorialHidden(memberId);
+        result.put("msg", msg);
+        return result;
+    }
+
 }
