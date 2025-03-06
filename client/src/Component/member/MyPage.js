@@ -8,7 +8,7 @@ import * as PortOne from "@portone/browser-sdk/v2";
 import { useDispatch } from 'react-redux';
 import { loginAction, setFollower, setFollowed } from '../../store/userSlice';
 import {Cookies} from 'react-cookie'
-import { setCookie1, getCookie1 } from '../../util/cookieUtil2';
+import { setCookie1, getCookie1, removeCookie1 } from '../../util/cookieUtil2';
 
 import { useSearchParams } from "react-router-dom";
 
@@ -16,7 +16,7 @@ import jaxios from '../../util/jwtUtil';
 import '../../style/mypage.css'
 
 
-const MyPage = ({openSubMenu}) => {
+const MyPage = (props) => {
 
     const loginUser = useSelector( state=>state.user );
     const [profileImg, setProfileImg] = useState('');
@@ -259,6 +259,36 @@ const buyItems = async () => {
 }    
 }
 
+function resign(){
+
+
+    jaxios.delete(`/api/member2/resign/${loginUser.memberId}`)
+    .then((result) => {
+
+    // let accessToken=loginUser.accessToken
+    // let refreshToken=loginUser.refreshToken
+    
+    // result.data.loginUser.accessToken = accessToken;
+    // result.data.loginUser.refreshToken = refreshToken;
+    
+
+    // setCookie1('user', JSON.stringify(result.data.loginUser) , 1)
+    // dispatch( loginAction( result.data.loginUser ) )
+        console.log("result.data.msg"+result.data.msg)
+
+        if(result.data.msg=='yes'){
+            alert('탈퇴가 완료되었습니다!')
+
+            props.handleLeave(loginUser.memberId); 
+            removeCookie1('user', '/'); 
+            sessionStorage.removeItem("user");
+            navigate('/'); 
+        }
+
+    }).catch((err) => { console.error(err) });
+
+}
+
     return (
         <div className='SideContainer'>
             <div className='mypage'>
@@ -324,9 +354,9 @@ const buyItems = async () => {
                 </div>
 
                 <div className='btns' >
-                    <div id ="btn" onClick={()=> openSubMenu('editProfile')}><button>정보수정</button></div>
+                    <div id ="btn" onClick={()=> props.openSubMenu('editProfile')}><button>정보수정</button></div>
                     
-                    <div id ="btn" onClick={()=> openSubMenu('editOpponent')}><button>상대정보</button></div>
+                    <div id ="btn" onClick={()=> props.openSubMenu('editOpponent')}><button>상대정보</button></div>
                     
                     <div id ="btn" onClick={()=>{requestPayment()}}><button>충전</button></div>
                     
@@ -349,6 +379,8 @@ const buyItems = async () => {
                     </div>
 
                     <div id ="btn" onClick={()=>{togleTutorial()}}><button>튜토리얼 끄기/켜기</button></div>
+
+                    <div id ="btn" onClick={()=>{resign()}}><button>회원 탈퇴</button></div>
                 
                 </div>
 

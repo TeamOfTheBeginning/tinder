@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
+
 import DaumPostcode from 'react-daum-postcode';
 import * as PortOne from "@portone/browser-sdk/v2";
 import { IoCreateOutline } from "react-icons/io5";
@@ -20,7 +23,97 @@ import jaxios from '../../util/jwtUtil';
 import { setCookie1, getCookie1 } from '../../util/cookieUtil2';
 import { LuActivity } from 'react-icons/lu';
 
+
+//웹소켓 경로 관련
+const isLocalhost = window.location.hostname === 'localhost' ;
+// || window.location.hostname === '127.0.0.1';
+
+const API_BASE_URL = isLocalhost
+  ? 'http://localhost:8070' // 로컬 개발 환경
+  : `http://${window.location.hostname}:8070`; // 클라이언트가 실행 중인 네트워크 기반으로 서버 IP 설정
+
+const SOCKET_URL = `${API_BASE_URL}/ws_real_chat`;
+
 const Savekakaoinfo = () => {
+
+    const [userCount, setUserCount] = useState();
+    const [client, setClient] = useState(null);
+
+
+    useEffect(() => {
+        // WebSocket 클라이언트 설정
+        const stompClient = new Client({
+        brokerURL: `ws://${API_BASE_URL}/ws_real_chat`,  // 서버의 WebSocket 엔드포인트
+        connectHeaders: {
+            // 필요한 경우 인증 정보 추가
+        },
+        // debug: function (str) {
+        //   console.log(str);
+        // },
+        onConnect: () => {
+            // console.log('WebSocket connected');
+        
+            // 서버에 접속자 수를 요청하는 메시지 발송
+            stompClient.publish({
+            destination: '/app/getUserCount',
+            });
+
+            // 서버로부터 접속자 수 업데이트를 실시간으로 받기 위해 구독
+            stompClient.subscribe('/topic/real_chat/userCount', (message) => {
+            // console.log('Received message:', message.body);
+
+            // const parsedMessage = JSON.parse(message.body);
+
+            // console.log('parsedMessage'+parsedMessage)
+
+            // console.log('parsedMessage.userCount'+parsedMessage.userCount)
+
+            // const userCount = Number(parsedMessage.userCount);
+
+            // setUserCount(userCount);
+
+            // setUserCount(parseInt(message.body.userCount));  // 서버에서 받은 접속자 수 업데이트
+            });
+        },
+        onDisconnect: () => {
+            // console.log('WebSocket disconnected');
+        },
+        onStompError: (frame) => {
+            // console.error('STOMP error: ', frame);
+        },
+        webSocketFactory: () => new SockJS(`${API_BASE_URL}/ws_real_chat`),
+        });
+    
+        stompClient.activate();
+        setClient(stompClient);
+    
+        return () => {
+        if (stompClient) {
+            console.log("WebSocket 연결 종료")
+            stompClient.deactivate();  // 클린업: 컴포넌트가 언마운트될 때 WebSocket 연결 종료
+        }
+        };
+    }, []);
+    
+    const handleJoin = async (username) => {
+        console.log("username: " + username);
+    
+        // client가 초기화될 때까지 기다림
+        if (client) {
+            await client.ready(); // 예시: client 초기화 완료를 기다리는 메서드 (client의 실제 구현에 따라 다를 수 있음)
+            client.publish({ destination: '/app/join', body: JSON.stringify({ username }) });
+        } else {
+            console.error("WebSocket client가 초기화되지 않았습니다.");
+        }
+    };
+          
+      
+    // const handleLeave = (memberId) => {
+    //   client.publish({ destination: '/app/leave', body: JSON.stringify({ memberId }) });
+    // };
+
+
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false);
@@ -35,7 +128,7 @@ const Savekakaoinfo = () => {
     // }, []);
 
     const [cookies, setCookie, removeCookie] = useCookies(['claims']);  // 쿠키 이름 배열로 전달
-  const [claims, setClaims] = useState(null);
+    const [claims, setClaims] = useState(null);
 
     useEffect(() => {
         // 'claims' 쿠키가 존재하면 상태에 저장
@@ -97,11 +190,24 @@ const Savekakaoinfo = () => {
             setCookie('follower', JSON.stringify(result.data.follower), { path: '/' });
             setCookie('followed', JSON.stringify(result.data.followed), { path: '/' });
 
-            setIsLoginSuccess(true);
+            
 
-            // setTimeout(() => {
-                // navigate('/main');
-            // }, 200);
+             
+
+
+            
+            setTimeout(() => {
+
+            alert(claimsObj.memberId)
+            handleJoin(claimsObj.memberId);
+            alert(result.data.loginUser.memberId)
+            localStorage.setItem('nickname', result.data.loginUser.nickname);  
+                
+
+            setIsLoginSuccess(true);
+            }, 10000);
+
+            
             }).catch((err) => { console.error(err) });  
         }
 
@@ -231,9 +337,12 @@ const Savekakaoinfo = () => {
         
             setCookie('follower', JSON.stringify(result.data.follower), { path: '/' });
             setCookie('followed', JSON.stringify(result.data.followed), { path: '/' });
-      
-            // handleJoin(result.data.memberId);
-            // localStorage.setItem('nickname', result.data.nickname);         
+
+            
+            handleJoin(result.data.loginUser.memberId);
+            alert(result.data.loginUser.memberId)
+            localStorage.setItem('nickname', result.data.loginUser.nickname);   
+       
       
             // 2초 후에 /main으로 이동
             // setTimeout(() => {
@@ -420,6 +529,8 @@ const Savekakaoinfo = () => {
             .catch(error => console.error("오류 발생:", error));
         }
     }, [identityVerificationId, code, message]);
+
+    
 
     return (
     <div className='kakao-container'>

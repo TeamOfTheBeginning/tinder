@@ -259,4 +259,13 @@ public class MemberController2 {
         return result;
     }
 
+    @DeleteMapping("/resign/{memberId}")
+    public HashMap<String,Object> resign(@PathVariable int memberId) {
+        System.out.println("resign");
+        HashMap<String, Object> result = new HashMap<>();
+        // id를 사용하여 회원 탈퇴 처리
+        String msg = ms2.resign(memberId);
+        result.put("msg", msg);
+        return result;
+    }
 }
