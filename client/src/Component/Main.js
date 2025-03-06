@@ -21,7 +21,6 @@ import Notification from './notification/Notification';
 import ToastPopupPost from './post/ToastPopupPost';
 import MatchingMember from './match/MatchingMember';
 import ChatBot from './chatbot/ChatBot';
-import TutorialModal from './tutorial/TutorialModal';
 
 import jaxios from '../util/jwtUtil';
 
