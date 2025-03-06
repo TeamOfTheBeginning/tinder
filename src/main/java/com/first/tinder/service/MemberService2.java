@@ -40,6 +40,12 @@ public class MemberService2 {
     @Autowired
     ProductRepository pr;
 
+    @Autowired
+    MemberInfoRepository mir;
+
+    @Autowired
+    OpponentMemberInfoRepository omir;
+
     public Member getOppsiteGender(int gender, int age) {
 //        List<Member> members = mr.findByGender(gender);
 
@@ -441,5 +447,14 @@ public Member getOppsiteGender2(int memberId) {
             member.setTutorialHidden(0);
             return "no";
         }
+    }
+
+    public String resign(int memberId) {
+        Member member = mr.findByMemberId(memberId).orElse(null);
+        mir.delete(member.getMemberInfo());
+        omir.delete(member.getOpponentMemberInfo());
+        mr.delete(member);
+//        member.getMemberRoleList()
+        return "yes";
     }
 }
