@@ -12,6 +12,7 @@ import AddressModal from './AddressModal';
 import '../../style/member/savekakaoinfo.css';
 import '../../style/login.css';
 import Loading from '../Loading';
+import RealtimeConnectInfo from '../realtimeconnectinfo/RealtimeConnectInfo';
 
 import { useSearchParams, useLocation } from 'react-router-dom';
 
@@ -38,94 +39,55 @@ const Savekakaoinfo = () => {
 
     const [userCount, setUserCount] = useState();
     const [client, setClient] = useState(null);
-
-
+        
+    
     useEffect(() => {
+        console.log("WebSocket 연결시도")
         // WebSocket 클라이언트 설정
         const stompClient = new Client({
-        brokerURL: `ws://${API_BASE_URL}/ws_real_chat`,  // 서버의 WebSocket 엔드포인트
-        connectHeaders: {
+            brokerURL: `ws://${API_BASE_URL}/ws_real_chat`,  // 서버의 WebSocket 엔드포인트
+            connectHeaders: {
             // 필요한 경우 인증 정보 추가
-        },
-        // debug: function (str) {
-        //   console.log(str);
-        // },
-        onConnect: () => {
-            // console.log('WebSocket connected');
-        
-            // 서버에 접속자 수를 요청하는 메시지 발송
-            stompClient.publish({
-            destination: '/app/getUserCount',
-            });
-
-            // 서버로부터 접속자 수 업데이트를 실시간으로 받기 위해 구독
-            stompClient.subscribe('/topic/real_chat/userCount', (message) => {
-            // console.log('Received message:', message.body);
-
-            // const parsedMessage = JSON.parse(message.body);
-
-            // console.log('parsedMessage'+parsedMessage)
-
-            // console.log('parsedMessage.userCount'+parsedMessage.userCount)
-
-            // const userCount = Number(parsedMessage.userCount);
-
-            // setUserCount(userCount);
-
-            // setUserCount(parseInt(message.body.userCount));  // 서버에서 받은 접속자 수 업데이트
-            });
-        },
-        onDisconnect: () => {
-            // console.log('WebSocket disconnected');
-        },
-        onStompError: (frame) => {
-            // console.error('STOMP error: ', frame);
-        },
-        webSocketFactory: () => new SockJS(`${API_BASE_URL}/ws_real_chat`),
+            },
+            onConnect: () => {
+            console.log('WebSocket connected');
+            stompClient.activate();
+            setClient(stompClient);
+            console.log(stompClient)
+            console.log(JSON.stringify(stompClient))            
+            },
+            onDisconnect: () => {
+            console.log('WebSocket disconnected');
+            },
+            onStompError: (frame) => {
+            console.error('STOMP error: ', frame);
+            },
+            webSocketFactory: () => new SockJS(`${API_BASE_URL}/ws_real_chat`),
         });
     
+        console.log(JSON.stringify(stompClient))
         stompClient.activate();
         setClient(stompClient);
     
         return () => {
-        if (stompClient) {
-            console.log("WebSocket 연결 종료")
+            console.log(stompClient)
+            if (stompClient) {
             stompClient.deactivate();  // 클린업: 컴포넌트가 언마운트될 때 WebSocket 연결 종료
-        }
-        };
+            }
+        };        
     }, []);
     
-    const handleJoin = async (username) => {
-        console.log("username: " + username);
-    
-        // client가 초기화될 때까지 기다림
-        if (client) {
-            await client.ready(); // 예시: client 초기화 완료를 기다리는 메서드 (client의 실제 구현에 따라 다를 수 있음)
-            client.publish({ destination: '/app/join', body: JSON.stringify({ username }) });
-        } else {
-            console.error("WebSocket client가 초기화되지 않았습니다.");
-        }
+    const handleJoin = (memberId) => {
+        client.publish({ destination: '/app/join', body: JSON.stringify({ memberId }) });
     };
-          
-      
+    
     // const handleLeave = (memberId) => {
     //   client.publish({ destination: '/app/leave', body: JSON.stringify({ memberId }) });
     // };
 
-
-
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false);
-    // const cookies = new Cookies()
-
-    // useEffect(() => {
-    //     // 현재 URL에서 쿼리 파라미터를 읽어오는 방법
-        
-    
-    //     // 받은 데이터로 필요한 작업을 수행
-    //     // 예: 데이터를 상태로 설정하거나 API 호출 등을 할 수 있습니다.
-    // }, []);
 
     const [cookies, setCookie, removeCookie] = useCookies(['claims']);  // 쿠키 이름 배열로 전달
     const [claims, setClaims] = useState(null);
@@ -189,24 +151,12 @@ const Savekakaoinfo = () => {
         
             setCookie('follower', JSON.stringify(result.data.follower), { path: '/' });
             setCookie('followed', JSON.stringify(result.data.followed), { path: '/' });
-
             
-
-             
-
-
-            
-            setTimeout(() => {
-
-            alert(claimsObj.memberId)
-            handleJoin(claimsObj.memberId);
-            alert(result.data.loginUser.memberId)
             localStorage.setItem('nickname', result.data.loginUser.nickname);  
                 
+            handleJoin(claimsObj.memberId);
 
             setIsLoginSuccess(true);
-            }, 10000);
-
             
             }).catch((err) => { console.error(err) });  
         }
@@ -215,9 +165,7 @@ const Savekakaoinfo = () => {
         } else {
         console.log("쿠키에 claims 데이터가 없습니다.");
         }
-    }, []);  // 쿠키가 변경될 때마다 effect 실행
-  
-
+    }, [client]);  // 쿠키가 변경될 때마다 effect 실행
 
     const [email, setEmail] = useState('')
     // const [pwd, setPwd] = useState('')
@@ -307,7 +255,7 @@ const Savekakaoinfo = () => {
             }
             console.log({
                 memberId: claims.memberId, email:claims.email, age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
-              })            
+            })            
             result = await jaxios.post('/api/member/update', {
               memberId: claims.memberId, email:email, pwd:'a',age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
             });
@@ -340,14 +288,8 @@ const Savekakaoinfo = () => {
 
             
             handleJoin(result.data.loginUser.memberId);
-            alert(result.data.loginUser.memberId)
+            // alert(result.data.loginUser.memberId)
             localStorage.setItem('nickname', result.data.loginUser.nickname);   
-       
-      
-            // 2초 후에 /main으로 이동
-            // setTimeout(() => {
-            //     navigate('/main');
-            // }, 2000);
 
             setIsLoginSuccess(true);
 
@@ -540,6 +482,7 @@ const Savekakaoinfo = () => {
         :
         (<>
             <div className='join-container' id='kakao-join'>
+                <RealtimeConnectInfo />
                 {showModal && (
                     <div className="modal-overlay">
                         <div className="modal-content">
