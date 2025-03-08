@@ -1,25 +1,25 @@
-name: DH client
-on:
-  push:
-    branches:
-      - DH
+# name: DH client
+# on:
+#   push:
+#     branches:
+#       - DH
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: SSH로 EC2에 접속하기
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.DHEC2_HOST }}
-          username: ${{ secrets.DHEC2_USERNAME }}
-          key: ${{ secrets.DHEC2_PRIVATE_KEY }}
-          script_stop: true
-          script: |
-            cd /home/ubuntu/tinder/client
-            git pull origin DH
-            sudo rm -rf node_modules
-            export NODE_OPTIONS="--max-old-space-size=3072"
-            npm install
-            npm run build
-            sudo systemctl restart nginx
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: SSH로 EC2에 접속하기
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: ${{ secrets.DHEC2_HOST }}
+#           username: ${{ secrets.DHEC2_USERNAME }}
+#           key: ${{ secrets.DHEC2_PRIVATE_KEY }}
+#           script_stop: true
+#           script: |
+#             cd /home/ubuntu/tinder/client
+#             git pull origin DH
+#             sudo rm -rf node_modules
+#             export NODE_OPTIONS="--max-old-space-size=3072"
+#             npm install
+#             npm run build
+#             sudo systemctl restart nginx

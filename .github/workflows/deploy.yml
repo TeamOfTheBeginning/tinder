@@ -30,6 +30,10 @@ jobs:
             #|| true : 8070에 종료시킬 프로세스가 없더라도 에러없이 정상실행
             #발생하는 로그들을 ./output.log 파일에 남기는 명령
           script: |  #(2개 이상 명령 실행시) git pull 시 /토큰 문제있음
+            
+            
+            
+            
             cd /home/ubuntu/tinder
             
             rm -rf src/main/resources/application.yml
@@ -42,6 +46,14 @@ jobs:
             sudo fuser -k -n tcp 8070 || true 
             
             nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
+            
+            cd /home/ubuntu/tinder/client
+            git pull origin DH
+            sudo rm -rf node_modules
+            export NODE_OPTIONS="--max-old-space-size=3072"
+            npm install
+            npm run build
+            sudo systemctl restart nginx
             
             
             
