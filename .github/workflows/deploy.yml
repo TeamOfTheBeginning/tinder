@@ -34,13 +34,13 @@ jobs:
             nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
             echo "=== Backend 배포 완료 ==="
 
-#            # Frontend 배포
-#            echo "=== Frontend 배포 시작 ==="
-#            cd /home/ubuntu/tinder/client
-#            git pull origin DH
-#            sudo rm -rf node_modules
-#            export NODE_OPTIONS="--max-old-space-size=3072"
-#            npm install
-#            npm run build
-#            sudo systemctl restart nginx
-#            echo "=== Frontend 배포 완료 ==="
+            # Frontend 배포
+            echo "=== Frontend 배포 시작 ==="
+            cd /home/ubuntu/tinder/client
+            git pull origin DH
+            sudo rm -rf node_modules
+            export NODE_OPTIONS="--max-old-space-size=3072"
+            npm install
+            npm run build
+            sudo systemctl restart nginx
+            echo "=== Frontend 배포 완료 ==="
