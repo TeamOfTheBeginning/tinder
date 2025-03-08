@@ -44,7 +44,7 @@ const Match = (props) => {
   return (
     <div className='matchContainer'>
 
-<div className='matchBtns'>
+      <div className='matchBtns'>
         <button className='matchBtn' onClick={()=>rematch()}>재매칭</button>        
         <button 
             className='matchBtn' 
@@ -59,7 +59,7 @@ const Match = (props) => {
             Liker 조회
         </button>
 
-        <button className='matchBtn' onClick={()=> props.onSubMenuSelect('matchedMember')}>매칭조회</button>&nbsp;        
+        <button className='matchBtn' onClick={()=> props.onSubMenuSelect('matchedMember')}>매칭조회</button>
       </div>
       
 

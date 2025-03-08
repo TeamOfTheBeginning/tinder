@@ -8,13 +8,15 @@ import * as PortOne from "@portone/browser-sdk/v2";
 import { useDispatch } from 'react-redux';
 import { loginAction, setFollower, setFollowed } from '../../store/userSlice';
 import {Cookies} from 'react-cookie'
-import { setCookie1, getCookie1 } from '../../util/cookieUtil2';
+import { setCookie1, getCookie1, removeCookie1 } from '../../util/cookieUtil2';
+
+import { useSearchParams } from "react-router-dom";
 
 import jaxios from '../../util/jwtUtil';
 import '../../style/mypage.css'
 
 
-const MyPage = ({openSubMenu}) => {
+const MyPage = (props) => {
 
     const loginUser = useSelector( state=>state.user );
     const [profileImg, setProfileImg] = useState('');
@@ -69,6 +71,10 @@ const MyPage = ({openSubMenu}) => {
 
 
     const requestPayment = async () => {
+
+    sessionStorage.setItem("user", JSON.stringify(loginUser));
+
+
     try {
         const response = await PortOne.requestPayment({
             storeId: "store-0ef99292-e8d5-4956-a265-e1ec0ee73634", // 고객사 storeId로 변경해주세요.
@@ -78,6 +84,7 @@ const MyPage = ({openSubMenu}) => {
             totalAmount: 1,
             currency: "CURRENCY_KRW",
             payMethod: "CARD",
+            redirectUrl: `${process.env.REACT_APP_ADDRESS2}/main`,
             customer: {
                 fullName: loginUser.nickname,
                 phoneNumber: loginUser.phone,
@@ -147,6 +154,60 @@ const hasRequiredRoles = (roles) => {
     return roles.includes("USER") && roles.includes("Gold");
 };
 
+const togleTutorial = async () => {
+    console.log("togleTutorial")
+
+    jaxios.post(`/api/member2/setTutorialHidden`, null ,{ params: { memberId:loginUser.memberId } })
+    .then((result) => {
+        
+        if(result.data.msg="yes"){
+            
+            alert("튜토리얼을 껐습니다.");
+
+            jaxios.get(`/api/member/getLoginUser`, { params: { memberId:loginUser.memberId } })
+            .then((result) => {
+
+            let accessToken=loginUser.accessToken
+            let refreshToken=loginUser.refreshToken
+            
+            result.data.loginUser.accessToken = accessToken;
+            result.data.loginUser.refreshToken = refreshToken;
+            
+
+            setCookie1('user', JSON.stringify(result.data.loginUser) , 1)
+            dispatch( loginAction( result.data.loginUser ) )
+
+
+
+            }).catch((err) => { console.error(err) });        
+
+            
+        }else if(result.data.msg="no"){
+            alert("튜토리얼을 켰습니다.");
+
+            jaxios.get(`/api/member/getLoginUser`, { params: { memberId:loginUser.memberId } })
+            .then((result) => {
+
+            let accessToken=loginUser.accessToken
+            let refreshToken=loginUser.refreshToken
+            
+            result.data.loginUser.accessToken = accessToken;
+            result.data.loginUser.refreshToken = refreshToken;
+            
+
+            setCookie1('user', JSON.stringify(result.data.loginUser) , 1)
+            dispatch( loginAction( result.data.loginUser ) )
+
+
+
+            }).catch((err) => { console.error(err) }); 
+        }
+
+
+    }).catch((err) => { console.error(err) });
+
+}
+
 const buyItems = async () => {
 
     
@@ -195,8 +256,37 @@ const buyItems = async () => {
 
     }else{
     alert("Gold 회원권 구매를 취소 하셨습니다.");
+}    
 }
+
+function resign(){
+
+
+    jaxios.delete(`/api/member2/resign/${loginUser.memberId}`)
+    .then((result) => {
+
+    // let accessToken=loginUser.accessToken
+    // let refreshToken=loginUser.refreshToken
     
+    // result.data.loginUser.accessToken = accessToken;
+    // result.data.loginUser.refreshToken = refreshToken;
+    
+
+    // setCookie1('user', JSON.stringify(result.data.loginUser) , 1)
+    // dispatch( loginAction( result.data.loginUser ) )
+        console.log("result.data.msg"+result.data.msg)
+
+        if(result.data.msg=='yes'){
+            alert('탈퇴가 완료되었습니다!')
+
+            props.handleLeave(loginUser.memberId); 
+            removeCookie1('user', '/'); 
+            sessionStorage.removeItem("user");
+            navigate('/'); 
+        }
+
+    }).catch((err) => { console.error(err) });
+
 }
 
     return (
@@ -264,13 +354,13 @@ const buyItems = async () => {
                 </div>
 
                 <div className='btns' >
-                    <div id ="btn" onClick={()=> openSubMenu('editProfile')}><button>정보수정</button></div>
+                    <div id ="btn" onClick={()=> props.openSubMenu('editProfile')}><button>정보수정</button></div>
                     
-                    <div id ="btn" onClick={()=> openSubMenu('editOpponent')}><button>상대정보</button></div>
+                    <div id ="btn" onClick={()=> props.openSubMenu('editOpponent')}><button>상대정보</button></div>
                     
                     <div id ="btn" onClick={()=>{requestPayment()}}><button>충전</button></div>
                     
-                    <div id ="btn">
+                    
                 
                     <div id ="btn">
                         <button 
@@ -287,10 +377,10 @@ const buyItems = async () => {
                             골드회원
                         </button>
                     </div>
-                
 
-                
-                </div>
+                    <div id ="btn" onClick={()=>{togleTutorial()}}><button>튜토리얼 끄기/켜기</button></div>
+
+                    <div id ="btn" onClick={()=>{resign()}}><button>회원 탈퇴</button></div>
                 
                 </div>
 

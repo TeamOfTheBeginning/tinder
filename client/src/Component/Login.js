@@ -20,11 +20,11 @@ import { SiOutline } from 'react-icons/si';
 import jaxios from '../util/jwtUtil'
 
 //웹소켓 경로 관련
-const isLocalhost = window.location.hostname === "localhost" ;
-// || window.location.hostname === "127.0.0.1";
+const isLocalhost = window.location.hostname === 'localhost' ;
+// || window.location.hostname === '127.0.0.1';
 
 const API_BASE_URL = isLocalhost
-  ? "http://localhost:8070" // 로컬 개발 환경
+  ? 'http://localhost:8070' // 로컬 개발 환경
   : `http://${window.location.hostname}:8070`; // 클라이언트가 실행 중인 네트워크 기반으로 서버 IP 설정
 
 const SOCKET_URL = `${API_BASE_URL}/ws_real_chat`;
@@ -42,11 +42,32 @@ const Login = () => {
     const dispatch = useDispatch('');
     const cookies = new Cookies('');
 
+    useEffect(() => {
+        const savedUser = sessionStorage.getItem("user");
+        if (savedUser) {
+            dispatch(loginAction(JSON.parse(savedUser))); // 로그인 정보 복원
+            navigate('/main')
+        }
+    }, []);
+
     const handleLoginSuccess = () => {
         setIsLoginSuccess(true); // 로그인 성공 상태 활성화
         setTimeout(() => setLoadingComplete(true), 6500); // 로딩 완료 후 상태 변경
         setTimeout(() => navigate('/main'), 6500); // 메인 페이지로 이동
     };
+
+    //성인인증된 경우 JOINFORM OPEN
+    useEffect(() => {
+        // 리디렉션 이후에 sessionStorage에서 값을 읽어 복구
+        const isSignUp = sessionStorage.getItem("isSignUp");
+    
+        if (isSignUp) {
+            // 필요한 로직 처리
+            setIsSignUp(true);
+            // alert("성인 인증 성공!");
+            // 추가 처리
+        }
+    }, []);
 
     async function onLoginLocal(){
         if( !email ){ return alert('이메일을 입력하세요')}
@@ -90,7 +111,7 @@ const Login = () => {
 
                 const res = await jaxios.get('/api/member/getLoginUser',{params:{memberId:result.data.memberId}});
 
-                // console.log("JSON.stringify(res.data.loginUser)"+JSON.stringify(res.data.loginUser))
+                // console.log('JSON.stringify(res.data.loginUser)'+JSON.stringify(res.data.loginUser))
 
                 res.data.loginUser.accessToken=accessToken;
                 res.data.loginUser.refreshToken=refreshToken;
@@ -117,7 +138,7 @@ const Login = () => {
                 // console.log('result.data.memberId'+result.data.memberId)
                 // console.log('result.data.nickname'+result.data.nickname)
 
-                handleJoin(result.data.memberId)
+                handleJoin(result.data.memberId);
                 localStorage.setItem('nickname', result.data.nickname);
                 
                 // 로그인 성공 상태 활성화
@@ -225,7 +246,7 @@ const Login = () => {
                     <Loading onComplete={handleLoadingComplete} />
                 ) : null
             ) : (
-                <div className='loginform-header'>
+                <div className='loginContainer'>
                 <RealtimeConnectInfo />
                 <div className='toggle-btns'>
                     <button
@@ -241,7 +262,7 @@ const Login = () => {
                         JOIN
                     </button>
                     <button id='kakao' onClick={() => {
-                        window.location.href = 'http://localhost:8070/member/kakaoStart';
+                        window.location.href = `${process.env.REACT_APP_ADDRESS2}/member/kakaoStart`;
                     }}>KAKAO LOGIN</button>
                 </div>
 
@@ -253,6 +274,7 @@ const Login = () => {
                                     <label className='hidden'>E-MAIL</label>
                                     <input
                                         type='text'
+                                        name='email'
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder='E-MAIL'
@@ -263,6 +285,7 @@ const Login = () => {
                                     <input
                                         type='password'
                                         value={pwd}
+                                        name='password'
                                         onChange={(e) => setPwd(e.target.value)}
                                         placeholder='PASSWORD'
                                     />
@@ -284,7 +307,7 @@ const Login = () => {
             </div>
         )}
     </div>
-);
+    );
 };
 
 export default Login;

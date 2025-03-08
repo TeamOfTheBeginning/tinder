@@ -3,12 +3,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import '../../style/posts.css';
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiSolidMessageSquareDetail } from "react-icons/bi";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import LoadingSpinner from "../LoadingSpinner";
 import { Cookies } from 'react-cookie';
 import jaxios from '../../util/jwtUtil';
 
 const Post = (props) => {
     const [imgList, setImgList] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [likeList, setLikeList] = useState([]);
     const [replyView, setReplyView] = useState(false);
     const [replyContent, setReplyContent] = useState('');
@@ -52,6 +54,16 @@ const Post = (props) => {
 
         fetchData();
     }, [props.post.postId, loginUser.memberId]);
+
+    // ✅ 슬라이드 이전 이미지로 이동
+    const prevSlide = () => {
+        setCurrentIndex(prevIndex => (prevIndex === 0 ? imgList.length - 1 : prevIndex - 1));
+    };
+
+    // ✅ 슬라이드 다음 이미지로 이동
+    const nextSlide = () => {
+        setCurrentIndex(prevIndex => (prevIndex === imgList.length - 1 ? 0 : prevIndex + 1));
+    };
 
     // const getNickname = async (memberId) => {
     //     const result = await jaxios.get(`/api/member/getNickname/${memberId}`);
@@ -137,29 +149,39 @@ const Post = (props) => {
             </div>
 
             <div id='imgbox'>
-                {imgList.map(img => {
-                    // 이미지 파일인지 확인
-                    const isImage = img.savefileName.match(/\.(jpeg|jpg|png|gif)$/i);
-                    // 비디오 파일인지 확인
-                    const isVideo = img.savefileName.match(/\.(mp4|webm|ogg)$/i);
+                {imgList.length > 0 && (
+                    <>
+                        {/* ✅ 좌측 이동 버튼 */}
+                        <button className="slide-btn left" onClick={prevSlide}>
+                            <FaChevronLeft />
+                        </button>
 
-                    return (
-                        isImage ? (
-                            <img key={img.savefileName} src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} 
-                            // width="750" height="700" 
-                            alt="Post" />
-                        ) : isVideo ? (
-                            <video key={img.savefileName} ref={props.videoRef} 
-                            // width="750" height="700"  
-                            controls autoPlay 
-                            muted 
-                            playsInline loop>
-                                <source src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} type="video/mp4" />
-                                Your browser does not support the video tag.
-                            </video>
-                        ) : null
-                    );
-                })}
+                        {/* ✅ 현재 표시되는 이미지 or 비디오 */}
+                        {imgList.map((img, index) => {
+                            const isActive = index === currentIndex; // 현재 인덱스인지 확인
+                            const isImage = img.savefileName.match(/\.(jpeg|jpg|png|gif)$/i);
+                            const isVideo = img.savefileName.match(/\.(mp4|webm|ogg)$/i);
+
+                            return (
+                                <div key={img.savefileName} className={`slide ${isActive ? 'active' : 'hidden'}`}>
+                                    {isImage ? (
+                                        <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} alt="Post" />
+                                    ) : isVideo ? (
+                                        <video ref={props.videoRef} controls autoPlay muted playsInline loop>
+                                            <source src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} type="video/mp4" />
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    ) : null}
+                                </div>
+                            );
+                        })}
+
+                        {/* ✅ 우측 이동 버튼 */}
+                        <button className="slide-btn right" onClick={nextSlide}>
+                            <FaChevronRight />
+                        </button>
+                    </>
+                )}
             </div>
 
             <div className='like'>

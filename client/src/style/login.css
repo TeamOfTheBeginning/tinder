@@ -1,77 +1,81 @@
-.App {
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-}
-
 /* 컨테이너 스타일 */
-.container {
+.container{
     position: fixed;
-    padding-top: 50px;
     width: 100%;
     height: 100%;
+    padding-top: 5.5dvh;
+}
+.container, .kakao-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-image: linear-gradient(-35deg, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
     background-size: 400% 100%;
     animation: colorChangeLogin 10s ease infinite;
-    display: flex;
-    justify-content: center;
     z-index: 1001;
+}
+.kakao-container {
+    width: 100vw;
+    height: 100dvh;
+    
 }
 
 /* 배경 애니메이션 */
 @keyframes colorChangeLogin {
-    0% { background-position: 0% 50%; }
+    0% { background-position: 0 50%; }
     50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    100% { background-position: 0 50%; }
 }
 
 /* 로그인/회원가입 폼 */
+.loginContainer {
+    width:460px;
+}
+
 .loginContent {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     width: 100%;
-    height: fit-content;
     max-height: 95vh;
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    flex-direction: column;
 }
 
 .loginform {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 20px;
-    width: 400px;
-    height: 100%;
+    width: 100%;
+    height: auto;
     max-height: 80vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-.loginform {
-    scrollbar-width: none; /* Firefox */
-}
-.loginform::-webkit-scrollbar {
-    display: none; /* Chrome, Safari */
-}
-
 
 /* 회원가입 폼 */
 .join-container {
-    position: relative;
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
-    min-height: 100%;
     overflow-y: auto;
+}
+
+.kakao-container #kakao-join{
+    width: 50vw;
+    height: fit-content;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 3% 0 3% 0;
+    background-color: rgba(255, 255, 255, 0.8);    
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .joinform {
@@ -86,27 +90,27 @@
     box-sizing: border-box;
 }
 
+/* 숨기기 */
 .hidden{
     display: none;
 }
 
 /* 로그인, 회원가입 전환 tab */
-.signin, .signup {
+.loginform .signin, .loginform .signup {
     display: flex;
+    padding:20px;
+    width:90%;
+    min-height: 100%;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: auto; /* 자식 요소의 높이를 자동으로 조정 */
+    height: auto;
 }
-.signin, .signup{
-    width: 100%; }
-
 .login-btns{
-    width: 90%;
+    width: 100%;
 }
 
 /* 전환 버튼 */
-
 .toggle-btns {
     display: flex;
     margin-left: 20px;
@@ -129,7 +133,7 @@
 .toggle-btn.active {
     background-color: #f7186a;
     border: 2px solid #fff;
-    border-bottom: 0px;
+    border-bottom: 0;
     font-weight: bold;
 }
 .toggle-btn:hover {
@@ -140,13 +144,17 @@
 .loginform .signin .field,
 .loginform .signup .field{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    width: 100%;
+}
+.loginform .signin .login-btn{
+    margin-top: 10px;
     width: 100%;
 }
 
 .field {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-direction: column; /* 기본적으로 세로 정렬 */
     gap: 10px;
     margin-bottom: 15px; /* 필드 간 여백 */
@@ -166,7 +174,12 @@
     outline: none; /* 기본 아웃라인 제거 */
     border-color: #f7186a; /* 포커스 시 테두리 색상 변경 */
     box-shadow: inset 0 1px 3px rgba(247,24,106,0.5), 
-                0px 0px 5px rgba(247,24,106,0.5); /* 포커스 시 강조 효과 */
+                0 0 5px rgba(247,24,106,0.5); /* 포커스 시 강조 효과 */
+}
+.profile-msg {
+    display:flex;
+    justify-content: right;
+    font-size: 12px;
 }
 
 
@@ -195,13 +208,11 @@
 /* 버튼 그룹 */
 /* 로그인/회원가입 버튼 */
 .login-btn {
-    margin-top: 10px; padding: 5px;
-    border-radius: 25px;
+    margin-bottom: 10px; padding: 5px;
     font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 1;
     font-size: 18px;
     background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
     background-size: 300% 100%;
@@ -217,7 +228,7 @@
 /* 입력창용 버튼 */
 .input-btn{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     background-color: #333;
 }
@@ -228,6 +239,9 @@
     color: #fff;
     transition: background-color 0.5s, color 0.5s;
     border-radius: 20px 20px 0 0 ;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #kakao:active,
 #kakao:hover {
@@ -239,6 +253,21 @@
 .login-btn svg {
     width: 30px;
     height: 30px;
+}
+
+/* 첨부파일 미리보기 */
+.prevImg{
+    display: flex;
+    width: auto;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.prevImg img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
 
 /* 모달창 */
@@ -336,38 +365,61 @@
 }
 .progress {
     height: 100%;
-    width: 0%;
+    width: 0;
     background: linear-gradient(to right, #ffffff, #000000);
     transition: width 0.2s ease-in-out;
 }
 
 /* 반응형 스타일 */
 @media (max-width: 768px) {
-    .loginContent {
-        width: 350px;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .loginform, .joinform.join-container {
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        width: 100%;
+    .kakao-container #kakao-join{
+        width: 80vw;
         height: auto;
-        padding: 15px;
+    }
+    .loginContainer {
+        width:80%;
+        max-height: 100dvh;
+        min-width: 280px;
     }
 
+    .loginform {
+        min-width: 280px;
+    }
+    .loginContent {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .loginContent .loginform {
+        max-width: 90vw;
+    }
+
+    .loginform .signin,
+    .loginform .signup {
+        min-width: 80%;
+    }
     .field.flex-row {
-        flex-direction: column; /* 세로 정렬 */
+        flex-direction: column;
         margin-bottom: 8px;
-        gap: 1em;
+        gap: 0.8em;
     }
 
-    /* 추가: 입력 필드 스타일 */
     .loginform input {
-        transition: border-color 0.3s; /* 부드러운 변화 */
+        width: 100%;
+    }
+    .prevImg{
+        width: auto;
+        max-height: 30vh;
+        min-height: 100px;
+        object-fit: contain;
+    }
+
+    .modal-content {
+        width: 90vw;
+        max-width: 95%;
+    }
+
+    .progress-bar {
+        width: 80%;
     }
 }
-
-

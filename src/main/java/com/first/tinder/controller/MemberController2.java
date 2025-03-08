@@ -251,4 +251,21 @@ public class MemberController2 {
         return result;
     }
 
+    @PostMapping("setTutorialHidden")
+    public HashMap<String,Object> setTutorialHidden (@RequestParam("memberId") int memberId){
+        HashMap<String, Object> result = new HashMap<>();
+        String msg = ms2.setTutorialHidden(memberId);
+        result.put("msg", msg);
+        return result;
+    }
+
+    @DeleteMapping("/resign/{memberId}")
+    public HashMap<String,Object> resign(@PathVariable int memberId) {
+        System.out.println("resign");
+        HashMap<String, Object> result = new HashMap<>();
+        // id를 사용하여 회원 탈퇴 처리
+        String msg = ms2.resign(memberId);
+        result.put("msg", msg);
+        return result;
+    }
 }
