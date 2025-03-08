@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }} # EC2 접속 key 파일의 내용
           envs: APPLICATION_PROPERTIES
           script_stop: true # 하나라도 실패하면 전체 실패 처리
-
+          timeout: 10000
           script: |
             # Backend 배포
             echo "=== Backend 배포 시작 ==="
