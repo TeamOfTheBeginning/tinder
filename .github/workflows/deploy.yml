@@ -1,63 +1,46 @@
-# Workflow : 하나의 yml 파일을 하나의 Workflow라고 부릅니다.
 name: DH server # workflow의 이름
 
 on:
   push:
     branches:
-      - DH # develop 브랜치에 push될떄 아래 workflow를 실행됩니다.
+      - DH # DH 브랜치에 push될 때 실행
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: SSH로 EC2 접속 - 베포 #Step에 이름 붙이는 기능
-
+      - name: SSH로 EC2 접속 - Backend & Frontend 배포
         uses: appleboy/ssh-action@master
-        #ec2 ssh
-
         env:
           APPLICATION_PROPERTIES: ${{ secrets.APPLICATION_YML }}
 
         with:
-          host: ${{ secrets.EC2_HOST }} #EC2 의 주소 (퍼블릭)
-          username: ${{ secrets.EC2_USERNAME }} #EC2 접속 username(ubuntu)
-          key: ${{ secrets.EC2_PRIVATE_KEY }} #EC2 접속을 위한 key파일의 내용 (내용 전부 복붙)
-
+          host: ${{ secrets.EC2_HOST }} # EC2 주소
+          username: ${{ secrets.EC2_USERNAME }} # EC2 접속 username (ubuntu)
+          key: ${{ secrets.EC2_PRIVATE_KEY }} # EC2 접속 key 파일의 내용
           envs: APPLICATION_PROPERTIES
+          script_stop: true # 하나라도 실패하면 전체 실패 처리
 
-          script_stop: true # 아래 script중 실패하는 명령이 하나라도 있으면 실패로 처리
-            #|| true : 8070에 종료시킬 프로세스가 없더라도 에러없이 정상실행
-            #발생하는 로그들을 ./output.log 파일에 남기는 명령
-          script: |  #(2개 이상 명령 실행시) git pull 시 /토큰 문제있음
-            
-            
-            
-            
+          script: |
+            # Backend 배포
+            echo "=== Backend 배포 시작 ==="
             cd /home/ubuntu/tinder
-            
             rm -rf src/main/resources/application.yml
-            
             git pull origin DH
-            
             echo "$APPLICATION_PROPERTIES" > src/main/resources/application.yml
-            
             ./gradlew clean build -x test
             sudo fuser -k -n tcp 8070 || true 
-            
             nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
-            
-            cd /home/ubuntu/tinder/client
-            git pull origin DH
-            sudo rm -rf node_modules
-            export NODE_OPTIONS="--max-old-space-size=3072"
-            npm install
-            npm run build
-            sudo systemctl restart nginx
-            
-            
-            
+            echo "=== Backend 배포 완료 ==="
 
-
-      #- name: Githun Actions Secret
-       # run: echo ${{secrets.SECRETVAR}}
+#            # Frontend 배포
+#            echo "=== Frontend 배포 시작 ==="
+#            cd /home/ubuntu/tinder/client
+#            git pull origin DH
+#            sudo rm -rf node_modules
+#            export NODE_OPTIONS="--max-old-space-size=3072"
+#            npm install
+#            npm run build
+#            sudo systemctl restart nginx
+#            echo "=== Frontend 배포 완료 ==="
