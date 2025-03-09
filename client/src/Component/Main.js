@@ -55,6 +55,7 @@ const Main = () => {
     const [showStatistics, setShowStatistics] = useState(false); // Statistics 표시 여부
 
     const [open, setOpen] = useState(false);
+    const [sbMsg, setSbMsg] = useState();
 
     const [postOne, setPostOne] = useState();
     const navigate = useNavigate();
@@ -105,7 +106,9 @@ const Main = () => {
                     headers: { "Content-Type": "application/json" }
                 });
     
+                setSbMsg("결제완료")
                 setOpen(true);
+                
                 // alert("결제 완료");
     
                 // 🔹 로그인 정보 갱신
@@ -531,13 +534,15 @@ const Main = () => {
     enterFullScreen:enterFullScreen,
     exitFullScreen:exitFullScreen,
     setIsFullScreen:setIsFullScreen,
-    isFullScreen:isFullScreen
+    isFullScreen:isFullScreen,
+    setOpen:setOpen,
+    setSbMsg:setSbMsg,
 
 };
       
     return (
         <div className='Container'>
-            <Notification setNotificationList={setNotificationList} notificationList={notificationList} />
+            <Notification setNotificationList={setNotificationList} notificationList={notificationList} setOpen={setOpen} setSbMsg={setSbMsg}/>
 
             {showToast1 && (
                 <div
@@ -606,7 +611,11 @@ const Main = () => {
                 open={open}
                 autoHideDuration={3000}
                 onClose={() => setOpen(false)}
-                message="결제완료"
+                message={sbMsg}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                sx={{
+                    "& .MuiSnackbarContent-root": { backgroundColor: "#f7186a", color: "white" },
+                }}
             />
 
 

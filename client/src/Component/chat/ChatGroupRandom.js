@@ -30,6 +30,13 @@ const ChatGroupRandom = (props) => {
         return `${year}/${month}/${day} ${hours}:${minutes}`;
     }
 
+    const handleClick = () => {
+        console.log("props.chatGroup.chatGroupId"+props.chatGroup.chatGroupId)
+
+        props.setSubMenuData(props.chatGroup.chatGroupId);
+        props.openSubMenu('chatRoomFromRandom', props.chatGroup.chatGroupId);
+    };
+
   return (
     <div className='chatGroupContainer'>
         <div className='chatGroupInfo'>
@@ -44,8 +51,9 @@ const ChatGroupRandom = (props) => {
                 </div>        
             </div> 
 
-        <div className='chatGroupBtns' onClick={()=> props.openSubMenu('chatRoomFromRandom', props.chatGroup.chatGroupId)}><button className='chatGroupBtn'>입장</button>
-        </div>
+            <div className='chatGroupBtns' onClick={handleClick}>
+                <button className='chatGroupBtn'>입장</button>
+            </div>
     </div>
   )
 }

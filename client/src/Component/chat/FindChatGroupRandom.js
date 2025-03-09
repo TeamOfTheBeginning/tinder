@@ -8,7 +8,7 @@ import LoadingSpinner from "../LoadingSpinner";
 
 import jaxios from '../../util/jwtUtil';
 
-const FindChatGroupRandom = ({openSubMenu}) => {
+const FindChatGroupRandom = (props) => {
 
     const navigate = useNavigate();
     const loginUser = useSelector(state=>state.user);
@@ -57,7 +57,7 @@ const FindChatGroupRandom = ({openSubMenu}) => {
             {chatGroupList ? (
                 chatGroupList.map((chatGroup, idx) => (
                     <div key={idx} className='findChatGroupListContainer'>
-                        <ChatGroupRandom chatGroup={chatGroup} openSubMenu={openSubMenu} />
+                        <ChatGroupRandom chatGroup={chatGroup} setSubMenuData={props.setSubMenuData} openSubMenu={props.openSubMenu} />
                     </div>
                 ))
             ) : (

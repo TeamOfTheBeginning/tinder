@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import Modal from './FollowModal';
 import * as PortOne from "@portone/browser-sdk/v2";
+import { Snackbar, Button } from "@mui/material";
 
 import { useDispatch } from 'react-redux';
 import { loginAction, setFollower, setFollowed } from '../../store/userSlice';
@@ -20,6 +21,10 @@ const MyPage = (props) => {
 
     const loginUser = useSelector( state=>state.user );
     const [profileImg, setProfileImg] = useState('');
+
+    const [open, setOpen] = useState(false);
+    const [sbMsg, setSbMsg] = useState();
+
     const [ imgSrc, setImgSrc ]=useState('');
     const navigate = useNavigate();
     const [word, setWord] = useState('n');
@@ -125,7 +130,9 @@ const MyPage = (props) => {
             headers: { "Content-Type": "application/json" }
         });
 
-        alert("결제완료")
+        setSbMsg("결제완료")
+        setOpen(true)
+        // alert("결제완료")
 
         jaxios.get(`/api/member/getLoginUser`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
@@ -163,8 +170,10 @@ const togleTutorial = async () => {
         console.log(result.data)
 
         if(result.data.msg=="yes"){
+            setSbMsg("튜토리얼을 껐습니다.")
+            setOpen(true)
             
-            alert("튜토리얼을 껐습니다.");
+            // alert("튜토리얼을 껐습니다.");
 
             jaxios.get(`/api/member/getLoginUser`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
@@ -185,7 +194,10 @@ const togleTutorial = async () => {
 
             
         }else if(result.data.msg=="no"){
-            alert("튜토리얼을 켰습니다.");
+            setSbMsg("튜토리얼을 켰습니다.")
+            setOpen(true)
+
+            // alert("튜토리얼을 켰습니다.");
 
             jaxios.get(`/api/member/getLoginUser`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
@@ -216,6 +228,8 @@ const buyItems = async () => {
     if(window.confirm("Gold 회원권을 구매하시겠습니까?")) {
 
         if(loginUser.account<=0){
+
+
             alert("잔고를 확인해주세요!")
             return
         }
@@ -228,8 +242,11 @@ const buyItems = async () => {
     .then((result) => {
         
         if(result.data.msg="yes"){
+
+            setSbMsg("Gold 회원권 구매에 성공하셨습니다.")
+            setOpen(true)
             
-            alert("Gold 회원권 구매에 성공하셨습니다.");
+            // alert("Gold 회원권 구매에 성공하셨습니다.");
 
             jaxios.get(`/api/member/getLoginUser`, { params: { memberId:loginUser.memberId } })
             .then((result) => {
@@ -257,7 +274,10 @@ const buyItems = async () => {
     }).catch((err) => { console.error(err) });
 
     }else{
-    alert("Gold 회원권 구매를 취소 하셨습니다.");
+        setSbMsg("Gold 회원권 구매를 취소 하셨습니다.")
+        setOpen(true)
+
+    // alert("Gold 회원권 구매를 취소 하셨습니다.");
 }    
 }
 
@@ -294,6 +314,18 @@ function resign(){
     return (
         <div className='profileContainer'>
             <div className='mypage'>
+                <Snackbar
+                    open={open}
+                    autoHideDuration={3000}
+                    onClose={() => setOpen(false)}
+                    message={sbMsg}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                    sx={{
+                        "& .MuiSnackbarContent-root": { backgroundColor: "#f7186a", color: "white" },
+                    }}
+                />
+
+
                 <div className='followBtns'>
                     {/* 팔로우 버튼 */}
                     <button className='follow-button' onClick={toggleFollowerModal}>
@@ -374,6 +406,8 @@ function resign(){
                             onClick={() => {
                                 if (loginUser && hasRequiredRoles(loginUser.memberRoleList)) {
                                     // props.onSubMenuSelect('findLiker');
+                                    
+
                                     alert("이미 골드회원이십니다.")
                                 } else {
                                     buyItems();

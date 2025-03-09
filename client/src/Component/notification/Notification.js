@@ -3,6 +3,7 @@ import { IoIosContact } from "react-icons/io";
 import { IoIosNotifications } from "react-icons/io";
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { Snackbar, Button } from "@mui/material";
 
 import '../../style/notification.css';
 
@@ -12,6 +13,9 @@ const Notification = (props) => {
 
   const loginUser = useSelector(state=>state.user);
   const [isOpen, setIsOpen] = useState(false);
+
+  const [open, setOpen] = useState(false);
+  const [sbMsg, setSbMsg] = useState();
 
   const memberId = loginUser.memberId;
   // console.log("memberId"+memberId);
@@ -59,7 +63,12 @@ const Notification = (props) => {
         }
         ).catch((err)=>{console.error(err)})
 
-        setTimeout(() => alert(data.notification.message), 2000);        
+        setTimeout(() => 
+          props.setSbMsg(data.notification.message),
+          props.setOpen(true)
+          // alert(data.notification.message)
+        
+        , 2000);        
 
       });
 

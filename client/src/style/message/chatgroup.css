@@ -112,7 +112,7 @@
     .chatGroupHeader .chatGroupBtn{
 
         position:absolute;
-        bottom:30px;
+        bottom:70px;
 
         width: 80%; /* 버튼을 전체 너비로 설정 */
         max-width: 80%; /* 100% 이상으로 커지지 않도록 제한 */

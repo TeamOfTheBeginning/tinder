@@ -76,10 +76,10 @@ const SideBar = (props) => {
   // 서브 메뉴 클릭 핸들러
   const handleSubMenuClick = (menu, chatGroupId) => {
     setSubMenu(menu);  // 서브메뉴 이름 변경
-    // console.log('chatGroupId'+chatGroupId)
+    console.log('chatGroupId'+chatGroupId)
     setSubMenuData(chatGroupId);  // chatGroupId 값 설정
 
-};
+  };
 
 const selectedMenuRef = useRef(selectedMenu);
 const subMenuRef = useRef(subMenu);
@@ -91,13 +91,15 @@ useEffect(() => {
 
 const closeSideViewer = () => {
   if (selectedMenuRef.current === 'findChatGroupRandom' && subMenuRef.current === 'chatRoomFromRandom') {
-    const isConfirmed = window.confirm('정말 나가시겠습니까? 진행 중인 대화가 사라집니다.');
-    if (!isConfirmed) {return}
-    else{
-      console.log('subMenuData'+subMenuData)
+    console.log("subMenuData"+subMenuData)
+    if (subMenuData !== null) {  // subMenuData가 null이 아닌지 확인
+      props.setSbMsg("외부 클릭으로 대화방을 종료합니다");
+      props.setOpen(true);
+
+      console.log('subMenuData' + subMenuData);
 
       jaxios.post(`/api/chat/setChatRoomDeactivated`, null, {
-        params: { chatGroupId:subMenuData }
+        params: { chatGroupId: subMenuData }
       })
       .then((res) => {
           if (res.data.result === 'yes') {
@@ -107,14 +109,13 @@ const closeSideViewer = () => {
           }
       })
       .catch((err) => console.error(err));
-
     }
-    ;  // 취소하면 닫지 않음
   }
 
   setSelectedMenu(null);
   setSubMenu(null);
 };
+
   
   
   // 바깥 클릭 감지
@@ -333,8 +334,10 @@ const closeSideViewer = () => {
           {selectedMenu === 'nearMember' && <NearMember loginUser={loginUser}/>}
           {selectedMenu === 'findChatGroupRandom' && (
             subMenu === 'chatRoomFromRandom' ? 
-              <ChatRoomFromRandom chatGroupId={subMenuData} closeSideViewer={closeSideViewer} />  // subMenuData는 'chatGroupId'로 설정한 값입니다.
-            : <FindChatGroupRandom openSubMenu={handleSubMenuClick} />
+              <ChatRoomFromRandom chatGroupId={subMenuData} closeSideViewer={closeSideViewer} 
+              setOpen={props.setOpen} setSbMsg={props.setSbMsg}
+              />  // subMenuData는 'chatGroupId'로 설정한 값입니다.
+            : <FindChatGroupRandom openSubMenu={handleSubMenuClick} setSubMenuData={setSubMenuData}/>
           )}
 
           {selectedMenu === 'findChatGroup' && (

@@ -35,7 +35,10 @@ const ChatRoomFromRandom = (props) => {
     // const [message2, setMessage2] = useState();
 
     
-    
+    useEffect(()=>{
+        props.setSbMsg("외부 클릭시 대화방이 종료됩니다")
+        props.setOpen(true)
+    },[])
 
 
     const handleInputChange = (e) => {
@@ -182,7 +185,9 @@ const selectAnswer = (chatGroupQuizId, answer) => {
     })
     .then((res) => {
         if (res.data.result === "yes") {
-            alert("선택완료");
+            props.setSbMsg("선택완료")
+            props.setOpen(true)
+            // alert("선택완료");
 
             // 선택한 후에는 타이머를 멈추기 위해 clearInterval 호출
             const timerId = quizTimers[chatGroupQuizId]?.intervalId;
@@ -199,17 +204,23 @@ const selectAnswer = (chatGroupQuizId, answer) => {
                 })
                 .then((res) => {
                     if (res.data.result === "CONTINUE") {
-                        alert("모두 같은 답을 선택했어요! 계속 대화하세요.");
+                        props.setSbMsg("모두 같은 답을 선택했어요! 계속 대화하세요.")
+                        props.setOpen(true)
+                        // alert("모두 같은 답을 선택했어요! 계속 대화하세요.");
                         setWaiting(false);
                         setChatWaiting(false);
                     } else {
-                        alert("의견이 갈렸습니다! 대화방이 종료됩니다.");
+                        props.setSbMsg("의견이 갈렸습니다! 대화방이 종료됩니다.")
+                        props.setOpen(true)
+                        // alert("의견이 갈렸습니다! 대화방이 종료됩니다.");
                         jaxios.post(`/api/chat/setChatRoomDeactivated`, null, { 
                             params: { chatGroupId: props.chatGroupId } 
                         })
                         .then((res) => {
                             if (res.data.result === "yes") {
-                                alert("채팅방이 종료됩니다.");
+                                props.setSbMsg("채팅방이 종료됩니다.")
+                                props.setOpen(true)
+                                // alert("채팅방이 종료됩니다.");
                             } else {
                                 alert("오류발생.");
                             }
@@ -220,7 +231,9 @@ const selectAnswer = (chatGroupQuizId, answer) => {
                 .catch((err) => console.error(err));
             }, 10000); // 10초 대기 후 실행
         } else {
-            alert("이미 선택했습니다.");
+            props.setSbMsg("채팅방이 종료됩니다.")
+            props.setOpen(true)
+            // alert(채팅방이 종료됩니다.);
         }
     })
     .catch((err) => console.error(err));
@@ -252,17 +265,23 @@ const selectAnswer = (chatGroupQuizId, answer) => {
             
     
             if (response.data.expired) {
-                alert("이 채팅방은 1시간이 지나 만료되었습니다. 메시지를 보낼 수 없습니다.");
+                props.setSbMsg("이 채팅방은 1시간이 지나 만료되었습니다. 메시지를 보낼 수 없습니다.")
+                props.setOpen(true)
+                // alert("이 채팅방은 1시간이 지나 만료되었습니다. 메시지를 보낼 수 없습니다.");
                 return;
             }
     
             if (response.data.blocked) {
-                alert("메시지를 보낼 수 없습니다. 차단한 사용자 또는 차단된 사용자와의 대화입니다.");
+                props.setSbMsg("메시지를 보낼 수 없습니다. 차단한 사용자 또는 차단된 사용자와의 대화입니다.")
+                props.setOpen(true)
+                // alert("메시지를 보낼 수 없습니다. 차단한 사용자 또는 차단된 사용자와의 대화입니다.");
                 return;
             }
 
             if (response.data.deactivated) {
-                alert("이 채팅방은 비활성화 되었습니다. 메시지를 보낼 수 없습니다.");
+                props.setSbMsg("이 채팅방은 비활성화 되었습니다. 메시지를 보낼 수 없습니다.")
+                props.setOpen(true)
+                // alert("이 채팅방은 비활성화 되었습니다. 메시지를 보낼 수 없습니다.");
                 return;
             }
     
@@ -278,7 +297,9 @@ const selectAnswer = (chatGroupQuizId, answer) => {
         jaxios.post(`/api/member2/setTempUp`, null ,{ params: { chatGroupId:props.chatGroupId,memberId:loginUser.memberId } })
         .then((result) => {
             if(result.data.msg=='yes'){
-                alert("상대 온도가 상승되었습니다.")
+                props.setSbMsg("상대 온도가 상승되었습니다.")
+                props.setOpen(true)
+                // alert("상대 온도가 상승되었습니다.")
                 setTempWaiting(true);
             }                
             else{ alert("오류발생") }            
@@ -293,7 +314,9 @@ const selectAnswer = (chatGroupQuizId, answer) => {
             jaxios.post(`/api/member2/setTempDown`, null ,{ params: { chatGroupId:props.chatGroupId,memberId:loginUser.memberId } })
             .then((result) => {
                 if(result.data.msg=='yes'){
-                    alert("상대 온도가 하락 되었습니다.")
+                    props.setSbMsg("상대 온도가 하락 되었습니다.")
+                    props.setOpen(true)
+                    // alert("상대 온도가 하락 되었습니다.")
                     setTempWaiting(true);
                 }
                 else{ alert("오류발생") }   
@@ -302,8 +325,11 @@ const selectAnswer = (chatGroupQuizId, answer) => {
 
             jaxios.post(`/api/member2/addBlockedFromRandomChat`, null ,{ params: { chatGroupId:props.chatGroupId,memberId:loginUser.memberId } })
             .then((result) => {
-                if(result.data.msg=='yes')
-                    alert("상대가 차단 되었습니다.")
+                if(result.data.msg=='yes'){
+                    props.setSbMsg("상대가 차단 되었습니다.")
+                    props.setOpen(true)
+                    // alert("상대가 차단 되었습니다.")
+                    }
                 else{ alert("오류발생") }   
             })
             .catch((err) => { console.error(err); });

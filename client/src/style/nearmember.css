@@ -128,7 +128,7 @@ h2 {
     .search-controls {
       flex-direction: column;
       position: absolute;
-      bottom:10px
+      bottom:50px
     }
     
     .search-controls label, .search-controls input, .search-controls button {
