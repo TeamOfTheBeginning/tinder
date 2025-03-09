@@ -160,7 +160,9 @@ const togleTutorial = async () => {
     jaxios.post(`/api/member2/setTutorialHidden`, null ,{ params: { memberId:loginUser.memberId } })
     .then((result) => {
         
-        if(result.data.msg="yes"){
+        console.log(result.data)
+
+        if(result.data.msg=="yes"){
             
             alert("튜토리얼을 껐습니다.");
 
@@ -182,7 +184,7 @@ const togleTutorial = async () => {
             }).catch((err) => { console.error(err) });        
 
             
-        }else if(result.data.msg="no"){
+        }else if(result.data.msg=="no"){
             alert("튜토리얼을 켰습니다.");
 
             jaxios.get(`/api/member/getLoginUser`, { params: { memberId:loginUser.memberId } })
