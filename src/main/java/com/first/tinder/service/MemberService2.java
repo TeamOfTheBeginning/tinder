@@ -332,6 +332,8 @@ public Member getOppsiteGender2(int memberId) {
     int ageRange = 4;
     int age = m.getAge();
 
+//    if(age>=30) age=35;
+
     // 나이의 최솟값과 최댓값 계산
     int minAge = age - ageRange < 18 ? 18 : age - ageRange; // 18세 미만이면 18로 설정
     int maxAge = age + ageRange;
