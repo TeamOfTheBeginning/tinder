@@ -50,7 +50,7 @@ const ChatRoomFromMatch = (props) => {
         };
     
         fetchChatList();
-        const interval = setInterval(fetchChatList, 60000);
+        const interval = setInterval(fetchChatList, 10000);
     
         return () => clearInterval(interval);
     }, [chatGroupId, chatList]);
