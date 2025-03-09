@@ -66,10 +66,7 @@ const Main = () => {
     const [chatMessages, setChatMessages] = useState([]);
     const [pageable, setPageable] = useState();
 
-    const props = {
-        hashtag: hashtag,
-        setHashtag: setHashtag,
-    };
+    
 
     const [searchParams] = useSearchParams();
 
@@ -449,6 +446,12 @@ const Main = () => {
         }   
             ,
         {
+            target: ".fullScreenToggle", // 강조할 요소
+            content: "여기에서 전체화면을 설정 할 수 있습니다.",
+            placement: "right",
+        }   
+            ,
+        {
             target: ".profileImg", // 강조할 요소
             content: "사진을 클릭하시면 튜토리얼을 끌 수 있습니다.",
             placement: "right",
@@ -475,8 +478,42 @@ const Main = () => {
 
   };
   
+
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const enterFullScreen = () => {
+    const elem = document.documentElement; // 전체 화면으로 만들 요소
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen(); // Safari 지원
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen(); // IE 지원
+    }
+    setIsFullScreen(true);
+  };
+
+  const exitFullScreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen(); // Safari 지원
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen(); // IE 지원
+    }
+    setIsFullScreen(false);
+  };
   
 
+  const props = {
+    hashtag: hashtag,
+    setHashtag: setHashtag,
+    enterFullScreen:enterFullScreen,
+    exitFullScreen:exitFullScreen,
+    setIsFullScreen:setIsFullScreen,
+    isFullScreen:isFullScreen
+
+};
       
     return (
         <div className='Container'>
@@ -534,8 +571,8 @@ const Main = () => {
                         //   overlayColor: 'rgba(79, 26, 0, 0.4)',
                         //   primaryColor: '#000',
                         //   textColor: '#004a14',
-                        //   width: 900,
                         zIndex: 1000,
+                        width: 250,
                         }}}
                     // debug={true}
                     callback={handleJoyrideCallback}
@@ -543,90 +580,7 @@ const Main = () => {
                     
                 />
 
-      {/* <Joyride
-  steps={steps}
-  run={run}
-  continuous={true}
-  showSkipButton={true}
-  spotlightClicks={true}
-  showProgress={true}
-  overlayColor="rgba(0, 0, 0, 0.7)"
-  styles={{
-    options: {
-      arrowColor: '#e3ffeb',
-      backgroundColor: '#e3ffeb',
-      overlayColor: 'rgba(79, 26, 0, 0.4)',
-      primaryColor: '#000',
-      textColor: '#004a14',
-      width: 900,
-      zIndex: 1000,
-    },
-    spotlight: {
-      backgroundColor: 'rgba(0, 0, 0, 0.9)', // 강조 영역 배경색을 더 어둡게 설정
-      transition: 'all 0.3s ease-in-out', // 부드러운 전환 효과 추가
-    },
-  }}
-/> */}
-
-<Overlay isActive={isOverlayActive} />
-
-{/* <Joyride
-  steps={steps}
-  run={run}
-  continuous={true}
-  showSkipButton={true}
-  spotlightClicks={true}
-  showProgress={true}
-  overlayColor="rgba(0, 0, 0, 0.7)"
-  styles={{
-    options: {
-    //   arrowColor: '#e3ffeb',
-      backgroundColor: '#e3ffeb',
-      overlayColor: 'rgba(79, 26, 0, 0.4)',
-      primaryColor: '#000',
-      textColor: '#004a14',
-      width: 900,
-      zIndex: 1000,
-    },
-    spotlight: {
-      backgroundColor: 'rgba(0, 0, 0, 0.9)',
-      transition: 'all 0.3s ease-in-out',
-    },
-  }}
-  beforeBeacon={(step) => {
-    if (step.index === 0) {
-      // 첫 번째 단계에서만 배경을 더 어둡게 설정
-      document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-    } else {
-      document.body.style.backgroundColor = '';
-    }
-  }}
-/> */}
-
-            {/* {showTutorial && <TutorialModal onClose={() => setShowTutorial(false)} />} */}
-
-            {/* <div className='PostList'> */}
-                {/* {
-                    postList ? (
-                        postList.map((post, idx) => {
-                            
-
-                            return (
-                                <React.Fragment key={idx}>
-                                    <Post post={post} followed={followed} setFollowed={setFollowed} videoRef={(el) => (videoRefs.current[idx] = el)}/>
-
-                                    {(idx + 1) % 5 === 0 && <Statistics />}
-
-                                    🔥 10번째마다 광고 삽입
-                                    {(idx + 1) % 10 === 0 && <AdComponent />}
-                                </React.Fragment>
-                            );
-                        })
-                    ) : (null)
-                } */}
-            {/* </div> */}
-
-
+            <Overlay isActive={isOverlayActive} />
 
             <div className='customer-service-icon' onClick={toggleChatbot}>
                 {isChatbotOpen ? <FiX size={24} /> : <FcCustomerSupport className='FcCustomerSupport' size={24} />}
