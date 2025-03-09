@@ -11,6 +11,7 @@ import { Cookies } from 'react-cookie';
 import { setCookie1, getCookie1 } from '../../util/cookieUtil2';
 import jaxios from '../../util/jwtUtil';
 
+
 const EditProfile = () => {
     const [loading, setLoading] = useState(false);
 
@@ -74,6 +75,7 @@ const EditProfile = () => {
             .then((response) => {
                 setHobbyCategories(response.data.categories); // 카테고리 설정
                 setHobbies(response.data.hobbies); // 취미 설정
+                console.log("Hobbies API 응답:", response.data);
 
                 // 기존 선택된 취미 초기화 (로그인 유저의 데이터에서 가져옴)
                 if (loginUser.memberInfo.hobbies) {
@@ -313,17 +315,18 @@ const EditProfile = () => {
                             <input type="file" accept=".jpg,.jpeg,.png,.gif" onChange={fileUpload} />
                             <div style={imgStyle}>
                                 <img src={imgSrc} alt="Profile" />
-                                <button onClick={removeProfileImage}>삭제</button> {/* Button to remove the image */}
+                                <button onClick={removeProfileImage}>삭제</button>
                             </div>
                         </div>
                         <div className='field'>
                             <label>INTRO</label>
-                            <textarea value={intro} onChange={(e) => { setIntro(e.currentTarget.value) }} />
+                            <input type='text' value={intro} onChange={(e) => { setIntro(e.currentTarget.value) }} />
                         </div>
-
+                        
                         {['흡연여부(흡연:1)', '음주여부(주5회)' , '연애속도(빠름5)', '선호데이트방식(외부5)', '운동횟수(주5회)'].map((label, index) => (
                             <div key={index} className='field' >
-                                <label>{label}: {person[index]}</label>
+                                <label>{label}: </label>
+                                <span id='select-info-data'>{person[index]}</span>
                                 <input className='input'
                                     type="range"
                                     value={person[index]}
@@ -338,27 +341,6 @@ const EditProfile = () => {
                             </div>
                         ))}
 
-
-                        <div className='field'>
-                            <label>HOBBY</label>
-                            <div className='hobby-list'>
-                                {hobbyCategories.map((category, idx) => (
-                                    <div key={idx} className='hobby-category'>
-                                        <div className='hobby-title'>{category.categoryName}</div>
-                                        {hobbies.filter(h => h.categoryId === category.categoryId).map((hobby) => (
-                                            <label key={hobby.hobbyId}>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedHobbies.includes(hobby.hobbyId)}
-                                                    onChange={() => handleHobbyChange(hobby.hobbyId)}
-                                                />
-                                                {hobby.hobbyName}
-                                            </label>
-                                        ))}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
                         <div className='field'>
                             <label>MBTI</label>
                             <input
@@ -378,12 +360,38 @@ const EditProfile = () => {
                                 </ul>
                             )}
                         </div>
+
+                        <div className='field'>
+                            <label>HOBBY</label>
+                        </div>
+                        <div className='hobby-field'>
+                            <div className='hobby-list'>
+                                {hobbyCategories && hobbyCategories.length > 0 && hobbyCategories.map((category, idx) => (
+                                    <div key={idx} className='hobby-category'>
+                                        <div className='hobby-title'>{category.categoryName}</div>
+                                        {hobbies && hobbies.length > 0 && hobbies.filter(h => h.category.categoryId === category.categoryId).map((hobby) => (
+                                            <label key={hobby.hobbyId}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedHobbies.includes(hobby.hobbyId)}
+                                                    onChange={() => handleHobbyChange(hobby.hobbyId)}
+                                                    />
+                                                {hobby.hobbyName}
+                                            </label>
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
 
-                    <div className='btn-container'>
+                    <div className='btns'>
                         <button onClick={onSubmit} disabled={loading}>
-                        {loading ? "저장 중..." : "저장"}
+                        {loading ? (
+                            <><LoadingSpinner /> 저장 중...</> )
+                            : ("저장")}
                     </button>
+
                     </div>
                 </div>
             </div>
