@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { Snackbar, Button } from "@mui/material";
 
 import { FiX } from 'react-icons/fi';
 import { FcCustomerSupport } from 'react-icons/fc';
@@ -53,6 +54,7 @@ const Main = () => {
     const [postList, setPostList] = useState([]);
     const [showStatistics, setShowStatistics] = useState(false); // Statistics 표시 여부
 
+    const [open, setOpen] = useState(false);
 
     const [postOne, setPostOne] = useState();
     const navigate = useNavigate();
@@ -103,7 +105,8 @@ const Main = () => {
                     headers: { "Content-Type": "application/json" }
                 });
     
-                alert("결제 완료");
+                setOpen(true);
+                // alert("결제 완료");
     
                 // 🔹 로그인 정보 갱신
                 const response = await jaxios.get(`/api/member/getLoginUser`, {
@@ -598,6 +601,14 @@ const Main = () => {
                 />
 
             <Overlay isActive={isOverlayActive} />
+
+            <Snackbar
+                open={open}
+                autoHideDuration={3000}
+                onClose={() => setOpen(false)}
+                message="결제완료"
+            />
+
 
             <div className='customer-service-icon' onClick={toggleChatbot}>
                 {isChatbotOpen ? <FiX size={24} /> : <FcCustomerSupport className='FcCustomerSupport' size={24} />}

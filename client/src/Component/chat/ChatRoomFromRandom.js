@@ -54,7 +54,7 @@ const ChatRoomFromRandom = (props) => {
         };
     
         fetchChatList();
-        const interval = setInterval(fetchChatList, 60000);
+        const interval = setInterval(fetchChatList, 5000);
     
         return () => clearInterval(interval);
     }, [chatGroupId, chatList]);
@@ -122,24 +122,32 @@ const ChatRoomFromRandom = (props) => {
 
     const [quizTimers, setQuizTimers] = useState({}); // 각 퀴즈마다 타이머 상태 관리
 
-    const scheduleQuizzes = (quizzes) => {
-        const now = Date.now();
-        quizzes.forEach((quiz) => {
-            const transmissionTime = new Date(quiz.transmissionTime).getTime(); // 전송 시간을 밀리초로 변환
-            const delay = transmissionTime - now; // 현재 시간과 전송 시간의 차이 계산
-            
-            if (delay > 0) {
-                setTimeout(() => {
-                    setVisibleQuizzes((prev) => [...prev, quiz]);
-                    setChatWaiting(true);
-                    startQuizTimer(quiz.chatGroupQuizId); // 퀴즈마다 타이머 시작
-                }, delay);
-            } else {
-                setVisibleQuizzes((prev) => [...prev, quiz]);
-                startQuizTimer(quiz.chatGroupQuizId); // 즉시 퀴즈가 화면에 표시된 후 타이머 시작
-            }
-        });
-    };
+    const [newQuiz, setNewQuiz] = useState(null);
+
+const scheduleQuizzes = (quizzes) => {
+    const now = Date.now();
+    quizzes.forEach((quiz) => {
+        const transmissionTime = new Date(quiz.transmissionTime).getTime(); 
+        const delay = transmissionTime - now;
+        
+        if (delay > 0) {
+            setTimeout(() => {
+                setVisibleQuizzes([quiz]); 
+                setNewQuiz(quiz.chatGroupQuizId); // 새 퀴즈 ID 저장
+                setTimeout(() => setNewQuiz(null), 2000); // 2초 후 강조 해제
+                setChatWaiting(true);
+                startQuizTimer(quiz.chatGroupQuizId);
+            }, delay);
+        } else {
+            setVisibleQuizzes([quiz]); 
+            setNewQuiz(quiz.chatGroupQuizId); 
+            setTimeout(() => setNewQuiz(null), 2000);
+            startQuizTimer(quiz.chatGroupQuizId);
+        }
+    });
+};
+
+    
 
     // 타이머 시작 시 타이머 ID를 quizTimers에 저장하고, 초기값을 10초로 설정
     const startQuizTimer = (chatGroupQuizId) => {
@@ -414,7 +422,7 @@ const selectAnswer = (chatGroupQuizId, answer) => {
         <div>
         {visibleQuizzes.length > 0 ? (
                 visibleQuizzes.map((quiz, idx) => (
-                    <div key={idx} className="quizContainer">
+                    <div key={idx} className={`quizContainer ${newQuiz === quiz.chatGroupQuizId ? "newQuiz" : ""}`}>
                         <div className="quizContent">
                         {/* {quiz.chatGroupQuizId} */}
                         {quiz.quiz.content} &nbsp;

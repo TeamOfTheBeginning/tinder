@@ -84,7 +84,7 @@ const MyPage = (props) => {
             totalAmount: 1,
             currency: "CURRENCY_KRW",
             payMethod: "CARD",
-            redirectUrl: `${process.env.REACT_APP_ADDRESS2}/main`,
+            redirectUrl: `${process.env.REACT_APP_ADDRESS}/main`,
             customer: {
                 fullName: loginUser.nickname,
                 phoneNumber: loginUser.phone,

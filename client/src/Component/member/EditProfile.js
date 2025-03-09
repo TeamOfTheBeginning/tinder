@@ -264,6 +264,24 @@ const EditProfile = () => {
                             <label>E-MAIL</label>
                             <input type="text" value={email} onChange={(e) => { setEmail(e.currentTarget.value) }} readOnly />
                         </div>
+                        
+                        {/* <div className='field'>
+                            <label>GENDER</label>
+                            <select value={gender} onChange={(e) => { setGender(e.currentTarget.value) }}>
+                                <option value="">선택</option>
+                                <option value="남">남</option>
+                                <option value="여">여</option>
+                            </select>
+                        </div> */}
+                        <div className='field'>
+                            <label>AGE</label>
+                            <input type="text" value={age} readOnly />
+                        </div>
+                        <div className='field'>
+                            <label>BIRTH</label>
+                            <input type="text" value={birthDate} onChange={handleBirthDateChange} readOnly />
+                        </div>
+
                         <div className='field'>
                             <label>PASSWORD</label>
                             <input type="password" onChange={(e) => { setPwd(e.currentTarget.value) }} />
@@ -276,30 +294,15 @@ const EditProfile = () => {
                             <label>NICKNAME</label>
                             <input type="text" value={nickname} onChange={(e) => { setNickname(e.currentTarget.value) }} />
                         </div>
-                        <div className='field'>
-                            <label>GENDER</label>
-                            <select value={gender} onChange={(e) => { setGender(e.currentTarget.value) }}>
-                                <option value="">선택</option>
-                                <option value="남">남</option>
-                                <option value="여">여</option>
-                            </select>
-                        </div>
-                        <div className='field'>
-                            <label>AGE</label>
-                            <input type="text" value={age} readOnly />
-                        </div>
-                        <div className='field'>
-                            <label>BIRTH</label>
-                            <input type="date" value={birthDate} onChange={handleBirthDateChange} />
-                        </div>
+
                         <div className='field'>
                             <label>PHONE</label>
                             <input type="text" value={phone} onChange={(e) => { setPhone(e.currentTarget.value) }} />
                         </div>
-                        <div className='field'>
+                        {/* <div className='field'>
                             <label>ZIP</label>
                             <input type="text" value={zipnum} onChange={(e) => { setZipnum(e.currentTarget.value) }} />
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* 선택정보 */}
