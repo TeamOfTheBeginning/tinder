@@ -14,47 +14,71 @@
 .editForm .info-container {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* 요소 간격 추가 */
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    gap: 10px;
 }
 
 .editForm .essential-info,
-.editForm .optional-info {
+.editForm .select-info {
     flex: 1; /* 동일한 비율로 크기 조정 */
     display: flex;
     flex-direction: column;
 }
+.editForm .essential-info{
+    width: 100%;
+}
 
-.editForm .field .hobby-list {
+.editForm .hobby-field {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 10px; /* 그룹 간 간격 */
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: #f9f9f9;
+    align-items: center;
+    margin: 5px 0;
+}
+.editForm .hobby-field .hobby-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 90%;
+    padding: 15px;
+    border-radius: 12px;
+    background-color: #f8f9fa;
     border: 1px solid #ddd;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
 }
-
-.editForm .field .hobby-title {
+/* hobby-category 스타일 */
+.hobby-field .hobby-list .hobby-category {
+    margin-bottom: 10px;
+}
+/* hobby-title 스타일 */
+.hobby-category .hobby-title {
     font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
 }
 
-.editForm .field .hobby-category label {
+/* hobby-category label 스타일 */
+.hobby-field label {
     display: inline-flex;
     align-items: center;
-    margin-right: 10px;
-    margin-bottom: 5px;
-    font-size: 0.9rem;
-    color: #666;
+    padding: 5px;
+    margin: 5px;
+    font-size: 0.95rem;
+    color: #343a40;
+    border-radius: 8px;
+    background-color: #fff;
+    border: 1px solid #ced4da;
     cursor: pointer;
 }
-
 .editForm .field .hobby-category label input[type="checkbox"] {
-    margin-right: 5px;
+    margin-right: 8px;
+}
+.editForm .field .hobby-category label input[type="checkbox"]:checked + span {
+    font-weight: 600;
 }
 
 /* 마이페이지 */
@@ -324,14 +348,8 @@
     margin: 5px 0;
 }
 
-/* .editForm #hobby {
-    display: flex;
-    flex-direction: column;
-    background-color: #c3c3c3;
-} */
-
 .editForm .field label {
-    width: 80px;
+    width: 15%;
     display: flex;
     align-items: center;
     color: #f7186a;
@@ -368,22 +386,11 @@
 }
 
 .editForm .essential-info,
-.editForm .optional-info {
+.editForm .select-info {
     flex-grow: 4;
     flex-basis: 0;
 }
 
-/* 취미 영역 */
-.editForm .hobby .hobby-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.editForm .hobby .hobby-form{
-    display: flex;
-    flex-direction: column;
-}
 
 #n1{
     margin-left: 10px; padding: 3px;
@@ -401,6 +408,7 @@
     text-align: center;
     font-weight: bold;
     font-size: 18px;
+    border-bottom: 2px dotted rgba(0, 0, 0, 0.2);
 }
 
 .editForm .field .ProfileImg {
@@ -414,6 +422,18 @@
     width: 100%;
     height: auto;
     object-fit: contain;
+}
+
+.editForm .info-container .btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin-bottom: 15px;
+}
+
+.editForm .info-container .btns button {
+    width: 100%;
 }
 
 
@@ -430,6 +450,9 @@
     .mypage .btns #btn button,
     .editForm .btns button {
         width: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .editForm .field {
         flex-direction: column;
