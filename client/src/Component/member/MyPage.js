@@ -341,11 +341,11 @@ function resign(){
                     </div>
                     <div className='profile'>
                         <div className='field'>
-                            <label>ID :</label>
+                            <label>ID</label>
                             <div>{loginUser.email}</div>
                         </div>
                         <div className='field'>
-                            <label>지위 :</label>
+                            <label>지위</label>
                             <div>{loginUser.memberRoleList}</div>
                         </div>
                         <div className='field'>
