@@ -3,7 +3,9 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 
-import '../../style/message/chatroomfromrandom.css';
+// import '../../style/message/chatroomfromrandom.css';
+import LoadingSpinner from "../LoadingSpinner";
+import '../../style/message/chatroomfromchatgroup.css';
 
 import { setCookie1, getCookie1 } from '../../util/cookieUtil2';
 import jaxios from '../../util/jwtUtil';
@@ -286,6 +288,7 @@ const selectAnswer = (chatGroupQuizId, answer) => {
             }
     
             setChatList(response.data.chatList);
+            setMessage('');
         } catch (error) {
             console.error(error);
         }
@@ -415,8 +418,8 @@ const selectAnswer = (chatGroupQuizId, answer) => {
 
 
     return (
-        <div className='chatRoomFromRandomContainer'>
-        <div className='chatRoomFromRandomContents'>
+        <div className='chatRoomFromChatGroupContainer'>
+        <div className='chatRoomFromChatGroupContents'>
         {
             (chatList)?(
                 chatList.map((chat, idx)=>{
@@ -425,33 +428,48 @@ const selectAnswer = (chatGroupQuizId, answer) => {
                     // console.log("isOwnMessage"+isOwnMessage)
 
                     return (
+                        // <div key={idx} className={`chat ${isOwnMessage ? 'myChat' : ''}`}>
+                        //     <div className='chatImg'>
+                        //     {ei(chat.sender.memberInfo.ei)}
+                        //     {ns(chat.sender.memberInfo.ns)}
+                        //     {tf(chat.sender.memberInfo.tf)}
+                        //     {jp(chat.sender.memberInfo.jp)}
+                        //     </div>
+                        //     <div className='chatContainer'>
+                        //         <div className='chatContent'>
+                        //             &nbsp; {formatDate(chat.createdDate)}&nbsp;
+                        //         </div>
+                        //     </div>
+                        //     <div className='chatDate'>{formatDate(chat.createdDate)}</div>
+                        // </div>
+
                         <div key={idx} className={`chat ${isOwnMessage ? 'myChat' : ''}`}>
-                            <div className='chatImg'>
-                            {ei(chat.sender.memberInfo.ei)}
-                            {ns(chat.sender.memberInfo.ns)}
-                            {tf(chat.sender.memberInfo.tf)}
-                            {jp(chat.sender.memberInfo.jp)}
-                                
-                            </div>
-                            <div className='chatContainer'>
-                                <div className='chatContent'>
-                                    &nbsp; {formatDate(chat.createdDate)}&nbsp;<br/>{chat.content} &nbsp; 
+                        <div className='chatContainer'>
+                            {isOwnMessage && (
+                                <div className='chat-userinfo'>
+                                    <div className='userMBTI'>
+                                    {ei(chat.sender.memberInfo.ei)}
+                                    {ns(chat.sender.memberInfo.ns)}
+                                    {tf(chat.sender.memberInfo.tf)}
+                                    {jp(chat.sender.memberInfo.jp)}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
+                            <div className='chatContent'>{chat.content}</div>
+                        </div>
+                        <div className='chatDate'>{formatDate(chat.createdDate)}</div>
                         </div>
                     )
                 })
-            ):("Loading...")
+            ):( <LoadingSpinner /> )
         }
-        </div>
-
-        <div>
+        <div className='choiceBox'>
         {visibleQuizzes.length > 0 ? (
                 visibleQuizzes.map((quiz, idx) => (
                     <div key={idx} className={`quizContainer ${newQuiz === quiz.chatGroupQuizId ? "newQuiz" : ""}`}>
                         <div className="quizContent">
                         {/* {quiz.chatGroupQuizId} */}
-                        {quiz.quiz.content} &nbsp;
+                        {quiz.quiz.content}
                         </div>
                                                     {/* 타이머 출력 */}
                                                     <div className="quizTimer">
@@ -462,8 +480,8 @@ const selectAnswer = (chatGroupQuizId, answer) => {
                                 )}
                             </div>
                         <div className="quizAnswers">
-                            <button onClick={() => selectAnswer(quiz.chatGroupQuizId,1)}>1</button>
-                            <button onClick={() => selectAnswer(quiz.chatGroupQuizId,2)}>2</button>
+                            <button id='btn1' onClick={() => selectAnswer(quiz.chatGroupQuizId,1)}>1</button>
+                            <button id='btn2' onClick={() => selectAnswer(quiz.chatGroupQuizId,2)}>2</button>
                         </div>
                     </div>
                 ))
@@ -471,20 +489,24 @@ const selectAnswer = (chatGroupQuizId, answer) => {
                 "Quiz Loading..."
             )}
         </div>
+        </div>
 
-        <div className='chatRoomInput'>
-            <input type='text'
+        <div className='RandomChatInput'>
+            <div className='inputBox'>
+                <button onClick={()=>setTempUp()}>❣️좋아요</button>
+                <button onClick={()=>setTempDownAndBlock()}>🚫차단</button>
+                <input type='text' 
                 placeholder='텍스트를 입력하세요'
                 onChange={handleInputChange}
                 value={message}
-            /> <button onClick={()=>sendMessage()}>보내기</button>
-        </div>
-
-        <div className='chatRoomEvaluateTemp'>
-            <div>
-                <button onClick={()=>setTempUp()}>좋아요</button>
-                <button onClick={()=>setTempDownAndBlock()}>차단</button>
+            /> <div className='btns'><button onClick={()=>sendMessage()}>보내기</button></div>
             </div>
+            {/* <div className='chatRoomEvaluateTemp'>
+                <div>
+                    <button onClick={()=>setTempUp()}>좋아요</button>
+                    <button onClick={()=>setTempDownAndBlock()}>차단</button>
+                </div>
+            </div> */}
         </div>
       
     </div>

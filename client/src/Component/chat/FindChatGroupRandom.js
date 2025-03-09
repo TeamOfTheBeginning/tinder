@@ -48,15 +48,14 @@ const FindChatGroupRandom = (props) => {
     return (
         <div className='findChatGroupContainer'>
             <div className='chatGroupHeader'>
-                <div className='chatGroupBtns'>
-                    <button className='chatGroupBtn' onClick={() => setAnonymousMessageRoom()}>
-                        랜덤쪽지
+                <div className='btns'>
+                    <button className='btn' onClick={() => setAnonymousMessageRoom()}>🎲 랜덤 메시지방 생성 🎲
                     </button>
                 </div>
             </div>
             {chatGroupList ? (
                 chatGroupList.map((chatGroup, idx) => (
-                    <div key={idx} className='findChatGroupListContainer'>
+                    <div key={idx} className='findRandomChatListContainer'>
                         <ChatGroupRandom chatGroup={chatGroup} setSubMenuData={props.setSubMenuData} openSubMenu={props.openSubMenu} />
                     </div>
                 ))

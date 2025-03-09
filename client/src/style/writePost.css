@@ -3,6 +3,10 @@
     overflow: hidden;
 }
 
+.SideContainer .Content {
+    width: 100%;
+}
+
 .postWrite {
     display: flex;
     flex-direction: column;
