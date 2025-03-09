@@ -1,9 +1,11 @@
 .findChatGroupContainer{
     width: 100%;
     display: flex;
+    position: relative;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-bottom: 35px;
 }
 
 .findChatGroupContainer button{
@@ -14,6 +16,25 @@
     border-radius: 20px;
     font-size: 13px;
     cursor: pointer;
+}
+
+.findChatGroupContainer #randomChatGroup {
+    height: 100px;
+}
+
+.chatGroupHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px 0 15px 0;
+    width: 100%;
+}
+.chatGroupHeader .btns {
+    width: 60%;
+}
+.chatGroupHeader .btns .btn button {
+    display: flex;
+    width: 100%;
 }
 
 .findChatGroupContainer button:hover{
@@ -35,22 +56,49 @@
     height:110px;
 }
 
+.findRandomChatListContainer{
+    width: 90%;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+    height:80px;
+}
+
 .findChatGroupListContainer:hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.findChatGroupLeft{
-    border: 1px solid black;
-}
-
-.findChatGroupLeft img{
-    height: 100%;
-}
 
 @media (max-width: 768px) {
+    .findChatGroupContainer{
+        padding-bottom: 50px;
+    }
     .findChatGroupListContainer{
         width: 83%;
-        height:auto;
+        height: auto;
+    }
+    .findRandomChatListContainer{
+        width: 80%;
+        height: auto;
+    }
+    .chatGroupHeader {
+        position: fixed;
+        bottom: 0dvh;
+        width: 80%;
+
+    }
+    .chatGroupHeader .btns {
+        width: 60%;
+    }
+    .chatGroupHeader .btns .btn {
+        height: 50px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
     }
 }
