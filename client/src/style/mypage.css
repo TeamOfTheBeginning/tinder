@@ -1,6 +1,14 @@
-.SideContainer {
+.profileContainer {
     width: 100%;
     overflow: hidden;
+}
+
+.SideContainer{
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .editForm .info-container {
@@ -16,6 +24,40 @@
     flex-direction: column;
 }
 
+.editForm .field .hobby-list {
+    all: unset;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 그룹 간 간격 */
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.editForm .field .hobby-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.editForm .field .hobby-category label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #666;
+    cursor: pointer;
+}
+
+.editForm .field .hobby-category label input[type="checkbox"] {
+    margin-right: 5px;
+}
+
 /* 마이페이지 */
 .mypage {
     width: 100%;
@@ -24,9 +66,11 @@
 }
 .mypage .userinfo {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 15px;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .mypage .userinfo .field {
     width: 100%;
@@ -70,6 +114,28 @@
     }
 }
 
+.mypage .followBtns {
+    display: flex;
+    position: relative;
+    top: 230px;
+    width: 100%;
+    justify-content: space-around;
+    z-index: 102;
+}
+.mypage .followBtns .follow-button{
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #ed6ea1de;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+.mypage .followBtns .follow-button div{
+    margin-top: 3px;
+    font-size: 16px;
+}
+
 /* 프로필 이미지 */
 .mypage .profileImage .img {
     width: 250px;
@@ -86,23 +152,73 @@
     object-fit: cover;
 }
 
+/* profile-header 스타일 (수정됨) */
+.mypage .profile-header {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    z-index: 3;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.mypage .profile-header .box{
+    display: flex;
+    position: relative;
+    top: 190px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 35px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.mypage .profile-header .box .profile-nickname {
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.profile .field {
+    padding: 0 15px ;
+}
+.profile #profile_msg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* 하단부 공통 버튼 스타일 */
 .mypage .btns,
 .editForm .btns {
     width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 5px;
     display: flex;
     flex-direction: row;
     box-sizing: border-box;
     justify-content: space-evenly;
     gap: 5px;
 }
+.mypage .btns:last-child,
+.editForm .btns:last-child {
+    margin-bottom: 10px;
+}
 .mypage .btns #btn button,
 .editForm .btns button {
-    width: 80px;
     height: 40px;
     cursor: pointer;
+}
+.editForm .btns button{
+    width: 80px;
+}
+.mypage .btns #btn button{
+    width: 180px;
 }
 
 /* 사용자 온도 그래프 */
@@ -110,8 +226,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 100%;
+    width: 78%;
 }
 .user-temperature .temp-info {
     position: absolute;
@@ -132,6 +247,7 @@
     border-radius: 25px;
     overflow: hidden;
     background-color: rgba(30, 30, 30, 0.3);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 .temp-bar {
     height: 100%;
@@ -140,7 +256,6 @@
     left: 0;
     z-index: 102;
     transition: width 0.3s ease-in-out;
-
     /* 온도 값 범위 내에서만 그라데이션 적용 */
     background: linear-gradient(
     to right, 
@@ -294,12 +409,23 @@
     }
     .mypage .btns #btn button,
     .editForm .btns button {
-        margin: 10px;
         width: 250px;
     }
     .editForm .field {
         flex-direction: column;
         align-items: center;
+    }
+    .user-temperature {
+        width: 78%;
+    }
+    .mypage .followBtns {
+        top: 235px;
+        justify-content: space-around;
+    }
+
+    
+    .editForm .field .hobby-list {
+        flex-direction: column; /* 모바일에서는 세로로 배치 */
     }
 }
 
