@@ -171,7 +171,7 @@ const calculateSimilarity = () => {
           </div>
         </div>
 
-        <div className='matchingMemberTitle'>
+      <div className='matchingMemberTitle'>
         <div className='matchingMember-memberinfo'>
           <span>{props.oppositeGender.nickname}({props.oppositeGender.age})</span>
           <span>{props.oppositeGender.address}</span>
@@ -186,8 +186,8 @@ const calculateSimilarity = () => {
 
         <div className='matchingMemberTemperature'>
           <div className="temp-graph">
-            <div className="temp-info">
-              <span>{props.oppositeGender.nickname}님의 매너는 {props.oppositeGender.temp}도 입니다.</span>
+          <div className="temp-info matching-temp-info">
+              <span>매너온도 : {props.oppositeGender.temp}°C</span>
             </div>
             <div 
               className="temp-bar" 
@@ -202,15 +202,41 @@ const calculateSimilarity = () => {
       </div>
 
       <div className='matchingMemberMsg'>
-        {props.oppositeGender.profileMsg}
+      &quot;{props.oppositeGender.profileMsg}&quot;
       </div>
 
       <div className='matchingMemberInfo'>
-        <div> MBTI 매칭률 {calculateMbtiMatchPercentage()}% </div>
-        <div> 매칭률 : {calculateSimilarity()}%</div>
-        <div> 거리 : {haversine(props.oppositeGender.latitude, props.oppositeGender.longitude)} km</div>
-      </div>
+        <div className="temp-graph-container">
+          <div className="match-graph">
+            <div className="temp-info">MBTI 매칭률 : {calculateMbtiMatchPercentage()}%</div>
+            <div
+              className="match-bar"
+              style={{
+                width: `${calculateMbtiMatchPercentage()}%`,
+                backgroundSize: `${100 / calculateMbtiMatchPercentage() * 100}% 100%`,
+              }}
+            ></div>
+            <div className="temp-bg"></div>
+          </div>
+        </div>
 
+        <div className="temp-graph-container">
+          <div className="match-graph">
+            <div className="temp-info">매칭률 : {calculateSimilarity()}%</div>
+            <div
+              className="match-bar"
+              style={{
+                width: `${calculateSimilarity()}%`,
+                backgroundSize: `${100 / calculateSimilarity() * 100}% 100%`,
+              }}
+            ></div>
+            <div className="temp-bg"></div>
+          </div>
+        </div>
+        
+        
+      </div>
+      <div>거리 : {haversine(props.oppositeGender.latitude, props.oppositeGender.longitude)} km</div>
       <div className='matchingMemberBtns'>
         <button className='matchBtn' onClick={()=>like()}>좋아요</button>
       </div>

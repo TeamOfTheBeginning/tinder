@@ -193,7 +193,8 @@ button{
     font-size: 11px;
     color: #fff;
     transition: all 0.4s ease-in-out;
-    background-color: #5C6A6E;
+    background-color: #d3516d93;
+    cursor: pointer;
 }
 
 #followBtn button {

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 
 import '../../style/message/chatroomfrommatch.css';
+import LoadingSpinner from "../LoadingSpinner";
 
 import jaxios from '../../util/jwtUtil';
 
@@ -116,7 +117,7 @@ const ChatRoomFromMatch = (props) => {
                         </div>
                     )
                 })
-            ):("Loading...")
+            ):( <LoadingSpinner /> )
         }
         </div>
 

@@ -76,7 +76,7 @@
 
 /* 공통 로딩 애니메이션 */
 .loader {
-    position: absolute; /* 화면 중앙에 고정 */
+    position: absolute;
     bottom: 12%;
     height: 4px;
     width: 75vw;
@@ -95,7 +95,7 @@
 
 /* 첫 번째 애니메이션 스타일 */
 .animation-step1 img {
-    width: 40%; /* 브라우저 화면 너비의 40% */
+    width: 40%;
     max-width: 400px; /* 최대 크기 제한 */
     height: auto; /* 비율 유지 */
     margin-top: 20px; /* 여백 추가 */
@@ -182,5 +182,70 @@
   100% {
     background-color: #f7186a66;
     box-shadow: 32px 0 #FBB03B, -32px 0 #ec8c69;
+  }
+}
+
+/* 모바일 환경 (최대 768px) */
+@media screen and (max-width: 768px) {
+  .blur-circle {
+      width: 250px;
+      height: 250px;
+      bottom: 28vh;
+      filter: blur(20px);
+  }
+
+  .loader {
+      width: 90vw; /* 모바일에서는 더 넓게 */
+  }
+
+  .animation-step1 #profile-img {
+      width: 60%;
+      max-width: 200px;
+  }
+
+  .animation-step1 #logo-img {
+    width: 30%;
+    max-width: 100px;
+}
+
+  .heart {
+      width: 20vw;
+      min-width: 80px;
+  }
+
+  .loading-spinner {
+      width: 12px;
+      height: 12px;
+      box-shadow: 28px 0 #ec8c69, -28px 0 #FBB03B;
+  }
+}
+
+/* 더 작은 모바일 화면 (최대 480px) */
+@media screen and (max-width: 480px) {
+  .blur-circle {
+      width: 200px;
+      height: 200px;
+      bottom: 25vh;
+      filter: blur(18px);
+  }
+
+  .loader {
+      width: 95vw; /* 더 작은 화면에서는 최대한 넓게 */
+  }
+
+  .animation-step1 #profile-img {
+    width: 70%;
+    max-width: 200px;
+}
+
+  .heart {
+      width: 25vw;
+      min-width: 70px;
+  }
+
+  .loading-spinner {
+      width: 10px;
+      height: 10px;
+      box-shadow: 24px 0 #ec8c69, -24px 0 #FBB03B;
   }
 }

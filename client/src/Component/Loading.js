@@ -38,7 +38,8 @@ const Loading = ({ onComplete }) => {
                 <div className='animation-step1'>
                     <img 
                         src={`${process.env.REACT_APP_ADDRESS2}/userimg/${loginUser.profileImg}`}
-                        alt='Logo'
+                        alt='profileImg'
+                        id='prfile-img'
                     />
                     <h1>{loginUser.nickname}님<br />
                     🎉 안녕하세요! 🎉</h1>
@@ -46,6 +47,7 @@ const Loading = ({ onComplete }) => {
                     <img
                         src={`${process.env.REACT_APP_ADDRESS2}/userimg/White Square Tinder App Logo Symbol.png`}
                         alt='Logo'
+                        id='logo-img'
                     />
                 </div>
             )}

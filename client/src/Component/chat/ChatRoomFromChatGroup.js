@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 
+import LoadingSpinner from "../LoadingSpinner";
 import '../../style/message/chatroomfromchatgroup.css';
 
 import jaxios from '../../util/jwtUtil';
@@ -76,6 +77,7 @@ const ChatRoomFromChatGroup = (props) => {
             }
     
             setChatList(response.data.chatList);
+            setMessage('');
         } catch (error) {
             console.error(error);
         }
@@ -95,26 +97,33 @@ const ChatRoomFromChatGroup = (props) => {
                     return (
                         <div key={idx} className={`chat ${isOwnMessage ? 'myChat' : ''}`}>
                             <div className='chatContainer'>
-                                <div className='chatImg'>
-                                    <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${chat.sender.profileImg}`}/>&nbsp;
-                                </div>
-                                <div className='chatContent'>
-                                    {chat.sender.nickname}&nbsp; {formatDate(chat.createdDate)}&nbsp;<br/>{chat.content} &nbsp; 
-                                </div>
+                                {!isOwnMessage && (
+                                    <div className='chat-userinfo'>
+                                        <div className='chatImg'>
+                                            <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${chat.sender?.profileImg || 'default.jpg'}`} alt="Profile" />
+                                        </div>
+                                        <span className='nickname'>{chat.sender?.nickname || '닉네임 없음'}</span>
+                                    </div>
+                                )}
+                                <div className='chatContent'>{chat.content}</div>
                             </div>
+                            <div className='chatDate'>{formatDate(chat.createdDate)}</div>
                         </div>
                     )
+                    
                 })
-            ):("Loading...")
+            ):(<LoadingSpinner />)
         }
         </div>
 
         <div className='chatRoomInput'>
-            <input type='text' 
+            <div className='inputBox'>
+                <input type='text' 
                 placeholder='텍스트를 입력하세요'
                 onChange={handleInputChange}
                 value={message}
             /> <button onClick={()=>sendMessage()}>보내기</button>
+            </div>
         </div>
         
 
