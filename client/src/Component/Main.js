@@ -294,32 +294,35 @@ const Main = () => {
     const [timerId, setTimerId] = useState(null);
 
     useEffect(() => {
-        const timers = [];
-
-        // showToast1 표시
+        const timer1 = setTimeout(() => {
+            setShowToast1(true);
+        }, 2000);
+        
+        const timer1End = setTimeout(() => {
+            setShowToast1(false);
+        }, 9000); // 2000ms + 7000ms = 9000ms 후 종료
+        
+        let timer2, timer2End;
         if (postOne) {
-            setShowToast1(true); // showToast1 표시
-            const timer1 = setTimeout(() => {
-                setShowToast1(false); // 7초 뒤 showToast1 종료
-            }, 7000);
-            timers.push(timer1);
+            timer2 = setTimeout(() => {
+                setShowToast2(true);
+            }, 13000); // 9000ms + 12000ms = 21000ms 후 표시
+            
+            timer2End = setTimeout(() => {
+                setShowToast2(false);
+            }, 28000); // 21000ms + 7000ms = 28000ms 후 종료
         }
-
-        // showToast1이 끝난 후 12초 뒤에 showToast2 표시
-        const timer2 = setTimeout(() => {
-            setShowToast2(true); // showToast2 표시
-            const timer2End = setTimeout(() => {
-                setShowToast2(false); // 7초 뒤 showToast2 종료
-            }, 7000);
-            timers.push(timer2End);
-        }, 12000); // showToast1 종료 후 12초 뒤에 showToast2 표시
-        timers.push(timer2);
-
+        
         return () => {
-            // 모든 타이머 제거
-            timers.forEach((timer) => clearTimeout(timer));
+            clearTimeout(timer1);
+            clearTimeout(timer1End);
+            if (postOne) {
+                clearTimeout(timer2);
+                clearTimeout(timer2End);
+            }
         };
     }, [postOne]);
+    
 
     // 타이머 시작 함수
     const startTimer = (time, callback) => {
@@ -504,6 +507,20 @@ const Main = () => {
     setIsFullScreen(false);
   };
   
+    // ⭐ 풀스크린 해제 감지 이벤트 추가
+    useEffect(() => {
+        const handleFullScreenChange = () => {
+          setIsFullScreen(document.fullscreenElement !== null);
+        };
+    
+        document.addEventListener("fullscreenchange", handleFullScreenChange);
+        document.addEventListener("webkitfullscreenchange", handleFullScreenChange); // Safari 지원
+    
+        return () => {
+          document.removeEventListener("fullscreenchange", handleFullScreenChange);
+          document.removeEventListener("webkitfullscreenchange", handleFullScreenChange);
+        };
+      }, []);
 
   const props = {
     hashtag: hashtag,
