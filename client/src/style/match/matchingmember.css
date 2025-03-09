@@ -2,18 +2,15 @@
 .matchContainer{
     width: 100%;
     height: 90vh;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    /* border: 1px solid black;    */
-
 }
 
 .matchMemberContainer{
     display: flex;
+    width: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -21,8 +18,7 @@
 }
 
 .matchingMemberContainer{
-    width: 80%;
-    /* background-color: #f9f9f9; */
+    width: 100%;
     border: 1px solid #ddd;
     border-radius: 8px;
     margin-bottom: 10px;
@@ -30,8 +26,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: transform 0.2s;      
-    /* border: 1px solid black; */
+    transition: transform 0.2s;
     
 }
 
@@ -41,8 +36,6 @@
 }
 
 .matchingMemberTitle{
-    /* border: 1px solid black; */
-
     font-family: "Gowun Dodum", serif;
     font-weight: 400;
     font-style: normal;
