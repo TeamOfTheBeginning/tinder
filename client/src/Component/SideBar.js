@@ -15,6 +15,8 @@ import { IoClose } from 'react-icons/io5';
 import { FaRandom } from 'react-icons/fa';
 import { HiOutlineChatAlt2 } from 'react-icons/hi';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import { AiOutlineFullscreen } from "react-icons/ai";
+import { AiOutlineFullscreenExit } from "react-icons/ai";
 // page import
 import WritePost from './post/WritePost';
 import Match from './match/Match';
@@ -221,6 +223,22 @@ const closeSideViewer = () => {
           <img src={profileImg} alt='Profile' />
         </div>
 
+        {(!props.isFullScreen)?(
+          <div 
+          className={`sidebar-btn`} 
+          onClick={()=>{props.enterFullScreen()}}
+        >
+          <AiOutlineFullscreen className='fullScreenToggle' />
+        </div>
+        ):(
+          <div 
+          className={`sidebar-btn ${selectedMenu === 'search' ? 'active' : ''}`} 
+          onClick={()=>{props.exitFullScreen()}}
+        >
+          <AiOutlineFullscreenExit className='fullScreenToggle' />
+        </div>
+        )}
+
         <div className='sidebar-btn' 
         onClick={() => window.location.reload()}
         >
@@ -275,6 +293,10 @@ const closeSideViewer = () => {
         >
           <IoSearch />
         </div>
+
+        
+        
+        
 
         <div 
           className='sidebar-btn logout-btn' 
