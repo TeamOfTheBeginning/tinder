@@ -28,6 +28,7 @@ import '../style/posts.css';
 import '../style/chatbot/chatbot.css';
 import { SiOutline } from 'react-icons/si';
 
+// 튜토리얼 오버레이
 const Overlay = ({ isActive }) => {
     if (!isActive) return null;
   

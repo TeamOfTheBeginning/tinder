@@ -53,7 +53,7 @@ public class MemberController {
     @Autowired
     CustomUserDetailsService suds;
 
-
+//1
 //    @PostMapping("/loginlocal")
 //    public HashMap<String, Object> loginlocal(
 //            @RequestParam("email") String email,

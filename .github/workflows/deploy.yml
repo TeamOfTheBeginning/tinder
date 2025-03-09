@@ -1,0 +1,47 @@
+name: DH # workflow의 이름
+
+on:
+  push:
+    branches:
+      - DH # DH 브랜치에 push될 때 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH로 EC2 접속 - Backend & Frontend 배포
+        uses: appleboy/ssh-action@master
+        env:
+          APPLICATION_PROPERTIES: ${{ secrets.APPLICATION_YML }}
+
+        with:
+          host: ${{ secrets.EC2_HOST }} # EC2 주소
+          username: ${{ secrets.EC2_USERNAME }} # EC2 접속 username (ubuntu)
+          key: ${{ secrets.EC2_PRIVATE_KEY }} # EC2 접속 key 파일의 내용
+          envs: APPLICATION_PROPERTIES
+          script_stop: true # 하나라도 실패하면 전체 실패 처리
+          timeout: 200m          # 전체 워크플로우 실행 시간 (200분)
+          command_timeout: 30m   # 개별 명령 실행 시간 (30분 )
+          script: |
+
+            echo "=== Backend 배포 시작 ==="
+            cd /home/ubuntu/tinder
+            rm -rf src/main/resources/application.yml
+            git pull origin DH
+            echo "$APPLICATION_PROPERTIES" > src/main/resources/application.yml
+            ./gradlew clean build -x test
+            sudo fuser -k -n tcp 8070 || true
+            nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
+            echo "=== Backend 배포 완료 ==="
+
+
+            echo "=== Frontend 배포 시작 ==="
+            cd /home/ubuntu/tinder/client
+            git pull origin DH
+            sudo rm -rf node_modules
+            export NODE_OPTIONS="--max-old-space-size=3072"
+            npm install
+            npm run build
+            sudo systemctl restart nginx
+            echo "=== Frontend 배포 완료 ==="
