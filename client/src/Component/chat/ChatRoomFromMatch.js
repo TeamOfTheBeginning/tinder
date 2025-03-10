@@ -87,6 +87,7 @@ const ChatRoomFromMatch = (props) => {
             }
     
             setChatList(response.data.chatList);
+            setMessage('');
         } catch (error) {
             console.error(error);
         }
