@@ -42,27 +42,27 @@ const FindLiker = () => {
 
 
     return (
-        <div className='findLikerContainer'>
+        <div className='LikerContainer'>
             {
                 (likerList)?(
                     likerList.map((liker, idx)=>{
                         return (
-                            <div key={idx} className='findLikerListContainer'>
-                                <div className='findLikerLeft'>
+                            <div key={idx} className='MemberListContainer'>
+                                <div className='memberImgBox'>
                                     <img src={`http://localhost:8070/userimg/${liker.profileImg}`} />
                                     <br/>
                                 </div>
 
-                                <div className='findLikerRight'>
-                                    <div className='findLikerProfile'>  
-                                        {liker.nickname}
-                                        ({liker.age})<br/>
-                                        {liker.profileMsg}
+                                <div className='memberInfo'>
+                                    <div className='memberProfileBox'>  
+                                        <div className='nickname'>{liker.nickname}({liker.age})</div>
+                                        <div className='intro'>{liker.profileMsg}</div>
+                                        <div className='btns'>
+                                            <button onClick={()=>like(liker.memberId)}>좋아요</button>
+                                        </div>
                                     </div>
 
-                                    <div className='findLikerBtns'>
-                                        <button onClick={()=>like(liker.memberId)}>좋아요</button>
-                                    </div>
+                                    
                                 </div>            
                             </div>
                         )

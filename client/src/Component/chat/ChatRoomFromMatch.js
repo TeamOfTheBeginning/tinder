@@ -3,7 +3,9 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 
-import '../../style/message/chatroomfrommatch.css';
+
+import '../../style/message/chatroomfromchatgroup.css';
+import LoadingSpinner from "../LoadingSpinner";
 
 import jaxios from '../../util/jwtUtil';
 
@@ -93,39 +95,45 @@ const ChatRoomFromMatch = (props) => {
 
 
   return (
-    <div className='chatRoomFromMatchContainer'>
-        <div className='chatRoomFromMatchContents'>
+    <div className='chatRoomFromChatGroupContainer'>
+        <div className='chatRoomFromChatGroupContents'>
         {
             (chatList)?(
                 chatList.map((chat, idx)=>{
 
                     const isOwnMessage = String(chat.sender.memberId) === String(loginUser.memberId);
-                    console.log("chat.sender.memberId"+chat.sender.memberId+"loginUser.memberId"+loginUser.memberId)
-                    console.log("isOwnMessage"+isOwnMessage)
+                    // console.log("chat.sender.memberId"+chat.sender.memberId+"loginUser.memberId"+loginUser.memberId)
+                    // console.log("isOwnMessage"+isOwnMessage)
 
                     return (
                         <div key={idx} className={`chat ${isOwnMessage ? 'myChat' : ''}`}>
                             <div className='chatContainer'>
-                                <div className='chatImg'>
-                                    <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${chat.sender.profileImg}`}/>&nbsp;
-                                </div>
-                                <div className='chatContent'>
-                                    {chat.sender.nickname}&nbsp; {formatDate(chat.createdDate)}&nbsp;<br/>{chat.content} &nbsp; 
-                                </div>
+                                {!isOwnMessage && (
+                                    <div className='chat-userinfo'>
+                                        <div className='chatImg'>
+                                            <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${chat.sender?.profileImg || 'default.jpg'}`} alt="Profile" />
+                                        </div>
+                                        <span className='nickname'>{chat.sender?.nickname || '닉네임 없음'}</span>
+                                    </div>
+                                )}
+                                <div className='chatContent'>{chat.content}</div>
                             </div>
+                            <div className='chatDate'>{formatDate(chat.createdDate)}</div>
                         </div>
                     )
                 })
-            ):("Loading...")
+            ):( <LoadingSpinner /> )
         }
         </div>
 
         <div className='chatRoomInput'>
-            <input type='text' 
-                placeholder='텍스트를 입력하세요'
-                onChange={handleInputChange}
-                value={message}
-            /> <button onClick={()=>sendMessage()}>보내기</button>
+            <div className='inputBox'>
+                <input type='text' 
+                    placeholder='텍스트를 입력하세요'
+                    onChange={handleInputChange}
+                    value={message}
+                /> <button onClick={()=>sendMessage()}>보내기</button>
+            </div>
         </div>
         
 

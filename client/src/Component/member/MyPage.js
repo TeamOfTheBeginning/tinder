@@ -160,7 +160,9 @@ const togleTutorial = async () => {
     jaxios.post(`/api/member2/setTutorialHidden`, null ,{ params: { memberId:loginUser.memberId } })
     .then((result) => {
         
-        if(result.data.msg="yes"){
+        console.log(result.data)
+
+        if(result.data.msg=="yes"){
             
             alert("튜토리얼을 껐습니다.");
 
@@ -182,7 +184,7 @@ const togleTutorial = async () => {
             }).catch((err) => { console.error(err) });        
 
             
-        }else if(result.data.msg="no"){
+        }else if(result.data.msg=="no"){
             alert("튜토리얼을 켰습니다.");
 
             jaxios.get(`/api/member/getLoginUser`, { params: { memberId:loginUser.memberId } })
@@ -290,81 +292,85 @@ function resign(){
 }
 
     return (
-        <div className='SideContainer'>
+        <div className='profileContainer'>
             <div className='mypage'>
+                <div className='followBtns'>
+                    {/* 팔로우 버튼 */}
+                    <button className='follow-button' onClick={toggleFollowerModal}>
+                        Follower
+                        <div>
+                                {
+                                    (loginUser.followed)?(loginUser.followed.length):(0)
+                                }
+                            </div>
+                    </button>
+
+                    {/* 팔로우 중인 사용자 버튼 */}
+                    <button className='follow-button' onClick={toggleFollowedModal}>
+                        Followed
+                        <div>
+                                {
+                                    (loginUser.follower)?(loginUser.follower.length):(0)
+                                }
+                        </div>
+                    </button>
+                </div>
                 <div className='profileImage'>
                     <div className='img'>
                         <img src={imgSrc} />
                     </div>
+                    <div className='profile-header'>
+                        <div className='box'>
+                            <div className='profile-nickname'>{loginUser.nickname}</div>
+                        </div>
+                    </div>
                     <div className='imgBg'></div>
                 </div>
-
+                
                 <div className='userinfo'>
+                    <div className='user-temperature'>
+                        <div className="temp-graph">
+                            <div className="temp-info">
+                            <span>매너온도 : {loginUser.temp}°C</span>
+                            </div>
+                            <div className="temp-bar" 
+                                style={{ 
+                                width: `${loginUser.temp}%`,  
+                                backgroundSize: `${100 / loginUser.temp * 100}% 100%` 
+                                }}></div>
+                            <div className="temp-bg"></div>
+                        </div>
+                    </div>
                     <div className='profile'>
                         <div className='field'>
-                            <label>E-mail</label>
+                            <label>ID</label>
                             <div>{loginUser.email}</div>
-                        </div>
-                        <div className='field'>
-                            <label>Nick Name</label>
-                            <div>{loginUser.nickname}</div>
                         </div>
                         <div className='field'>
                             <label>지위</label>
                             <div>{loginUser.memberRoleList}</div>
                         </div>
                         <div className='field'>
-                            <label onClick={toggleFollowerModal} style={{cursor:'pointer'}}>Follower</label>
-                            <div>
-                                {
-                                    (loginUser.followed)?(loginUser.followed.length):(0)
-                                }
-                            </div>
-                        </div>
-                        <div className='field'>
-                            <label onClick={toggleFollowedModal} style={{cursor:'pointer'}} >Followed</label>
-                            <div>
-                                {
-                                    (loginUser.follower)?(loginUser.follower.length):(0)
-                                }
-                            </div>
-                        </div>
-                        <div className='field'>
-                            <label>intro</label>
-                            <div>{loginUser.profileMsg}</div>
-                        </div>
-                        <div className='field'>
                             <label>충전금액</label>
                             <div>{loginUser.account}</div>
                         </div>
-                        <div className='field'>
-                            <label>온도</label>
-                            <div>{loginUser.temp}</div>
-                        </div>                        
-                        <div className='field'>
-                            <label>MBTI</label>
-                            <div>
-                                {ei(loginUser.memberInfo.ei)}
-                                {ns(loginUser.memberInfo.ns)}
-                                {tf(loginUser.memberInfo.tf)}
-                                {jp(loginUser.memberInfo.jp)}
-                            </div>
+                        
+                        <div className='field' id='profile_msg'>
+                            <label className='hidden'>intro</label>
+                            <div>&quot;{loginUser.profileMsg}&quot;</div>
                         </div>
                     </div>
                 </div>
 
                 <div className='btns' >
                     <div id ="btn" onClick={()=> props.openSubMenu('editProfile')}><button>정보수정</button></div>
-                    
                     <div id ="btn" onClick={()=> props.openSubMenu('editOpponent')}><button>상대정보</button></div>
-                    
+                </div>
+                <div className='btns' >
                     <div id ="btn" onClick={()=>{requestPayment()}}><button>충전</button></div>
                     
-                    
-                
                     <div id ="btn">
-                        <button 
-                            
+                        <button   
                             onClick={() => {
                                 if (loginUser && hasRequiredRoles(loginUser.memberRoleList)) {
                                     // props.onSubMenuSelect('findLiker');
@@ -377,8 +383,10 @@ function resign(){
                             골드회원
                         </button>
                     </div>
+                </div>
+                <div className='btns' >
 
-                    <div id ="btn" onClick={()=>{togleTutorial()}}><button>튜토리얼 끄기/켜기</button></div>
+                    <div id ="btn" onClick={()=>{togleTutorial()}}><button>튜토리얼 <br />끄기/켜기</button></div>
 
                     <div id ="btn" onClick={()=>{resign()}}><button>회원 탈퇴</button></div>
                 
@@ -406,20 +414,6 @@ function resign(){
                     ))}
                 </ul>
                 </Modal>
-
-                {/* <div className='userpost' >
-                    {
-                        (imgList)?(
-                            imgList.map((imgs, idx)=>{
-                                return (
-                                    <div key={idx}>
-                                        <img src={`http://localhost:8070/images/${imgs}`} />
-                                    </div>
-                                )
-                            })
-                        ):(<div>Loading...</div>)
-                    }
-                </div> */}
             </div>
         </div>
     )

@@ -1,18 +1,20 @@
-.matchContainer{
-  display:flex;
+.matchContainer {
+  display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .matchBtns {
+  order: -1;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 60%;
-  padding: 2dvh 0 2dvh 0;
+  padding: 1dvh 0 1dvh 0;
 }
 .matchBtns .matchBtn{
   width: 90px;
@@ -57,6 +59,8 @@
     margin-bottom: 10px;
     padding: 10px;
     transition: transform 0.2s;
+    font-size: 14px;
+    gap: 1dvh;
 }
 
 .matchingMemberContainer:hover {
@@ -64,6 +68,7 @@
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
+/* 매칭된 멤버 이미지 영역 */
 .matchingMemberImgContainer {
   display: flex;
   position: relative;
@@ -84,14 +89,33 @@
   width: 100%;
 }
 .matchingMemberTitle span{
-  margin: 0.5rem;
+  margin: 0.3rem;
 }
 .matchingMemberTitle .matchingMember-memberinfo{
+  display: flex;
   background-color: rgba(0, 0, 0, 0.4); /* 반투명 배경 */
   color: #fff;
-  font-size: 1.5rem;
-  text-align: center;
-  overflow: hidden; box-sizing: border-box;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  font-size: 1rem;
+  justify-content: space-evenly;
+  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.matchingMemberTemperature .temp-graph {
+  position: relative;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+.matchingMemberTemperature .matching-temp-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 104;
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.85);
 }
 
 .matchingMemberImg{
@@ -101,31 +125,37 @@
   box-sizing: border-box;
   width: 100%;
 }
-
 .matchingMemberImgImg{
-  width: 100%;
+  width: 500px;
+  height: 550px;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
 }
-
 .matchingMemberImg img{
-  width: 100%;
-  height: auto;
+  width:100%;
+  height:100%;
+  object-fit: cover;
 }
 
 .matchingMemberMsg{
-  font-weight: 400;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-style: normal;
-  font-size: 150%;
+  font-size: 1.3em;
 }
 
 .matchingMemberInfo{
-  font-weight: 400;
-  font-style: normal;
-  font-size: 1.5rem;
-  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  position: relative;
+  align-items: center;
+  justify-content: center;
 }
 
 .matchingMemberTemperature {
@@ -147,100 +177,199 @@
   justify-content: center;
   align-items: center;
 }
-
 .matchingMemberBtns button{
   width: 80px;
 }
-
 .matchingMemberBtns button:hover{
   background-position: 100% 0;
   color: #fff;
 }
 
-
-/* ------------------------------- matchedmember */
-
-.matchedMemberContainer{
-  /* width: 100vw; */
-  height: 100vh;
-
+/* 공통 그래프 컨테이너 */
+.temp-graph-container {
   display: flex;
-  flex-direction: column;
+  width: 100%;
   justify-content: center;
   align-items: center;
-
-  /* border: 1px solid black; */
 }
-
-.matchedMemberContainer button{
-  width: 80px;
-  height: 30px;
-  background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
-  background-size: 300% 100%;
-  border-radius: 20px;
-  font-weight: 500;
-  cursor: pointer;
+.temp-graph-container .temp-graph{
+  position: relative;
+  width: 100%;
 }
-
-.matchedMemberContainer button:hover{
-  background-position: 100% 0;
-  color: #fff;
+.temp-graph-container .temp-graph .temp-info {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9rem;
 }
-
-.matchedMemberListContainer{
+.match-graph {
+  position: relative;
   display: flex;
+  width: 95%;
+  height: 30px;
+  border-radius: 25px;
+  overflow: hidden;
+  background-color: rgba(30, 30, 30, 0.2);
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+.match-graph .temp-info {
+  position: absolute;
+  top: 50%;  /* 부모 요소의 절반 높이 */
+  left: 50%; /* 부모 요소의 절반 너비 */
+  transform: translate(-50%, -50%); /* 정확한 중앙 정렬 */
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.8);
+  z-index: 103; /* temp-bar보다 위에 배치 */
+  white-space: nowrap;
+  text-align: center;
+}
+.match-bar {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 102;
+  transition: width 0.3s ease-in-out;
+
+  /* 온도 값 범위 내에서만 그라데이션 적용 */
+  background: linear-gradient(
+  to right, 
+  rgba(219, 253, 124, 0.8) 0%,
+  rgba(255, 242, 55, 0.8) 25%,
+  rgba(236, 140, 105, 0.8) 40%,
+  rgba(237, 110, 160, 0.8) 50%,
+  rgba(247, 24, 106, 0.8) 100%
+  );
+  /* width 비율만큼만 그라데이션 표시 */
+  background-size: 1000% 100%;
+  background-position: left;
+  background-repeat: no-repeat;
+}
+
+.temp-bg {
+  display: flex;
+}
+
+
+/* ------------------------------- findLiker, matchedmember */
+.LikerContainer,
+.matchedContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 25px;
+  width: 100%;
+  height: 98dvh;
+  overflow-y: auto;
+}
+
+.LikerContainer .MemberListContainer,
+.matchedContainer .MemberListContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   flex-direction: row;
-  /* justify-content: center;
-  align-items: center; */
-
-  width: 400px;
-  height: 20vh;
-  /* border: 1px solid black; */
-
+  width: 75%;
+  height: 100px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 8px;
   margin-bottom: 10px;
-  padding: 15px;
-  display: flex;
-  align-items: center;
+  padding: 10px;
   transition: transform 0.2s;
-
 }
-
-.matchedMemberListContainer:hover {
+.LikerContainer .MemberListContainer:hover,
+.matchedContainer .MemberListContainer:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-
-.matchedMemberLeft{
-  /* border: 1px solid black; */
+/* 프로필 이미지 */
+.MemberListContainer .memberImgBox {
+ width: 110px;
+ height: 110px;
+ border-radius: 50%;
+ overflow: hidden;
+}
+.MemberListContainer .memberImgBox img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.matchedMemberLeft img{
-  width: 150px;
-  border-radius: 10px;
+.MemberListContainer .memberInfo {
+  display: flex;
+  flex-direction: row;
+  width: 250px;
 }
 
-.matchedMemberRight{
-  /* border: 1px solid black; */
+.memberInfo .memberProfileBox .nickname{
+  font-weight: bold;
+}
+
+.memberInfo .memberProfileBox .nickname,
+.memberInfo .memberProfileBox .intro {
+    margin-bottom: 5px;
+    white-space: nowrap; /* 줄바꿈 방지 */
+    overflow: hidden; /* 넘치는 내용 숨김 */
+    text-overflow: ellipsis; /* 글줄임표(...) 표시 */
+    max-width: 100%; /* 부모 요소에 맞춰 최대 너비 설정 */
 }
 
 
+.memberInfo .memberProfileBox,
+.memberInfo .memberProfileBox .btns,
+.memberInfo .memberProfileBox .btns button{
+  width: 100%;
+}
+.MemberListContainer button:hover{
+  background-position: 100% 0;
+  color: #fff;
+}
 
 
 @media (max-width: 768px) {
-    .matchBtns {
-      position: relative;
-      flex-direction: column;
-      justify-content: flex-end;
-      width: 80%;
-    }
-    .matchBtns .matchBtn {
+  .matchingMemberContainer {
+    top: 25px;
+    margin-bottom: 25px;
+  }
+  /* 모바일에서 매칭상대 이미지 조정 */
+  .matchingMemberImg{
+    max-width: 100%;
+    max-height: 350px;
+  }
+  .matchingMemberImgImg{
+    max-width: 300px;
+    max-height: 350px;
+  }
+  .matchingMemberMsg{
+    -webkit-line-clamp: 1;
+    font-size: 1em;
+  }
+  /* 모바일에서 매칭멤버 밑으로 버튼 이동 */
+  .matchBtns {
+    order: 1;
+    flex-direction: column;
+    width: 80%;
+  }
+  .matchBtns .matchBtn {
       margin-bottom: 0.5em;
       width: 100%;
-    }
-    .matchingMember-memberinfo span {
-      font-size: 1rem;
-    }
   }
+  .matchingMember-memberinfo span {
+      font-size: 1rem;
+  }
+  .MemberListContainer .memberInfo {
+    width: 50%;
+  }
+}
+
+@media (max-height: 650px) {
+  .matchingMemberImg {
+    max-height: 500px;
+  }
+}

@@ -206,8 +206,7 @@
 @media (max-width: 768px) {
     .SideViewer {
         min-width: auto;
-        max-width: 320px;
-        left: 55px;
+        max-width: 300px;
     }
     .SideViewer .sideViewerHeader .closeBtn {
         left: calc(320px - 40px);
@@ -226,6 +225,18 @@
         min-height: auto;
     }
     .SideViewer .sideViewerHeader .closeBtn {
-        left: calc(70% - 40px);
+        top: 0;
+        left: 130px;
+    }
+}
+
+@media (max-height: 650px) {
+    .MenubarBtns{
+        margin-top: 35px;
+        height: 600px;
+        padding-bottom: 50px;
+    }
+    .MenubarBtns .sidebar-btn{
+        margin-top: 8px;
     }
 }

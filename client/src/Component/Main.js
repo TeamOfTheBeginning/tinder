@@ -28,6 +28,7 @@ import '../style/posts.css';
 import '../style/chatbot/chatbot.css';
 import { SiOutline } from 'react-icons/si';
 
+// 튜토리얼 오버레이
 const Overlay = ({ isActive }) => {
     if (!isActive) return null;
   
@@ -65,10 +66,7 @@ const Main = () => {
     const [chatMessages, setChatMessages] = useState([]);
     const [pageable, setPageable] = useState();
 
-    const props = {
-        hashtag: hashtag,
-        setHashtag: setHashtag,
-    };
+    
 
     const [searchParams] = useSearchParams();
 
@@ -296,32 +294,35 @@ const Main = () => {
     const [timerId, setTimerId] = useState(null);
 
     useEffect(() => {
-        const timers = [];
-
-        // showToast1 표시
+        const timer1 = setTimeout(() => {
+            setShowToast1(true);
+        }, 2000);
+        
+        const timer1End = setTimeout(() => {
+            setShowToast1(false);
+        }, 9000); // 2000ms + 7000ms = 9000ms 후 종료
+        
+        let timer2, timer2End;
         if (postOne) {
-            setShowToast1(true); // showToast1 표시
-            const timer1 = setTimeout(() => {
-                setShowToast1(false); // 7초 뒤 showToast1 종료
-            }, 7000);
-            timers.push(timer1);
+            timer2 = setTimeout(() => {
+                setShowToast2(true);
+            }, 13000); // 9000ms + 12000ms = 21000ms 후 표시
+            
+            timer2End = setTimeout(() => {
+                setShowToast2(false);
+            }, 28000); // 21000ms + 7000ms = 28000ms 후 종료
         }
-
-        // showToast1이 끝난 후 12초 뒤에 showToast2 표시
-        const timer2 = setTimeout(() => {
-            setShowToast2(true); // showToast2 표시
-            const timer2End = setTimeout(() => {
-                setShowToast2(false); // 7초 뒤 showToast2 종료
-            }, 7000);
-            timers.push(timer2End);
-        }, 12000); // showToast1 종료 후 12초 뒤에 showToast2 표시
-        timers.push(timer2);
-
+        
         return () => {
-            // 모든 타이머 제거
-            timers.forEach((timer) => clearTimeout(timer));
+            clearTimeout(timer1);
+            clearTimeout(timer1End);
+            if (postOne) {
+                clearTimeout(timer2);
+                clearTimeout(timer2End);
+            }
         };
     }, [postOne]);
+    
 
     // 타이머 시작 함수
     const startTimer = (time, callback) => {
@@ -448,6 +449,12 @@ const Main = () => {
         }   
             ,
         {
+            target: ".fullScreenToggle", // 강조할 요소
+            content: "여기에서 전체화면을 설정 할 수 있습니다.",
+            placement: "right",
+        }   
+            ,
+        {
             target: ".profileImg", // 강조할 요소
             content: "사진을 클릭하시면 튜토리얼을 끌 수 있습니다.",
             placement: "right",
@@ -474,8 +481,56 @@ const Main = () => {
 
   };
   
-  
 
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const enterFullScreen = () => {
+    const elem = document.documentElement; // 전체 화면으로 만들 요소
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen(); // Safari 지원
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen(); // IE 지원
+    }
+    setIsFullScreen(true);
+  };
+
+  const exitFullScreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen(); // Safari 지원
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen(); // IE 지원
+    }
+    setIsFullScreen(false);
+  };
+  
+    // ⭐ 풀스크린 해제 감지 이벤트 추가
+    useEffect(() => {
+        const handleFullScreenChange = () => {
+          setIsFullScreen(document.fullscreenElement !== null);
+        };
+    
+        document.addEventListener("fullscreenchange", handleFullScreenChange);
+        document.addEventListener("webkitfullscreenchange", handleFullScreenChange); // Safari 지원
+    
+        return () => {
+          document.removeEventListener("fullscreenchange", handleFullScreenChange);
+          document.removeEventListener("webkitfullscreenchange", handleFullScreenChange);
+        };
+      }, []);
+
+  const props = {
+    hashtag: hashtag,
+    setHashtag: setHashtag,
+    enterFullScreen:enterFullScreen,
+    exitFullScreen:exitFullScreen,
+    setIsFullScreen:setIsFullScreen,
+    isFullScreen:isFullScreen
+
+};
       
     return (
         <div className='Container'>
@@ -533,8 +588,8 @@ const Main = () => {
                         //   overlayColor: 'rgba(79, 26, 0, 0.4)',
                         //   primaryColor: '#000',
                         //   textColor: '#004a14',
-                        //   width: 900,
                         zIndex: 1000,
+                        width: 250,
                         }}}
                     // debug={true}
                     callback={handleJoyrideCallback}
@@ -542,90 +597,7 @@ const Main = () => {
                     
                 />
 
-      {/* <Joyride
-  steps={steps}
-  run={run}
-  continuous={true}
-  showSkipButton={true}
-  spotlightClicks={true}
-  showProgress={true}
-  overlayColor="rgba(0, 0, 0, 0.7)"
-  styles={{
-    options: {
-      arrowColor: '#e3ffeb',
-      backgroundColor: '#e3ffeb',
-      overlayColor: 'rgba(79, 26, 0, 0.4)',
-      primaryColor: '#000',
-      textColor: '#004a14',
-      width: 900,
-      zIndex: 1000,
-    },
-    spotlight: {
-      backgroundColor: 'rgba(0, 0, 0, 0.9)', // 강조 영역 배경색을 더 어둡게 설정
-      transition: 'all 0.3s ease-in-out', // 부드러운 전환 효과 추가
-    },
-  }}
-/> */}
-
-<Overlay isActive={isOverlayActive} />
-
-{/* <Joyride
-  steps={steps}
-  run={run}
-  continuous={true}
-  showSkipButton={true}
-  spotlightClicks={true}
-  showProgress={true}
-  overlayColor="rgba(0, 0, 0, 0.7)"
-  styles={{
-    options: {
-    //   arrowColor: '#e3ffeb',
-      backgroundColor: '#e3ffeb',
-      overlayColor: 'rgba(79, 26, 0, 0.4)',
-      primaryColor: '#000',
-      textColor: '#004a14',
-      width: 900,
-      zIndex: 1000,
-    },
-    spotlight: {
-      backgroundColor: 'rgba(0, 0, 0, 0.9)',
-      transition: 'all 0.3s ease-in-out',
-    },
-  }}
-  beforeBeacon={(step) => {
-    if (step.index === 0) {
-      // 첫 번째 단계에서만 배경을 더 어둡게 설정
-      document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-    } else {
-      document.body.style.backgroundColor = '';
-    }
-  }}
-/> */}
-
-            {/* {showTutorial && <TutorialModal onClose={() => setShowTutorial(false)} />} */}
-
-            {/* <div className='PostList'> */}
-                {/* {
-                    postList ? (
-                        postList.map((post, idx) => {
-                            
-
-                            return (
-                                <React.Fragment key={idx}>
-                                    <Post post={post} followed={followed} setFollowed={setFollowed} videoRef={(el) => (videoRefs.current[idx] = el)}/>
-
-                                    {(idx + 1) % 5 === 0 && <Statistics />}
-
-                                    🔥 10번째마다 광고 삽입
-                                    {(idx + 1) % 10 === 0 && <AdComponent />}
-                                </React.Fragment>
-                            );
-                        })
-                    ) : (null)
-                } */}
-            {/* </div> */}
-
-
+            <Overlay isActive={isOverlayActive} />
 
             <div className='customer-service-icon' onClick={toggleChatbot}>
                 {isChatbotOpen ? <FiX size={24} /> : <FcCustomerSupport className='FcCustomerSupport' size={24} />}

@@ -30,25 +30,24 @@ const MatchedMember = (props) => {
     }
 
     return (
-        <div className='matchedMemberContainer'>
+        <div className='matchedContainer'>
             {
                 (matchedMemberList)?(
                     matchedMemberList.map((matchedMember, idx)=>{
                         return (
-                            <div key={idx} className='matchedMemberListContainer'>
-                                <div className='matchedMemberLeft'>
+                            <div key={idx} className='MemberListContainer'>
+                                <div className='memberImgBox'>
                                     <img src={`http://localhost:8070/userimg/${matchedMember.profileImg}`} />
                                     <br/>
                                 </div>
 
-                                <div className='matchedMemberRight'>
-                                    <div className='matchedMemberProfile'>  
-                                        {matchedMember.nickname}
-                                        ({matchedMember.age})<br/>
-                                        {matchedMember.profileMsg}
-                                    </div>
-                                    <div className='matchedMemberBtns'>                     
-                                        <button onClick={()=>enterChatRoomFromMatchedMember(matchedMember.memberId)}>쪽지</button>
+                                <div className='memberInfo'>
+                                    <div className='memberProfileBox'>  
+                                        <div className='nickname'>{matchedMember.nickname}({matchedMember.age})</div>
+                                        <div classnAME='intro'>{matchedMember.profileMsg}</div>
+                                        <div className='btns'>                     
+                                            <button onClick={()=>enterChatRoomFromMatchedMember(matchedMember.memberId)}>쪽지</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
