@@ -44,7 +44,7 @@ async function imgUpload(e) {
       const newSrcs = results
           .filter(result => result && result.filename)
           .map(result => ({
-              url: `http://localhost:8070/userimg/${result.filename}`,
+              url: `${process.env.REACT_APP_ADDRESS}/userimg/${result.filename}`,
               type: result.filename.split('.').pop().toLowerCase(),
           }));
 

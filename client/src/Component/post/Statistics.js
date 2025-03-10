@@ -60,7 +60,7 @@ const Statistics = () => {
         <>
           <h3>틴더는 <br /> (주){ads.advertiser}와 함께 합니다.</h3>
           <div className='img'>
-            <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${ads.adImage}`} />
+            <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${ads.adImage}`} />
           </div>
           <br />
           {loading ? (

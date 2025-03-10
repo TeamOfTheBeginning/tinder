@@ -9,12 +9,13 @@ import "../../style/realtimechat/realtimechat.css";
 
 import jaxios from '../../util/jwtUtil';
 
-const isLocalhost = window.location.hostname === "localhost" ;
-// || window.location.hostname === "127.0.0.1";
+//웹소켓 경로 관련
+const isLocalhost = window.location.hostname === 'localhost' ;
+// || window.location.hostname === '127.0.0.1';
 
 const API_BASE_URL = isLocalhost
-  ? "http://localhost:8070" // 로컬 개발 환경
-  : `http://${window.location.hostname}:8070`; // 클라이언트가 실행 중인 네트워크 기반으로 서버 IP 설정
+  ? 'http://localhost:8070' // 로컬 개발 환경
+  : `http://${window.location.hostname}:8390`; // 클라이언트가 실행 중인 네트워크 기반으로 서버 IP 설정
 
 const SOCKET_URL = `${API_BASE_URL}/ws_real_chat`;
 
@@ -367,9 +368,9 @@ function ChatPage() {
               ? msg.profileImg.startsWith("http")
                 ? msg.profileImg
                 : msg.profileImg.startsWith("/userimg")
-                ? `${API_BASE_URL}${msg.profileImg}`
-                : `${API_BASE_URL}/userimg/${msg.profileImg}`
-                : `${API_BASE_URL}/userimg/default.jpg`; // 기본 이미지 적용                   
+                ? `${process.env.REACT_APP_ADDRESS}${msg.profileImg}`
+                : `${process.env.REACT_APP_ADDRESS}/userimg/${msg.profileImg}`
+                : `${process.env.REACT_APP_ADDRESS}/userimg/default.jpg`; // 기본 이미지 적용                   
   
               return (
                 <div key={index} className={`message ${msg.nickname === nickname ? "self" : "other"}`}>

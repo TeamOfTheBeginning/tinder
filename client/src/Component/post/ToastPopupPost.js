@@ -189,14 +189,14 @@ const ToastPopupPost = (props) => {
 
                     return (
                         isImage ? (
-                            <img key={img.savefileName} src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} 
+                            <img key={img.savefileName} src={`${process.env.REACT_APP_ADDRESS}/userimg/${img.savefileName}`} 
                             // width="750" height="700" 
                             alt="Post" />
                         ) : isVideo ? (
                             <video key={img.savefileName} 
                             // width="750" height="700"  
                             controls autoPlay muted playsInline loop>
-                                <source src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} type="video/mp4" />
+                                <source src={`${process.env.REACT_APP_ADDRESS}/userimg/${img.savefileName}`} type="video/mp4" />
                                 Your browser does not support the video tag.
                             </video>
                         ) : null

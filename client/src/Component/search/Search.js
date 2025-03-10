@@ -187,7 +187,7 @@ const Search = (props) => {
               return (
                 <div key={idx} className='searchMemberContainer'> 
                   <div className='searchMemberImg'>
-                    <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${member.profileImg}`}/>
+                    <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${member.profileImg}`}/>
                     
                   </div>
 

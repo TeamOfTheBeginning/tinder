@@ -37,79 +37,8 @@ const EditOpponent = () => {
         navigate(path); // 경로 이동만 수행하고 SideViewer 상태는 유지
     };
 
-    
-    const handleBirthDateChange = (e) => {
-        const selectedDate = new Date(e.target.value);
-        const today = new Date();
 
-        let calculatedAge = today.getFullYear() - selectedDate.getFullYear();
-        const monthDiff = today.getMonth() - selectedDate.getMonth();
-        const dayDiff = today.getDate() - selectedDate.getDate();
-        
-        if (selectedDate > today) {
-            alert("미래 날짜는 선택할 수 없습니다.");
-            return;
-        }
-        
-        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-            calculatedAge--;
-        }
-
-        setBirthDate(e.target.value);
-        setAge(calculatedAge);
-    };
     
-
-    useEffect(() => {
-        jaxios.get("/api/member/hobbies")
-        .then((response) => {
-            setHobbyCategories(response.data.categories); // 카테고리 설정
-            setHobbies(response.data.hobbies); // 취미 설정
-            
-            // 기존 선택된 취미 초기화 (로그인 유저의 데이터에서 가져옴)
-            if (loginUser.hobbies) {
-                const initialSelectedHobbies = loginUser.hobbies.map((h) => h.hobbyId);
-                setSelectedHobbies(initialSelectedHobbies);
-            }
-        });
-
-        setAge(loginUser.age);
-        setBirthDate(loginUser.birthDate);
-        setZipnum(loginUser.zipnum);
-        setGender(loginUser.gender);
-        setEmail(loginUser.email);
-        setNickname(loginUser.nickname);
-        setPhone(loginUser.phone);
-        setHobby(loginUser.hobby);
-        setIntro(loginUser.profileMsg);
-    
-        if (loginUser.profileImg) {
-            setImgSrc(`http://localhost:8070/userimg/${loginUser.profileImg}`);
-            setImgStyle({ display: 'block', width: '200px' });
-        }
-    
-        setProfileImg(loginUser.profileImg);
-    }, []);
-    
-
-    // ✅ 취미 선택 핸들러
-    const handleHobbyChange = (hobbyId) => {
-        setSelectedHobbies((prev) =>
-            prev.includes(hobbyId)
-                ? prev.filter((id) => id !== hobbyId) // 체크 해제 시 제거
-                : [...prev, hobbyId] // 체크 시 추가
-        );
-    };
-    
-
-    async function fileUpload(e){
-        const formData = new FormData();
-        formData.append('image',  e.target.files[0]);
-        const result = await jaxios.post('/api/member/fileupload', formData);
-        setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
-        setImgStyle({display:"block", width:"200px"});
-        setProfileImg(result.data.filename)
-    }
 
     // ✅ 회원 정보 수정 요청
     async function onSubmit(){

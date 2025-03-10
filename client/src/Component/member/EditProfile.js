@@ -96,7 +96,7 @@ const EditProfile = () => {
         setIntro(loginUser.profileMsg);
 
         if (loginUser.profileImg) {
-            setImgSrc(`http://localhost:8070/userimg/${loginUser.profileImg}`);
+            setImgSrc(`${process.env.REACT_APP_ADDRESS}/userimg/${loginUser.profileImg}`);
             setImgStyle({ display: 'block', width: '200px' });
         }
 
@@ -129,7 +129,7 @@ const EditProfile = () => {
         const formData = new FormData();
         formData.append('image', e.target.files[0]);
         const result = await jaxios.post('/api/member/fileupload', formData);
-        setImgSrc(`http://localhost:8070/userimg/${result.data.filename}`);
+        setImgSrc(`${process.env.REACT_APP_ADDRESS}/userimg/${result.data.filename}`);
         setImgStyle({ display: "block", width: "200px" });
         setProfileImg(result.data.filename);
         e.target.value = ''; // Reset input after upload
