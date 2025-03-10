@@ -78,26 +78,31 @@ const NearMember = () => {
             <h2>주변 이성 회원</h2>
             <div className="search-controls">
                 <label>
-                    최대 거리 (km):
+                    <span>최대 거리</span>
                     <input
                         type="number"
                         value={searchDistance}
                         onChange={(e) => setSearchDistance(parseInt(e.target.value, 10))}
-                    />
+                    /><span>(km)</span>
                 </label>
-                <button onClick={handleSearch}>검색</button>
+                <div className='btns'>
+                    <button onClick={handleSearch}>검색</button>
+                </div>
             </div>
             <ul className="member-list">
                 {nearbyMembers.map(member => (
                     <li key={member.memberId} className="member-item">
                         <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${member.profileImg}`} className="member-avatar" />
                         <div className="member-info">
-                            <div className="member-name">{member.nickname}</div>
-                            <div>{haversine(member.latitude,member.longitude) }km</div>
+                            <div className='member-name'>{member.nickname}</div>
+                            <div className='member-distance'>{haversine(member.latitude,member.longitude) }km</div>
                             <div className='nearMemberBtns'>
+                                <div className='btns'>
                                 <button className='nearMemberBtn' onClick={()=>like(member.memberId)}>좋아요</button>
+                                </div>
                             </div>
                         </div>
+                        
                     </li>
                 ))}
             </ul>
