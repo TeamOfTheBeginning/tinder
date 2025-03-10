@@ -258,7 +258,7 @@ public class MemberController {
         response.addCookie(cookie);  // 쿠키를 응답에 추가
 
 // 리다이렉션
-        response.sendRedirect("http://localhost:3000/savekakaoinfo");
+        response.sendRedirect("http://1.215.146.37:8380/savekakaoinfo");
 
 
 

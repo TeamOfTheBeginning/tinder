@@ -70,22 +70,35 @@ public class MemberService {
         Optional<Member> memberOptional = mr.findById(member.getMemberId());
         if (memberOptional.isPresent()) {
             Member updateMember = memberOptional.get();
-//            updateMember.setEmail(member.getEmail());
+            
+//            가입시 받을 정보
+            if(member.getEmail()!=null) {
+                updateMember.setEmail(member.getEmail());
+            }
+            if(member.getBirthDate()!=null) {
+                updateMember.setBirthDate(member.getBirthDate());
+            }
+            if(member.getAge()!=0)
+            {   updateMember.setAge(member.getAge());}
+//            if(member.getGender())
+            updateMember.setGender(member.getGender());
+            if(member.getZipnum()!=null) {
+                updateMember.setZipnum(member.getZipnum());
+            }
+            if(member.getLatitude()!=null){
+                updateMember.setLatitude(member.getLatitude());
+                updateMember.setLongitude(member.getLongitude());
+            }
+            
             updateMember.setNickname(member.getNickname());
             System.out.println("encoder.encode(member.getPwd())"+encoder.encode(member.getPwd()));
-//            updateMember.setBirthDate(member.getBirthDate());
             updateMember.setPwd(encoder.encode(member.getPwd()));
             updateMember.setPhone(member.getPhone());
             updateMember.setAddress(member.getAddress());
             updateMember.setProfileImg(member.getProfileImg());
             updateMember.setProfileMsg(member.getProfileMsg());
-//            updateMember.setAge(member.getAge());
-//            updateMember.setGender(member.getGender());
-//            updateMember.setZipnum(member.getZipnum());
-//            if(member.getLatitude()!=null){
-//                updateMember.setLatitude(member.getLatitude());
-//                updateMember.setLongitude(member.getLongitude());
-//            }
+
+
 
 
             // 변경 사항을 데이터베이스에 저장

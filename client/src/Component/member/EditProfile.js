@@ -156,7 +156,7 @@ const EditProfile = () => {
                 return alert('닉네임이 중복됩니다');
             }
             result = await jaxios.post('/api/member/update', {
-                memberId: loginUser.memberId, email, pwd, age, gender, nickname, phone, zipnum, profileMsg: intro, profileImg,
+                memberId: loginUser.memberId, email:loginUser.email, pwd, age:loginUser.age, birthDate:loginUser.birthDate,gender:loginUser.gender, nickname, phone, zipnum:loginUser.zipnum, addess:loginUser.address,profileMsg: intro, profileImg, latitude:loginUser.latitude, longitude:loginUser.longitude, memberName:loginUser.memberName,
             });
 
             // MBTI 관련 처리

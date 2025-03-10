@@ -255,7 +255,7 @@ const Savekakaoinfo = () => {
             }
             console.log({
                 memberId: claims.memberId, email:claims.email, age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
-            })            
+            })
             result = await jaxios.post('/api/member/update', {
               memberId: claims.memberId, email:email, pwd:'a',age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
             });
