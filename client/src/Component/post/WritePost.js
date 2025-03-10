@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { validateFile, uploadMultipleFiles } from '../common/FileUploadUtil';
 import jaxios from '../../util/jwtUtil';
-import '../../style/sidebar.css';
-import '../../style/posts.css';
 import '../../style/writePost.css';
 
 const WritePost = ({ closeSideViewer }) => {
@@ -109,9 +107,7 @@ async function imgUpload(e) {
     <div className='SideContainer'>
       <div className='Content'>
         <div className='postWrite'>
-          <div className='title' style={{ fontSize: '150%' }}>
-            {loginUser.nickname} 님 #today
-          </div>
+          <h2>{loginUser.nickname} 님 #today</h2>
 
           <form onSubmit={onSubmit} id='write-form'>
             <div className='field'>
@@ -119,8 +115,7 @@ async function imgUpload(e) {
               <div className='bubble-wrapper'>
                 <textarea
                   className='bubble-textarea'
-                  rows='7'
-                  placeholder='오늘의 이야기를 적어볼까요?'
+                  placeholder='오늘의 이야기 #today'
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                 ></textarea>
@@ -128,7 +123,7 @@ async function imgUpload(e) {
             </div>
 
             {/* ✅ 파일 업로드 input 태그 */}
-            <input type='file' multiple accept='image/jpg, image/jpeg, image/png, image/gif,video/mp4,video/webm,video/ogg' onChange={imgUpload} />
+            <div id='uploadfile'><input type='file' multiple accept='image/jpg, image/jpeg, image/png, image/gif,video/mp4,video/webm,video/ogg' onChange={imgUpload} /></div>
 
             {/* ✅ 이미지 및 동영상 미리보기 */}
             <div className='preview-container'>

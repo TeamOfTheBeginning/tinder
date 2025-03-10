@@ -86,6 +86,7 @@ const ChatRoomFromChatGroup = (props) => {
   return (
     <div className='chatRoomFromChatGroupContainer'>
         <div className='chatRoomFromChatGroupContents'>
+        <h2>그룹 채팅</h2>
         {
             (chatList)?(
                 chatList.map((chat, idx)=>{
