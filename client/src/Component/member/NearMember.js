@@ -92,7 +92,8 @@ const NearMember = () => {
             <ul className="member-list">
                 {nearbyMembers.map(member => (
                     <li key={member.memberId} className="member-item">
-                        <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${member.profileImg}`} className="member-avatar" />
+                        <div className="member-avatar">
+                        <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${member.profileImg}`} /></div>
                         <div className="member-info">
                             <div className='member-name'>{member.nickname}</div>
                             <div className='member-distance'>{haversine(member.latitude,member.longitude) }km</div>
