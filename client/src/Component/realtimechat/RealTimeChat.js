@@ -301,7 +301,7 @@ function ChatPage() {
       {!selectedRoom ? (
         <div className="chat-room-list">
           <h2>
-            💬 채팅방 목록
+            실시간 채팅💬
             {
             // <FaHome 
             //  className="home-icon"
@@ -313,13 +313,16 @@ function ChatPage() {
           <ul>
             {chatRooms.map((room) => (
               <li key={room.id}>
-                <button onClick={() => joinChatRoom(room)}>
+                <div className='sub-chatroom'>
+                  <button id='title' onClick={() => joinChatRoom(room)}>
                   {room.name} {room.isPrivate ? "(🌑 비공개)" : "(🌕 공개)"} - by ✏️ {room.creatorNickname}
-                </button>
-
+                  </button>
+                </div>
+                <div className='btns'>
                 {room.creatorNickname && room.creatorNickname === nickname && (
-                  <button onClick={() => deleteChatRoom(room.id)}>❌ 삭제</button>
+                  <button id='delete' onClick={() => deleteChatRoom(room.id)}>❌ 삭제</button>
                 )}
+                </div>
               </li>
             ))}
           </ul>
@@ -333,9 +336,11 @@ function ChatPage() {
             />
             <label>
               <input type="checkbox" checked={isPrivate} onChange={() => setIsPrivate(!isPrivate)} />
-              비공개 채팅방
+              비공개
             </label>
-            <button onClick={createChatRoom}>채팅방 생성</button>
+            <div className='btns'>
+              <button onClick={createChatRoom}>채팅방 생성</button>
+            </div>
           </div>
         </div>
       ) : (

@@ -14,7 +14,7 @@ import '../../style/login.css';
 import Loading from '../Loading';
 import RealtimeConnectInfo from '../realtimeconnectinfo/RealtimeConnectInfo';
 
-import { useSearchParams, useLocation } from 'react-router-dom';
+import { useSearchParams, useLocation , useParams } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 import { loginAction, setFollower, setFollowed } from '../../store/userSlice';
@@ -36,6 +36,8 @@ const API_BASE_URL = isLocalhost
 const SOCKET_URL = `${API_BASE_URL}/ws_real_chat`;
 
 const Savekakaoinfo = () => {
+
+    const {memberId} = useParams()
 
     const [userCount, setUserCount] = useState();
     const [client, setClient] = useState(null);

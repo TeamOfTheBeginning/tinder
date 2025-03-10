@@ -257,7 +257,7 @@ const EditProfile = () => {
             {loading && <LoadingSpinner />} 
 
             <div className='editForm'>
-                <div className="logo">회원정보수정</div>
+                <h2>회원정보수정</h2>
                 <div className='info-container'>
                     {/* 필수정보 */}
                     <div className='title'>필수정보</div>
@@ -313,7 +313,7 @@ const EditProfile = () => {
                         <div className='field'>
                             <label>PROFILE IMAGE</label>
                             <input type="file" accept=".jpg,.jpeg,.png,.gif" onChange={fileUpload} />
-                            <div style={imgStyle}>
+                            <div className='prevBox' style={imgStyle}>
                                 <img src={imgSrc} alt="Profile" />
                                 <button onClick={removeProfileImage}>삭제</button>
                             </div>
@@ -324,11 +324,11 @@ const EditProfile = () => {
                         </div>
                         
                         {['흡연여부(흡연:1)', '음주여부(주5회)' , '연애속도(빠름5)', '선호데이트방식(외부5)', '운동횟수(주5회)'].map((label, index) => (
-                            <div key={index} className='field' >
-                                <label>{label}: </label>
+                            <div key={index} className='field select-field' >
+                                <label>{label}</label>
                                 <span id='select-info-data'>{person[index]}</span>
-                                <input className='input'
-                                    type="range"
+                                <input className='slider'
+                                    type="range" list='select-slider'
                                     value={person[index]}
                                     onChange={(e) => setPerson((prev) => {
                                     const newArray = [...prev];

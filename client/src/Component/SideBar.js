@@ -77,7 +77,7 @@ const SideBar = (props) => {
   const handleSubMenuClick = (menu, chatGroupId) => {
     setSubMenu(menu);  // 서브메뉴 이름 변경
     console.log('chatGroupId'+chatGroupId)
-    setSubMenuData(chatGroupId);  // chatGroupId 값 설정
+    // setSubMenuData(chatGroupId);  // chatGroupId 값 설정
 
   };
 
@@ -89,21 +89,26 @@ useEffect(() => {
   subMenuRef.current = subMenu;
 }, [selectedMenu, subMenu]);
 
+const subMenuDataRef = useRef(null);
+
 const closeSideViewer = () => {
   if (selectedMenuRef.current === 'findChatGroupRandom' && subMenuRef.current === 'chatRoomFromRandom') {
-    console.log("subMenuData"+subMenuData)
-    if (subMenuData !== null) {  // subMenuData가 null이 아닌지 확인
-      props.setSbMsg("외부 클릭으로 대화방을 종료합니다");
+
+    const chatGroupId = subMenuDataRef.current;
+    console.log("chatGroupId"+chatGroupId)
+    if (chatGroupId !== null) {  // subMenuData가 null이 아닌지 확인
+      props.setSbMsg("외부 클릭이 감지되었습니다.");
       props.setOpen(true);
 
-      console.log('subMenuData' + subMenuData);
+      console.log('subMenuData' + chatGroupId);
 
       jaxios.post(`/api/chat/setChatRoomDeactivated`, null, {
-        params: { chatGroupId: subMenuData }
+        params: { chatGroupId: chatGroupId }
       })
       .then((res) => {
           if (res.data.result === 'yes') {
-              alert('채팅방이 종료됩니다.');
+            props.setSbMsg("대화방이 종료됩니다");
+            props.setOpen(true);
           } else {
               alert('오류발생.');
           }
@@ -337,7 +342,7 @@ const closeSideViewer = () => {
               <ChatRoomFromRandom chatGroupId={subMenuData} closeSideViewer={closeSideViewer} 
               setOpen={props.setOpen} setSbMsg={props.setSbMsg}
               />  // subMenuData는 'chatGroupId'로 설정한 값입니다.
-            : <FindChatGroupRandom openSubMenu={handleSubMenuClick} setSubMenuData={setSubMenuData}/>
+            : <FindChatGroupRandom openSubMenu={handleSubMenuClick} setSubMenuData={setSubMenuData} subMenuDataRef={subMenuDataRef}/>
           )}
 
           {selectedMenu === 'findChatGroup' && (

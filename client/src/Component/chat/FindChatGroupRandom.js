@@ -56,7 +56,7 @@ const FindChatGroupRandom = (props) => {
             {chatGroupList ? (
                 chatGroupList.map((chatGroup, idx) => (
                     <div key={idx} className='findRandomChatListContainer'>
-                        <ChatGroupRandom chatGroup={chatGroup} setSubMenuData={props.setSubMenuData} openSubMenu={props.openSubMenu} />
+                        <ChatGroupRandom chatGroup={chatGroup} setSubMenuData={props.setSubMenuData} openSubMenu={props.openSubMenu} subMenuDataRef={props.subMenuDataRef}/>
                     </div>
                 ))
             ) : (
