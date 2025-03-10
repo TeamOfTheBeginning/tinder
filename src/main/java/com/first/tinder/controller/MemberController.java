@@ -207,6 +207,7 @@ public class MemberController {
         }
 //        HttpSession session = request.getSession();
 //        session.setAttribute("loginUser", member.getMemberId() );
+//        response.sendRedirect("http://localhost:3000/kakaoIdLogin/"+member.getUserid());
 
 
 
