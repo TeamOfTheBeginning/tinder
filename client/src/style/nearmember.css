@@ -1,139 +1,137 @@
 .near-member-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 h2 {
   color: #333;
   text-align: center;
-  margin-bottom: 20px;
+  margin: 0;
+}
+
+.near-member-container h2{
+  padding: 25px 0;
 }
 
 .search-controls {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  width: 100%;
 }
 
 .search-controls label {
-  margin-right: 10px;
+  padding-right: 10px;
 }
 
 .search-controls input {
   width: 80px;
   padding: 5px;
+  margin: 0 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-/* .search-controls button {
-  padding: 8px 15px;
-  background-color: #ed6ea0;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.search-controls .btns {
+  width: 30%;
 }
 
-.search-controls button:hover {
-  background-color: #e5577c;
-} */
-
-.search-controls button{
-  width: 80px;
-  height: 30px;
-  background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
-  background-size: 300% 100%;
-  border-radius: 20px;
-  font-weight: 500;
-  font-size: 13px;
-  cursor: pointer;
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
+.search-controls .btns button{
+  width: 100%;
 }
 
 .search-controls button:hover{
-    background-position: 100% 0;
-    color: #fff;
+  background-position: 100% 0;
+  color: #fff;
 }
   
-  .member-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .member-item {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    transition: transform 0.2s;
-  }
-  
-  .member-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  
-  .member-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 15px;
-    object-fit: cover;
-  }
-  
-  .member-info {
-    flex-grow: 1;
-  }
-  
-  .member-name {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .member-distance {
-    font-size: 0.9em;
-    color: #666;
-  }
+.member-list {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  list-style-type: none;
+  width: 80%;
+  padding: 0;
+}
 
-  .nearMemberBtns button{
-    width: 80px;
-    height: 30px;
-    background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
-    background-size: 300% 100%;
-    border-radius: 20px;
-    font-weight: 500;
-    font-size: 13px;
-    cursor: pointer;
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
+.member-list .member-item {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  gap: 10px;
+  padding: 10px;
+  margin-bottom: 15px;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+.member-list .member-item:last-child {
+  margin-bottom: 35px;
+}
+.member-list .member-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+  
+.member-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.member-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+  
+.member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+  
+.member-name {
+  font-weight: bold;
+}
+  
+.member-distance {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.nearMemberBtns button{
+  width: 100px;
+  height: 30px;
 }
 
 .nearMemberBtns button:hover{
-    background-position: 100% 0;
-    color: #fff;
+  background-position: 100% 0;
+  color: #fff;
 }
   
-  @media (max-width: 600px) {
-    .search-controls {
-      flex-direction: column;
-      position: absolute;
-      bottom:50px
-    }
-    
-    .search-controls label, .search-controls input, .search-controls button {
-      margin: 5px 0;
-      width: 95%;
-    }
+@media (max-width: 600px) {
+  .member-list{
+    margin: 0;
   }
+  .search-controls {
+    flex-direction: column;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.8);
+    bottom: 2dvh;
+    gap: 8px;
+  }
+  .search-controls .btns {
+    width: 80%;
+  }
+  .member-list .member-item:last-child {
+    margin-bottom: 15dvh;
+  }
+}
   
