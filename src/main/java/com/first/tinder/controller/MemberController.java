@@ -298,7 +298,7 @@ public class MemberController {
     @PostMapping("/fileupload")
     public HashMap<String, Object> fileupload( @RequestParam("image") MultipartFile file ) {
         HashMap<String, Object> result = new HashMap<>();
-        String path = context.getRealPath("/userimg");
+        String path = "/home/dhk/tinder/src/main/webapp/userimg";  // 절대 경로 설정
         Calendar today = Calendar.getInstance();
         long dt = today.getTimeInMillis();
         String filename = file.getOriginalFilename();

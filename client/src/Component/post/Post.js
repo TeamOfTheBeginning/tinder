@@ -165,10 +165,10 @@ const Post = (props) => {
                             return (
                                 <div key={img.savefileName} className={`slide ${isActive ? 'active' : 'hidden'}`}>
                                     {isImage ? (
-                                        <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} alt="Post" />
+                                        <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${img.savefileName}`} alt="Post" />
                                     ) : isVideo ? (
                                         <video ref={props.videoRef} controls autoPlay muted playsInline loop>
-                                            <source src={`${process.env.REACT_APP_ADDRESS2}/userimg/${img.savefileName}`} type="video/mp4" />
+                                            <source src={`${process.env.REACT_APP_ADDRESS}/userimg/${img.savefileName}`} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
                                     ) : null}

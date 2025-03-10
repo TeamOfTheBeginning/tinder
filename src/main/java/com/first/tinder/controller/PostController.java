@@ -56,7 +56,7 @@ public class PostController {
     @PostMapping("/fileupload")
     public HashMap<String, Object> fileupload(@RequestParam("file") MultipartFile file) throws IOException, InterruptedException {
         HashMap<String, Object> result = new HashMap<>();
-        String path = context.getRealPath("/userimg");
+        String path = "/home/dhk/tinder/src/main/webapp/userimg";
 
         // ✅ 원본 파일명에서 확장자 유지
         String originalFilename = file.getOriginalFilename();

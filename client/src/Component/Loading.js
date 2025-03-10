@@ -37,7 +37,7 @@ const Loading = ({ onComplete }) => {
             {step === 1 && (
                 <div className='animation-step1'>
                     <img 
-                        src={`${process.env.REACT_APP_ADDRESS2}/userimg/${loginUser.profileImg}`}
+                        src={`${process.env.REACT_APP_ADDRESS}/userimg/${loginUser.profileImg}`}
                         alt='profileImg'
                         id='prfile-img'
                     />
@@ -45,7 +45,7 @@ const Loading = ({ onComplete }) => {
                     🎉 안녕하세요! 🎉</h1>
                     <h2>오늘 하루 설렘의 시작😊</h2>
                     <img
-                        src={`${process.env.REACT_APP_ADDRESS2}/userimg/White Square Tinder App Logo Symbol.png`}
+                        src={`${process.env.REACT_APP_ADDRESS}/userimg/White Square Tinder App Logo Symbol.png`}
                         alt='Logo'
                         id='logo-img'
                     />
