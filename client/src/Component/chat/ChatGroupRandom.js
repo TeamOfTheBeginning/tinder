@@ -33,7 +33,8 @@ const ChatGroupRandom = (props) => {
     const handleClick = () => {
         console.log("props.chatGroup.chatGroupId"+props.chatGroup.chatGroupId)
 
-        props.setSubMenuData(props.chatGroup.chatGroupId);
+        props.subMenuDataRef.current = props.chatGroup.chatGroupId;
+        // props.setSubMenuData(props.chatGroup.chatGroupId);
         props.openSubMenu('chatRoomFromRandom', props.chatGroup.chatGroupId);
     };
 
