@@ -165,7 +165,7 @@ const calculateSimilarity = () => {
   return (
     <div className='matchingMemberContainer'>
 
-     {(props.oppositeGender)?(<>
+     {(props.oppositeGender != null)?(<>
       <div className='matchingMemberImgContainer'>
         <div className='matchingMemberImg'>
           <div className='matchingMemberImgImg'>
