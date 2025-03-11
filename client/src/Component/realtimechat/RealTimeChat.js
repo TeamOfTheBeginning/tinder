@@ -8,6 +8,7 @@ import { FaHome } from "react-icons/fa";
 import "../../style/realtimechat/realtimechat.css";
 
 import jaxios from '../../util/jwtUtil';
+import useChatAutoScroll from "../../Hooks/useChatAutoScroll";
 
 const isLocalhost = window.location.hostname === "localhost" ;
 // || window.location.hostname === "127.0.0.1";
@@ -22,13 +23,13 @@ const SOCKET_URL = `${API_BASE_URL}/ws_real_chat`;
 function ChatPage() {
   const storedNickname = localStorage.getItem("nickname") || "";
   const [nickname, setNickname] = useState(storedNickname);
+  const { messageEndRef, scrollToBottom } = useChatAutoScroll();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [chatRooms, setChatRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [newRoomName, setNewRoomName] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
-  const messageEndRef = useRef(null);
   const chatMessagesRef = useRef(null);
   const stompClientRef = useRef(null);
   const subscriptionRef = useRef([]);
@@ -323,6 +324,7 @@ function ChatPage() {
                 placeholder="채팅방 이름 (1글자 이상)"
                 value={newRoomName}
                 onChange={(e) => setNewRoomName(e.target.value)}
+                onFocus={scrollToBottom}
               />
               <label>
                 <input type="checkbox" checked={isPrivate} onChange={() => setIsPrivate(!isPrivate)} />
@@ -420,6 +422,7 @@ function ChatPage() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              onFocus={scrollToBottom}
             />
               <button onClick={sendMessage}>보내기</button>
             </div>
