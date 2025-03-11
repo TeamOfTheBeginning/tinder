@@ -9,10 +9,7 @@ import com.first.tinder.security.handler.APILoginSuccessHandler;
 import com.first.tinder.security.service.CustomUserDetailsService;
 import com.first.tinder.security.util.CustomJWTException;
 import com.first.tinder.security.util.JWTUtil;
-import com.first.tinder.service.MemberInfoService;
-import com.first.tinder.service.MemberService;
-import com.first.tinder.service.OpponentMemberInfoService;
-import com.first.tinder.service.S3UploadService;
+import com.first.tinder.service.*;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.Cookie;
@@ -40,6 +37,9 @@ import java.util.*;
 @RestController
 @RequestMapping("/member")
 public class MemberController {
+
+    @Autowired
+    MemberService2 memberService2;
 
     @Autowired
     MemberService ms;
