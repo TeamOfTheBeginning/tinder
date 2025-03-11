@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import '../../style/posts.css';
@@ -135,6 +135,26 @@ const Post = (props) => {
         return date.toLocaleString('ko-KR', { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
     };
 
+    // const videoRef = useRef(null);
+    // const isMutedRef = useRef(true); // 🔥 상태 대신 ref 사용
+    // const volumeRef = useRef(0.5); // 🔥 상태 대신 ref 사용
+
+    // 사용자가 볼륨 변경 시 ref에 저장
+    const handleVolumeChange = () => {
+        if (props.videoRef.current) {
+            props.setIsMuted(props.videoRef.current.muted);
+            props.setVolume(props.videoRef.current.volume);
+        }
+    };
+
+    // // 컴포넌트가 새로 렌더링될 때 기존 볼륨 적용
+    // useEffect(() => {
+    //     if (videoRef.current) {
+    //         videoRef.current.muted = isMutedRef.current;
+    //         videoRef.current.volume = volumeRef.current;
+    //     }
+    // }, []); // 빈 배열 → 한 번만 실행 (새로 렌더링될 때만 실행됨)
+
     return (
         <div className='post'>
             <div className='writer'>
@@ -168,7 +188,19 @@ const Post = (props) => {
                                     {isImage ? (
                                         <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${img.savefileName}`} alt="Post" />
                                     ) : isVideo ? (
-                                        <video ref={props.videoRef} controls autoPlay muted playsInline loop>
+                                        <video
+                                        ref={props.videoRef}
+                                        controls
+                                        autoPlay
+                                        playsInline
+                                        loop
+                                        muted={props.isMuted} // ✅ 기존 음소거 상태 유지
+                                        onLoadStart={(e) => {
+                                            e.target.muted = props.isMuted;
+                                            e.target.volume = props.volume; // ✅ 기존 볼륨 유지
+                                        }}
+                                        onVolumeChange={handleVolumeChange} // ✅ 볼륨 변경 감지
+                                    >
                                             <source src={`${process.env.REACT_APP_ADDRESS}/userimg/${img.savefileName}`} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>

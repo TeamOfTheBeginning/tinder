@@ -172,19 +172,19 @@ const Main = () => {
 
 
     // 📌 비디오 재생/정지 함수
-    const handleVideoPlayPause = () => {
-        videoRefs.current.forEach((video) => {
-        if (!video) return;
-        const rect = video.getBoundingClientRect();
-        const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
+    // const handleVideoPlayPause = () => {
+    //     videoRefs.current.forEach((video) => {
+    //     if (!video) return;
+    //     const rect = video.getBoundingClientRect();
+    //     const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
 
-        if (isVisible) {
-            video.play();
-        } else {
-            video.pause();
-        }
-        });
-    };
+    //     if (isVisible) {
+    //         video.play();
+    //     } else {
+    //         video.pause();
+    //     }
+    //     });
+    // };
 
     async function onPageMove( page ){
         // console.log('pageable.pageNumber'+pageable.pageNumber)
@@ -278,7 +278,7 @@ const Main = () => {
         }
         
         // 📌 페이지 변경 후 비디오 상태 업데이트
-        setTimeout(handleVideoPlayPause, 500); // 스크롤 후 실행
+        // setTimeout(handleVideoPlayPause, 500); // 스크롤 후 실행
         };
 
         document.addEventListener('click', handleClick);
@@ -288,10 +288,10 @@ const Main = () => {
     }, [pageable]);
 
     // 📌 스크롤 이벤트 추가 → 스크롤 시에도 비디오 관리
-    useEffect(() => {
-        window.addEventListener('scroll', handleVideoPlayPause);
-        return () => window.removeEventListener('scroll', handleVideoPlayPause);
-    }, [pageable]);
+    // useEffect(() => {
+    //     window.addEventListener('scroll', handleVideoPlayPause);
+    //     return () => window.removeEventListener('scroll', handleVideoPlayPause);
+    // }, [pageable]);
 
     
     const [showToast1, setShowToast1] = useState(false);
@@ -539,6 +539,31 @@ const Main = () => {
     setSbMsg:setSbMsg,
 
 };
+
+
+const [isMuted, setIsMuted] = useState(true);  // 음소거 상태
+const [volume, setVolume] = useState(0.2);     // 볼륨 상태
+
+const videoRef = useRef(null); 
+
+// 비디오 볼륨 또는 음소거 상태 변경
+const handleVolumeChange = () => {
+    if (videoRef.current) {
+        setIsMuted(videoRef.current.muted);
+        setVolume(videoRef.current.volume);
+    }
+};
+
+useEffect(() => {
+    if (videoRef.current) {
+        videoRef.current.muted = isMuted;
+        videoRef.current.volume = volume;
+    }
+}, [isMuted, volume]);  // 상태가 변경될 때마다 재설정
+
+
+
+
       
     return (
         <div className='Container'>
@@ -578,7 +603,15 @@ const Main = () => {
                 {showStatistics ? (
                     <Statistics />
                 ) : (
-                    postList.length > 0 && <Post post={postList[0]} followed={followed} setFollowed={setFollowed} />
+                    postList.length > 0 && <Post 
+                    post={postList[0]} followed={followed} setFollowed={setFollowed} 
+                    videoRef={videoRef}
+                    isMuted={isMuted}
+                    volume={volume}
+                    setIsMuted={setIsMuted}
+                    setVolume={setVolume}                   
+                    
+                    />
                 )}
             </div>
 
