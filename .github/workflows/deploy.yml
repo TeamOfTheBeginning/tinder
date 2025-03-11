@@ -19,6 +19,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }} # EC2 주소
           username: ${{ secrets.EC2_USERNAME }} # EC2 접속 username (ubuntu)
           key: ${{ secrets.EC2_PRIVATE_KEY }} # EC2 접속 key 파일의 내용
+          port: 8380  # SSH 포트 변경
           envs: APPLICATION_PROPERTIES
           script_stop: true # 하나라도 실패하면 전체 실패 처리
           timeout: 200m          # 전체 워크플로우 실행 시간 (200분)
