@@ -27,6 +27,7 @@ jobs:
           script: |
 
             echo "=== Backend 배포 시작 ==="
+            git config --global --add safe.directory /home/dhk/tinder
             cd /home/dhk/tinder
             rm -rf src/main/resources/application.yml
             git pull origin DH
