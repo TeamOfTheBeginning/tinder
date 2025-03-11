@@ -52,18 +52,18 @@
 /* 입장 버튼 */
 /* 랜덤쪽지 버튼의 부모 컨테이너 */
 .chatGroupBtns {
-    display: flex; /* 내부 요소를 정렬 */
-    justify-content: center; /* 중앙 정렬 */
-    align-items: center; /* 세로 중앙 정렬 */
-    width: 100%; /* 부모 컨테이너의 너비를 100%로 설정 */
-    margin-top: 10px; /* 위쪽 여백 추가 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
 }
 
 /* 랜덤쪽지 버튼 */
 .chatGroupbtn {
-    width: 100%; /* 버튼의 너비를 부모 컨테이너에 맞춤 */
-    max-width: 300px; /* 최대 너비를 제한 (선택 사항) */
-    height: 40px; /* 버튼 높이 설정 */
+    width: 100%;
+    max-width: 300px;
+    height: 40px;
     background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
     background-size: 300% 100%;
     border-radius: 20px;
@@ -85,37 +85,30 @@
 
     /* 입장버튼의 부모 컨테이너 */
     .chatGroupBtns {
-       
-
-
-        display: flex; /* 내부 요소를 정렬 */
-        justify-content: center; /* 중앙 정렬 */
-        align-items: center; /* 세로 중앙 정렬 */
-        width: 100%; /* 부모 컨테이너의 너비를 100%로 설정 */
-        margin-top: 10px; /* 위쪽 여백 추가 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 10px;
     }
     
     .chatGroupBtns .chatGroupBtn {       
-
-        width: 100%; /* 부모(.chatGroupBtns)에 맞춰 꽉 차게 */
-        display: flex; /* 내부 버튼을 정렬 */
-        justify-content: center; /* 버튼을 중앙 정렬 */
-        align-items: center; /* 세로 중앙 정렬 */
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-    
+
     .chatGroupBtns button {
-        width: 100%; /* 버튼을 전체 너비로 설정 */
-        max-width: 100%; /* 100% 이상으로 커지지 않도록 제한 */
-        display: block; /* 인라인 요소 문제 방지 */
+        width: 100%;
+        max-width: 100%;
+        display: block;
     }
 
     .chatGroupHeader .chatGroupBtn{
-
         position:absolute;
-        bottom:70px;
-
-        width: 80%; /* 버튼을 전체 너비로 설정 */
-        max-width: 80%; /* 100% 이상으로 커지지 않도록 제한 */
-
+        bottom:30px;
+        width: 80%;
+        max-width: 80%;
     }
 }

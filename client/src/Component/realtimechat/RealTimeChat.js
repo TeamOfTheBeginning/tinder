@@ -8,6 +8,7 @@ import { FaHome } from "react-icons/fa";
 import "../../style/realtimechat/realtimechat.css";
 
 import jaxios from '../../util/jwtUtil';
+import useChatAutoScroll from "../../Hooks/useChatAutoScroll";
 
 //웹소켓 경로 관련
 const isLocalhost = window.location.hostname === 'localhost' ;
@@ -23,19 +24,20 @@ const SOCKET_URL = `${API_BASE_URL}/ws_real_chat`;
 function ChatPage() {
   const storedNickname = localStorage.getItem("nickname") || "";
   const [nickname, setNickname] = useState(storedNickname);
+  const { messageEndRef, scrollToBottom } = useChatAutoScroll();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [chatRooms, setChatRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [newRoomName, setNewRoomName] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
-  const messageEndRef = useRef(null);
   const chatMessagesRef = useRef(null);
   const stompClientRef = useRef(null);
   const subscriptionRef = useRef([]);
   const navigate = useNavigate();
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [userList, setUserList] = useState([]);
+  const [userListVisible, setUserListVisible] = useState(false);
 
   const navigateWithinSideViewer = (path) => {
     navigate(path); // 경로 이동만 수행하고 SideViewer 상태는 유지
@@ -228,7 +230,12 @@ function ChatPage() {
       // console.error("🚨 사용자 목록 JSON 파싱 오류:", error, data);
     }
   };
-  
+
+  // userList 열고 닫기
+  const toggleUserList = () => {
+    setUserListVisible(prev => !prev);
+  };
+
   const leaveRoom = () => {
     if (subscriptionRef.current.length > 0) {
       subscriptionRef.current.forEach((sub) => sub.unsubscribe()); // ✅ 모든 구독 해제
@@ -318,6 +325,7 @@ function ChatPage() {
                 placeholder="채팅방 이름 (1글자 이상)"
                 value={newRoomName}
                 onChange={(e) => setNewRoomName(e.target.value)}
+                onFocus={scrollToBottom}
               />
               <label>
                 <input type="checkbox" checked={isPrivate} onChange={() => setIsPrivate(!isPrivate)} />
@@ -333,7 +341,7 @@ function ChatPage() {
             {chatRooms.map((room) => (
               <li key={room.id}>
                 <div className='sub-chatroom' onClick={() => joinChatRoom(room)}>
-                  <div id='title'>
+                  <div id='title' title={room.name}>
                   {room.name}
                   </div>
                   <div id='host'>{room.isPrivate ? "🌑 비공개" : "🌕 공개"} | ✏️ {room.creatorNickname}</div>
@@ -355,17 +363,19 @@ function ChatPage() {
       ) : (
         <div className="chat-room">
           <div className="chat-room-header">
-            <div className='title'><h1>{selectedRoom.name}</h1></div>
-            <div>
-              <span>😊 접속자: {userList.length}명</span>
-              <div className="user-list">
+            <div className='title' title={selectedRoom.name}><h1>{selectedRoom.name}</h1></div>
+            <div id='chat-user'>
+              <span onClick={toggleUserList}>😊 접속중: {userList.length}명 {userListVisible ? "▲" : "▼"}</span>
+              {userListVisible && (
+              <div id="user-list">
                 {userList.length > 0 ? userList.map((user, index) => (
-                  <span key={index} className="user-nickname">{user}</span>
-                )) : <span className="no-user">현재 접속자가 없습니다.</span>}
+                  <span key={index} id="user-nickname">{user}</span>
+                )) : <span id="no-user">현재 접속자가 없습니다.</span>}
               </div>
+              )}
             </div>
-            <div>
-            <button className="leave-button" onClick={leaveRoom}>나가기</button>
+            <div className='btns'>
+              <button id="leave-button" onClick={leaveRoom}>나가기</button>
             </div>
           </div>
 
@@ -388,13 +398,16 @@ function ChatPage() {
                 : msg.profileImg.startsWith("/userimg")
                 ? `${process.env.REACT_APP_ADDRESS}${msg.profileImg}`
                 : `${process.env.REACT_APP_ADDRESS}/userimg/${msg.profileImg}`
-                : `${process.env.REACT_APP_ADDRESS}/userimg/default.jpg`; // 기본 이미지 적용                   
+                : `${process.env.REACT_APP_ADDRESS}/userimg/default.jpg`; // 기본 이미지 적용
   
               return (
                 <div key={index} className={`message ${msg.nickname === nickname ? "self" : "other"}`}>
-                  {msg.nickname !== nickname && <img src={imageUrl} alt="프로필" className="profile-img" />}  {/* self일 때는 프로필 이미지를 숨깁니다 */}
-                  {msg.nickname !== nickname && <strong>{msg.nickname}: </strong>}  {/* self일 때 닉네임을 숨깁니다 */}
+                  <div className='chat-userinfo'>{msg.nickname !== nickname && <img src={imageUrl} alt="프로필" className="profile-img" />}
+                  {msg.nickname !== nickname && <strong>{msg.nickname} </strong>}
+                  </div>
+                  <div className='chatContent'>
                     {msg.content}
+                  </div>
                 </div>
                 );
                 
@@ -402,15 +415,18 @@ function ChatPage() {
             <div ref={messageEndRef} />
           </div>
   
-          <div className="chat-input">
+          <div className="chatRoomInput">
+            <div className='inputBox'>
             <input
               type="text"
               placeholder="메시지를 입력하세요..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              onFocus={scrollToBottom}
             />
-            <button onClick={sendMessage}>보내기</button>
+              <button onClick={sendMessage}>보내기</button>
+            </div>
           </div>
         </div>
       )}

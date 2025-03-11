@@ -8,6 +8,7 @@ import '../../style/message/chatroomfromchatgroup.css';
 import LoadingSpinner from "../LoadingSpinner";
 
 import jaxios from '../../util/jwtUtil';
+import useChatAutoScroll from "../../Hooks/useChatAutoScroll";
 
 const ChatRoomFromMatch = (props) => {
     // const { memberId } = useParams();
@@ -19,6 +20,7 @@ const ChatRoomFromMatch = (props) => {
     const navigate = useNavigate();
 
     const [chatList, setChatList] = useState();
+    const { messageEndRef, scrollToBottom } = useChatAutoScroll();
     const [message, setMessage] = useState();
     const [chatGroupId, setChatGroupId] = useState();
     
@@ -133,6 +135,7 @@ const ChatRoomFromMatch = (props) => {
                     placeholder='텍스트를 입력하세요'
                     onChange={handleInputChange}
                     value={message}
+                    onFocus={scrollToBottom}
                 /> <button onClick={()=>sendMessage()}>보내기</button>
             </div>
         </div>

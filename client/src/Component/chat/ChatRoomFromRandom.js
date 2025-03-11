@@ -9,6 +9,7 @@ import '../../style/message/chatroomfromchatgroup.css';
 
 import { setCookie1, getCookie1 } from '../../util/cookieUtil2';
 import jaxios from '../../util/jwtUtil';
+import useChatAutoScroll from "../../Hooks/useChatAutoScroll";
 
 
 const ChatRoomFromRandom = (props) => {
@@ -33,6 +34,7 @@ const ChatRoomFromRandom = (props) => {
     const [chatWaiting, setChatWaiting] = useState(false);
     const [tempWaiting, setTempWaiting] = useState(false);
     
+    const { messageEndRef, scrollToBottom } = useChatAutoScroll();
     const [message, setMessage] = useState();
     // const [message2, setMessage2] = useState();
 
@@ -499,6 +501,7 @@ const selectAnswer = (chatGroupQuizId, answer) => {
                 placeholder='텍스트를 입력하세요'
                 onChange={handleInputChange}
                 value={message}
+                onFocus={scrollToBottom}
             /> <div className='btns'><button onClick={()=>sendMessage()}>보내기</button></div>
             </div>
             {/* <div className='chatRoomEvaluateTemp'>
