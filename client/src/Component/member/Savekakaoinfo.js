@@ -121,6 +121,7 @@ const Savekakaoinfo = () => {
                     result.data.latitude !== null && result.data.latitude !== undefined &&
                     result.data.longitude !== null && result.data.longitude !== undefined) {
 
+                    setShowModal(true)
 
                     const res = await jaxios.get('/api/member/getLoginUser', {
                         params: { memberId: result.data.memberId }
