@@ -164,6 +164,8 @@ const calculateSimilarity = () => {
     
   return (
     <div className='matchingMemberContainer'>
+
+     {(props.oppositeGender)?(<>
       <div className='matchingMemberImgContainer'>
         <div className='matchingMemberImg'>
           <div className='matchingMemberImgImg'>
@@ -240,6 +242,7 @@ const calculateSimilarity = () => {
       <div className='matchingMemberBtns'>
         <button className='matchBtn' onClick={()=>like()}>좋아요</button>
       </div>
+      </>):("죄송합니다. 유사한 나이대역의 이성 회원을 확보하지 못했습니다.")}
     </div>
 
 

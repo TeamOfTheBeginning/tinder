@@ -278,6 +278,7 @@ const Login = () => {
                                         name='email'
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
+                                        onKeyDown={(e) => e.key === 'Enter' && onLoginLocal()}
                                         placeholder='E-MAIL'
                                     />
                                 </div>
@@ -288,6 +289,7 @@ const Login = () => {
                                         value={pwd}
                                         name='password'
                                         onChange={(e) => setPwd(e.target.value)}
+                                        onKeyDown={(e) => e.key === 'Enter' && onLoginLocal()}
                                         placeholder='PASSWORD'
                                     />
                                 </div>
