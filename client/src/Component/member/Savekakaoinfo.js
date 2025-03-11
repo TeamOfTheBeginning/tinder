@@ -37,7 +37,10 @@ const SOCKET_URL = `${API_BASE_URL}/ws_real_chat`;
 
 const Savekakaoinfo = () => {
 
-    const {kakaoEmail} = useParams()
+    const { kakaoEmail } = useParams();
+    const decodedEmail = decodeURIComponent(kakaoEmail); // URL 디코딩
+
+    alert("decodedEmail"+decodedEmail)
 
     const [userCount, setUserCount] = useState();
     const [client, setClient] = useState(null);
@@ -98,7 +101,7 @@ const Savekakaoinfo = () => {
         const login = async () => {
             try {
                 const result = await axios.post('/api/member/login', null, {
-                    params: { username: kakaoEmail, password: 'a' }
+                    params: { username: decodedEmail, password: 'a' }
                 });
 
                 alert(result.data)

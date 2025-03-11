@@ -28,6 +28,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -207,8 +208,11 @@ public class MemberController {
         }
 //        HttpSession session = request.getSession();
 //        session.setAttribute("loginUser", member.getMemberId() );
-        response.sendRedirect("http://1.215.146.37:8380/savekakaoinfo/"+member.getEmail());
+//        response.sendRedirect("http://1.215.146.37:8380/savekakaoinfo/"+member.getEmail());
 
+        String email = member.getEmail();
+        String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8);
+        response.sendRedirect("http://your-react-app.com/savekakaoinfo/" + encodedEmail);
 
 
 //        String data1 = member.getEmail();
