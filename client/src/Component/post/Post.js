@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import '../../style/posts.css';
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";

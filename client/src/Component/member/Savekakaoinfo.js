@@ -37,7 +37,7 @@ const SOCKET_URL = `${API_BASE_URL}/ws_real_chat`;
 
 const Savekakaoinfo = () => {
 
-    const {memberId} = useParams()
+    const {kakaoEmail} = useParams()
 
     const [userCount, setUserCount] = useState();
     const [client, setClient] = useState(null);
@@ -95,79 +95,54 @@ const Savekakaoinfo = () => {
     const [claims, setClaims] = useState(null);
 
     useEffect(() => {
-        // 'claims' 쿠키가 존재하면 상태에 저장
-        if (cookies.claims) {
-        let claimsObj;
-    
-        // 쿠키 값이 문자열이라면 JSON 파싱
-        if (typeof cookies.claims === 'string') {
+        const login = async () => {
             try {
-            claimsObj = JSON.parse(decodeURIComponent(cookies.claims));  // 쿠키 데이터 디코딩 및 파싱
-            console.log(claimsObj);  // claims 객체를 출력
+                const result = await axios.post('/api/member/login', null, {
+                    params: { username: kakaoEmail, password: 'a' }
+                });
+
+                alert(result.data)
+                alert(JSON.stringify(result.data))
+
+                setCookie1('user', JSON.stringify(result.data), 1);
+                dispatch(loginAction(result.data));
+
+                let accessToken = result.data.accessToken;
+                let refreshToken = result.data.refreshToken;
+
+                const res = await axios.get('/api/member/getLoginUser', {
+                    params: { memberId: result.data.memberId }
+                });
+
+                res.data.loginUser.accessToken = accessToken;
+                res.data.loginUser.refreshToken = refreshToken;
+
+                setCookie1('user', JSON.stringify(res.data.loginUser), 1);
+                dispatch(loginAction(res.data.loginUser));
+
+                const lUser = res.data.loginUser;
+                lUser['follower'] = res.data.follower;
+                lUser['followed'] = res.data.followed;
+
+                dispatch(setFollower(res.data.follower));
+                dispatch(setFollowed(res.data.followed));
+
+                cookies.set('follower', JSON.stringify(res.data.follower), { path: '/' });
+                cookies.set('followed', JSON.stringify(res.data.followed), { path: '/' });
+
+                handleJoin(result.data.memberId);
+                localStorage.setItem('nickname', result.data.nickname);
+
+                // 로그인 성공 상태 활성화
+                setIsLoginSuccess(true);
+
             } catch (error) {
-            console.error("JSON 파싱 오류:", error);
-            return;
+                console.error("로그인 오류:", error);
             }
-        } else {
-            // console.log("이미 객체")
-            // 이미 객체라면 바로 사용
-            claimsObj = cookies.claims;
-        }
-        setClaims(claimsObj);  // 상태에 claims 저장
+        };
 
-        // alert("사용자 정보를 입력해주세요(최초 1회)")
-
-        setCookie1('user', JSON.stringify(claimsObj), 1);
-        dispatch(loginAction(claimsObj));
-
-        let accessToken = claimsObj.accessToken;
-        let refreshToken = claimsObj.refreshToken;
-
-        // console.log("accessToken"+accessToken)
-        // console.log("claimsObj.nickname"+claimsObj.nickname)
-        
-        if(claimsObj.nickname&&claimsObj.zipnum&&claimsObj.birthDate){
-            setShowModal(true);  // ✅ 배경을 어둡게 만드는 모달 표시
-
-            // alert("로그인 완료. 메인페이지로 이동합니다.")      
-                
-            console.log("claimsObj.memberId"+claimsObj.memberId)
-            jaxios.get(`/api/member/getLoginUser`, { params: { memberId:claimsObj.memberId } })
-            .then((result) => {
-
-            // console.log("result.data.loginUser"+result.data.loginUser)
-            // console.log("accessToken2"+accessToken)
-
-            result.data.loginUser.accessToken = accessToken;
-            result.data.loginUser.refreshToken = refreshToken;
-
-            setCookie1('user', JSON.stringify(result.data.loginUser) , 1)
-            dispatch( loginAction( result.data.loginUser ) )
-            
-            const lUser = result.data.loginUser;
-            lUser['follower'] = result.data.follower;
-            lUser['followed'] = result.data.followed;
-        
-            dispatch(setFollower(result.data.follower));
-            dispatch(setFollowed(result.data.followed));
-        
-            setCookie('follower', JSON.stringify(result.data.follower), { path: '/' });
-            setCookie('followed', JSON.stringify(result.data.followed), { path: '/' });
-            
-            localStorage.setItem('nickname', result.data.loginUser.nickname);  
-                
-            handleJoin(claimsObj.memberId);
-
-            setIsLoginSuccess(true);
-            
-            }).catch((err) => { console.error(err) });  
-        }
-
-        
-        } else {
-        console.log("쿠키에 claims 데이터가 없습니다.");
-        }
-    }, [client]);  // 쿠키가 변경될 때마다 effect 실행
+        login();
+    }, [client]);
 
     const [email, setEmail] = useState('')
     // const [pwd, setPwd] = useState('')
@@ -264,7 +239,7 @@ const Savekakaoinfo = () => {
 
             alert("가입완료.")      
 
-            jaxios.get(`/api/member/getLoginUser`, { params: { memberId:claims.memberId } })
+            axios.get(`/api/member/getLoginUser`, { params: { memberId:claims.memberId } })
             .then((result) => {
 
             let accessToken=claims.accessToken

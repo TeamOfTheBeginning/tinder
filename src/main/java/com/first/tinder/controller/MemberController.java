@@ -38,8 +38,8 @@ import java.util.*;
 @RequestMapping("/member")
 public class MemberController {
 
-    @Autowired
-    MemberService2 memberService2;
+//    @Autowired
+//    MemberService2 memberService2;
 
     @Autowired
     MemberService ms;
@@ -207,30 +207,30 @@ public class MemberController {
         }
 //        HttpSession session = request.getSession();
 //        session.setAttribute("loginUser", member.getMemberId() );
-//        response.sendRedirect("http://localhost:3000/kakaoIdLogin/"+member.getUserid());
+        response.sendRedirect("http://1.215.146.37:8380/kakaoIdLogin/"+member.getEmail());
 
 
 
-        String data1 = member.getEmail();
+//        String data1 = member.getEmail();
 //        String data2 = "a";
 
-        BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
+//        BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
 //        System.out.println(pe.decode("a"));
 
 
 //MemberDto
-        UserDetails userDetails =suds.loadUserByUsername(data1);
+//        UserDetails userDetails =suds.loadUserByUsername(data1);
+//
+//        MemberDTO memberDTO = (MemberDTO) userDetails;
+//
+//        Map<String, Object> claims = memberDTO.getClaims();
 
-        MemberDTO memberDTO = (MemberDTO) userDetails;
-
-        Map<String, Object> claims = memberDTO.getClaims();
-
-        // 사용장정보가 들어있는 Map 자료(claims)를 이용하여 토큰을 생성
-        String accessToken = JWTUtil.generateToken(claims, 1);
-        String refreshToken = JWTUtil.generateToken(claims, 60*24);
-
-        claims.put("accessToken", accessToken);
-        claims.put("refreshToken", refreshToken);
+//        // 사용장정보가 들어있는 Map 자료(claims)를 이용하여 토큰을 생성
+//        String accessToken = JWTUtil.generateToken(claims, 1);
+//        String refreshToken = JWTUtil.generateToken(claims, 60*24);
+//
+//        claims.put("accessToken", accessToken);
+//        claims.put("refreshToken", refreshToken);
 //        System.out.println("userDetails"+userDetails);
 //        System.out.println("userDetails.getAuthorities()"+userDetails.getAuthorities());
 //        System.out.println("userDetails.getAuthorities().getClass()"+userDetails.getAuthorities().getClass());
@@ -251,15 +251,15 @@ public class MemberController {
 //        response.sendRedirect("http://localhost:3000/savekakaoinfo" );
 
         // 카카오 로그인 후, 클라이언트에 데이터를 쿠키로 설정
-        String jsonStr = gson.toJson(claims);
-        Cookie cookie = new Cookie("claims", URLEncoder.encode(jsonStr, "UTF-8"));
-//        cookie.setHttpOnly(true);  // 보안을 위해 HttpOnly 속성 추가
-        cookie.setMaxAge(60 * 60); // 쿠키 유효 시간 1시간
-        cookie.setPath("/");  // 애플리케이션 전체에서 접근 가능하도록 설정
-        response.addCookie(cookie);  // 쿠키를 응답에 추가
-
-// 리다이렉션
-        response.sendRedirect("http://1.215.146.37:8380/savekakaoinfo");
+//        String jsonStr = gson.toJson(claims);
+//        Cookie cookie = new Cookie("claims", URLEncoder.encode(jsonStr, "UTF-8"));
+////        cookie.setHttpOnly(true);  // 보안을 위해 HttpOnly 속성 추가
+//        cookie.setMaxAge(60 * 60); // 쿠키 유효 시간 1시간
+//        cookie.setPath("/");  // 애플리케이션 전체에서 접근 가능하도록 설정
+//        response.addCookie(cookie);  // 쿠키를 응답에 추가
+//
+//// 리다이렉션
+//        response.sendRedirect("http://1.215.146.37:8380/savekakaoinfo");
 
 
 

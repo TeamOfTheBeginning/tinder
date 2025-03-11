@@ -80,7 +80,7 @@ const ToastPopupPost = (props) => {
         if( window.confirm(`${props.postOne.member.nickname} 님을 팔로우 하시겠습니까?`) ){
             let result = await jaxios.post('/api/member/follow', { follower:loginUser.memberId,  followed:memberId });
 
-            result = await jaxios.get('/api/member/getLoginUser')
+            // result = await axios.get('/api/member/getLoginUser')
             // props.setFollower( [...result.data.follower] ) // 현재 운영중인  props.followings 변수 갱신
             // dispatch( setFollower(result.data.follower) )   // 리듀스 갱신
             // loginUser['followings'] = result.data.followings   // 현재 loginUser변수 갱신. 현재 화면에서는 갱신의 필요가 없음
