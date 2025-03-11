@@ -354,14 +354,18 @@ function ChatPage() {
       ) : (
         <div className="chat-room">
           <div className="chat-room-header">
-            <h1>{selectedRoom.name}</h1>
-            <span>😊 접속자: {userList.length}명</span>
-            <div className="user-list">
-              {userList.length > 0 ? userList.map((user, index) => (
-                <span key={index} className="user-nickname">{user}</span>
-              )) : <span className="no-user">현재 접속자가 없습니다.</span>}
+            <div className='title'><h1>{selectedRoom.name}</h1></div>
+            <div>
+              <span>😊 접속자: {userList.length}명</span>
+              <div className="user-list">
+                {userList.length > 0 ? userList.map((user, index) => (
+                  <span key={index} className="user-nickname">{user}</span>
+                )) : <span className="no-user">현재 접속자가 없습니다.</span>}
+              </div>
             </div>
+            <div>
             <button className="leave-button" onClick={leaveRoom}>나가기</button>
+            </div>
           </div>
 
           <div className="chat-messages" ref={chatMessagesRef} onScroll={handleScroll}>
@@ -387,10 +391,12 @@ function ChatPage() {
   
               return (
                 <div key={index} className={`message ${msg.nickname === nickname ? "self" : "other"}`}>
-                  <img src={imageUrl} alt="프로필" className="profile-img" />
-                  <strong>{msg.nickname}: </strong> {msg.content}
+                  {msg.nickname !== nickname && <img src={imageUrl} alt="프로필" className="profile-img" />}  {/* self일 때는 프로필 이미지를 숨깁니다 */}
+                  {msg.nickname !== nickname && <strong>{msg.nickname}: </strong>}  {/* self일 때 닉네임을 숨깁니다 */}
+                    {msg.content}
                 </div>
-              );
+                );
+                
             })}
             <div ref={messageEndRef} />
           </div>
@@ -403,7 +409,7 @@ function ChatPage() {
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             />
-            <button onClick={sendMessage}>전송</button>
+            <button onClick={sendMessage}>보내기</button>
           </div>
         </div>
       )}
