@@ -38,8 +38,8 @@ import java.util.*;
 @RequestMapping("/member")
 public class MemberController {
 
-//    @Autowired
-//    MemberService2 memberService2;
+    @Autowired
+    MemberService2 memberService2;
 
     @Autowired
     MemberService ms;
