@@ -15,7 +15,7 @@ jobs:
         env:
           APPLICATION_PROPERTIES: ${{ secrets.APPLICATION_YML }}
 
-        with: 
+        with:
           host: ${{ secrets.EC2_HOST }} # EC2 주소
           username: ${{ secrets.EC2_USERNAME }} # EC2 접속 username (ubuntu)
           key: ${{ secrets.EC2_PRIVATE_KEY }} # EC2 접속 key 파일의 내용
@@ -27,7 +27,7 @@ jobs:
           script: |
 
             echo "=== Backend 배포 시작 ==="
-            cd /home/ubuntu/tinder
+            cd /home/dhk/tinder
             rm -rf src/main/resources/application.yml
             git pull origin DH
             echo "$APPLICATION_PROPERTIES" > src/main/resources/application.yml
@@ -38,7 +38,7 @@ jobs:
 
 
             echo "=== Frontend 배포 시작 ==="
-            cd /home/ubuntu/tinder/client
+            cd /home/dhk/tinder/client
             git pull origin DH
             sudo rm -rf node_modules
             export NODE_OPTIONS="--max-old-space-size=3072"
