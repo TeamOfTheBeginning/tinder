@@ -40,10 +40,12 @@ const Savekakaoinfo = () => {
     const { kakaoEmail } = useParams();
     const decodedEmail = decodeURIComponent(kakaoEmail); // URL 디코딩
 
-    alert("decodedEmail"+decodedEmail)
+    // alert("decodedEmail"+decodedEmail)
 
     const [userCount, setUserCount] = useState();
     const [client, setClient] = useState(null);
+
+    const cookies = new Cookies()
         
     
     useEffect(() => {
@@ -94,18 +96,20 @@ const Savekakaoinfo = () => {
     const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false);
 
-    const [cookies, setCookie, removeCookie] = useCookies(['claims']);  // 쿠키 이름 배열로 전달
-    const [claims, setClaims] = useState(null);
+    // const [cookies, setCookie, removeCookie] = useCookies();  // 쿠키 이름 배열로 전달
+    const [claims, setClaims] = useState();
 
     useEffect(() => {
         const login = async () => {
             try {
                 const result = await axios.post('/api/member/loginlocal', null, {
-                    params: { username: decodedEmail, password: 'a' }
+                    params: { username: decodedEmail, password: 'kakao' }
                 });
 
-                alert(result.data)
-                alert(JSON.stringify(result.data))
+                setClaims(result.data);
+                // alert(result.data)
+                // alert(JSON.stringify(result.data))
+                console.log(JSON.stringify(result.data))
 
                 setCookie1('user', JSON.stringify(result.data), 1);
                 dispatch(loginAction(result.data));
@@ -113,31 +117,42 @@ const Savekakaoinfo = () => {
                 let accessToken = result.data.accessToken;
                 let refreshToken = result.data.refreshToken;
 
-                const res = await jaxios.get('/api/member/getLoginUser', {
-                    params: { memberId: result.data.memberId }
-                });
+                if (result.data.zipnum !== null && result.data.zipnum !== undefined &&
+                    result.data.latitude !== null && result.data.latitude !== undefined &&
+                    result.data.longitude !== null && result.data.longitude !== undefined) {
 
-                res.data.loginUser.accessToken = accessToken;
-                res.data.loginUser.refreshToken = refreshToken;
 
-                setCookie1('user', JSON.stringify(res.data.loginUser), 1);
-                dispatch(loginAction(res.data.loginUser));
+                    const res = await jaxios.get('/api/member/getLoginUser', {
+                        params: { memberId: result.data.memberId }
+                    });
+    
+                    res.data.loginUser.accessToken = accessToken;
+                    res.data.loginUser.refreshToken = refreshToken;
+    
+                    setCookie1('user', JSON.stringify(res.data.loginUser), 1);
+                    dispatch(loginAction(res.data.loginUser));
+    
+                    const lUser = res.data.loginUser;
+                    lUser['follower'] = res.data.follower;
+                    lUser['followed'] = res.data.followed;
+    
+                    dispatch(setFollower(res.data.follower));
+                    dispatch(setFollowed(res.data.followed));
+    
+                    cookies.set('follower', JSON.stringify(res.data.follower), { path: '/' });
+                    cookies.set('followed', JSON.stringify(res.data.followed), { path: '/' });
+    
+                    console.log("res.data.loginUser "+JSON.stringify(res.data.loginUser))
+                    console.log("res.data.loginUser.memberId "+res.data.loginUser.memberId)
+                    handleJoin(res.data.loginUser.memberId);
+                    localStorage.setItem('nickname', result.data.nickname);
+    
+                    // 로그인 성공 상태 활성화
+                    setIsLoginSuccess(true);
 
-                const lUser = res.data.loginUser;
-                lUser['follower'] = res.data.follower;
-                lUser['followed'] = res.data.followed;
+                }
 
-                dispatch(setFollower(res.data.follower));
-                dispatch(setFollowed(res.data.followed));
-
-                cookies.set('follower', JSON.stringify(res.data.follower), { path: '/' });
-                cookies.set('followed', JSON.stringify(res.data.followed), { path: '/' });
-
-                handleJoin(result.data.memberId);
-                localStorage.setItem('nickname', result.data.nickname);
-
-                // 로그인 성공 상태 활성화
-                setIsLoginSuccess(true);
+                
 
             } catch (error) {
                 console.error("로그인 오류:", error);
@@ -145,7 +160,7 @@ const Savekakaoinfo = () => {
         };
 
         login();
-    }, [kakaoEmail]);
+    }, [client]);
 
     const [email, setEmail] = useState('')
     // const [pwd, setPwd] = useState('')
@@ -234,15 +249,15 @@ const Savekakaoinfo = () => {
                 return alert('닉네임이 중복됩니다');
             }
             console.log({
-                memberId: claims.memberId, email:claims.email, age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
+                memberId: claims.memberId, email:email, age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
             })
             result = await jaxios.post('/api/member/update', {
-              memberId: claims.memberId, email:email, pwd:'a',age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
+              memberId: claims.memberId, email:email, pwd:'kakao',age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
             });
 
             alert("가입완료.")      
 
-            axios.get(`/api/member/getLoginUser`, { params: { memberId:claims.memberId } })
+            jaxios.get(`/api/member/getLoginUser`, { params: { memberId:claims.memberId } })
             .then((result) => {
 
             let accessToken=claims.accessToken
@@ -263,8 +278,8 @@ const Savekakaoinfo = () => {
             dispatch(setFollower(result.data.follower));
             dispatch(setFollowed(result.data.followed));
         
-            setCookie('follower', JSON.stringify(result.data.follower), { path: '/' });
-            setCookie('followed', JSON.stringify(result.data.followed), { path: '/' });
+            cookies.set('follower', JSON.stringify( result.data.follower ) , {path:'/', })
+            cookies.set('followed', JSON.stringify( result.data.followed ) , {path:'/', }) 
 
             
             handleJoin(result.data.loginUser.memberId);
