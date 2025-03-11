@@ -77,7 +77,7 @@ const SideBar = (props) => {
   const handleSubMenuClick = (menu, chatGroupId) => {
     setSubMenu(menu);  // 서브메뉴 이름 변경
     console.log('chatGroupId'+chatGroupId)
-    // setSubMenuData(chatGroupId);  // chatGroupId 값 설정
+    setSubMenuData(chatGroupId);  // chatGroupId 값 설정
 
   };
 
