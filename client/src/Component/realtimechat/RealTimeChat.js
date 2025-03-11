@@ -338,31 +338,18 @@ function ChatPage() {
                   <div id='host'>{room.isPrivate ? "🌑 비공개" : "🌕 공개"} | ✏️ {room.creatorNickname}</div>
                   <div className='btns'>
                   {room.creatorNickname && room.creatorNickname === nickname && (
-                    <button onClick={() => deleteChatRoom(room.id)}>❌ 삭제</button>
+                    <button onClick={(e) => { 
+                      e.stopPropagation();  // 🔥 이벤트 버블링 방지 
+                      deleteChatRoom(room.id);
+                    }}>
+                      ❌ 삭제
+                    </button>
                   )}
                   </div>
                 </div>
               </li>
             ))}
           </ul>
-          {/* <div className="create-chat-room">
-            <h3>새 채팅방 만들기</h3>
-            <div className='createChatRoom-header'>
-              <input
-                type="text"
-                placeholder="채팅방 이름 입력"
-                value={newRoomName}
-                onChange={(e) => setNewRoomName(e.target.value)}
-              />
-              <label>
-                <input type="checkbox" checked={isPrivate} onChange={() => setIsPrivate(!isPrivate)} />
-                비공개
-              </label>
-            </div>
-            <div className='btns'>
-              <button onClick={createChatRoom}>채팅방 생성</button>
-            </div>
-          </div> */}
         </div>
       ) : (
         <div className="chat-room">
