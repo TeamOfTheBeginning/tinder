@@ -40,7 +40,7 @@
   margin: 0;
 }
 .chat-room-list li {
-  width: 85%;
+  width: 83%;
   margin: 5px 0;
   border-radius: 8px;
   background-color: #f9f9f9;
@@ -51,7 +51,7 @@
   overflow: hidden;
 }
 .chat-room-list li:last-child {
-  margin-bottom: 100px;
+  margin-bottom: 3dvh;
 }
 .chat-room-list li #title {
   color: #333;
@@ -288,6 +288,10 @@
     flex: 1;
     min-width: 120px;
     border-radius: 8px 8px 0 0;
+  }
+  /* 채팅방 목록 */
+  .chat-room-list li:last-child {
+    margin-bottom: 15dvh;
   }
 }
 /* 
