@@ -100,7 +100,7 @@ const Savekakaoinfo = () => {
     useEffect(() => {
         const login = async () => {
             try {
-                const result = await axios.post('/api/member/login', null, {
+                const result = await axios.post('/api/member/loginlocal', null, {
                     params: { username: decodedEmail, password: 'a' }
                 });
 
@@ -145,7 +145,7 @@ const Savekakaoinfo = () => {
         };
 
         login();
-    }, [client]);
+    }, [kakaoEmail]);
 
     const [email, setEmail] = useState('')
     // const [pwd, setPwd] = useState('')
