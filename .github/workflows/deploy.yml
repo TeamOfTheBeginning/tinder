@@ -25,7 +25,7 @@ jobs:
           timeout: 200m          # 전체 워크플로우 실행 시간 (200분)
           command_timeout: 30m   # 개별 명령 실행 시간 (30분 )
           script: |
-
+            
             echo "=== Backend 배포 시작 ==="
             git config --global --add safe.directory /home/dhk/tinder
             cd /home/dhk/tinder
@@ -43,7 +43,7 @@ jobs:
             cd /home/dhk/tinder/client
             git pull origin DH
             sudo rm -rf node_modules
-            export NODE_OPTIONS="--max-old-space-size=3072"
+#            export NODE_OPTIONS="--max-old-space-size=3072"
             npm install
             npm run build
             sudo systemctl restart nginx
