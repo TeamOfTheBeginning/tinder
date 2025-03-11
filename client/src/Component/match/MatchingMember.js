@@ -160,7 +160,7 @@ const calculateSimilarity = () => {
 
 
 
-  if (!props.oppositeGender) return <LoadingSpinner />;
+  // if (!props.oppositeGender) return <LoadingSpinner />;
     
   return (
     <div className='matchingMemberContainer'>
