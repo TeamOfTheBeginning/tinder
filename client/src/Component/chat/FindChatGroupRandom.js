@@ -46,23 +46,30 @@ const FindChatGroupRandom = (props) => {
     }
 
     return (
-        <div className='findChatGroupContainer'>
+        <div className='chat-container'>
             <div className='chatGroupHeader'>
                 <div className='btns'>
-                    <button className='btn' onClick={() => setAnonymousMessageRoom()}>🎲 랜덤 메시지방 생성 🎲
+                    <button className='btn' onClick={() => setAnonymousMessageRoom()}>
+                    🎲 랜덤 메시지방 생성 🎲
                     </button>
                 </div>
             </div>
-            {chatGroupList ? (
+            {/* 데스크탑에서 위쪽, 모바일에서 아래쪽에 고정할 요소 */}
+            <div className='findChatGroupContainer'>
+                {/* 스크롤되는 콘텐츠 */}
+                {chatGroupList ? (
                 chatGroupList.map((chatGroup, idx) => (
                     <div key={idx} className='findRandomChatListContainer'>
                         <ChatGroupRandom chatGroup={chatGroup} setSubMenuData={props.setSubMenuData} openSubMenu={props.openSubMenu} subMenuDataRef={props.subMenuDataRef}/>
                     </div>
                 ))
-            ) : (
+                ) : (
                 <LoadingSpinner />
-            )}
+                )}
+
+            </div>
         </div>
+
     );
 }
 
