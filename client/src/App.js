@@ -28,7 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/joinForm" element={<JoinForm />} />
-        <Route path="/savekakaoinfo" element={<Savekakaoinfo />} />
+        <Route path="/savekakaoinfo/:kakaoEmail" element={<SaveKakaoInfo />} />
         <Route path="/main" element={<Main />} />
         {/* SideView-기능별화면 */}
         <Route path="/mypage" element={<MyPage/>} />
