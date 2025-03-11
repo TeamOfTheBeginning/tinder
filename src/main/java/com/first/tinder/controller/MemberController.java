@@ -212,7 +212,7 @@ public class MemberController {
 
         String email = member.getEmail();
         String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8);
-        response.sendRedirect("http://your-react-app.com/savekakaoinfo/" + encodedEmail);
+        response.sendRedirect("http://1.215.146.37:8380/savekakaoinfo/" + encodedEmail);
 
 
 //        String data1 = member.getEmail();
