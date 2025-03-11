@@ -113,7 +113,7 @@ const Savekakaoinfo = () => {
                 let accessToken = result.data.accessToken;
                 let refreshToken = result.data.refreshToken;
 
-                const res = await axios.get('/api/member/getLoginUser', {
+                const res = await jaxios.get('/api/member/getLoginUser', {
                     params: { memberId: result.data.memberId }
                 });
 

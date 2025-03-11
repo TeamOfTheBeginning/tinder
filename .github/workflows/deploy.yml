@@ -40,8 +40,7 @@ jobs:
 
 
             echo "=== Frontend 배포 시작 ==="
-            cd /home/dhk/tinder/client
-            git pull origin DH
+            cd /home/dhk/tinder/client            
             sudo rm -rf node_modules
             npm install
             npm run build
