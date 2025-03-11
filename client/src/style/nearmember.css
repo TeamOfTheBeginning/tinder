@@ -124,7 +124,8 @@ h2 {
     flex-direction: column;
     position: absolute;
     background-color: rgba(255, 255, 255, 0.8);
-    bottom: 2dvh;
+    bottom: 0;
+    padding-bottom: 20px;
     gap: 8px;
   }
   .search-controls .btns {
