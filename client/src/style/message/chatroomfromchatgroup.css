@@ -72,11 +72,11 @@
     width: 100%; /* 부모 요소의 전체 너비를 차지 */
 }
 /* 메시지 내용 */
-.chatRoomFromChatGroupContents .chatContent {
+.chatContent {
     font-size: 14px;
     word-wrap: break-word;
 }
-.chatRoomFromChatGroupContents .chatDate {
+.chatDate {
     font-size: 10px;
     margin-top: 5px;
     color: rgba(0, 0, 0, 0.8);
