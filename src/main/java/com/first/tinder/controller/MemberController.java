@@ -207,7 +207,7 @@ public class MemberController {
         }
 //        HttpSession session = request.getSession();
 //        session.setAttribute("loginUser", member.getMemberId() );
-        response.sendRedirect("http://1.215.146.37:8380/kakaoIdLogin/"+member.getEmail());
+        response.sendRedirect("http://1.215.146.37:8380/savekakaoinfo/"+member.getEmail());
 
 
 
