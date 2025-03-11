@@ -11,7 +11,7 @@
 
 .chat-container {
   height: 100dvh;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 /* 채팅방 목록 */
@@ -19,7 +19,6 @@
   flex-direction: column;
   justify-content: flex-start;
   height: 100%;
-  overflow-y: auto;
 }
 .chat-room-list h2 {
   padding: 25px 0 15px 0;
@@ -97,7 +96,7 @@
   width: 15px;
 }
 .create-chat-room button {
-  flex: 0.5; /* 버튼은 중간 정도 */
+  flex: 0.5;
   min-width: 120px;
 }
 
@@ -280,17 +279,16 @@
 @media (max-width: 768px){
   /* 채팅방 만들기 */
   .create-chat-room {
-    display: flex;
     flex-direction: column-reverse;
+    justify-content: flex-start;
     align-items: stretch;
     order: 2;
     width: 95%;
     gap: 0;
     position: absolute;
     bottom: 4dvh;
-    padding-bottom: 0;
+    padding-bottom: 20px;
     border-top: 1px solid #ddd;
-    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 8px 8px 0 0;
   }
   .create-chat-room #create-header {
