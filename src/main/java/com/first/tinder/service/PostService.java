@@ -273,6 +273,8 @@ public class PostService {
 
         int page = paging.getPage();
 
+
+
         Pageable pageable = PageRequest.of(page, 1, Sort.by(Sort.Order.desc("postId")));
 
         if( word == null || word.equals("") ) {
@@ -315,6 +317,25 @@ public class PostService {
 //            }
 
         }
+
+        // ✅ 이제 list가 null이 아니므로 totalPages를 안전하게 호출할 수 있음
+        int totalPages = list.getTotalPages();
+        if (page >= totalPages) {
+            page = Math.max(0, totalPages - 1);
+            pageable = PageRequest.of(page, 1, Sort.by(Sort.Order.desc("postId"))); // 변경된 page 적용
+            list = pr.findAllByOrderByPostIdDesc(pageable);
+        }
+
+        // 마지막 페이지인지 확인 후 처리
+        if (list.isLast()) {
+            System.out.println("마지막 페이지입니다.");
+            paging.setPage(Math.max(0, list.getTotalPages() - 1)); // 마지막 페이지로 고정
+        }
+
+
+
+
+
         return list;
     }
 
