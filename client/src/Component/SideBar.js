@@ -100,7 +100,7 @@ const closeSideViewer = () => {
       props.setSbMsg("외부 클릭이 감지되었습니다.");
       props.setOpen(true);
 
-      console.log('subMenuData' + chatGroupId);
+      console.log('in chatGroupId' + chatGroupId);
 
       jaxios.post(`/api/chat/setChatRoomDeactivated`, null, {
         params: { chatGroupId: chatGroupId }
