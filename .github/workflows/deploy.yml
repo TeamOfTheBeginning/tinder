@@ -43,7 +43,6 @@ jobs:
             cd /home/dhk/tinder/client
             git pull origin DH
             sudo rm -rf node_modules
-            export NODE_OPTIONS="--max-old-space-size=3072"
             npm install
             npm run build
             sudo systemctl restart nginx
