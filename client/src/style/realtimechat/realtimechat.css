@@ -14,41 +14,93 @@
   overflow: hidden;
 }
 
-/* 채팅방 목록 스타일 */
+/* 채팅방 목록 */
 .chat-room-list {
   flex-direction: column;
+  justify-content: flex-start;
   height: 100%;
+  overflow-y: auto;
 }
-/* 페이지 이름 */
 .chat-room-list h2 {
   padding: 25px 0 15px 0;
 }
+.chat-room-list h3 {
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  color: #333;
+}
 .chat-room-list ul {
   display: flex;
+  flex-direction: column;
   width: 100%;
   list-style: none;
-  padding: 0;
+  align-items: center;
+  padding:0;
   margin: 0;
 }
 .chat-room-list li {
-  width: 100%;
-  padding: 10px;
+  width: 83%;
   margin: 5px 0;
   border-radius: 8px;
-  transition: background 0.3s;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  cursor: pointer;
+  overflow: hidden;
 }
-
+.chat-room-list li:last-child {
+  margin-bottom: 3dvh;
+}
+.chat-room-list li #title {
+  color: #333;
+  font-weight: bold;
+  font-size: 1em;
+}
+.chat-room-list li #host {
+  color: #666;
+  font-size: 0.9em;
+}
+.chat-room-list .sub-chatroom #title,
+.chat-room-list .sub-chatroom #host {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.chat-room-list .sub-chatroom .btns {
+  margin-top: 5px;
+}
 .chat-room-list button {
   width: 100%;
-  padding: 8px 12px;
-  border: none;
-  background-color: #ed6ea0;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
 }
 
+/* 채팅방 만들기 */
+.create-chat-room {
+  justify-content: center;
+  flex-direction: row;
+  gap: 8px;
+  width: 100%;
+  font-size: 0.9em;
+  padding-bottom: 10px;
+}
+.create-chat-room #create-header {
+  align-items: center;
+  justify-content: center;
+}
+.create-chat-room input[type="text"] {
+  flex: 1;
+  min-width: 250px;
+  padding: 5px 3px;
+}
+.create-chat-room input[type="checkbox"] {
+  flex: 0;
+  width: 15px;
+}
+.create-chat-room button {
+  flex: 0.5; /* 버튼은 중간 정도 */
+  min-width: 120px;
+}
 
 /* 실시간 채팅방 */
 .chat-room {
@@ -205,7 +257,43 @@
   font-size: 14px;
 }
 
-
+/* 반응형 */
+@media (max-width: 768px){
+  /* 채팅방 만들기 */
+  .create-chat-room {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: stretch;
+    order: 2;
+    width: 95%;
+    gap: 0;
+    position: absolute;
+    bottom: 4dvh;
+    padding-bottom: 0;
+  }
+  .create-chat-room #create-header {
+    display: flex;
+    flex-direction: row;
+  }
+  .create-chat-room input[type="text"] {
+    flex: 1;
+    min-width: 150px;
+    padding: 5px 3px;
+  }
+  .create-chat-room input[type="checkbox"] {
+    flex: 0;
+    width: 15px;
+  }
+  .create-chat-room button {
+    flex: 1;
+    min-width: 120px;
+    border-radius: 8px 8px 0 0;
+  }
+  /* 채팅방 목록 */
+  .chat-room-list li:last-child {
+    margin-bottom: 15dvh;
+  }
+}
 /* 
 
 수정 전 realtimechat CSS 백업
