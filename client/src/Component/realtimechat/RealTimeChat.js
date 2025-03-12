@@ -262,7 +262,11 @@ function ChatPage() {
   };
 
   const sendMessage = () => {
-    if (!message.trim()) return;
+
+    if (!message.trim()) {
+      alert("메시지를 입력하세요!");
+      return;
+    }
   
     if (!stompClientRef.current || !stompClientRef.current.connected) {
       // console.error("🚨 WebSocket이 연결되지 않음.");
