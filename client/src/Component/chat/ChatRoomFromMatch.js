@@ -105,8 +105,6 @@ const ChatRoomFromMatch = (props) => {
                 chatList.map((chat, idx)=>{
 
                     const isOwnMessage = String(chat.sender.memberId) === String(loginUser.memberId);
-                    // console.log("chat.sender.memberId"+chat.sender.memberId+"loginUser.memberId"+loginUser.memberId)
-                    // console.log("isOwnMessage"+isOwnMessage)
 
                     return (
                         <div key={idx} className={`chat ${isOwnMessage ? 'myChat' : ''}`}>
