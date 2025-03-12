@@ -75,7 +75,7 @@ const NearMember = () => {
 
     return (
         <div className="near-member-container">
-            <h2>주변 이성 회원</h2>
+            <h2>근처의 맴버</h2>
             <div className="search-controls">
                 <label>
                     <span>최대 거리</span>
