@@ -3,6 +3,7 @@ import './App.css';
 
 import Login from './Component/Login';
 import JoinForm from "./Component/member/JoinForm";
+import KakaoLogin from "./Component/member/KakaoLogin";
 import Savekakaoinfo from './Component/member/Savekakaoinfo';
 import Main from './Component/Main';
 import MyPage from "./Component/member/MyPage";
@@ -28,7 +29,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/joinForm" element={<JoinForm />} />
-        <Route path="/savekakaoinfo/:kakaoEmail" element={<Savekakaoinfo />} />
+        <Route path="/kakaoLogin/:kakaoEmail" element={<KakaoLogin />} />
+        <Route path="/savekakaoinfo" element={<Savekakaoinfo />} />
         <Route path="/main" element={<Main />} />
         {/* SideView-기능별화면 */}
         <Route path="/mypage" element={<MyPage/>} />

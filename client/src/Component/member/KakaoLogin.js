@@ -35,11 +35,10 @@ const API_BASE_URL = isLocalhost
 
 const SOCKET_URL = `${API_BASE_URL}/ws_real_chat`;
 
-const Savekakaoinfo = () => {
-
-    // // 서버에서 카카오 email 정보 수신할 경우
-    // const { kakaoEmail } = useParams();
-    // const decodedEmail = decodeURIComponent(kakaoEmail); // URL 디코딩
+const KakaoLogin = () => {
+  // // 서버에서 카카오 email 정보 수신할 경우
+    const { kakaoEmail } = useParams();
+    const decodedEmail = decodeURIComponent(kakaoEmail); // URL 디코딩
 
     const [userCount, setUserCount] = useState();
     const [client, setClient] = useState(null);
@@ -97,145 +96,69 @@ const Savekakaoinfo = () => {
     // const [cookies, setCookie, removeCookie] = useCookies();  // 쿠키 이름 배열로 전달
     const [claims, setClaims] = useState();
 
-    // useEffect(() => {
-    //     const login = async () => {
-    //         try {
-    //             const result = await axios.post('/api/member/loginlocal', null, {
-    //                 params: { username: decodedEmail, password: 'kakao' }
-    //             });
+    useEffect(() => {
+        const login = async () => {
+            try {
+                const result = await axios.post('/api/member/loginlocal', null, {
+                    params: { username: decodedEmail, password: 'kakao' }
+                });
 
-    //             setClaims(result.data);
-    //             // alert(result.data)
-    //             // alert(JSON.stringify(result.data))
-    //             console.log(JSON.stringify(result.data))
+                setClaims(result.data);
+                // alert(result.data)
+                // alert(JSON.stringify(result.data))
+                console.log(JSON.stringify(result.data))
 
-    //             setCookie1('user', JSON.stringify(result.data), 1);
-    //             dispatch(loginAction(result.data));
+                setCookie1('user', JSON.stringify(result.data), 1);
+                dispatch(loginAction(result.data));
 
-    //             let accessToken = result.data.accessToken;
-    //             let refreshToken = result.data.refreshToken;
+                let accessToken = result.data.accessToken;
+                let refreshToken = result.data.refreshToken;
 
-    //             if (result.data.zipnum !== null && result.data.zipnum !== undefined &&
-    //                 result.data.latitude !== null && result.data.latitude !== undefined &&
-    //                 result.data.longitude !== null && result.data.longitude !== undefined) {
+                if (result.data.zipnum !== null && result.data.zipnum !== undefined &&
+                    result.data.latitude !== null && result.data.latitude !== undefined &&
+                    result.data.longitude !== null && result.data.longitude !== undefined) {
 
-    //                 setShowModal(true)
+                    setShowModal(true)
 
-    //                 const res = await jaxios.get('/api/member/getLoginUser', {
-    //                     params: { memberId: result.data.memberId }
-    //                 });
+                    const res = await jaxios.get('/api/member/getLoginUser', {
+                        params: { memberId: result.data.memberId }
+                    });
     
-    //                 res.data.loginUser.accessToken = accessToken;
-    //                 res.data.loginUser.refreshToken = refreshToken;
+                    res.data.loginUser.accessToken = accessToken;
+                    res.data.loginUser.refreshToken = refreshToken;
     
-    //                 setCookie1('user', JSON.stringify(res.data.loginUser), 1);
-    //                 dispatch(loginAction(res.data.loginUser));
+                    setCookie1('user', JSON.stringify(res.data.loginUser), 1);
+                    dispatch(loginAction(res.data.loginUser));
     
-    //                 const lUser = res.data.loginUser;
-    //                 lUser['follower'] = res.data.follower;
-    //                 lUser['followed'] = res.data.followed;
+                    const lUser = res.data.loginUser;
+                    lUser['follower'] = res.data.follower;
+                    lUser['followed'] = res.data.followed;
     
-    //                 dispatch(setFollower(res.data.follower));
-    //                 dispatch(setFollowed(res.data.followed));
+                    dispatch(setFollower(res.data.follower));
+                    dispatch(setFollowed(res.data.followed));
     
-    //                 cookies.set('follower', JSON.stringify(res.data.follower), { path: '/' });
-    //                 cookies.set('followed', JSON.stringify(res.data.followed), { path: '/' });
+                    cookies.set('follower', JSON.stringify(res.data.follower), { path: '/' });
+                    cookies.set('followed', JSON.stringify(res.data.followed), { path: '/' });
     
-    //                 console.log("res.data.loginUser "+JSON.stringify(res.data.loginUser))
-    //                 console.log("res.data.loginUser.memberId "+res.data.loginUser.memberId)
-    //                 handleJoin(res.data.loginUser.memberId);
-    //                 localStorage.setItem('nickname', result.data.nickname);
+                    console.log("res.data.loginUser "+JSON.stringify(res.data.loginUser))
+                    console.log("res.data.loginUser.memberId "+res.data.loginUser.memberId)
+                    handleJoin(res.data.loginUser.memberId);
+                    localStorage.setItem('nickname', result.data.nickname);
     
-    //                 // 로그인 성공 상태 활성화
-    //                 setIsLoginSuccess(true);
+                    // 로그인 성공 상태 활성화
+                    setIsLoginSuccess(true);
 
-    //             }
+                }
 
                 
 
-    //         } catch (error) {
-    //             console.error("로그인 오류:", error);
-    //         }
-    //     };
-
-    //     login();
-    // }, [client]);
-
-// portOne 에서 인증정보 받아오는 경우
-
-const [searchParams, setSearchParams] = useSearchParams();    
-const identityVerificationId = searchParams.get("identityVerificationId");
-const code = searchParams.get("code");
-const message = searchParams.get("message");    
-
-useEffect(() => {
-    if (code) {
-        alert(`본인인증 실패: ${message}`);
-    } else if (identityVerificationId) {
-        // 본인인증 성공 시 서버에 인증 완료 요청
-        fetch('/api/identityVerifications/verifyIdentity1', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ identityVerificationId }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("서버 응답:", data); // 디버깅용
-
-            // 응답 데이터 처리
-            if (data.message === "Age restriction satisfied") {            
-                
-            alert("성인 인증 성공!");
-
-
-
-
-
-            setAdultVerification(true)
-            setMemberName(data.name)
-            setPhone(data.phoneNumber)
-            setBirthDate(data.birthDate)
-            setAge(parseInt(data.age, 10))
-
-            if(data.gender==='MALE'){setGender(0)}
-            else if(data.gender==='FEMALE'){setGender(1)}
-            else{
-                console.log("성별 오류")
+            } catch (error) {
+                console.error("로그인 오류:", error);
             }
+        };
 
-
-            // let currentUser = getCookie1('user');
-            // console.log("currentUser"+currentUser)
-            // console.log("currentUser"+JSON.stringify(currentUser))
-            // setClaims(currentUser);
-
-
-
-            }
-            else if (data.message === "Age restriction not satisfied") {
-                console.log("성인 인증 실패!");
-            } else if (data.message === "Verification Failed") {
-            console.log("인증 실패!");
-            } else if (data.message === "API Error") {
-            console.log("API 오류 발생!");
-            } else if (data.message === "API Request Failed") {
-            console.log("API 요청 실패!");
-            }
-
-            return data; // data를 반환하여 외부에서 사용할 수 있도록 함
-        })
-        .catch(error => console.error("오류 발생:", error));
-    }
-}, [identityVerificationId, code, message]);
-
-
-
-
-
-
-
-
-
+        login();
+    }, [client]);
 
     const [email, setEmail] = useState('')
     // const [pwd, setPwd] = useState('')
@@ -323,26 +246,20 @@ useEffect(() => {
             if(result.data.msg === 'no' ){
                 return alert('닉네임이 중복됩니다');
             }
-
-            let currentUser = getCookie1('user');
-            console.log("currentUser"+currentUser)
-            currentUser = JSON.parse(currentUser);
-            console.log("currentUserid"+currentUser.memberId)
-
             console.log({
-                memberId: currentUser.memberId, email:email, age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
+                memberId: claims.memberId, email:email, age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
             })
             result = await jaxios.post('/api/member/update', {
-              memberId: currentUser.memberId, email:email, pwd:'kakao',age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
+              memberId: claims.memberId, email:email, pwd:'kakao',age:age, birthDate:birthDate, gender, nickname, phone, zipnum, address, profileMsg: intro, profileImg:profileimg, latitude:latitude, longitude:longitude, memberName:memberName,
             });
 
             alert("가입완료.")      
 
-            jaxios.get(`/api/member/getLoginUser`, { params: { memberId:currentUser.memberId } })
+            jaxios.get(`/api/member/getLoginUser`, { params: { memberId:claims.memberId } })
             .then((result) => {
 
-            let accessToken=currentUser.accessToken
-            let refreshToken=currentUser.refreshToken
+            let accessToken=claims.accessToken
+            let refreshToken=claims.refreshToken
 
             result.data.loginUser.accessToken = accessToken;
             result.data.loginUser.refreshToken = refreshToken;
@@ -422,84 +339,141 @@ useEffect(() => {
         );
     };
 
-    // const handleIdentityVerification = async () => {
+    const handleIdentityVerification = async () => {
 
-    //     try {
-    //         const response = await PortOne.requestIdentityVerification({
-    //         // 고객사 storeId로 변경해주세요.
-    //         storeId: "store-0ef99292-e8d5-4956-a265-e1ec0ee73634",
-    //         identityVerificationId: `identity-verification-${uuid()}`,
-    //         // 연동 정보 메뉴의 채널 관리 탭에서 확인 가능합니다.
-    //         channelKey: "channel-key-a6f549c2-b895-4933-ad92-117931b006a5",
-    //         redirectUrl: `http://localhost:3000/savekakaoinfo`,
-    //     });
+        try {
+            const response = await PortOne.requestIdentityVerification({
+            // 고객사 storeId로 변경해주세요.
+            storeId: "store-0ef99292-e8d5-4956-a265-e1ec0ee73634",
+            identityVerificationId: `identity-verification-${uuid()}`,
+            // 연동 정보 메뉴의 채널 관리 탭에서 확인 가능합니다.
+            channelKey: "channel-key-a6f549c2-b895-4933-ad92-117931b006a5",
+            redirectUrl: `http://localhost:3000/savekakaoinfo`,
+        });
 
-    //     console.log('결제 요청 응답:', response);
-    //     console.log('결제 요청 응답:', JSON.stringify(response));
+        console.log('결제 요청 응답:', response);
+        console.log('결제 요청 응답:', JSON.stringify(response));
 
-    //     if (response.code !== undefined) {
-    //         return alert(response.message);
-    //     }        
+        if (response.code !== undefined) {
+            return alert(response.message);
+        }        
 
-    //     const verificationResult = await fetch('/api/identityVerifications/verifyIdentity1', {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify({
-    //             identityVerificationId:response.identityVerificationId,
-    //         }),
-    //     })
-    //     .then(response => response.json())
-    //         .then(data => {
-    //             console.log("서버 응답:", data); // 디버깅용
+        const verificationResult = await fetch('/api/identityVerifications/verifyIdentity1', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                identityVerificationId:response.identityVerificationId,
+            }),
+        })
+        .then(response => response.json())
+            .then(data => {
+                console.log("서버 응답:", data); // 디버깅용
 
-    //             // 응답 데이터 처리
-    //             if (data.message === "Age restriction satisfied") {                
+                // 응답 데이터 처리
+                if (data.message === "Age restriction satisfied") {                
 
-    //             alert("성인 인증 성공!");
-    //             setAdultVerification(true)
-    //             setMemberName(data.name)
-    //             setPhone(data.phoneNumber)
-    //             setBirthDate(data.birthDate)
-    //             setAge(parseInt(data.age, 10))
+                alert("성인 인증 성공!");
+                setAdultVerification(true)
+                setMemberName(data.name)
+                setPhone(data.phoneNumber)
+                setBirthDate(data.birthDate)
+                setAge(parseInt(data.age, 10))
 
-    //             if(data.gender==='MALE'){setGender(0)}
-    //             else if(data.gender==='FEMALE'){setGender(1)}
-    //             else{
-    //                 console.log("성별 오류")
-    //             }
-
-
-    //             }
-    //             else if (data.message === "Age restriction not satisfied") {
-    //                 console.log("성인 인증 실패!");
-    //             } else if (data.message === "Verification Failed") {
-    //             console.log("인증 실패!");
-    //             } else if (data.message === "API Error") {
-    //             console.log("API 오류 발생!");
-    //             } else if (data.message === "API Request Failed") {
-    //             console.log("API 요청 실패!");
-    //             }
-
-    //             return data; // data를 반환하여 외부에서 사용할 수 있도록 함
-    //         })
-    //         .catch(error => {
-    //             console.error('Error:', error);
-    //         });
-
-    //     console.log("verificationResult: " + JSON.stringify(verificationResult));
+                if(data.gender==='MALE'){setGender(0)}
+                else if(data.gender==='FEMALE'){setGender(1)}
+                else{
+                    console.log("성별 오류")
+                }
 
 
-    // } catch (error) {
-    // console.error('본인 인증 오류:', error);
-    // } finally {}
-    // };
+                }
+                else if (data.message === "Age restriction not satisfied") {
+                    console.log("성인 인증 실패!");
+                } else if (data.message === "Verification Failed") {
+                console.log("인증 실패!");
+                } else if (data.message === "API Error") {
+                console.log("API 오류 발생!");
+                } else if (data.message === "API Request Failed") {
+                console.log("API 요청 실패!");
+                }
 
+                return data; // data를 반환하여 외부에서 사용할 수 있도록 함
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        console.log("verificationResult: " + JSON.stringify(verificationResult));
+
+
+    } catch (error) {
+    console.error('본인 인증 오류:', error);
+    } finally {}
+    };
+
+
+    // portOne 에서 인증정보 받아오는 경우
+
+    const [searchParams, setSearchParams] = useSearchParams();    
+    const identityVerificationId = searchParams.get("identityVerificationId");
+    const code = searchParams.get("code");
+    const message = searchParams.get("message");    
+
+    useEffect(() => {
+        if (code) {
+            alert(`본인인증 실패: ${message}`);
+        } else if (identityVerificationId) {
+            // 본인인증 성공 시 서버에 인증 완료 요청
+            fetch('/api/identityVerifications/verifyIdentity1', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ identityVerificationId }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("서버 응답:", data); // 디버깅용
+
+                // 응답 데이터 처리
+                if (data.message === "Age restriction satisfied") {            
+                    
+                alert("성인 인증 성공!");
+                setAdultVerification(true)
+                setMemberName(data.name)
+                setPhone(data.phoneNumber)
+                setBirthDate(data.birthDate)
+                setAge(parseInt(data.age, 10))
+
+                if(data.gender==='MALE'){setGender(0)}
+                else if(data.gender==='FEMALE'){setGender(1)}
+                else{
+                    console.log("성별 오류")
+                }
+
+
+                }
+                else if (data.message === "Age restriction not satisfied") {
+                    console.log("성인 인증 실패!");
+                } else if (data.message === "Verification Failed") {
+                console.log("인증 실패!");
+                } else if (data.message === "API Error") {
+                console.log("API 오류 발생!");
+                } else if (data.message === "API Request Failed") {
+                console.log("API 요청 실패!");
+                }
+
+                return data; // data를 반환하여 외부에서 사용할 수 있도록 함
+            })
+            .catch(error => console.error("오류 발생:", error));
+        }
+    }, [identityVerificationId, code, message]);
 
     
 
-    
 
-    return (
+
+
+
+  return (
     <div className='kakao-container'>
         {isLoginSuccess?(!loadingComplete ? (
                             <Loading onComplete={handleLoadingComplete} />
@@ -515,9 +489,9 @@ useEffect(() => {
                         </div>
                     </div>
                 )}
-                {/* <div className='login-btns'>
+                <div className='login-btns'>
                     <div className="login-btn" id='adultVerification' onClick={ ()=>{   handleIdentityVerification()    }  }>성인인증</div>
-                </div> */}
+                </div>
                 <div className='joinform'>
                     <div className='field'>
                         <label className='hidden'>NAME</label>
@@ -606,8 +580,7 @@ useEffect(() => {
         </>)}
 
     </div>
-
-    )
+  )
 }
 
-export default Savekakaoinfo
+export default KakaoLogin
