@@ -312,11 +312,11 @@ const Main = () => {
         if (postOne) {
             timer2 = setTimeout(() => {
                 setShowToast2(true);
-            }, 13000); // 9000ms + 12000ms = 21000ms 후 표시
+            }, 13000); 
             
             timer2End = setTimeout(() => {
                 setShowToast2(false);
-            }, 20000); // 21000ms + 7000ms = 28000ms 후 종료
+            }, 16000); 
         }
         
         return () => {

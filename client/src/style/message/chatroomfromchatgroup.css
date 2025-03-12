@@ -109,6 +109,9 @@
 .quizTimer {
     color: #da0000de;
 }
+.newQuiz {
+    background-color: yellow; /* 새로운 퀴즈일 때 배경 강조 */
+}
 
 /* 퀴즈 응답 버튼 */
 .quizAnswers {
