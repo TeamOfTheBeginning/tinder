@@ -348,7 +348,7 @@ const KakaoLogin = () => {
             identityVerificationId: `identity-verification-${uuid()}`,
             // 연동 정보 메뉴의 채널 관리 탭에서 확인 가능합니다.
             channelKey: "channel-key-a6f549c2-b895-4933-ad92-117931b006a5",
-            redirectUrl: `http://localhost:3000/savekakaoinfo`,
+            redirectUrl: `${process.env.REACT_APP_ADDRESS}/savekakaoinfo`,
         });
 
         console.log('결제 요청 응답:', response);
