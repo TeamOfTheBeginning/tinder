@@ -266,7 +266,10 @@ const selectAnswer = (chatGroupQuizId, answer) => {
                 params: { content: message, chatGroupId:props.chatGroupId, sender: loginUser.memberId }
             });
 
-            
+            if (!message.trim()) {
+                alert("메시지를 입력하세요!");
+                return;
+              }
     
             if (response.data.expired) {
                 props.setSbMsg("이 채팅방은 1시간이 지나 만료되었습니다. 메시지를 보낼 수 없습니다.")
