@@ -134,27 +134,27 @@ const ChatRoomFromRandom = (props) => {
 const scheduleQuizzes = (quizzes) => {
     const now = Date.now();
     quizzes.forEach((quiz) => {
-        const transmissionTime = new Date(quiz.transmissionTime).getTime(); 
+        const transmissionTime = new Date(quiz.transmissionTime).getTime();
         const delay = transmissionTime - now;
-        
+
         if (delay > 0) {
             setTimeout(() => {
-                setVisibleQuizzes([quiz]); 
+                setVisibleQuizzes([quiz]);
                 setNewQuiz(quiz.chatGroupQuizId); // 새 퀴즈 ID 저장
                 setTimeout(() => setNewQuiz(null), 2000); // 2초 후 강조 해제
                 setChatWaiting(true);
                 startQuizTimer(quiz.chatGroupQuizId);
             }, delay);
         } else {
-            setVisibleQuizzes([quiz]); 
-            setNewQuiz(quiz.chatGroupQuizId); 
+            setVisibleQuizzes([quiz]);
+            setNewQuiz(quiz.chatGroupQuizId);
             setTimeout(() => setNewQuiz(null), 2000);
             startQuizTimer(quiz.chatGroupQuizId);
         }
     });
 };
 
-    
+
 
     // 타이머 시작 시 타이머 ID를 quizTimers에 저장하고, 초기값을 10초로 설정
     const startQuizTimer = (chatGroupQuizId) => {

@@ -127,7 +127,7 @@ const ChatRoomFromChatGroup = (props) => {
                 value={message}
                 onFocus={scrollToBottom}
                 onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-            /> 
+            />
             <button onClick={()=>sendMessage()}>보내기</button>
             </div>
         </div>
