@@ -50,7 +50,7 @@ const FindChatGroupRandom = (props) => {
             <div className='chatGroupHeader'>
                 <div className='btns'>
                     <button className='btn' onClick={() => setAnonymousMessageRoom()}>
-                    🎲 랜덤 메시지방 생성 🎲
+                    🎲 랜덤 채팅 생성 🎲
                     </button>
                 </div>
             </div>

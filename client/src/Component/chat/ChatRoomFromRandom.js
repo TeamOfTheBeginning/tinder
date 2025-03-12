@@ -505,12 +505,6 @@ const selectAnswer = (chatGroupQuizId, answer) => {
                 onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
             /> <div className='btns'><button onClick={()=>sendMessage()}>보내기</button></div>
             </div>
-            {/* <div className='chatRoomEvaluateTemp'>
-                <div>
-                    <button onClick={()=>setTempUp()}>좋아요</button>
-                    <button onClick={()=>setTempDownAndBlock()}>차단</button>
-                </div>
-            </div> */}
         </div>
       
     </div>
