@@ -207,12 +207,15 @@ const Main = () => {
             setPostList([newPost]); // 항상 1개 유지
             setPostCount(prev => prev + 1); // 전체 카운트 증가
 
-            // 5번째일 때 Statistics만 먼저 보여주고 Post는 잠시 멈춤
-            if ((postCount + 1) % 5 === 0) {
-                setShowStatistics(true);
-                setTimeout(() => {
-                    setShowStatistics(false); // Statistics를 숨기고 Post를 보여줌
-                }, 5000); // 3초 후 Post 등장
+
+            if(!loginUser.memberRoleList.includes("Gold")){
+                // 5번째일 때 Statistics만 먼저 보여주고 Post는 잠시 멈춤
+                if ((postCount + 1) % 5 === 0) {
+                    setShowStatistics(true);
+                    setTimeout(() => {
+                        setShowStatistics(false); // Statistics를 숨기고 Post를 보여줌
+                    }, 5000); // 3초 후 Post 등장
+                }
             }
         }
 
