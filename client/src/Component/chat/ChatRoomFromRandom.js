@@ -468,6 +468,7 @@ const selectAnswer = (chatGroupQuizId, answer) => {
                 onChange={handleInputChange}
                 value={message}
                 onFocus={scrollToBottom}
+                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             /> <div className='btns'><button onClick={()=>sendMessage()}>보내기</button></div>
             </div>
             {/* <div className='chatRoomEvaluateTemp'>
