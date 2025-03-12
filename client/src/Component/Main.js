@@ -316,7 +316,7 @@ const Main = () => {
             
             timer2End = setTimeout(() => {
                 setShowToast2(false);
-            }, 28000); // 21000ms + 7000ms = 28000ms 후 종료
+            }, 20000); // 21000ms + 7000ms = 28000ms 후 종료
         }
         
         return () => {
@@ -547,12 +547,12 @@ const [volume, setVolume] = useState(0.2);     // 볼륨 상태
 const videoRef = useRef(null); 
 
 // 비디오 볼륨 또는 음소거 상태 변경
-const handleVolumeChange = () => {
-    if (videoRef.current) {
-        setIsMuted(videoRef.current.muted);
-        setVolume(videoRef.current.volume);
-    }
-};
+// const handleVolumeChange = () => {
+//     if (videoRef.current) {
+//         setIsMuted(videoRef.current.muted);
+//         setVolume(videoRef.current.volume);
+//     }
+// };
 
 useEffect(() => {
     if (videoRef.current) {
@@ -591,7 +591,13 @@ useEffect(() => {
                     style={{ pointerEvents: isAnimationEnded ? 'none' : 'auto' }} 
                 >
                     {postOne?(<><div className='toastPopup2Title'>오늘의 추천 포스트</div>
-                        <Post post={postOne} followed={followed} setFollowed={setFollowed} /></>):('포스트가 없습니다.')}
+                        <Post post={postOne} followed={followed} setFollowed={setFollowed} 
+                        videoRef={videoRef}
+                        isMuted={isMuted}
+                        volume={volume}
+                        setIsMuted={setIsMuted}
+                        setVolume={setVolume}     
+                        /></>):('포스트가 없습니다.')}
                     
                 </div>
             )}

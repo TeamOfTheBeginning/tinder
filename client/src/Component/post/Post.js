@@ -144,6 +144,7 @@ const Post = (props) => {
         if (props.videoRef.current) {
             props.setIsMuted(props.videoRef.current.muted);
             props.setVolume(props.videoRef.current.volume);
+            console.log("props.videoRef.current.volume"+props.videoRef.current.volume);
         }
     };
 
