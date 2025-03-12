@@ -450,7 +450,7 @@ const selectAnswer = (chatGroupQuizId, answer) => {
 
                         <div key={idx} className={`chat ${isOwnMessage ? 'myChat' : ''}`}>
                         <div className='chatContainer'>
-                            {isOwnMessage && (
+                            {/* {isOwnMessage && ( */}
                                 <div className='chat-userinfo'>
                                     <div className='userMBTI'>
                                     {ei(chat.sender.memberInfo.ei)}
@@ -459,7 +459,7 @@ const selectAnswer = (chatGroupQuizId, answer) => {
                                     {jp(chat.sender.memberInfo.jp)}
                                     </div>
                                 </div>
-                            )}
+                            {/* )} */}
                             <div className='chatContent'>{chat.content}</div>
                         </div>
                         <div className='chatDate'>{formatDate(chat.createdDate)}</div>
