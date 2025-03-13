@@ -312,7 +312,7 @@ function resign(){
 }
 
     return (
-        <div className='profileContainer'>
+        <div data-ignore-click="true" className='profileContainer'>
             <div className='mypage'>
                 <Snackbar
                     open={open}

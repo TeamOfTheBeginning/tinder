@@ -318,10 +318,14 @@ const closeSideViewer = () => {
       </div>
 
       {/* SideViewer */}
-      <div className={`SideViewer ${selectedMenu ? 'show' : ''}`} ref={sideViewerRef}>
+      <div data-ignore-click="true" className={`SideViewer ${selectedMenu ? 'show' : ''}`} ref={sideViewerRef}>
         <div className='sideViewerHeader'>
-          <button className='closeBtn' onClick={closeSideViewer}>
-            <IoClose />
+          <button className='closeBtn'
+          data-ignore-click="true" 
+          onClick={closeSideViewer}>
+            <IoClose 
+            data-ignore-click="true" 
+            />
           </button>
         </div>
 

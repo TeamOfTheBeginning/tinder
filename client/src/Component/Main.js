@@ -661,12 +661,16 @@ useEffect(() => {
             />
 
 
-            <div className='customer-service-icon' onClick={toggleChatbot}>
-                {isChatbotOpen ? <FiX size={24} /> : <FcCustomerSupport className='FcCustomerSupport' size={24} />}
+            <div data-ignore-click="true" className='customer-service-icon' 
+            onClick={(e) => {
+                e.stopPropagation();  // 이벤트 전파 막기
+                toggleChatbot();
+            }}>
+                {isChatbotOpen ? <FiX size={24} /> : <FcCustomerSupport data-ignore-click="true" className='FcCustomerSupport' size={24} />}
             </div>
 
             {isChatbotOpen && (
-                <div className='chatbot-popup'>
+                <div data-ignore-click="true" className='chatbot-popup'>
                     <ChatBot chatMessages={chatMessages} />
                 </div>
             )}

@@ -9,6 +9,10 @@ import LoadingSpinner from "../LoadingSpinner";
 import { Cookies } from 'react-cookie';
 import jaxios from '../../util/jwtUtil';
 
+import { setCookie1, getCookie1 } from '../../util/cookieUtil2';
+import { loginAction, setFollower, setFollowed } from '../../store/userSlice';
+
+
 const Post = (props) => {
     const [imgList, setImgList] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -72,11 +76,21 @@ const Post = (props) => {
     // };
 
     const onFollow = async (memberId) => {
-        if (window.confirm(`${props.post.member.nickname} 님을 팔로우 하시겠습니까?`)) {
+        if (window.confirm(`${props.post.member.nickname} 님을 팔로우/취소 하시겠습니까?`)) {
             try {
                 await jaxios.post('/api/member/follow', null, { params: { follower: loginUser.memberId, followed: memberId } });
                 const result = await jaxios.get('/api/member/getLoginUser', { params: { memberId: loginUser.memberId } });
-                cookies.set('user', JSON.stringify(result.data), { path: '/' });
+
+                const lUser = result.data.loginUser;
+
+                lUser['follower'] = result.data.follower;
+                lUser['followed'] = result.data.followed;
+
+                dispatch( setFollower( result.data.follower ) )
+                dispatch( setFollowed( result.data.followed ) )
+
+                cookies.set('follower', JSON.stringify( result.data.follower ) , {path:'/', })
+                cookies.set('followed', JSON.stringify( result.data.followed ) , {path:'/', })  
             } catch (err) {
                 console.error(err);
             }
