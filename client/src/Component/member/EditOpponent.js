@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import SideBar from '../SideBar';
 import '../../style/mypage.css'
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -195,14 +194,14 @@ const handleChange = (event) => {
     }
 
     return (
-        <div className='Container'>
-            <SideBar  setWord={setWord}/>
-            <div className='editForm'>
-                <div className="logo" style={{fontSize:"2.0rem"}}>Opponent EDIT</div>
-
-                <div className='field'>
+        <div className='profileContainer'>
+            <div className='editForm opp-edit'>
+                <h2>Opponent EDIT</h2>
+                <div className='opp-header'>
                     <label>MBTI</label>
-                    <div>
+                </div>
+                <div className='hobby-field'>
+                    <div className='hobby-list'>
                     상대 MBTI : {calMBTI(loginUser.opponentMemberInfo.ei,loginUser.opponentMemberInfo.ns,loginUser.opponentMemberInfo.tf,loginUser.opponentMemberInfo.jp)}
                         <input 
                             type="text" 
@@ -222,46 +221,10 @@ const handleChange = (event) => {
                         </ul>
                         )}
                     </div> 
-                    
-
                 </div>
-
-
-
-                {/* <div className="field">
-                    <label>HOBBY</label>
-                    <div id="hobby-container">
-                        {hobbyCategories.map((category) => (
-                            <div key={category.categoryId}>
-                                <h4>{category.categoryName}</h4>
-                                {hobbies.filter((h) => h.category.categoryId === category.categoryId).map((h) => (
-                                    <div>
-                                        <label key={h.hobbyId}>
-                                            {h.hobbyName}                                        
-                                        </label><br></br>
-                                        <input className='checkbox'
-                                        type="checkbox" 
-                                        checked={selectedHobbies.includes(h.hobbyId)} 
-                                        onChange={() => handleHobbyChange(h.hobbyId)} 
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        ))}
-                    </div>
-                </div> */}
-
-                {/* <div className='field'>
-                    <label>PROFILE IMG</label>
-                    <input type="file" onChange={(e)=>{fileUpload(e)}}/>
-                </div>
-                <div className='field'>
-                    <label>Profile img preview</label>
-                    <div><img src={imgSrc} style={imgStyle} /></div>
-                </div> */}
 
                 <div className='btns'>
-                    <button onClick={ ()=>{   onSubmit()    }  }>EDIT</button>
+                    <button id='opp-btn' onClick={ ()=>{   onSubmit()    }  }>EDIT</button>
                 </div>
             </div>
         </div>
