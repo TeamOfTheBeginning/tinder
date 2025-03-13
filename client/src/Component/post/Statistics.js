@@ -55,7 +55,9 @@ const Statistics = () => {
 
   return (
     <div className='statisticsContainer'>
-      <h2>광고페이지 입니다. </h2>
+      <h2>광고페이지 입니다.</h2>
+      <h3>오늘 종료이벤트! <br/> 광고제거 / 라이크조회 골드회원권이 1원!! </h3>
+      {/* <h3></h3> */}
       {ads ? (
         <>
           <h3>틴더는 <br /> (주){ads.advertiser}와 함께 합니다.</h3>
