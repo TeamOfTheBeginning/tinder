@@ -282,7 +282,10 @@ const buyItems = async () => {
 }
 
 function resign(){
-
+    
+    if (!window.confirm("정말 탈퇴하시겠습니까?")) {
+        return; // 취소하면 함수 종료
+    }
 
     jaxios.delete(`/api/member2/resign/${loginUser.memberId}`)
     .then((result) => {
