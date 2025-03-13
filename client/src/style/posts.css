@@ -414,9 +414,10 @@ button{
 
     .toastPopup2{
         top: 30px;
-        min-width: 320px;
+        min-width: 300px;
         left: 50%;  /* 화면의 가로 중앙 */
         transform: translateX(-50%);  /* 중앙 정렬을 위해 왼쪽으로 50% 이동 */
+        max-width: 350px
     }
     .toastPopup2 .post{
        margin-top: 0;

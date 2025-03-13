@@ -171,7 +171,7 @@ const Post = (props) => {
     // }, []); // 빈 배열 → 한 번만 실행 (새로 렌더링될 때만 실행됨)
 
     return (
-        <div className='post'>
+        <div data-ignore-click="true" className='post'>
             <div className='writer'>
                 <div>{props.post.postId}&nbsp;&nbsp;</div>
                 <div>{props.post.member.nickname}&nbsp;&nbsp;</div>
@@ -246,11 +246,11 @@ const Post = (props) => {
                 <span>{likeList.length > 0 ? `${likeList.length}명이 좋아합니다` : '아직 좋아요가 없어요'}</span>
             </div>
 
-            <div className='content'>
+            <div data-ignore-click="true" className='content'>
                 <pre>{props.post.content}</pre>
             </div>
 
-            <div className='reply' style={{ display: replyView ? 'block' : 'none' }}>
+            <div data-ignore-click="true" className='reply' style={{ display: replyView ? 'block' : 'none' }}>
                 {isLoadingReplies ? (
                     <LoadingSpinner />
                 ) : replyList.map(reply => (
