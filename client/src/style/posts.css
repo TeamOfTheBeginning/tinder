@@ -269,12 +269,11 @@ button{
 }
 
 
-.toastPopup2Title {
+.toastPopup1Title {
     display: flex;
     justify-content: center;
     font-size: 1.5em;
     font-weight: bold;
-    padding-top: 5px;
 }
 
 .toastPopup2 {
@@ -316,14 +315,15 @@ button{
 .toastPopup2 .toastPopupPost .writer,
 .toastPopup2 .toastPopupPost .content,
 .toastPopup2 div {
-    font-size: 0.9em !important;
+    font-size: 0.9em;
 }
 
 .toastPopup2Title{    
     display: flex;
     justify-content: center;
-    font-size: 150%;
+    font-size: 1.5em !important;
     font-weight: bold;
+    padding-top: 5px;
 }
 
 @keyframes fadeInOut {
