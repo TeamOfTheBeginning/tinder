@@ -397,8 +397,8 @@ function resign(){
                 <ul>
                     {loginUser.followed && loginUser.followed.map((followed, index) => (
                     <li key={index}> {/* key는 index가 아닌 고유한 값을 사용하는 것이 좋습니다 (예: followed.followId) */}
-                        팔로워 nickname: {followed.follower.nickname}, profile: <img src={`http://localhost:8070/userimg/${followed.follower.profileImg}`} style={{width : '70px', height:'70px'}} /> 
-                        
+                        <img src={`http://localhost:8070/userimg/${followed.follower.profileImg}`} />
+                        {followed.follower.nickname}
                     </li>
                     ))}
                 </ul>
@@ -409,7 +409,8 @@ function resign(){
                 <ul>
                     {loginUser.follower && loginUser.follower.map((follower, index) => (
                     <li key={index}>
-                        팔로우 nickname: {follower.followed.nickname}, profile: <img src={`http://localhost:8070/userimg/${follower.followed.profileImg}`} style={{width : '70px', height:'70px'}} />
+                        <img src={`http://localhost:8070/userimg/${follower.followed.profileImg}`} />
+                        {follower.followed.nickname}
                     </li>
                     ))}
                 </ul>
