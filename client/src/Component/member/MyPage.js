@@ -172,7 +172,7 @@ const togleTutorial = async () => {
         if(result.data.msg=="yes"){
             setSbMsg("튜토리얼을 껐습니다.")
             setOpen(true)
-            
+
             // alert("튜토리얼을 껐습니다.");
 
             jaxios.get(`/api/member/getLoginUser`, { params: { memberId:loginUser.memberId } })
@@ -245,7 +245,7 @@ const buyItems = async () => {
 
             setSbMsg("Gold 회원권 구매에 성공하셨습니다.")
             setOpen(true)
-            
+
             // alert("Gold 회원권 구매에 성공하셨습니다.");
 
             jaxios.get(`/api/member/getLoginUser`, { params: { memberId:loginUser.memberId } })
@@ -282,7 +282,7 @@ const buyItems = async () => {
 }
 
 function resign(){
-    
+
     if (!window.confirm("정말 탈퇴하시겠습니까?")) {
         return; // 취소하면 함수 종료
     }
@@ -409,7 +409,7 @@ function resign(){
                             onClick={() => {
                                 if (loginUser && hasRequiredRoles(loginUser.memberRoleList)) {
                                     // props.onSubMenuSelect('findLiker');
-                                    
+
 
                                     alert("이미 골드회원이십니다.")
                                 } else {
@@ -434,8 +434,8 @@ function resign(){
                 <ul>
                     {loginUser.followed && loginUser.followed.map((followed, index) => (
                     <li key={index}> {/* key는 index가 아닌 고유한 값을 사용하는 것이 좋습니다 (예: followed.followId) */}
-                        팔로워 nickname: {followed.follower.nickname}, profile: <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${followed.follower.profileImg}`} style={{width : '70px', height:'70px'}} /> 
-                        
+                        <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${followed.follower.profileImg}`} />
+                        {followed.follower.nickname}
                     </li>
                     ))}
                 </ul>
@@ -446,7 +446,8 @@ function resign(){
                 <ul>
                     {loginUser.follower && loginUser.follower.map((follower, index) => (
                     <li key={index}>
-                        팔로우 nickname: {follower.followed.nickname}, profile: <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${follower.followed.profileImg}`} style={{width : '70px', height:'70px'}} />
+                        <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${follower.followed.profileImg}`} />
+                        {follower.followed.nickname}
                     </li>
                     ))}
                 </ul>

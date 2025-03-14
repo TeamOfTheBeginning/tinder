@@ -523,6 +523,21 @@
     width: 100%;
 }
 
+.profileContainer .opp-edit,
+.opp-eidt .opp-header,
+.opp-eidt .opp-header label {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.opp-eidt .opp-header label {
+    font-size: 1.2em;
+}
+.opp-edit .hobby-field {
+    width: 90%;
+}
 
 /* 반응형 스타일 */
 @media (max-width: 768px) {

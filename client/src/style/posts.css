@@ -239,6 +239,7 @@ button{
     right: 20px;
     width: 20vw;
     min-width: 260px;
+    min-height: auto;
     z-index: 9999;
     opacity: 0;
     border-radius: 10px;
@@ -268,49 +269,61 @@ button{
 }
 
 
-.toastPopup1Title{
+.toastPopup1Title {
     display: flex;
     justify-content: center;
-    font-size: 150%;
+    font-size: 1.5em;
     font-weight: bold;
 }
 
 .toastPopup2 {
     position: fixed;
-    top: 60px;  /* 화면 상단에서 20px 간격 */
-    right: 20px; /* 화면 오른쪽에서 20px 간격 */
-    z-index: 9998; /* 다른 요소보다 위에 표시 */
-    opacity: 0; /* 초기 opacity 1 */
+    top: 60px;
+    right: 20px;
+    z-index: 9998;
+    opacity: 0;
+    min-width: 350px;
+    height: auto;
     border-radius: 10px;
-    animation: fadeInOut 4.5s ease-in-out; /* 애니메이션 추가 */
+    animation: fadeInOut 4.5s ease-in-out;
     background-color: rgba(0, 0, 0, .8);
     color: white;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-
-    /* width: 15vw; */
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.toastPopup2 .post video{
-    width: 15vw;
+.toastPopup2 .post video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.toastPopup2 .post{
-    height: auto;
-    width: auto;
+.toastPopup2 .post {
+    width: 15vw;
+    min-width: 350px;
+    max-width: 100%;
+    aspect-ratio: 9 / 16; /* 기본 비율 유지 */
+    max-height: 80dvh; /* 반응형 높이 조정 */
+    min-height: 250px; /* 너무 작아지는 경우 방지 */
+    margin-bottom: 0;
+    margin-top: 5px;
+}
+
+.toastPopup2 .toastPopupPost .writer,
+.toastPopup2 .toastPopupPost .content,
+.toastPopup2 div {
+    font-size: 0.9em;
 }
 
 .toastPopup2Title{    
     display: flex;
     justify-content: center;
-
-
-    font-size: 150%;
+    font-size: 1.5em !important;
     font-weight: bold;
+    padding-top: 5px;
 }
 
 @keyframes fadeInOut {
@@ -341,33 +354,6 @@ button{
 
 
 /* 반응형 스타일 */
-/* @media (min-width: 480px) and (max-width: 768px) {
-    .PostList {
-        
-    }
-    .PostList .post {
-        margin-left: 55px;
-        min-width: 300px;
-    }
-    
-    #IoIosContact {
-        top: 2%;
-        right: 15%;
-        z-index: 9999;
-    }
-    #IoIosNotifications{
-        top: 2%;
-        right: 4.5%;
-        z-index: 9999;
-    }
-    .notificationList{
-        z-index: 9999;
-    }
-    .toastPopup2{
-        width: 40vh;
-        top: 20px;
-    }
-} */
 
 @media (max-width: 480px) {
     .PostList {
@@ -380,20 +366,6 @@ button{
         height: 80dvh;
         margin: 10vh 0vh 10vh 7dvh;
     }
-
-    /* .statisticsContainer{
-        margin-left: 20px; 
-        min-width: 280px;
-        margin: 5vh 0vh 10vh 7dvh;
-
-    }
-
-    .adComponentContainer{
-        margin-left: 20px; 
-        max-width: 280px;
-        min-width: 280px;
-        margin: 5vh 0vh 10vh 7dvh;
-    } */
 
     
     #IoIosNotifications{
@@ -410,6 +382,7 @@ button{
         min-width: 280px;
         left: 50%;  /* 화면의 가로 중앙 */
         transform: translateX(-50%);  /* 중앙 정렬을 위해 왼쪽으로 50% 이동 */
+        font-size: 0.9em;
     }
 
     .toastPopup2{
@@ -417,10 +390,12 @@ button{
         min-width: 300px;
         left: 50%;  /* 화면의 가로 중앙 */
         transform: translateX(-50%);  /* 중앙 정렬을 위해 왼쪽으로 50% 이동 */
+        font-size: 0.9em;
         max-width: 350px
     }
     .toastPopup2 .post{
        margin-top: 0;
+       font-size: 0.9em;
     }
 
     .toastPopup2 .post video{
