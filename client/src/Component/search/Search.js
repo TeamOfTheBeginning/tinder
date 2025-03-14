@@ -81,7 +81,10 @@ const Search = (props) => {
     } } )
     .then((result)=>{
       // console.log("result.data.chatGroupId"+result.data.chatGroupId)
-      enterChatRoomFromChatGroup(result.data.chatGroupId);
+      // enterChatRoomFromChatGroup(result.data.chatGroupId);
+
+      props.setOpen(true);
+      props.setSbMsg("초대가 완료되었습니다. 채팅목록을 확인해주세요")
     }
     ).catch((err)=>{console.error(err)}) 
     
@@ -198,7 +201,7 @@ const Search = (props) => {
                   <div className='searchMemberContent'>
                     {/* {member.nickname}&nbsp;  */}
 
-                    <div onClick={()=>enterChatRoomFromSearchedMember(member.memberId)}><button>쪽지</button></div>
+                    {/* <div onClick={()=>enterChatRoomFromSearchedMember(member.memberId)}><button>쪽지</button></div> */}
                     
                     <div onClick={()=>inviteMemberForMessage(member)}><button>대화초대</button></div>
 
