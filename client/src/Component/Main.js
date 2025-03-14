@@ -186,7 +186,14 @@ const Main = () => {
     //     });
     // };
 
+    const isCountingDownRef = useRef(false); // useRef를 사용하여 직접 값 관리
+
+
     async function onPageMove( page ){
+        console.log("isCountingDown:", isCountingDownRef.current);
+
+        if (isCountingDownRef.current) return; // 카운트다운 중이면 실행 막기
+
         // console.log('pageable.pageNumber'+pageable.pageNumber)
         jaxios.get(`/api/post/getPostList`, {params:{page:page,word:hashtag}})
         .then((result)=>{
@@ -212,8 +219,10 @@ const Main = () => {
                 // 5번째일 때 Statistics만 먼저 보여주고 Post는 잠시 멈춤
                 if ((postCount + 1) % 5 === 0) {
                     setShowStatistics(true);
+                    isCountingDownRef.current = true; // useRef 값 직접 변경
                     setTimeout(() => {
                         setShowStatistics(false); // Statistics를 숨기고 Post를 보여줌
+                        isCountingDownRef.current = false; // useRef 값 변경
                     }, 5000); // 3초 후 Post 등장
                 }
             }
