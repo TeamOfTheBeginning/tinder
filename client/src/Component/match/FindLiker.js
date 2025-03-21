@@ -49,7 +49,7 @@ const FindLiker = () => {
                         return (
                             <div key={idx} className='MemberListContainer'>
                                 <div className='memberImgBox'>
-                                    <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${liker.profileImg}`} />
+                                    <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${liker.profileImg}`} />
                                     <br/>
                                 </div>
 

@@ -47,7 +47,7 @@ const MyPage = (props) => {
     
     useEffect(() => {
         if (loginUser.profileImg) {
-            setImgSrc(`${process.env.REACT_APP_ADDRESS}/userimg/${loginUser.profileImg}`);
+            setImgSrc(`${process.env.REACT_APP_ADDRESS2}/userimg/${loginUser.profileImg}`);
         }
         else{
             
@@ -434,7 +434,7 @@ function resign(){
                 <ul>
                     {loginUser.followed && loginUser.followed.map((followed, index) => (
                     <li key={index}> {/* key는 index가 아닌 고유한 값을 사용하는 것이 좋습니다 (예: followed.followId) */}
-                        <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${followed.follower.profileImg}`} />
+                        <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${followed.follower.profileImg}`} />
                         {followed.follower.nickname}
                     </li>
                     ))}
@@ -446,7 +446,7 @@ function resign(){
                 <ul>
                     {loginUser.follower && loginUser.follower.map((follower, index) => (
                     <li key={index}>
-                        <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${follower.followed.profileImg}`} />
+                        <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${follower.followed.profileImg}`} />
                         {follower.followed.nickname}
                     </li>
                     ))}

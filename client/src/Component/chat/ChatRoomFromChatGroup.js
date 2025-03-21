@@ -107,7 +107,7 @@ const ChatRoomFromChatGroup = (props) => {
                                 {!isOwnMessage && (
                                     <div className='chat-userinfo'>
                                         <div className='chatImg'>
-                                            <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${chat.sender?.profileImg || 'default.jpg'}`} alt="Profile" />
+                                            <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${chat.sender?.profileImg || 'default.jpg'}`} alt="Profile" />
                                         </div>
                                         <span className='nickname'>{chat.sender?.nickname || '닉네임 없음'}</span>
                                     </div>

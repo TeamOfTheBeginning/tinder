@@ -37,7 +37,7 @@ const MatchedMember = (props) => {
                         return (
                             <div key={idx} className='MemberListContainer'>
                                 <div className='memberImgBox'>
-                                    <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${matchedMember.profileImg}`} />
+                                    <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${matchedMember.profileImg}`} />
                                     <br/>
                                 </div>
 

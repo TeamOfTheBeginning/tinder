@@ -14,7 +14,7 @@ const isLocalhost = window.location.hostname === "localhost" ;
 
 const API_BASE_URL = isLocalhost
   ? "http://localhost:8070" // 로컬 개발 환경
-  : `http://${window.location.hostname}:8390`; // 클라이언트가 실행 중인 네트워크 기반으로 서버 IP 설정
+  : `http://${window.location.hostname}:8470`; // 클라이언트가 실행 중인 네트워크 기반으로 서버 IP 설정
 
 const SOCKET_URL = `${API_BASE_URL}/ws_real_chat`;
 

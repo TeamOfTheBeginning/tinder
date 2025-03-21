@@ -5,7 +5,7 @@ import "../../style/chatbot/chatbot.css";
 
 import jaxios from '../../util/jwtUtil';
 
-export const API_BASE_URL = `http://1.215.146.37:8390`;
+export const API_BASE_URL = `http://112.144.209.242:8470`;
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);

@@ -138,7 +138,7 @@ const JoinForm = (props) => {
             const formData = new FormData();
             formData.append('image', file);
             const result = await axios.post('/api/member/fileupload', formData);
-            setImgSrc(`${process.env.REACT_APP_ADDRESS}/userimg/${result.data.filename}`);
+            setImgSrc(`${process.env.REACT_APP_ADDRESS2}/userimg/${result.data.filename}`);
             setImgStyle({display:'block', width:'200px'});
             setProfileimg(result.data.filename);
         } else {

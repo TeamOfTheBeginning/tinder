@@ -169,7 +169,7 @@ const calculateSimilarity = () => {
       <div className='matchingMemberImgContainer'>
         <div className='matchingMemberImg'>
           <div className='matchingMemberImgImg'>
-            <img src={`${process.env.REACT_APP_ADDRESS}/userimg/${props.oppositeGender.profileImg}`} />
+            <img src={`${process.env.REACT_APP_ADDRESS2}/userimg/${props.oppositeGender.profileImg}`} />
           </div>
         </div>
 
