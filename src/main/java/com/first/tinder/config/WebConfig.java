@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/userimg/**")
-                .addResourceLocations("file:src/main/webapp/userimg/");
+                .addResourceLocations("file:/home/dhk/tinder/src/main/webapp/userimg/");  // 절대 경로로 수정
     }
 
 
