@@ -1,0 +1,242 @@
+/* MenuBar (왼쪽 고정) */
+.MenuBar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 55px;
+    height: 100vh;
+    padding-top: 45px;
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center;
+    justify-content: space-between;
+    background-image: linear-gradient(-135deg, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 400% 100%;
+    border-radius: 0 50px 50px 0;
+    animation: colorChangeSidebar 3s ease infinite;
+    z-index: 1003;
+}
+
+
+@keyframes colorChangeSidebar {
+    0% { background-position: 0 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0 50%; }
+}
+
+.MenubarBtns {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    margin-top: 25px;
+}
+
+.profileImg {
+    display: flex;
+    position: absolute; /* 절대 위치 */
+    top: 40px; /* MenuBar 안에서 위쪽에 고정 */
+    border-radius: 50%;
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+.profileImg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 개별 버튼 스타일 */
+.sidebar-btn {
+    width: 40px;
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+.sidebar-btn svg {
+    width: 30px;
+    height: 30px;
+    color: rgba(255, 255, 255, 0.6);
+    transition: transform 0.1s ease-in-out;
+}
+.sidebar-btn svg:hover {
+    transform: scale(1.3);
+    color: rgba(255, 255, 255, 1);
+}
+
+/* 활성화된 메뉴 색상 변경 */
+.sidebar-btn.active svg,
+.profileImg.active img {
+    color: #fff; /* 아이콘 색상 변경 */
+    filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 10px #f7186a) brightness(1.2); /* 네온 + 밝기 */
+    transform: scale(1.2); /* 선택된 아이콘 확대 */
+    transition: all 0.2s ease-in-out;
+    animation: neonGlow 3s infinite alternate;
+}
+
+/* 네온 반짝임 애니메이션 */
+@keyframes neonGlow {
+    0% {
+        filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 10px #f7186a) brightness(1.7);
+    }
+    50% {
+        filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 10px #ec8c69) brightness(1.3);
+    }
+    100% {
+        filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 10px #f7186a) brightness(1.7);
+    }
+}
+
+
+
+/* 기존 호버 효과 유지 */
+.sidebar-btn svg:hover {
+    transform: scale(1.3);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* 로그아웃 버튼 (하단 고정) */
+.logoutBtn {
+    margin-bottom: 10px;
+}
+.logoutBtn button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.logoutBtn button:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+
+/* SideViewer 기본 스타일 */
+.SideViewer {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 55px; /* MenuBar 바로 오른쪽 */
+    width: 500px;
+    height: 100vh;
+    background-color: rgba(255,255,255,0.9);
+    border-radius: 0 50px 50px 0;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1002; /* MenuBar보다 아래, 로그인 폼보다 위 */
+    overflow: hidden;
+}
+
+/* SideViewer가 열릴 때 */
+.SideViewer.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto; /* 클릭 가능 */
+}
+
+.sideViewerHeader{
+    position: absolute;
+    z-index: 3;
+}
+/* SideViewer 닫기 버튼 조정 */
+.SideViewer .sideViewerHeader .closeBtn{
+    position: relative;
+    width:20px; height:20px;
+    top:20px; left:460px;
+    overflow: hidden;
+	border: none;
+	padding: 0;
+	border-radius: 50%;
+	background: transparent;
+	color: rgba(99, 0, 33, 0.8);
+	text-indent: 100%;
+	cursor: pointer;
+    z-index: 2000;  /* 다른 요소들보다 위로 배치 */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.SideViewer .sideViewerHeader .closeBtn:focus {
+    outline: solid 0 transparent;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.23);
+}
+
+.SideViewer .sideViewerHeader .closeBtn:hover {
+    transform: scale(1.5);
+    box-sizing: border-box;
+    color: #fff;
+    background: rgba(247,24,106,0.5);
+}
+
+.SideViewer .sideViewerHeader .closeBtn:before,
+.SideViewer .sideViewerHeader .closeBtn::after{
+    position: absolute;
+    top: 15%;
+    left: calc(50% - 0.0625em);
+    width: 0.125em;
+    height: 70%;
+    border-radius: 0.125em;
+    transform: rotate(45deg);
+    background: currentcolor;
+    content: '';
+    transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.SideViewer .sideViewerHeader .closeBtn::after{
+    transform: rotate(-45deg);
+}
+
+.sideViewerContent {
+    max-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden; /* 가로 스크롤 없애기 */
+    background-color: transparent;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .SideViewer {
+        min-width: auto;
+        max-width: 300px;
+    }
+    .SideViewer .sideViewerHeader .closeBtn {
+        left: calc(320px - 40px);
+    }
+}
+
+@media (max-width: 480px) {
+    .MenubarBtns {
+        margin-top: 2.3em;
+    }
+    .sidebar-btn {
+        margin-top: 15px;
+    }
+    .SideViewer {
+        min-width: 300px;
+        min-height: auto;
+    }
+    .SideViewer .sideViewerHeader .closeBtn {
+        top: 0;
+        left: 130px;
+    }
+}
+
+@media (max-height: 650px) {
+    .MenubarBtns{
+        margin-top: 35px;
+        height: 600px;
+        padding-bottom: 50px;
+    }
+    .MenubarBtns .sidebar-btn{
+        margin-top: 8px;
+    }
+}

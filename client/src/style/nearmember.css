@@ -1,0 +1,147 @@
+.near-member-container {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+h2 {
+  color: #333;
+  text-align: center;
+  margin: 0;
+}
+
+.near-member-container h2{
+  padding: 25px 0;
+}
+
+.search-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.search-controls label {
+  padding-right: 10px;
+}
+
+.search-controls input {
+  width: 80px;
+  padding: 5px;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-controls .btns {
+  width: 30%;
+}
+
+.search-controls .btns button{
+  width: 100%;
+}
+
+.search-controls button:hover{
+  background-position: 100% 0;
+  color: #fff;
+}
+  
+.member-list {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  list-style-type: none;
+  width: 100%;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.member-list .member-item {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  gap: 10px;
+  padding: 10px;
+  margin-bottom: 15px;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+.member-list .member-item:last-child {
+  margin-bottom: 35px;
+}
+.member-list .member-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+  
+.member-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.member-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+  
+.member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+  
+.member-name {
+  font-weight: bold;
+}
+  
+.member-distance {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.nearMemberBtns button{
+  width: 100px;
+  height: 30px;
+}
+
+.nearMemberBtns button:hover{
+  background-position: 100% 0;
+  color: #fff;
+}
+  
+@media (max-width: 600px) {
+  .near-member-container{
+    position: relative;
+    height: 100dvh;
+  }
+  .member-list{
+    margin: 0;
+  }
+  .search-controls {
+    flex-direction: column;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid #ddd;
+    bottom: 0;
+    padding: 15px 0 25px 0;
+    gap: 8px;
+  }
+  .search-controls .btns {
+    width: 80%;
+  }
+  .member-list .member-item:last-child {
+    margin-bottom: 120px;
+  }
+}
+  

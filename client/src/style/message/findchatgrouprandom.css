@@ -1,0 +1,34 @@
+.findChatGroupRandomContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.findChatGroupLeft{
+    
+    border: 1px solid black;
+
+}
+
+.findChatGroupLeft img{
+    height: 100%;
+}
+
+.findChatGroupRandomBtns button{
+    width: 80px;
+    height: 30px;
+    background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 300% 100%;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.findChatGroupRandomBtns button:hover{
+    background-position: 100% 0;
+    color: #fff;
+}

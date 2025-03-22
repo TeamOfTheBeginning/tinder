@@ -1,0 +1,59 @@
+#IoIosContact{
+    position: fixed;
+    top: 2%;
+    right: 8%;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+#IoIosContact:hover {
+    transform: scale(0.9);
+}
+
+.realtimeConnectInfoContainer{
+    position: fixed;
+    top: 2%;
+    right: 8%;
+}
+
+#userCount{
+    position: fixed;
+    top: 1%;
+    right: 8%;
+}
+
+.realTimeAccessUserList{
+    position: fixed;
+    top: 10%;
+    right: 8%;
+    width: 100px;
+    height: 100px;
+}
+
+@media (max-width: 480px) {
+    #IoIosContact {
+        top: 2%;
+        right: 20%;
+        z-index: 9999;
+    }
+
+    .realTimeAccessUserList{
+        position: fixed;
+        top: 2%;
+        left: 30%;
+        width: 200px;
+        height: 100px;    
+    }
+
+    #userCount{
+        position: fixed;
+        top: 1%;
+        right: 21.5%;
+        width: 20px;
+    }
+    
+}

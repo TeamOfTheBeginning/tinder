@@ -1,0 +1,74 @@
+.matchedMemberContainer{
+    /* width: 100vw; */
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* border: 1px solid black; */
+}
+
+
+
+.matchedMemberContainer button{
+    width: 80px;
+    height: 30px;
+    background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 300% 100%;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}
+
+.matchedMemberContainer button:hover{
+    background-position: 100% 0;
+    color: #fff;
+}
+
+.matchedMemberListContainer{
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center;
+    align-items: center; */
+
+    width: 400px;
+    height: 20vh;
+    /* border: 1px solid black; */
+
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+
+}
+
+.matchedMemberListContainer:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.matchedMemberLeft{
+    
+    /* border: 1px solid black; */
+
+
+}
+
+.matchedMemberLeft img{
+    width: 150px;
+    border-radius: 10px;
+}
+
+.matchedMemberRight{
+    font-size: 150%;
+}

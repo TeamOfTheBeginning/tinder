@@ -1,0 +1,251 @@
+/* 로딩 컨테이너 스타일 */
+.loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+}
+
+/* 밝기 강화된 네온 글로우 효과 + 심장 박동 애니메이션 */
+.blur-circle {
+  position: absolute;
+  width: 320px; /* 원의 크기 */
+  bottom: 32vh;
+  height: 320px;
+  border-radius: 50%;
+  /* 그라디언트로 중앙을 더 밝게 */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 30%, rgba(255, 255, 255, 0.3) 80%, rgba(255, 255, 255, 0.1) 100%);
+  filter: blur(25px);
+  z-index: -1;
+
+  /* 네온 글로우 효과 (강화) */
+  box-shadow: 
+      0 0 30px rgba(255, 255, 255, 0.7), 
+      0 0 60px rgba(255, 255, 255, 0.6), 
+      0 0 90px rgba(255, 255, 255, 0.5);
+
+  /* 초기 상태 */
+  opacity: 0;
+  transform: scale(0.8);
+
+  /* 부드러운 등장 후 심장 박동 애니메이션 */
+  animation: fadeInBlurCircleGlow 1.2s forwards ease-in-out, heartbeat 2s infinite ease-in-out;
+}
+
+/* 초기 등장 애니메이션 */
+@keyframes fadeInBlurCircleGlow {
+  from {
+      opacity: 0;
+      transform: scale(0.6); /* 더 작게 시작 */
+      box-shadow: 
+          0 0 15px rgba(255, 255, 255, 0.3), 
+          0 0 30px rgba(255, 255, 255, 0.2);
+  }
+  to {
+      opacity: 1; 
+      transform: scale(0.8); /* 기본 크기 */
+      box-shadow:
+          0 0 30px rgba(255, 255, 255, 0.8), 
+          0 0 60px rgba(255, 255, 255, 0.7), 
+          0 0 100px rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* 심장 박동 애니메이션 */
+@keyframes heartbeat {
+  0%, 100% {
+      transform: scale(0.8);
+      box-shadow: 
+          0 0 30px rgba(255, 255, 255, 0.8), 
+          0 0 60px rgba(255, 255, 255, 0.7), 
+          0 0 100px rgba(255, 255, 255, 0.6);
+  }
+  50% {
+      transform: scale(1); /* 커졌다가 다시 원래대로 */
+      box-shadow: 
+          0 0 40px rgba(255, 255, 255, 1), 
+          0 0 80px rgba(255, 255, 255, 0.9), 
+          0 0 120px rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* 공통 로딩 애니메이션 */
+.loader {
+    position: absolute;
+    bottom: 12%;
+    height: 4px;
+    width: 75vw;
+    border-radius: 50%;
+    --c:no-repeat linear-gradient(#aa003e 0 0);
+    background: var(--c),var(--c),#fcf2b8;
+    background-size: 60% 100%;
+    animation: l16 3s infinite;
+}
+
+@keyframes l16 {
+    0%   {background-position:-150% 0,-150% 0}
+    66%  {background-position: 250% 0,-150% 0}
+    100% {background-position: 250% 0, 250% 0}
+  }
+
+/* 첫 번째 애니메이션 스타일 */
+.animation-step1 img {
+    width: 40%;
+    max-width: 400px; /* 최대 크기 제한 */
+    height: auto; /* 비율 유지 */
+    margin-top: 20px; /* 여백 추가 */
+    border-radius: 10px;
+}
+
+.animation-step1,
+.animation-step2 {
+    text-align: center;
+    opacity: 0; /* 초기 상태에서 보이지 않음 */
+    animation: fadeIn 1s forwards; /* 페이드 인 애니메이션 */
+}
+
+.animation-step2 {
+    animation-delay: 0s; /* 즉시 실행 */
+}
+
+
+/* 하트 스타일 */
+.heart-animation {
+    margin-top: 20px;
+    display: flex; /* flexbox 사용 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+}
+
+.animation-step2 {
+    animation-delay: 0s; /* 즉시 실행 */
+}
+
+.heart {
+    width: 15vw; /* 뷰포트 너비의 비율 */
+    min-width: 100px; /* 최대 크기 제한 */
+    aspect-ratio: 1;
+    background: linear-gradient(#dc1818 0 0) bottom/100% 0% no-repeat #ccc;
+    -webkit-mask: 
+      radial-gradient(circle at 60% 65%, #000 62%, #0000 65%) top left, 
+      radial-gradient(circle at 40% 65%, #000 62%, #0000 65%) top right, 
+      linear-gradient(to bottom left, #000 42%,#0000 43%) bottom left , 
+      linear-gradient(to bottom right,#000 42%,#0000 43%) bottom right;
+    -webkit-mask-size: 50% 50%;
+    -webkit-mask-repeat: no-repeat;
+    animation: l19 3s forwards;  /* animation을 한 번만 실행 */
+  }
+  
+  @keyframes l19 {
+    90%, 100% { background-size: 100% 100%; }
+  }
+
+
+/* 로딩스피너 컨테이너 */
+.spinner-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* 다른 요소 위에 표시 */
+}
+
+  /* 로딩스피너 */
+.loading-spinner {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #f7186a; /* 진한 핑크 */
+  box-shadow: 32px 0 #ec8c69, -32px 0 #FBB03B; /* 따뜻한 오렌지 계열 */
+  position: relative;
+  animation: flash 0.5s ease-out infinite alternate;
+}
+
+@keyframes flash {
+  0% {
+    background-color: #f7186a66; /* 반투명 핑크 */
+    box-shadow: 32px 0 #ec8c6966, -32px 0 #FBB03B;
+  }
+  50% {
+    background-color: #ed6ea0; /* 부드러운 핑크 */
+    box-shadow: 32px 0 #FBB03B66, -32px 0 #f7186a66;
+  }
+  100% {
+    background-color: #f7186a66;
+    box-shadow: 32px 0 #FBB03B, -32px 0 #ec8c69;
+  }
+}
+
+/* 모바일 환경 (최대 768px) */
+@media screen and (max-width: 768px) {
+  .blur-circle {
+      width: 250px;
+      height: 250px;
+      bottom: 28vh;
+      filter: blur(20px);
+  }
+
+  .loader {
+      width: 90vw; /* 모바일에서는 더 넓게 */
+  }
+
+  .animation-step1 #profile-img {
+      width: 60%;
+      max-width: 200px;
+  }
+
+  .animation-step1 #logo-img {
+    width: 30%;
+    max-width: 100px;
+}
+
+  .heart {
+      width: 20vw;
+      min-width: 80px;
+  }
+
+  .loading-spinner {
+      width: 12px;
+      height: 12px;
+      box-shadow: 28px 0 #ec8c69, -28px 0 #FBB03B;
+  }
+}
+
+/* 더 작은 모바일 화면 (최대 480px) */
+@media screen and (max-width: 480px) {
+  .blur-circle {
+      width: 200px;
+      height: 200px;
+      bottom: 25vh;
+      filter: blur(18px);
+  }
+
+  .loader {
+      width: 95vw; /* 더 작은 화면에서는 최대한 넓게 */
+  }
+
+  .animation-step1 #profile-img {
+    width: 70%;
+    max-width: 200px;
+}
+
+  .heart {
+      width: 25vw;
+      min-width: 70px;
+  }
+
+  .loading-spinner {
+      width: 10px;
+      height: 10px;
+      box-shadow: 24px 0 #ec8c69, -24px 0 #FBB03B;
+  }
+}

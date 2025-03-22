@@ -1,0 +1,610 @@
+.profileContainer,
+.SideContainer,
+.editForm .info-container {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.profileContainer {
+    width: 100%;
+    overflow: hidden;
+}
+.SideContainer{
+    width: 100%;
+}
+.editForm .info-container {
+    width: 90%;
+    gap: 10px;
+}
+
+.editForm .essential-info,
+.editForm .select-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.editForm .essential-info{
+    width: 100%;
+}
+
+/* 선택정보 */
+.select-field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+/* 슬라이더 메뉴 */
+.select-field .slider {
+    -webkit-appearance: none;
+    width: 100%;
+    max-width: 300px;
+    height: 10px;
+    background: linear-gradient(to right, #ddd, #ec8c69);
+    border-radius: 5px;
+    outline: none;
+    transition: 0.3s;
+    background: repeating-linear-gradient(
+        to right,
+        #ffb0d0 0%,
+        #ffb0d0 6.3%,
+        #666 6.4%,
+        #ffb0d0 7%,
+        #ffb0d0 28.3%,
+        #666 28.4%,
+        #ffb0d0 29%,
+        #ffb0d0 49.4%,
+        #666 49.5%,
+        #ffb0d0 50%,
+        #ffb0d0 71.3%,
+        #666 71.4%,
+        #ffb0d0 72%,
+        #ffb0d0 93.4%,
+        #666 93.5%,
+        #ffb0d0 94%
+
+    );
+}
+/* 슬라이더 핸들 (thumb) 스타일 */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #f7186a;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+    transition: 0.3s;
+}
+.slider::-webkit-slider-thumb:hover {
+    background: #333;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+/* Firefox용 슬라이더 핸들 */
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
+}
+.slider::-moz-range-thumb:hover {
+    background: #0056b3;
+    transform: scale(1.1);
+}
+/* 슬라이더의 숫자 값 (옵션 리스트) 스타일 */
+#select-info-data {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+#select-slider {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 300px;
+    position: absolute;
+    bottom: -15px;
+}
+#select-slider option {
+    font-size: 14px;
+    color: #333;
+}
+
+/* 취미 응답 */
+.editForm .hobby-field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5px 0;
+}
+.editForm .hobby-field .hobby-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 90%;
+    padding: 15px;
+    border-radius: 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+}
+/* hobby-category 스타일 */
+.hobby-field .hobby-list .hobby-category {
+    margin-bottom: 10px;
+}
+/* hobby-title 스타일 */
+.hobby-category .hobby-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+/* hobby-category label 스타일 */
+.hobby-field label {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px;
+    margin: 5px;
+    font-size: 0.95rem;
+    color: #343a40;
+    border-radius: 8px;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    cursor: pointer;
+}
+.editForm .field .hobby-category label input[type="checkbox"] {
+    margin-right: 8px;
+}
+.editForm .field .hobby-category label input[type="checkbox"]:checked + span {
+    font-weight: 600;
+}
+
+/* 마이페이지 */
+.mypage,
+.mypage .userinfo,
+.mypage .userinfo .profile .field {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.mypage {
+    top: -45px;
+    flex-direction: column;
+}
+.mypage .userinfo {
+    margin-top: 15px;
+    flex-direction: column;
+}
+.mypage .userinfo .profile .field {
+    border-bottom: 2px dotted rgba(0, 0, 0, 0.2);
+    gap: 0;
+    padding: 10px 0;
+}
+.mypage .userinfo .profile .field:last-child {
+    border-bottom: none;
+}
+.profile .field label {
+    width: 100px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+.profile .field div {
+    flex: 1;
+    color: #555;
+    word-break: break-word; /* 긴 텍스트 줄바꿈 */
+}
+
+/* 프로필 메시지 스타일 */
+.profile #profile_msg {
+    padding-top: 15px;
+}
+.profile #profile_msg div {
+    font-style: italic;
+    color: #777;
+}
+
+/* mypage 프로필 이미지 영역 */
+.mypage .profileImage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* 이미지 배경 효과 */
+.mypage .profileImage .imgBg {
+    position: absolute;
+    bottom: 0%;
+    width: calc(100% + 50px);
+    height: calc(100% + 50px);
+    border-radius: 0 0 50% 50%;
+    background-image: linear-gradient(-45deg, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 300% 100%;
+    animation: colorChange 10s ease infinite;
+    z-index: 0;
+    filter: blur(20px);
+}
+
+@keyframes colorChange {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+.mypage .followBtns {
+    display: flex;
+    position: relative;
+    top: 230px;
+    width: 100%;
+    justify-content: space-around;
+    z-index: 102;
+}
+.mypage .followBtns .follow-button{
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgb(83, 83, 83);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+.mypage .followBtns .follow-button div{
+    margin-top: 3px;
+    font-size: 16px;
+}
+
+/* 프로필 이미지 */
+.mypage .profileImage .img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+.mypage .profileImage .img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* profile-header 스타일 */
+.mypage .profile-header {
+    display: flex;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    z-index: 3;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.mypage .profile-header .box{
+    display: flex;
+    position: relative;
+    top: 185px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 35px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.mypage .profile-header .box .profile-nickname {
+    color: #fff;
+    font-size: 1.3em;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.profile #profile_msg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 하단부 공통 버튼 스타일 */
+.mypage .btns,
+.editForm .btns {
+    width: 100%;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    justify-content: space-evenly;
+    gap: 5px;
+}
+.mypage .btns:last-child,
+.editForm .btns:last-child {
+    margin-bottom: 10px;
+}
+.mypage .btns #btn button,
+.editForm .btns button {
+    height: 40px;
+    cursor: pointer;
+}
+.editForm .btns button{
+    width: 80px;
+}
+.mypage .btns #btn button{
+    width: 180px;
+}
+
+/* 사용자 온도 그래프 */
+.user-temperature {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+.user-temperature .temp-info {
+    position: absolute;
+    top: 50%;  /* 부모 요소의 절반 높이 */
+    left: 50%; /* 부모 요소의 절반 너비 */
+    transform: translate(-50%, -50%); /* 정확한 중앙 정렬 */
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.8);
+    z-index: 103; /* temp-bar보다 위에 배치 */
+    white-space: nowrap;
+    text-align: center;
+}
+.temp-graph {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    border-radius: 25px;
+    overflow: hidden;
+    background-color: rgba(30, 30, 30, 0.3);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+.temp-bar {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 102;
+    transition: width 0.3s ease-in-out;
+    /* 온도 값 범위 내에서만 그라데이션 적용 */
+    background: linear-gradient(
+    to right, 
+    rgba(124, 173, 253, 0.8) 0%,
+    rgba(144, 238, 144, 0.8) 30%,
+    rgba(40, 192, 47, 0.8) 50%,
+    rgba(255, 215, 0, 0.8) 70%,
+    rgba(255, 83, 83, 0.8) 100%
+    );
+    /* width 비율만큼만 그라데이션 표시 */
+    background-size: 1000% 100%;
+    background-position: left;
+    background-repeat: no-repeat;
+}
+.temp-graph .temp-bg {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    font-weight: 600;
+    font-size: 0.8rem;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 101; /* temp-bar 아래 */
+}
+
+/* 회원정보수정 페이지 */
+.SideContainer .editForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.editForm h2{
+    padding: 25px 0;
+  }
+.editForm .field {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin: 5px 0;
+}
+.editForm .field label {
+    width: 15%;
+    display: flex;
+    align-items: center;
+    color: #f7186a;
+    font-weight: bold;
+    font-size: 14px;
+}
+.editForm .field input {
+    flex-grow: 10;
+    flex-basis: 0;
+    margin: 8px 0;
+    width: 70%;
+}
+.editForm .field select,
+.editForm .field div {
+    flex-grow: 4;
+    flex-basis: 0;
+    margin: 8px 0;
+    width: 75%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    border: none;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.editForm .field .checkbox {
+    border-radius: 10px;
+    background-color: #eee;
+    border: none;
+    box-shadow: none;
+}
+
+.editForm .essential-info,
+.editForm .select-info {
+    flex-grow: 4;
+    flex-basis: 0;
+}
+
+.field .prevBox button {
+    background-color: #333;
+    margin: 0;
+    padding: 10px;
+    width: 100%;
+}
+
+#n1{
+    margin-left: 10px; padding: 3px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+#n1 label{
+    width: 70%;
+}
+
+.editForm .title {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    border-bottom: 2px dotted rgba(0, 0, 0, 0.2);
+}
+
+.editForm .field .ProfileImg {
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.editForm .field img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.editForm .info-container .btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin-bottom: 15px;
+}
+.editForm .info-container .btns button {
+    width: 100%;
+}
+
+.profileContainer .opp-edit,
+.opp-eidt .opp-header,
+.opp-eidt .opp-header label {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.opp-eidt .opp-header label {
+    font-size: 1.2em;
+}
+.opp-edit .hobby-field {
+    width: 90%;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .editForm .field label {
+        justify-content: center;
+        width: fit-content;
+    }
+    .mypage .btns {
+        flex-direction: column;
+        align-items: center;
+    }
+    .mypage .btns #btn button,
+    .editForm .btns button {
+        width: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .editForm .field {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+    }
+    .user-temperature {
+        width: 78%;
+    }
+    .mypage .followBtns {
+        top: 235px;
+        width: 95%;
+        justify-content: space-between;
+    }
+    .editForm .field .hobby-list {
+        flex-direction: column; /* 모바일에서는 세로로 배치 */
+    }.select-field .slider {
+        background: repeating-linear-gradient(
+            to right,
+            #ffb0d0 0%,
+            #ffb0d0 10%,
+            #666 11%,
+            #ffb0d0 12%,
+            #ffb0d0 29%,
+            #666 30%,
+            #ffb0d0 31%,
+            #ffb0d0 48%,
+            #666 49%,
+            #ffb0d0 50%,
+            #ffb0d0 68%,
+            #666 69%,
+            #ffb0d0 70%,
+            #ffb0d0 89%,
+            #666 90%,
+            #ffb0d0 91%
+        );
+    }
+}
+
+@media (max-width: 480px) {
+    .mypage .btns {
+        flex-direction: column;
+        align-items: center;
+    }
+    .mypage .btns #btn {
+        margin: 5px;
+    }
+    .editForm .field {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+}

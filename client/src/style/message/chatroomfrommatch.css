@@ -1,0 +1,148 @@
+/*
+.chatRoomFromMatchContainer{
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.chatRoomFromMatchContents{
+    width: 90%;
+}
+
+.chatRoomFromMatchContents .chat {    
+    background-color: #f0f0f0;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.chatRoomFromMatchContents .chat.myChat {
+    text-align: right;
+    justify-content: end;
+}
+
+.chatRoomFromMatchContents .chatContainer{
+    display: flex;
+    flex-direction: row;
+    width: 20vw;
+}
+
+.chatRoomFromMatchContents .chatImg{
+    width: 5vh;
+    height: 5vh;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.chatRoomFromMatchContents img{
+    width: 100%;
+}
+
+.chatRoomFromMatchContents .chatContent{
+    border: 1px solid black;
+    width: 100%;
+}
+*/
+
+.chatRoomFromMatchContainer {
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 메시지 목록 */
+.chatRoomFromMatchContents {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    gap: 10px;
+}
+
+/* 말풍선 */
+.chatRoomFromMatchContents .chat {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    max-width: 80%;
+    text-align: left;
+    background-color: #ff7cac66;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.chatRoomFromMatchContents .chat.myChat {
+    margin-left: auto;
+    background-color: #ffc66966;
+    text-align: right;
+    align-items: flex-end;
+}
+
+.chatRoomFromMatchContents .chatContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.chatRoomFromMatchContents .chat-userinfo {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.chatContainer .chat-userinfo .chatImg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.chatContainer .chat-userinfo .chatImg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.chatRoomFromMatchContents .chatContent {
+    font-size: 14px;
+    word-wrap: break-word;
+}
+
+.chatRoomFromMatchContents .chatDate {
+    font-size: 10px;
+    margin-top: 5px;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+/* 입력창 스타일링 */
+.chatRoomInput {
+    width: 90%;
+    padding: 5px 0;
+}
+
+.chatRoomInput .inputBox {
+    width: 100%;
+    height: 2em;
+    display: flex;
+}
+
+.chatRoomInput .inputBox input {
+    flex-grow: 0.8;
+    margin-right: 8px;
+}
+
+.chatRoomInput .inputBox button {
+    white-space: nowrap;
+}

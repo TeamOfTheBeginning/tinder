@@ -1,0 +1,60 @@
+.adComponentContainer{
+    position: relative;
+    min-width: 320px;
+    width: 50%;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: 5vh 0 5vh 0;
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4.5px);
+    -webkit-backdrop-filter: blur(4.5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    overflow: hidden;
+    padding-bottom: 0;
+}
+
+/* 반응형 스타일 */
+@media (min-width: 480px) and (max-width: 768px) {
+    .PostList {
+        /* margin-left: 55px; */
+    }
+    .PostList .post {
+        margin-left: 55px;
+        min-width: 300px;
+    }
+    
+    #IoIosContact {
+        top: 2%;
+        right: 15%;
+        z-index: 9999;
+    }
+    #IoIosNotifications{
+        top: 2%;
+        right: 4.5%;
+        z-index: 9999;
+    }
+    .notificationList{
+        z-index: 9999;
+    }
+    .toastPopup2{
+        width: 40vh;
+        top: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .adComponentContainer{
+        margin-left: 20px; /* 더 작은 화면에서 여백 축소 */
+        max-width: 280px;
+        min-width: 280px;
+        margin: 5vh 0vh 10vh 7dvh;
+    }
+}

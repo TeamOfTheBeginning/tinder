@@ -1,0 +1,114 @@
+.chatGroupContainer{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.chatGroupInfo {
+    display: flex;
+    flex-direction: column;
+}
+.chatGroupProfile {
+    display: flex;
+    justify-content: space-between; /* 이름과 날짜를 양 끝으로 배치 */
+    margin-bottom: 8px; /* 아래쪽 여백 추가 */
+}
+
+.chatGroupMember {
+    display: flex;
+    flex-wrap: wrap; /* 여러 줄로 표시할 수 있도록 설정 */
+}
+
+.findChatGroupListContainer{
+    padding: 10px;
+
+}
+
+/* 그룹채팅방 정보-채팅방이름 */
+.chatGroupProfile{
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.chatroom-name, .chatroom-date {
+    font-weight: bold;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 그룹채팅방 참여자 */
+.chatGroupMember{
+    width: 100%;
+    font-size: 16px;
+}
+
+/* 입장 버튼 */
+/* 랜덤쪽지 버튼의 부모 컨테이너 */
+.chatGroupBtns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* 랜덤쪽지 버튼 */
+.chatGroupbtn {
+    width: 100%;
+    max-width: 300px;
+    height: 40px;
+    background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #FBB03B);
+    background-size: 300% 100%;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .chatGroupProfile {
+        flex-direction: column;
+    }
+    .chatGroupContainer {
+        justify-content: flex-start;
+        height: fit-content;
+    }
+
+    /* 입장버튼의 부모 컨테이너 */
+    .chatGroupBtns {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .chatGroupBtns .chatGroupBtn {       
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .chatGroupBtns button {
+        width: 100%;
+        max-width: 100%;
+        display: block;
+    }
+
+    .chatGroupHeader .chatGroupBtn{
+        position:absolute;
+        bottom:30px;
+        width: 80%;
+        max-width: 80%;
+    }
+}

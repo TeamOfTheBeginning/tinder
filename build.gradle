@@ -37,6 +37,8 @@ dependencies {
     implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    // Thumbnailator
+    implementation 'net.coobird:thumbnailator:0.4.14'
 
     //이메일
 //    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
@@ -50,6 +52,16 @@ dependencies {
 
     //AWS
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    // websocket 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    //포트원 인증/결제
+    implementation 'io.portone:server-sdk:0.15.0'
+
+    // music 크롤링 관련 의존성 추가
+    implementation 'org.jsoup:jsoup:1.15.3'
+
 }
 
 tasks.named('test') {
