@@ -37,7 +37,7 @@ jobs:
         run: ./gradlew clean build -x test
 
       - name: 서버 Docker 이미지 생성
-        run: docker build -t 112.144.209.242:8450/server-app -f Dockerfile.server .
+        run: docker build -t 112.144.209.242:8450/server-app -f Dockerfile .
 
       - name: 서버 Docker 이미지 태깅
         run: docker tag 112.144.209.242:8450/server-app 112.144.209.242:8450/server-app:latest
@@ -48,7 +48,7 @@ jobs:
       ## 🔹 클라이언트 빌드 및 배포 🔹
       - name: 클라이언트 Docker 이미지 생성
         working-directory: ./client  # ✅ 클라이언트 디렉토리 지정
-        run: docker build -t 112.144.209.242:8450/client-app -f Dockerfile.client .
+        run: docker build -t 112.144.209.242:8450/client-app -f Dockerfile .
 
       - name: 클라이언트 Docker 이미지 태깅
         working-directory: ./client  # 클라이언트 경로 지정
