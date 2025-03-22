@@ -7,6 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - name: Github Repository 파일 불러오기
         uses: actions/checkout@v4
@@ -71,6 +72,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
+          port: 8430
           script_stop: true
           script: |
             # 서버 컨테이너 배포
