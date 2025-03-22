@@ -7,7 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 360
     steps:
       - name: Github Repository 파일 불러오기
         uses: actions/checkout@v4
@@ -33,10 +33,10 @@ jobs:
         run: ls -la
 
       - name: Ensure resources directory exists
-        run: mkdir -p ./src/main/resources
+        run: mkdir -p src/main/resources
 
       - name: application.yml 파일 만들기
-        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.yml
+        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > src/main/resources/application.yml
 
       - name: gradlew permision 수정
         run: sudo chmod 777 ./gradlew
@@ -52,6 +52,7 @@ jobs:
 
       - name: 서버 Docker 이미지 Push
         run: docker push 112.144.209.242:8450/server-app:latest
+        timeout-minutes: 30  # ⬅️ 개별 명령 실행 시간 (30분)
 
       ## 🔹 클라이언트 빌드 및 배포 🔹
       - name: 클라이언트 Docker 이미지 생성
@@ -64,6 +65,7 @@ jobs:
 
       - name: 클라이언트 Docker 이미지 Push
         run: docker push 112.144.209.242:8450/client-app:latest
+        timeout-minutes: 30  # ⬅️ 개별 명령 실행 시간 (30분)
 
       ## 🔹 EC2에 배포 🔹
       - name: SSH로 EC2 접속 및 배포
