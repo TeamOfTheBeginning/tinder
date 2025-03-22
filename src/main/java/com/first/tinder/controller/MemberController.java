@@ -212,7 +212,7 @@ public class MemberController {
 
         String email = member.getEmail();
         String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8);
-        response.sendRedirect("http://1.215.146.37:8380/kakaoLogin/" + encodedEmail);
+        response.sendRedirect("http://kdhhome.asuscomm.com:8400/kakaoLogin/" + encodedEmail);
 //        response.sendRedirect("http://localhost:3000/kakaoLogin/" + encodedEmail);
 
 
