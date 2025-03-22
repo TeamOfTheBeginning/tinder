@@ -32,8 +32,7 @@ jobs:
       - name: List files
         run: ls -la
 
-      - name: Ensure resources directory exists
-        run: mkdir -p src/main/resources
+
 
       - name: application.yml 파일 만들기
         run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > src/main/resources/application.yml
