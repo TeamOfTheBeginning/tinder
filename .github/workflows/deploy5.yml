@@ -1,0 +1,29 @@
+#name: Deploy To EC2
+#on:
+#  push:
+#    branches:
+#      - DH
+#jobs:
+#  deploy:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Github Repository 파일 불러오기
+#        uses: actions/checkout@v4
+#      - name: Docker 이미지 생성
+#        run: docker build -t 112.144.209.242:8450/client-app .
+#      - name: Docker 이미지에 Tag 붙이기
+#        run: docker tag 112.144.209.242:8450/client-app 112.144.209.242:8450/client-app:latest
+#      - name: ECR에 Docker 이미지 Push하기
+#        run: docker push 112.144.209.242:8450/client-app:latest
+#      - name: SSH로 EC2에 접속하기
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.EC2_HOST }}
+#          username: ${{ secrets.EC2_USERNAME }}
+#          key: ${{ secrets.EC2_PRIVATE_KEY }}
+#          script_stop: true
+#          script: |
+#            docker stop my-client || true
+#            docker rm my-client || true
+#            docker pull 112.144.209.242:8450/client-app:latest
+#            docker run -d --name client-app -p 3000:3000 112.144.209.242:8450/client-app:latest
