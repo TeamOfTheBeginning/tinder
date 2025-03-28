@@ -5,7 +5,15 @@ import "../../style/chatbot/chatbot.css";
 
 import jaxios from '../../util/jwtUtil';
 
-export const API_BASE_URL = `http://localhost:8070`;
+//웹소켓 경로 관련
+const isLocalhost = window.location.hostname === "localhost" ;
+// || window.location.hostname === "127.0.0.1";
+
+export const API_BASE_URL = isLocalhost
+  ? "http://localhost:8070" // 로컬 개발 환경
+  : `http://${window.location.hostname}:8470`; // 클라이언트가 실행 중인 네트워크 기반으로 서버 IP 설정
+
+// export const API_BASE_URL = `http://localhost:8070`;
 // export const API_BASE_URL = `http://112.144.209.242:8470`;
 
 const ChatBot = () => {
