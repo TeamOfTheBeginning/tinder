@@ -150,13 +150,15 @@ const EditProfile = () => {
 
         setLoading(true); // 로딩 시작
 
+        if(loginUser.provider == 'kakao'){setPwd('kakao')}
+
         try {
             let result = await jaxios.post('/api/member/nicknamecheckUpdate', null, { params: { memberId: loginUser.memberId, nickname } });
             if (result.data.msg === 'no') {
                 return alert('닉네임이 중복됩니다');
             }
             result = await jaxios.post('/api/member/update', {
-                memberId: loginUser.memberId, email:loginUser.email, pwd, age:loginUser.age, birthDate:loginUser.birthDate,gender:loginUser.gender, nickname, phone, zipnum:loginUser.zipnum, addess:loginUser.address,profileMsg: intro, profileImg, latitude:loginUser.latitude, longitude:loginUser.longitude, memberName:loginUser.memberName,
+                memberId: loginUser.memberId, email:loginUser.email, pwd: loginUser.provider === 'kakao' ? 'kakao' : pwd, age:loginUser.age, birthDate:loginUser.birthDate,gender:loginUser.gender, nickname, phone, zipnum:loginUser.zipnum, addess:loginUser.address,profileMsg: intro, profileImg, latitude:loginUser.latitude, longitude:loginUser.longitude, memberName:loginUser.memberName,
             });
 
             // MBTI 관련 처리
@@ -286,11 +288,23 @@ const EditProfile = () => {
 
                         <div className='field'>
                             <label>PASSWORD</label>
-                            <input type="password" onChange={(e) => { setPwd(e.currentTarget.value) }} />
+                            <input 
+                                type="password" 
+                                value={loginUser.provider === 'kakao' ? '' : pwd} 
+                                onChange={(e) => setPwd(e.currentTarget.value)} 
+                                readOnly={loginUser.provider === 'kakao'} 
+                                placeholder={loginUser.provider === 'kakao' ? 'Kakao login users cannot set a password' : ''}
+                            />
                         </div>
                         <div className='field'>
                             <label>RETYPE PW</label>
-                            <input type="password" onChange={(e) => { setPwdChk(e.currentTarget.value) }} />
+                            <input 
+                                type="password" 
+                                value={loginUser.provider === 'kakao' ? '' : pwdChk} 
+                                onChange={(e) => setPwdChk(e.currentTarget.value)} 
+                                readOnly={loginUser.provider === 'kakao'} 
+                                placeholder={loginUser.provider === 'kakao' ? 'Kakao login users cannot set a password' : ''}
+                            />
                         </div>
                         <div className='field'>
                             <label>NICKNAME</label>
