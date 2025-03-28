@@ -23,10 +23,15 @@ import java.util.regex.Pattern;
 @Service
 public class ChatBotService {
 
-    @Value("${openai.api.key}")
-    private String openAiApiKey;
+//    @Value("${openai.api.key}")
+//    private String openAiApiKey;
+//
+//    private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
-    private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
+    @Value("${gemini.api.key}")
+    private String geminiApiKey;
+
+    private static final String GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=";
 
     private final RestTemplate restTemplate;
     private final WorldInfoService worldInfoService;
@@ -198,29 +203,71 @@ public class ChatBotService {
             }
         }
 
+//        try {
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.APPLICATION_JSON);
+//            headers.setBearerAuth(openAiApiKey);
+//
+//            messages.add(Map.of("role", "user", "content", request.getMessage()));
+//
+//            Map<String, Object> requestBody = new HashMap<>();
+//            requestBody.put("model", "gpt-4o");
+//            requestBody.put("messages", messages);
+//            requestBody.put("temperature", 0.5);
+//
+//            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+//            ResponseEntity<Map> response = restTemplate.exchange(OPENAI_API_URL, HttpMethod.POST, entity, Map.class);
+//
+//            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+//                List<Map<String, Object>> choices = (List<Map<String, Object>>) response.getBody().get("choices");
+//                if (choices != null && !choices.isEmpty()) {
+//                    String chatbotMessage = (String) ((Map<String, Object>) choices.get(0).get("message")).get("content");
+//                    return saveAndReturnResponse(userId, userMessage, chatbotMessage);
+//                }
+//            }
+//            return new ChatBotResponse("죄송합니다. 요청을 처리할 수 없습니다.");
+//        } catch (Exception e) {
+//            return new ChatBotResponse("챗봇 서비스에 오류가 발생했습니다.");
+//        }
+
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setBearerAuth(openAiApiKey);
-
-            messages.add(Map.of("role", "user", "content", request.getMessage()));
 
             Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("model", "gpt-4o");
-            requestBody.put("messages", messages);
-            requestBody.put("temperature", 0.5);
+            List<Map<String, Object>> contents = new ArrayList<>();
+            List<Map<String, String>> parts = new ArrayList<>();
+            parts.add(Map.of("text", request.getMessage()));
+            contents.add(Map.of("parts", parts));
+            requestBody.put("contents", contents);
 
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
-            ResponseEntity<Map> response = restTemplate.exchange(OPENAI_API_URL, HttpMethod.POST, entity, Map.class);
+            ResponseEntity<Map> response = restTemplate.exchange(GEMINI_API_URL + geminiApiKey, HttpMethod.POST, entity, Map.class);
 
             if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
-                List<Map<String, Object>> choices = (List<Map<String, Object>>) response.getBody().get("choices");
-                if (choices != null && !choices.isEmpty()) {
-                    String chatbotMessage = (String) ((Map<String, Object>) choices.get(0).get("message")).get("content");
-                    return saveAndReturnResponse(userId, userMessage, chatbotMessage);
+                List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.getBody().get("candidates");
+
+                String chatbotMessage = "";
+                if (candidates != null && !candidates.isEmpty()) {
+                    Object contentObj = candidates.get(0).get("content");
+                    if (contentObj instanceof Map) {
+                        Map<String, Object> contentMap = (Map<String, Object>) contentObj;
+                        Object partsObj = contentMap.get("parts");
+                        if (partsObj instanceof List) {
+                            List<Map<String, Object>> partsList = (List<Map<String, Object>>) partsObj;
+                            if (!partsList.isEmpty()) {
+                                Object textObj = partsList.get(0).get("text");
+                                if (textObj instanceof String) {
+                                    chatbotMessage = (String) textObj;
+                                }
+                            }
+                        }
+                    }
                 }
+                return saveAndReturnResponse(userId, userMessage, chatbotMessage);
             }
             return new ChatBotResponse("죄송합니다. 요청을 처리할 수 없습니다.");
+
         } catch (Exception e) {
             return new ChatBotResponse("챗봇 서비스에 오류가 발생했습니다.");
         }
