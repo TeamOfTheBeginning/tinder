@@ -1,96 +1,96 @@
-#name: Deploy To EC2
-#on:
-#  push:
-#    branches:
-#      - DH
-#
-#jobs:
-#  deploy:
-#    runs-on: ubuntu-latest
-#    timeout-minutes: 360
-#    steps:
-#      - name: Github Repository 파일 불러오기
-#        uses: actions/checkout@v4
-#
-#      - name: Allow insecure Docker registry
-#        run: |
-#          sudo mkdir -p /etc/docker
-#          echo '{ "insecure-registries":["${{ secrets.REGISTRY }}"] }' | sudo tee /etc/docker/daemon.json
-#          sudo systemctl restart docker
-#
-#
-#      ## 🔹 서버 빌드 및 배포 🔹
-#      - name: JDK 17버전 설치
-#        uses: actions/setup-java@v4
-#        with:
-#          distribution: temurin
-#          java-version: 17
-#
-#      - name: Print working directory
-#        run: pwd
-#
-#      - name: List files
-#        run: ls -la
-#
-#      - name: application.yml 파일 만들기
-#        run: echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
-#
-#      - name: 클라이언트 .env 파일 만들기
-#        run: echo "${{ secrets.CLIENT_ENV }}" > ./client/.env  # .env 파일을 클라이언트 디렉토리에 생성
-#
-#      - name: gradlew permision 수정
-#        run: sudo chmod 777 ./gradlew
-#
-#      - name: 서버 애플리케이션 빌드
-#        run: ./gradlew clean build -x test
-#
-#      - name: 서버 Docker 이미지 생성
-#        run: docker build -t ${{ secrets.REGISTRY }}/server-app -f Dockerfile .
-#
-#      - name: 서버 Docker 이미지 태깅
-#        run: docker tag ${{ secrets.REGISTRY }}/server-app ${{ secrets.REGISTRY }}/server-app:latest
-#
-#      - name: 서버 Docker 이미지 Push
-#        run: docker push ${{ secrets.REGISTRY }}/server-app:latest
-#        timeout-minutes: 30  # ⬅️ 개별 명령 실행 시간 (30분)
-#
-#      ## 🔹 클라이언트 빌드 및 배포 🔹
-#      - name: 클라이언트 Docker 이미지 생성
-#        working-directory: ./client  # ✅ 클라이언트 디렉토리 지정
-#        run: docker build -t ${{ secrets.REGISTRY }}/client-app -f Dockerfile .
-#
-#      - name: 클라이언트 Docker 이미지 태깅
-#        working-directory: ./client  # 클라이언트 경로 지정
-#        run: docker tag ${{ secrets.REGISTRY }}/client-app ${{ secrets.REGISTRY }}/client-app:latest
-#
-#      - name: 클라이언트 Docker 이미지 Push
-#        run: docker push ${{ secrets.REGISTRY }}/client-app:latest
-#        timeout-minutes: 30  # ⬅️ 개별 명령 실행 시간 (30분)
-#
-#      ## 🔹 EC2에 배포 🔹
-#      - name: SSH로 EC2 접속 및 배포
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.EC2_HOST }}
-#          username: ${{ secrets.EC2_USERNAME }}
-#          key: ${{ secrets.EC2_PRIVATE_KEY }}
-#          port: ${{ secrets.SSH_PORT }}
-#          script_stop: true
-#          script: |
-#            # 서버 컨테이너 배포
-#            docker stop server-app || true
-#            docker rm server-app || true
-#            docker pull ${{ secrets.REGISTRY }}/server-app:latest
-#            docker run -d --name server-app -p 8070:8070 \
-#              -v ~/userimg:/home/dhk/tinder/src/main/webapp/userimg \
-#              ${{ secrets.REGISTRY }}/server-app:latest
-#
-#            # 클라이언트 컨테이너 배포
-#            docker stop client-app || true
-#            docker rm client-app || true
-#            docker pull ${{ secrets.REGISTRY }}/client-app:latest
-#            docker run -d --name client-app -p 3000:3000 \
-#              ${{ secrets.REGISTRY }}/client-app:latest
-#
-#            # 실행 중인 컨테이너 확인
-#            docker ps -a
+name: Deploy To EC2
+on:
+  push:
+    branches:
+      - DH
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Github Repository 파일 불러오기
+        uses: actions/checkout@v4
+
+      - name: Allow insecure Docker registry
+        run: |
+          sudo mkdir -p /etc/docker
+          echo '{ "insecure-registries":["${{ secrets.REGISTRY }}"] }' | sudo tee /etc/docker/daemon.json
+          sudo systemctl restart docker
+
+
+      ## 🔹 서버 빌드 및 배포 🔹
+      - name: JDK 17버전 설치
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Print working directory
+        run: pwd
+
+      - name: List files
+        run: ls -la
+
+      - name: application.yml 파일 만들기
+        run: echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
+
+      - name: 클라이언트 .env 파일 만들기
+        run: echo "${{ secrets.CLIENT_ENV }}" > ./client/.env  # .env 파일을 클라이언트 디렉토리에 생성
+
+      - name: gradlew permision 수정
+        run: sudo chmod 777 ./gradlew
+
+      - name: 서버 애플리케이션 빌드
+        run: ./gradlew clean build -x test
+
+      - name: 서버 Docker 이미지 생성
+        run: docker build -t ${{ secrets.REGISTRY }}/server-app -f Dockerfile .
+
+      - name: 서버 Docker 이미지 태깅
+        run: docker tag ${{ secrets.REGISTRY }}/server-app ${{ secrets.REGISTRY }}/server-app:latest
+
+      - name: 서버 Docker 이미지 Push
+        run: docker push ${{ secrets.REGISTRY }}/server-app:latest
+        timeout-minutes: 30  # ⬅️ 개별 명령 실행 시간 (30분)
+
+      ## 🔹 클라이언트 빌드 및 배포 🔹
+      - name: 클라이언트 Docker 이미지 생성
+        working-directory: ./client  # ✅ 클라이언트 디렉토리 지정
+        run: docker build -t ${{ secrets.REGISTRY }}/client-app -f Dockerfile .
+
+      - name: 클라이언트 Docker 이미지 태깅
+        working-directory: ./client  # 클라이언트 경로 지정
+        run: docker tag ${{ secrets.REGISTRY }}/client-app ${{ secrets.REGISTRY }}/client-app:latest
+
+      - name: 클라이언트 Docker 이미지 Push
+        run: docker push ${{ secrets.REGISTRY }}/client-app:latest
+        timeout-minutes: 30  # ⬅️ 개별 명령 실행 시간 (30분)
+
+      ## 🔹 EC2에 배포 🔹
+      - name: SSH로 EC2 접속 및 배포
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script_stop: true
+          script: |
+            # 서버 컨테이너 배포
+            docker stop server-app || true
+            docker rm server-app || true
+            docker pull ${{ secrets.REGISTRY }}/server-app:latest
+            docker run -d --name server-app -p 8070:8070 \
+              -v ~/userimg:/home/dhk/tinder/src/main/webapp/userimg \
+              ${{ secrets.REGISTRY }}/server-app:latest
+
+            # 클라이언트 컨테이너 배포
+            docker stop client-app || true
+            docker rm client-app || true
+            docker pull ${{ secrets.REGISTRY }}/client-app:latest
+            docker run -d --name client-app -p 3000:3000 \
+              ${{ secrets.REGISTRY }}/client-app:latest
+
+            # 실행 중인 컨테이너 확인
+            docker ps -a
