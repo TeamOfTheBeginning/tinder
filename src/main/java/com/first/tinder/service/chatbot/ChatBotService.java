@@ -165,7 +165,7 @@ public class ChatBotService {
         }
 
         if (userMessage.contains("노래") || userMessage.contains("음악")) {
-            if (userMessage.contains("최신") && userMessage.contains("한국")) {
+            if (userMessage.contains("최신") && userMessage.contains("한국") || userMessage.contains("멜론") || userMessage.contains("top5")) {
                 String music = musicService.getLatestKoreanMusic();
                 return saveAndReturnResponse(userId, userMessage, music);
             } else if (userMessage.contains("최신")) {
